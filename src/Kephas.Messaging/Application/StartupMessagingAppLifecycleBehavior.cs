@@ -62,7 +62,7 @@ namespace Kephas.Messaging.Application
 
             var result = await this.messageProcessor
                 .ProcessAsync(signal.Command, ctx => ctx.Merge(signal.ExecutionContext), cancellationToken)
-                .PreserveThreadContext();
+                ;
 
             throw new InterruptSignal(result: result);
         }

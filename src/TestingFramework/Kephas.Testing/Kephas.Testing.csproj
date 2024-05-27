@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net8.0;net6.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -49,9 +49,6 @@
         <NeutralLanguage>en</NeutralLanguage>
         <DefineConstants>KEPHAS</DefineConstants>
 
-        <SignAssembly>True</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
-
         <PackageReleaseNotes>
             Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
@@ -69,32 +66,21 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\..\Kephas.snk" Link="Kephas.snk" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="NSubstitute" Version="4.3.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\..\Kephas.Interaction\Kephas.Interaction.csproj" />
-        <ProjectReference Include="..\..\Kephas.Reflection\Kephas.Reflection.csproj" />
-        <ProjectReference Include="..\..\Kephas.Runtime\Kephas.Runtime.csproj" />
-        <ProjectReference Include="..\..\Kephas.Security\Kephas.Security.csproj" />
-        <ProjectReference Include="..\..\Kephas.Serialization\Kephas.Serialization.csproj" />
+        <PackageReference Include="NSubstitute" Version="5.1.0" />
     </ItemGroup>
 
     <ItemGroup>
         <None Include="..\..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Core\Kephas.Logging.Abstractions\Kephas.Logging.Abstractions.csproj" />
+      <ProjectReference Include="..\..\Core\Kephas.Services.Abstractions\Kephas.Services.Abstractions.csproj" />
+      <ProjectReference Include="..\..\Core\Kephas.Services\Kephas.Services.csproj" />
     </ItemGroup>
 
 </Project>

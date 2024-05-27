@@ -20,17 +20,17 @@ namespace Kephas.Cryptography
     /// </summary>
     public abstract class HashingServiceBase : IHashingService
     {
-        private readonly IInjectableFactory injectableFactory;
+        private readonly IServiceFactory serviceFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HashingServiceBase"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
-        public HashingServiceBase(IInjectableFactory injectableFactory)
+        /// <param name="serviceFactory">The injectable factory.</param>
+        public HashingServiceBase(IServiceFactory serviceFactory)
         {
-            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-            this.injectableFactory = injectableFactory;
+            this.serviceFactory = serviceFactory;
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Kephas.Cryptography
                 return null;
             }
 
-            var context = this.injectableFactory.Create<HashingContext>();
+            var context = this.serviceFactory.Create<HashingContext>();
             optionsConfig(context);
             return context;
         }

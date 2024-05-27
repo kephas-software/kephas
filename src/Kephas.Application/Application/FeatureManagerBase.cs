@@ -66,7 +66,7 @@ namespace Kephas.Application
 
             try
             {
-                await this.InitializeCoreAsync(appContext, cancellationToken).PreserveThreadContext();
+                await this.InitializeCoreAsync(appContext, cancellationToken);
                 this.InitializationMonitor.Complete();
             }
             catch (Exception ex)
@@ -94,7 +94,7 @@ namespace Kephas.Application
 
             try
             {
-                await this.FinalizeCoreAsync(appContext, cancellationToken).PreserveThreadContext();
+                await this.FinalizeCoreAsync(appContext, cancellationToken);
                 this.FinalizationMonitor.Complete();
             }
             catch (Exception ex)

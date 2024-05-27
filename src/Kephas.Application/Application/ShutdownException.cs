@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Application
 {
     using System;
@@ -17,7 +19,7 @@ namespace Kephas.Application
     /// <summary>
     /// Exception for signaling shutdown errors.
     /// </summary>
-    public class ShutdownException : ApplicationException, ISeverityQualifiedNotification
+    public class ShutdownException : ApplicationException, IErrorNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ShutdownException"/> class.
@@ -26,7 +28,7 @@ namespace Kephas.Application
         public ShutdownException(string message)
             : base(message)
         {
-            this.Severity = SeverityLevel.Fatal;
+            this.Severity = LogLevel.Critical;
         }
 
         /// <summary>
@@ -37,7 +39,7 @@ namespace Kephas.Application
         public ShutdownException(string message, Exception inner)
             : base(message, inner)
         {
-            this.Severity = SeverityLevel.Fatal;
+            this.Severity = LogLevel.Critical;
         }
 
         /// <summary>
@@ -46,7 +48,7 @@ namespace Kephas.Application
         /// <value>
         /// The severity.
         /// </value>
-        public SeverityLevel Severity { get; set; }
+        public LogLevel Severity { get; set; }
 
         /// <summary>
         /// Gets or sets a context for the application.

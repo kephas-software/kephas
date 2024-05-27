@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Workflow.Interaction
 {
     using System;
@@ -51,7 +53,7 @@ namespace Kephas.Workflow.Interaction
         {
             this.ActivityContext = activityContext;
             this.MaxRetryCount = maxRetryCount;
-            this.Severity = SeverityLevel.Info;
+            this.Severity = LogLevel.Information;
         }
 
         /// <summary>
@@ -71,7 +73,7 @@ namespace Kephas.Workflow.Interaction
         {
             this.ActivityContext = activityContext;
             this.MaxRetryCount = maxRetryCount;
-            this.Severity = SeverityLevel.Info;
+            this.Severity = LogLevel.Information;
         }
 
         /// <summary>
@@ -96,6 +98,6 @@ namespace Kephas.Workflow.Interaction
         /// <value>
         /// The severity.
         /// </value>
-        public SeverityLevel Severity { get; }
+        public LogLevel Severity { get; }
     }
 }

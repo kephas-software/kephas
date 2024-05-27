@@ -85,7 +85,7 @@ namespace Kephas.Orchestration.Application
             IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
-            var baseResult = await base.AfterAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
+            var baseResult = await base.AfterAppFinalizeAsync(appContext, cancellationToken);
             this.configChangedSubscription?.Dispose();
             return baseResult;
         }
@@ -108,7 +108,7 @@ namespace Kephas.Orchestration.Application
 
             var liveApps = await this.lazyOrchestrationManager.Value
                 .GetLiveAppsAsync(ctx => ctx.Impersonate(context), cancellationToken)
-                .PreserveThreadContext();
+                ;
             var targetAppInstanceIds = liveApps.Select(a => a.AppInstanceId)
                 .Where(iid => iid != thisAppInstanceId && iid != sourceAppInstanceId)
                 .ToList();
@@ -129,7 +129,7 @@ namespace Kephas.Orchestration.Application
                         .Impersonate(context)
                         .To(recipients),
                     cancellationToken)
-                .PreserveThreadContext();
+                ;
         }
     }
 }

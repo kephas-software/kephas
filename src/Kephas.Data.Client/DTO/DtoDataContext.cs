@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services;
+
 namespace Kephas.Data.Client.DTO
 {
     using System;
@@ -19,8 +21,6 @@ namespace Kephas.Data.Client.DTO
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.InMemory;
     using Kephas.Data.Store;
-    using Kephas.Services;
-    using Kephas.Services.AttributedModel;
     using Kephas.Serialization;
 
     /// <summary>

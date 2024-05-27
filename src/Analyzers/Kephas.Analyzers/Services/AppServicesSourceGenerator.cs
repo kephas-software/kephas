@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Immutable;
+
 namespace Kephas.Analyzers.Services;
 
 using System.Collections.Generic;
@@ -18,100 +20,50 @@ using Microsoft.CodeAnalysis.Text;
 /// Source generator for collecting application service contracts and types and declaring them at assembly level.
 /// </summary>
 [Generator]
-public class AppServicesSourceGenerator : ISourceGenerator
+public class AppServicesSourceGenerator : IncrementalGeneratorBase<TypeDeclarationSyntax>
 {
     /// <summary>
-    /// Called before generation occurs. A generator can use the <paramref name="context" />
-    /// to register callbacks required to perform generation.
+    /// The code to be executed upon building.
     /// </summary>
-    /// <param name="context">The <see cref="T:Microsoft.CodeAnalysis.GeneratorInitializationContext" /> to register callbacks on.</param>
-    /// <footer><a href="https://docs.microsoft.com/en-us/dotnet/api/Microsoft.CodeAnalysis.ISourceGenerator.Initialize?view=netstandard-2.0">`ISourceGenerator.Initialize` on docs.microsoft.com</a></footer>
-    public void Initialize(GeneratorInitializationContext context)
+    /// <param name="context">The source compilation context.</param>
+    protected override void Execute(ISourceContext<TypeDeclarationSyntax> context)
     {
-        context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
-    }
-
-    /// <summary>
-    /// Called to perform source generation. A generator can use the <paramref name="context" />
-    /// to add source files via the <see cref="M:Microsoft.CodeAnalysis.GeneratorExecutionContext.AddSource(System.String,Microsoft.CodeAnalysis.Text.SourceText)" />
-    /// method.
-    /// </summary>
-    /// <param name="context">The <see cref="T:Microsoft.CodeAnalysis.GeneratorExecutionContext" /> to add source to.</param>
-    /// <remarks>
-    /// This call represents the main generation step. It is called after a <see cref="T:Microsoft.CodeAnalysis.Compilation" /> is
-    /// created that contains the user written code.
-    /// A generator can use the <see cref="P:Microsoft.CodeAnalysis.GeneratorExecutionContext.Compilation" /> property to
-    /// discover information about the users compilation and make decisions on what source to
-    /// provide.
-    /// </remarks>
-    /// <footer><a href="https://docs.microsoft.com/en-us/dotnet/api/Microsoft.CodeAnalysis.ISourceGenerator.Execute?view=netstandard-2.0">`ISourceGenerator.Execute` on docs.microsoft.com</a></footer>
-    public void Execute(GeneratorExecutionContext context)
-    {
-        var syntaxReceiver = (SyntaxReceiver)context.SyntaxContextReceiver!;
-
-        var serviceTypeProvider = this.GetServiceTypeProviderClassName(context);
+        var appContext = (IAppServicesSourceContext)context;
+        var serviceTypeProvider = this.GetServiceTypeProviderClassName(appContext);
 
         var source = new StringBuilder();
-        source.AppendLine($@"#nullable enable
+        source.AppendLine(
+            $"""
+            #nullable enable
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+            using System;
+            using System.Collections.Generic;
+            using System.Diagnostics.CodeAnalysis;
 
-using Kephas.Services;
+            using Kephas.Services;
 
-[assembly: AppServices(typeof({serviceTypeProvider.typeNamespace}.{serviceTypeProvider.typeName}))]
+            [assembly: AppServices(typeof({serviceTypeProvider.typeNamespace}.{serviceTypeProvider.typeName}))]
 
-");
+            """);
         var isProviderGenerated = AnalyzerServiceHelper.AppendAppServicesProviderClass(
             serviceTypeProvider,
             source,
-            context,
-            syntaxReceiver.ServiceTypes.Select(t => new ServiceDeclaration(t, AnalyzerServiceHelper.TryGetAppServiceContract(t, context))).ToList(),
-            syntaxReceiver);
+            appContext,
+            appContext.ServiceTypes.Select(t => new ServiceDeclaration(t, AnalyzerServiceHelper.TryGetAppServiceContract(t, appContext))).ToList(),
+            appContext);
         if (isProviderGenerated)
         {
-            context.AddSource("AppServices.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
+            context.SourceProductionContext.AddSource("AppServices.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
         }
     }
 
-    private (string typeNamespace, string typeName) GetServiceTypeProviderClassName(GeneratorExecutionContext context)
+    private (string typeNamespace, string typeName) GetServiceTypeProviderClassName(IAppServicesSourceContext context)
     {
         return ("Kephas.Services.Generated", $"AppServices_{context.Compilation.Assembly.Name.Replace(".", "_")}");
     }
 
-    private class SyntaxReceiver : SyntaxReceiverBase, IAppServicesCompilationContext
+    protected override ISourceContext<TypeDeclarationSyntax> CreateSourceContext(((Compilation, ImmutableArray<TypeDeclarationSyntax>), ImmutableArray<FileScopedNamespaceDeclarationSyntax>) source, SourceProductionContext spc)
     {
-        public IList<TypeDeclarationSyntax> ContractTypes { get; } = new List<TypeDeclarationSyntax>();
-
-        public IList<ClassDeclarationSyntax> ServiceTypes { get; } = new List<ClassDeclarationSyntax>();
-
-        public IList<ClassDeclarationSyntax> MetadataTypes { get; } = new List<ClassDeclarationSyntax>();
-
-        public override void OnVisitSyntaxNode(GeneratorSyntaxContext context)
-        {
-            base.OnVisitSyntaxNode(context);
-
-            // find all classes and interfaces marked with [AppServiceContract] attributes.
-            if (context.Node is TypeDeclarationSyntax contract
-                && AnalyzerServiceHelper.IsAppServiceContract(contract))
-            {
-                this.ContractTypes.Add(contract);
-            }
-
-            // find all classes which are potentially application services.
-            if (context.Node is ClassDeclarationSyntax type)
-            {
-                if (AnalyzerServiceHelper.CanBeAppService(type))
-                {
-                    this.ServiceTypes.Add(type);
-                }
-
-                if (AnalyzerServiceHelper.CanBeMetadataType(type))
-                {
-                    this.MetadataTypes.Add(type);
-                }
-            }
-        }
+        return new AppServicesSourceContext(source, spc);
     }
 }

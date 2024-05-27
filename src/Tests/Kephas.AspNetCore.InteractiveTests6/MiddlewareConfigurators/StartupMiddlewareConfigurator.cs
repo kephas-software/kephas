@@ -13,7 +13,7 @@ namespace Kephas.AspNetCore.InteractiveTests6.MiddlewareConfigurators
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Hosting;
 
-    [ProcessingPriority(Priority.Highest + 100)]
+    [Priority(Priority.Highest + 100)]
     public class StartupMiddlewareConfigurator : IMiddlewareConfigurator
     {
         public void Configure(IAspNetAppContext appContext)

@@ -23,7 +23,7 @@ namespace Kephas.Configuration
     /// <summary>
     /// Core configuration application lifecycle behavior.
     /// </summary>
-    [ProcessingPriority(Priority.Highest)]
+    [Priority(Priority.Highest)]
     public class CoreConfigurationAppLifecycleBehavior : Loggable, IAppLifecycleBehavior
     {
         private readonly IConfiguration<CoreSettings> coreConfiguration;
@@ -65,7 +65,7 @@ namespace Kephas.Configuration
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error while trying to set core default values.");
+                this.Logger.LogError(ex, "Error while trying to set core default values.");
             }
 
             return Task.FromResult((IOperationResult)true.ToOperationResult());

@@ -34,16 +34,16 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageRouterBase"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
         protected MessageRouterBase(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor)
-            : base(injectableFactory)
+            : base(serviceFactory)
         {
-            this.InjectableFactory = injectableFactory;
+            this.ServiceFactory = serviceFactory;
             this.AppRuntime = appRuntime;
             this.MessageProcessor = messageProcessor;
 
@@ -62,7 +62,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <value>
         /// The context factory.
         /// </value>
-        public IInjectableFactory InjectableFactory { get; }
+        public IServiceFactory ServiceFactory { get; }
 
         /// <summary>
         /// Gets the application runtime.
@@ -125,7 +125,7 @@ namespace Kephas.Messaging.Distributed.Routing
 
             try
             {
-                await this.InitializeCoreAsync(context, cancellationToken).PreserveThreadContext();
+                await this.InitializeCoreAsync(context, cancellationToken);
 
                 this.InitializationMonitor.Complete();
 
@@ -133,7 +133,7 @@ namespace Kephas.Messaging.Distributed.Routing
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, "{router} failed to initialize.", messageRouterName);
+                this.Logger.LogWarning(ex, "{router} failed to initialize.", messageRouterName);
                 this.InitializationMonitor.Fault(ex);
                 throw;
             }
@@ -162,14 +162,14 @@ namespace Kephas.Messaging.Distributed.Routing
             brokeredMessage.TraceOutputRoute(this, this.AppRuntime.GetAppInstanceId());
             if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Trace("Routing message {message} through: {messageTrace}.", brokeredMessage, brokeredMessage.Trace);
+                this.Logger.LogTrace("Routing message {message} through: {messageTrace}.", brokeredMessage, brokeredMessage.Trace);
             }
 
             if (brokeredMessage.IsOneWay)
             {
                 this.RouteOutputAsync(brokeredMessage, context, default)
                     .ContinueWith(
-                        t => this.Logger.Warn(t.Exception, string.Format(Strings.MessageRouterBase_ProcessOneWay_Exception, brokeredMessage)),
+                        t => this.Logger.LogWarning(t.Exception, string.Format(Strings.MessageRouterBase_ProcessOneWay_Exception, brokeredMessage)),
                         TaskContinuationOptions.OnlyOnFaulted);
                 return (RoutingInstruction.None, null);
             }
@@ -179,7 +179,7 @@ namespace Kephas.Messaging.Distributed.Routing
             try
             {
                 result = await this.RouteOutputAsync(brokeredMessage, context, cancellationToken)
-                       .PreserveThreadContext();
+                       ;
             }
             catch (Exception ex)
             {
@@ -227,7 +227,7 @@ namespace Kephas.Messaging.Distributed.Routing
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, "{router} failed to stop.", messageRouterName);
+                this.Logger.LogWarning(ex, "{router} failed to stop.", messageRouterName);
                 this.FinalizationMonitor.Fault(ex);
                 throw;
             }
@@ -287,7 +287,7 @@ namespace Kephas.Messaging.Distributed.Routing
                 brokeredMessage.TraceInputRoute(this, appInstanceId);
                 if (this.Logger.IsTraceEnabled())
                 {
-                    this.Logger.Trace("Routing message {message} through: {messageTrace}.", brokeredMessage, brokeredMessage.Trace);
+                    this.Logger.LogTrace("Routing message {message} through: {messageTrace}.", brokeredMessage, brokeredMessage.Trace);
                 }
 
                 // if the input queue notifies a reply, notify it further to the message broker.
@@ -315,16 +315,16 @@ namespace Kephas.Messaging.Distributed.Routing
                     var remoteMessage = !localRecipients.Any()
                         ? brokeredMessage
                         : brokeredMessage.Clone(remoteRecipients);
-                    using var redirectContext = this.InjectableFactory.Create<DispatchingContext>(remoteMessage);
+                    using var redirectContext = this.ServiceFactory.Create<DispatchingContext>(remoteMessage);
                     redirectContext.Impersonate(context);
 
                     remoteMessage.TraceOutputRoute(this, appInstanceId);
                     if (this.Logger.IsTraceEnabled())
                     {
-                        this.Logger.Trace("Routing message {message} through: {messageTrace}.", remoteMessage, remoteMessage.Trace);
+                        this.Logger.LogTrace("Routing message {message} through: {messageTrace}.", remoteMessage, remoteMessage.Trace);
                     }
 
-                    (remoteInstruction, remoteReply) = await this.RouteOutputAsync(remoteMessage, redirectContext, cancellationToken).PreserveThreadContext();
+                    (remoteInstruction, remoteReply) = await this.RouteOutputAsync(remoteMessage, redirectContext, cancellationToken);
                 }
 
                 // for local recipients, handle the request here
@@ -340,7 +340,7 @@ namespace Kephas.Messaging.Distributed.Routing
                         // for one way or replies do not wait for a response
                         this.ProcessAsync(localMessage, context, default)
                             .ContinueWith(
-                                t => this.Logger.Error(t.Exception, Strings.MessageRouterBase_ErrorsOccurredWhileProcessingOneWay_Exception.FormatWith(brokeredMessage)),
+                                t => this.Logger.LogError(t.Exception, Strings.MessageRouterBase_ErrorsOccurredWhileProcessingOneWay_Exception.FormatWith(brokeredMessage)),
                                 TaskContinuationOptions.OnlyOnFaulted);
                     }
                     else
@@ -348,7 +348,7 @@ namespace Kephas.Messaging.Distributed.Routing
                         object? reply = null;
                         try
                         {
-                            reply = await this.ProcessAsync(localMessage, context, cancellationToken).PreserveThreadContext();
+                            reply = await this.ProcessAsync(localMessage, context, cancellationToken);
                         }
                         catch (Exception ex)
                         {
@@ -357,16 +357,16 @@ namespace Kephas.Messaging.Distributed.Routing
 
                         // after processing requests expecting an answer, redirect the reply
                         // through the same infrastructure back to caller.
-                        using var replyContext = this.InjectableFactory.Create<DispatchingContext>(reply);
+                        using var replyContext = this.ServiceFactory.Create<DispatchingContext>(reply);
                         replyContext.Impersonate(context).ReplyTo(brokeredMessage);
 
                         replyContext.BrokeredMessage.TraceOutputRoute(this, appInstanceId);
                         if (this.Logger.IsTraceEnabled())
                         {
-                            this.Logger.Trace("Routing message {message} through: {messageTrace}.", replyContext.BrokeredMessage, replyContext.BrokeredMessage.Trace);
+                            this.Logger.LogTrace("Routing message {message} through: {messageTrace}.", replyContext.BrokeredMessage, replyContext.BrokeredMessage.Trace);
                         }
 
-                        (localInstruction, localReply) = await this.RouteOutputAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
+                        (localInstruction, localReply) = await this.RouteOutputAsync(replyContext.BrokeredMessage, replyContext, cancellationToken);
                     }
                 }
 
@@ -384,7 +384,7 @@ namespace Kephas.Messaging.Distributed.Routing
             }
             catch (RoutingException ex)
             {
-                this.Logger.Error(ex, Strings.MessageRouterBase_ErrorsOccurredWhileRoutingMessage_Exception.FormatWith(brokeredMessage));
+                this.Logger.LogError(ex, Strings.MessageRouterBase_ErrorsOccurredWhileRoutingMessage_Exception.FormatWith(brokeredMessage));
                 throw;
             }
             catch (Exception ex)
@@ -392,7 +392,7 @@ namespace Kephas.Messaging.Distributed.Routing
                 var routingException = new RoutingException(
                     Strings.MessageRouterBase_ErrorsOccurredWhileRoutingMessage_Exception.FormatWith(brokeredMessage),
                     ex);
-                this.Logger.Error(ex, Strings.MessageRouterBase_ErrorsOccurredWhileRoutingMessage_Exception.FormatWith(brokeredMessage));
+                this.Logger.LogError(ex, Strings.MessageRouterBase_ErrorsOccurredWhileRoutingMessage_Exception.FormatWith(brokeredMessage));
                 throw routingException;
             }
         }
@@ -411,7 +411,7 @@ namespace Kephas.Messaging.Distributed.Routing
             var response = await this.MessageProcessor.ProcessAsync(
                 brokeredMessage.Content,
                 ctx => ctx.Merge(context).SetBrokeredMessage(brokeredMessage),
-                cancellationToken).PreserveThreadContext();
+                cancellationToken);
             return response;
         }
 

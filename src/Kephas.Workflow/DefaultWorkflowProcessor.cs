@@ -28,26 +28,26 @@ using Kephas.Workflow.Reflection;
 /// <summary>
 /// The default implementation of the <see cref="IWorkflowProcessor"/> service contract.
 /// </summary>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class DefaultWorkflowProcessor : Loggable, IWorkflowProcessor
 {
-    private readonly IInjectableFactory injectableFactory;
+    private readonly IServiceFactory serviceFactory;
     private readonly ICollection<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>> behaviorFactories;
     private readonly IRuntimeTypeRegistry typeRegistry;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultWorkflowProcessor"/> class.
     /// </summary>
-    /// <param name="injectableFactory">The injectable factory.</param>
+    /// <param name="serviceFactory">The injectable factory.</param>
     /// <param name="behaviorFactories">The behavior factories.</param>
     /// <param name="typeRegistry">The type registry.</param>
     public DefaultWorkflowProcessor(
-        IInjectableFactory injectableFactory,
+        IServiceFactory serviceFactory,
         ICollection<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>> behaviorFactories,
         IRuntimeTypeRegistry typeRegistry)
-        : base(injectableFactory)
+        : base(serviceFactory)
     {
-        this.injectableFactory = injectableFactory;
+        this.serviceFactory = serviceFactory;
         this.behaviorFactories = behaviorFactories;
         this.typeRegistry = typeRegistry;
     }
@@ -85,7 +85,7 @@ public class DefaultWorkflowProcessor : Loggable, IWorkflowProcessor
 
         // resolve the arguments
         var executionArgs = await this.GetExecutionArgumentsAsync(activityInfo, arguments, context, cancellationToken)
-            .PreserveThreadContext();
+            ;
 
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -95,13 +95,13 @@ public class DefaultWorkflowProcessor : Loggable, IWorkflowProcessor
         cancellationToken.ThrowIfCancellationRequested();
 
         //... TODO improve
-        await this.ApplyBeforeExecuteBehaviorsAsync(behaviors, context, cancellationToken).PreserveThreadContext();
+        await this.ApplyBeforeExecuteBehaviorsAsync(behaviors, context, cancellationToken);
 
         //... TODO improve
         try
         {
             var result = await this.ExecuteActivityAsync(activityInfo, activity, target, executionArgs, context, cancellationToken)
-                .PreserveThreadContext();
+                ;
             context.Result = result;
         }
         catch (Exception ex)
@@ -110,7 +110,7 @@ public class DefaultWorkflowProcessor : Loggable, IWorkflowProcessor
         }
 
         //... TODO improve
-        await this.ApplyAfterExecuteBehaviorsAsync(reversedBehaviors, context, cancellationToken).PreserveThreadContext();
+        await this.ApplyAfterExecuteBehaviorsAsync(reversedBehaviors, context, cancellationToken);
 
         if (context.Exception != null)
         {
@@ -143,7 +143,7 @@ public class DefaultWorkflowProcessor : Loggable, IWorkflowProcessor
         var timeout = context.Timeout;
         if (!timeout.HasValue || timeout.Value <= TimeSpan.Zero)
         {
-            return await activityInfo.ExecuteAsync(activity, target, executionArgs, context, cancellationToken).PreserveThreadContext();
+            return await activityInfo.ExecuteAsync(activity, target, executionArgs, context, cancellationToken);
         }
 
         var cancelSource = new CancellationTokenSource(timeout.Value + TimeSpan.FromMilliseconds(100));
@@ -152,7 +152,7 @@ public class DefaultWorkflowProcessor : Loggable, IWorkflowProcessor
         // allow the delay to expire first, so start it in the first place
         var delayTask = Task.Delay(timeout.Value, cancelSource.Token);
         var executeTask = activityInfo.ExecuteAsync(activity, target, executionArgs, context, cancelSource.Token);
-        var completedTask = await Task.WhenAny(executeTask, delayTask).PreserveThreadContext();
+        var completedTask = await Task.WhenAny(executeTask, delayTask);
         if (completedTask == executeTask)
         {
             return executeTask.Result;
@@ -170,7 +170,7 @@ public class DefaultWorkflowProcessor : Loggable, IWorkflowProcessor
     /// </returns>
     protected virtual IActivityContext CreateActivityContext(Action<IActivityContext>? optionsConfig = null)
     {
-        var context = this.injectableFactory.Create<ActivityContext>();
+        var context = this.serviceFactory.Create<ActivityContext>();
         optionsConfig?.Invoke(context);
         return context;
     }
@@ -188,7 +188,7 @@ public class DefaultWorkflowProcessor : Loggable, IWorkflowProcessor
     {
         foreach (var behavior in behaviors)
         {
-            await behavior.BeforeExecuteAsync(context, cancellationToken).PreserveThreadContext();
+            await behavior.BeforeExecuteAsync(context, cancellationToken);
         }
     }
 
@@ -205,7 +205,7 @@ public class DefaultWorkflowProcessor : Loggable, IWorkflowProcessor
     {
         foreach (var behavior in behaviors)
         {
-            await behavior.AfterExecuteAsync(context, cancellationToken).PreserveThreadContext();
+            await behavior.AfterExecuteAsync(context, cancellationToken);
         }
     }
 

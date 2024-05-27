@@ -12,7 +12,6 @@ namespace Kephas.Plugins
 {
     using Kephas.Application;
     using Kephas.Application.Reflection;
-    using Kephas.Data;
     using Kephas.Dynamic;
 
     /// <summary>

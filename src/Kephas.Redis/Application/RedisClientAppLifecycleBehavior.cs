@@ -24,7 +24,7 @@ namespace Kephas.Redis.Application
     /// <summary>
     /// The Redis client application lifecycle behavior.
     /// </summary>
-    [ProcessingPriority(Priority.High)]
+    [Priority(Priority.High)]
     public class RedisClientAppLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly IConnectionFactory? redisConnectionFactory;
@@ -52,7 +52,7 @@ namespace Kephas.Redis.Application
         {
             if (this.redisConnectionFactory != null)
             {
-                await ServiceHelper.InitializeAsync(this.redisConnectionFactory, appContext, cancellationToken).PreserveThreadContext();
+                await ServiceHelper.InitializeAsync(this.redisConnectionFactory, appContext, cancellationToken);
             }
 
             return true.ToOperationResult();
@@ -72,7 +72,7 @@ namespace Kephas.Redis.Application
         {
             if (this.redisConnectionFactory != null)
             {
-                await ServiceHelper.FinalizeAsync(this.redisConnectionFactory, appContext, cancellationToken).PreserveThreadContext();
+                await ServiceHelper.FinalizeAsync(this.redisConnectionFactory, appContext, cancellationToken);
             }
 
             return true.ToOperationResult();

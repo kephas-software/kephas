@@ -19,7 +19,7 @@ namespace Kephas.Serialization.Json.Converters
     /// <remarks>
     /// <see cref="DynamicTypeRegistry"/> should be processed before expandos, that's why the higher priority.
     /// </remarks>
-    [ProcessingPriority(Priority.High)]
+    [Priority(Priority.High)]
     public class DynamicTypeRegistryJsonConverter : ExpandoJsonConverter
     {
         /// <summary>
@@ -27,9 +27,9 @@ namespace Kephas.Serialization.Json.Converters
         /// </summary>
         /// <param name="typeRegistry">The runtime type registry.</param>
         /// <param name="typeResolver">The type resolver.</param>
-        /// <param name="injectableFactory">The injectable factory.</param>
-        public DynamicTypeRegistryJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IInjectableFactory injectableFactory)
-            : base(typeRegistry, typeResolver, injectableFactory, typeof(DynamicTypeRegistry), typeof(DynamicTypeRegistry))
+        /// <param name="serviceFactory">The injectable factory.</param>
+        public DynamicTypeRegistryJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IServiceFactory serviceFactory)
+            : base(typeRegistry, typeResolver, serviceFactory, typeof(DynamicTypeRegistry), typeof(DynamicTypeRegistry))
         {
         }
 

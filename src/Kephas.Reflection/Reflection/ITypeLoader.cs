@@ -3,9 +3,6 @@
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Declares the IAssemblyLoader interface.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Reflection
@@ -15,7 +12,7 @@ namespace Kephas.Reflection
     using System.Reflection;
 
     /// <summary>
-    /// Interface for loading assemblies.
+    /// Interface for loading types.
     /// </summary>
     public interface ITypeLoader
     {

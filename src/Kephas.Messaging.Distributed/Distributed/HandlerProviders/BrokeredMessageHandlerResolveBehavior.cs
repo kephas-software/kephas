@@ -22,7 +22,7 @@ namespace Kephas.Messaging.Distributed.HandlerProviders
     /// <summary>
     /// A brokered message handler provider.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class BrokeredMessageHandlerResolveBehavior : IMessageHandlerResolveBehavior
     {
         /// <summary>

@@ -13,7 +13,6 @@ namespace Kephas.AspNetCore.InteractiveTests6.Extensions
     using Kephas.Application;
     using Kephas.Application.AspNetCore.Configuration;
     using Kephas.Configuration.Providers;
-    using Kephas.Logging;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
     using Kephas.Services;
@@ -22,7 +21,7 @@ namespace Kephas.AspNetCore.InteractiveTests6.Extensions
     /// A web settings provider.
     /// Override the <see cref="OptionsSettingsProvider"/>.
     /// </summary>
-    [OverridePriority(Priority.AboveNormal)]
+    [Priority(Priority.AboveNormal)]
     public class WebAppSettingsProvider : FileSettingsProvider
     {
         /// <summary>

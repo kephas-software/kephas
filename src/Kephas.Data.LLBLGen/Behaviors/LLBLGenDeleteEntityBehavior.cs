@@ -23,7 +23,7 @@ namespace Kephas.Data.LLBLGen.Behaviors
     /// <remarks>
     /// Should be called after common behaviors.
     /// </remarks>
-    [ProcessingPriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class LLBLGenDeleteEntityBehavior : DataBehaviorBase<IEntityBase>
     {
         /// <summary>

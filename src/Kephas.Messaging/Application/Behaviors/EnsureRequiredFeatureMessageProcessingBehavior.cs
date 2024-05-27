@@ -16,7 +16,7 @@ using Kephas.Services;
 /// <summary>
 /// Behavior ensuring that the required features of the message being processed are enabled.
 /// </summary>
-[ProcessingPriority(Priority.Highest + 15)]
+[Priority(Priority.Highest + 15)]
 public class EnsureRequiredFeatureMessageProcessingBehavior : MessagingBehaviorBase<IMessage<object?>, object?>
 {
     private readonly IAppRuntime appRuntime;

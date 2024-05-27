@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="ServiceProviderIsBeingBuilt" xml:space="preserve">
+        <value>The service provider is not available, it is now being built.</value>
+    </data>
+    <data name="AppServiceInfoBuilderContractTypeMismatch" xml:space="preserve">
+        <value>The contract type {0} must be assignable from the declaration type {1}.</value>
+    </data>
+    <data name="AppServiceCollectionMultipleContractDeclarationsWithSameType" xml:space="preserve">
+        <value>Multiple contract declarations for {0}. {1} will be overwritten by {2}.</value>
+    </data>
+    <data name="MultipleRegistrationsForAppServiceContract" xml:space="preserve">
+        <value>Multiple application services registered for the contract '{contractType}'. Strategy is {resolutionStrategy}, registrations: {registrations}.</value>
+    </data>
+    <data name="AmbiguousOverrideForAppServiceContract" xml:space="preserve">
+        <value>Multiple application services registered for the contract '{0}' and the override priority does not allow a proper service resolution. Registrations: {1}.</value>
+    </data>
+    <data name="AppServiceContractTypeDoesNotMatchServiceContract" xml:space="preserve">
+        <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
+    </data>
+    <data name="InjectableFactory_Create_InjectableTypeMustBeInstantiable" xml:space="preserve">
+    <value>The injectable type '{0}' must be an instantiable class.</value>
+        <comment>The injectable type '{0}' must be an instantiable class.</comment>
+  </data>
+    <data name="InjectableFactory_Create_NonNullArguments" xml:space="preserve">
+    <value>Arguments may not be null when instantiating injectable of type '{0}'.</value>
+        <comment>Arguments may not be null when instantiating injectable of type '{0}'.</comment>
+  </data>
+    <data name="InjectableFactory_GetCreatorFunc_CannotFindMatchingConstructor" xml:space="preserve">
+    <value>Cannot find a matching constructor for signature {0} in type '{1}'.</value>
+        <comment>Cannot find a matching constructor for signature {0} in type '{1}'.</comment>
+  </data>
+    <data name="InjectorBuilder_RegisterService_InvalidContractType" xml:space="preserve">
+        <value>No contract type provided for {0}.</value>
+    </data>
+    <data name="DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception" xml:space="preserve">
+    <value>No service found for {0}/{1}.</value>
+  </data>
+    <data name="DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception" xml:space="preserve">
+    <value>Multiple services found for {0}/{1}.</value>
+  </data>
+    <data name="ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception" xml:space="preserve">
+    <value>Cannot resolve priorities of service '{0}' for two instances: {1} and {2}.</value>
+        <comment>Cannot resolve priorities of service '{0}' for two instances: {1} and {2}.</comment>
+  </data>
+</root>

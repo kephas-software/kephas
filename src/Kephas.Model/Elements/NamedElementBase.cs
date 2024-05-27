@@ -243,7 +243,7 @@ namespace Kephas.Model.Elements
             catch (Exception exception)
             {
                 // TODO localization
-                this.Logger.Error(exception, "Errors during construction of {modelElement}.", this);
+                this.Logger.LogError(exception, "Errors during construction of {modelElement}.", this);
                 this.ConstructionMonitor.Fault(exception);
             }
         }

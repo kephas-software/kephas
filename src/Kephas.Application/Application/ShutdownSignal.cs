@@ -23,7 +23,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="severity">Optional. The severity.</param>
-        public ShutdownSignal(string? message = null, SeverityLevel severity = SeverityLevel.Info)
+        public ShutdownSignal(string? message = null, LogLevel severity = LogLevel.Information)
             : base(message ?? "Signalling an application shutdown.")
         {
         }

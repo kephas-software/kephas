@@ -16,7 +16,6 @@ namespace Kephas.Scheduling.Quartz.Application
 
     using global::Quartz.Logging;
     using Kephas.Application;
-    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Scheduling.Quartz.Logging;
 

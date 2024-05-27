@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Data.Commands
 {
     using System;
@@ -18,7 +20,7 @@ namespace Kephas.Data.Commands
     /// Attribute indicating the supported data context.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class DataContextTypeAttribute : Attribute, IMetadataValue<Type>
+    public class DataContextTypeAttribute : Attribute, IServiceMetadataValue<Type>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextTypeAttribute"/> class.

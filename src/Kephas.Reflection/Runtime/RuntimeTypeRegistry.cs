@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services;
+
 namespace Kephas.Runtime
 {
     using System;
@@ -16,7 +18,6 @@ namespace Kephas.Runtime
     using System.Reflection;
 
     using Kephas.Dynamic;
-    using Kephas.Services.AttributedModel;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime.Factories;

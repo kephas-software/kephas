@@ -19,7 +19,7 @@ namespace Kephas.Mail.Services
     /// <summary>
     /// A null system email sender service.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullSystemEmailSenderService : ISystemEmailSenderService
     {
         /// <summary>

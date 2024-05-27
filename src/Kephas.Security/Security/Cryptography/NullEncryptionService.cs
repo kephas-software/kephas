@@ -21,7 +21,7 @@ namespace Kephas.Cryptography
     /// <summary>
     /// A null encryption service.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullEncryptionService : IEncryptionService
     {
         /// <summary>
@@ -114,7 +114,7 @@ namespace Kephas.Cryptography
             var inputBuffer = new byte[1000];
             var outputBuffer = new byte[1000];
 
-            var count = await input.ReadAsync(inputBuffer, 0, 1000, cancellationToken).PreserveThreadContext();
+            var count = await input.ReadAsync(inputBuffer, 0, 1000, cancellationToken);
             while (count > 0)
             {
                 for (var i = 0; i < count; i++)
@@ -122,8 +122,8 @@ namespace Kephas.Cryptography
                     outputBuffer[i] = inputBuffer[count - 1 - i];
                 }
 
-                await output.WriteAsync(outputBuffer, 0, count, cancellationToken).PreserveThreadContext();
-                count = await input.ReadAsync(inputBuffer, 0, 1000, cancellationToken).PreserveThreadContext();
+                await output.WriteAsync(outputBuffer, 0, count, cancellationToken);
+                count = await input.ReadAsync(inputBuffer, 0, 1000, cancellationToken);
             }
         }
 

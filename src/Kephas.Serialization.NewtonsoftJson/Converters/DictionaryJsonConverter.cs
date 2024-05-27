@@ -23,7 +23,7 @@ namespace Kephas.Serialization.Json.Converters
     /// <remarks>
     /// Dictionaries should be processed before collections, that's why the higher priority.
     /// </remarks>
-    [ProcessingPriority(Priority.AboveNormal)]
+    [Priority(Priority.AboveNormal)]
     public class DictionaryJsonConverter : JsonConverterBase
     {
         private static readonly MethodInfo WriteJsonMethod =

@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Core.Endpoints
 {
     using System;
@@ -76,7 +78,7 @@ namespace Kephas.Core.Endpoints
             };
 
             dti.Annotations.AddRange(t.GetCustomAttributes(inherit: true)
-                .OfType<IMetadataProvider>()
+                .OfType<IServiceMetadataProvider>()
                 .Select(a =>
                 {
                     var e = new Expando();

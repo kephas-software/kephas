@@ -15,20 +15,20 @@ using Kephas.Services;
 /// Message queue store in process.
 /// </summary>
 /// <seealso cref="IMessageQueueStore" />
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class InProcessMessageQueueStore : IMessageQueueStore
 {
     private readonly ConcurrentDictionary<string, IMessageQueue> channels = new ();
-    private readonly IInjectableFactory injectableFactory;
+    private readonly IServiceFactory serviceFactory;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InProcessMessageQueueStore"/> class.
     /// </summary>
-    /// <param name="injectableFactory">The injectable factory.</param>
+    /// <param name="serviceFactory">The injectable factory.</param>
     /// <exception cref="System.ArgumentNullException">contextFactory</exception>
-    public InProcessMessageQueueStore(IInjectableFactory injectableFactory)
+    public InProcessMessageQueueStore(IServiceFactory serviceFactory)
     {
-        this.injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+        this.serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
     }
 
     /// <summary>
@@ -50,15 +50,15 @@ public class InProcessMessageQueueStore : IMessageQueueStore
     /// <returns>The newly created message queue.</returns>
     protected IMessageQueue CreateMessageQueue(string name)
     {
-        return new InProcessMessageQueue(this.injectableFactory, name);
+        return new InProcessMessageQueue(this.serviceFactory, name);
     }
 
     private class InProcessMessageQueue : Loggable, IMessageQueue
     {
         private readonly ConcurrentQueue<IBrokeredMessage> internalQueue = new ();
 
-        public InProcessMessageQueue(IInjectableFactory injectableFactory, string channel)
-            : base(injectableFactory)
+        public InProcessMessageQueue(IServiceFactory serviceFactory, string channel)
+            : base(serviceFactory)
         {
             this.Channel = channel;
         }
@@ -83,7 +83,7 @@ public class InProcessMessageQueueStore : IMessageQueueStore
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.Error(ex, $"Error while issuing the {nameof(this.MessageArrived)} event for message {{message}}.", msg);
+                    this.Logger.LogError(ex, $"Error while issuing the {nameof(this.MessageArrived)} event for message {{message}}.", msg);
                 }
             });
 

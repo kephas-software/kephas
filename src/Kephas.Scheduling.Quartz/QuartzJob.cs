@@ -56,7 +56,7 @@ namespace Kephas.Scheduling.Quartz
                              activity.Target,
                              activity.Arguments,
                              workflowConfig,
-                             context.CancellationToken).PreserveThreadContext();
+                             context.CancellationToken);
             context.Result = result;
         }
 

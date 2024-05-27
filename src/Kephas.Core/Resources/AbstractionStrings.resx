@@ -142,9 +142,6 @@
   <data name="TransitionMonitor_AssertIsNotStarted_Exception" xml:space="preserve">
     <value>The {0} of '{1}' is already started.</value>
   </data>
-  <data name="GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception" xml:space="preserve">
-    <value>Multiple nodes found for value '{0}'.</value>
-  </data>
   <data name="InjectorBuilderBase_RequiredServiceMissing_Exception" xml:space="preserve">
     <value>The required service of type '{0}' was not provided.</value>
     <comment>The required service of type '{0}' was not provided.</comment>
@@ -169,10 +166,6 @@
   <data name="DefaultTypeLoader_GetLoadableDefinedTypes_ReflectionTypeLoadException" xml:space="preserve">
     <value>Cannot load all defined types from {assembly}. Only the loadable types will be considered.</value>
   </data>
-  <data name="AppRuntimeBase_CannotLoadAssembly_Exception" xml:space="preserve">
-    <value>Cannot load assembly '{assembly}'. See the exception for more information.</value>
-    <comment>Cannot load assembly '{assembly}'. See the exception for more information.</comment>
-  </data>
   <data name="DefaultAppManager_FinalizeCanceled_Exception" xml:space="preserve">
     <value>The application's finalize procedure was canceled, at {0:s}.</value>
   </data>
@@ -189,10 +182,6 @@
     <value>Argument '{0}' must not be null nor empty.</value>
     <comment>Argument '{0}' must not be null nor empty.</comment>
   </data>
-  <data name="ConcurrentCollection_CannotAddItem_Exception" xml:space="preserve">
-    <value>Could not add the item {0} to the concurrent collection.</value>
-    <comment>Could not add the item {0} to the concurrent collection.</comment>
-  </data>
   <data name="RuntimeTypeInfo_NoPublicConstructorDefined_Exception" xml:space="preserve">
     <value>No public constructor defined for '{0}', cannot create instances.</value>
   </data>
@@ -201,10 +190,6 @@
   </data>
   <data name="ExpandoBase_CannotInvokeNonDelegate_Exception" xml:space="preserve">
     <value>Cannot invoke non-delegate value of {0}; it has a type of {1}.</value>
-  </data>
-  <data name="PartialOrderedSet_BadComparer_ProducesCycles_Exception" xml:space="preserve">
-    <value>The provided comparer function produces cycles in the sorted graph. This indicates that there are cyclic dependencies which need to be broken in order to produce an ordered set. Check the following nodes: {0}.</value>
-    <comment>The provided comparer function produces cycles in the sorted graph. This indicates that there are cyclic dependencies which need to be broken in order to produce an ordered set. Check the following nodes: {0}.</comment>
   </data>
   <data name="RuntimeTypeInfo_MemberNotFound_Exception" xml:space="preserve">
     <value>Member {0} not found in {1}.</value>
@@ -224,12 +209,6 @@
   <data name="DefaultTypeResolver_ResolveTypeCore_Exception" xml:space="preserve">
     <value>Errors occurred when trying to resolve type '{type}'.</value>
   </data>
-  <data name="DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception" xml:space="preserve">
-    <value>No service found for {0}/{1}.</value>
-  </data>
-  <data name="DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception" xml:space="preserve">
-    <value>Multiple services found for {0}/{1}.</value>
-  </data>
   <data name="UnhandledException_InProcess_Message" xml:space="preserve">
     <value>Unhandled exception in process.</value>
     <comment>Unhandled exception in process.</comment>
@@ -247,14 +226,6 @@
   <data name="TaskNotCompletedException_Message" xml:space="preserve">
     <value>The task is not completed.</value>
     <comment>The task is not completed.</comment>
-  </data>
-  <data name="DuplicateKeyException_Message" xml:space="preserve">
-    <value>An item with the same key is already added.</value>
-    <comment>An item with the same key is already added.</comment>
-  </data>
-  <data name="ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception" xml:space="preserve">
-    <value>Cannot resolve priorities of service '{0}' for two instances: {1} and {2}.</value>
-    <comment>Cannot resolve priorities of service '{0}' for two instances: {1} and {2}.</comment>
   </data>
   <data name="AmbientServices_ServiceTypeAndImplementationMismatch_Exception" xml:space="preserve">
     <value>The provided service implementation '{0}' is not convertible to the service type '{1}'.</value>
@@ -291,18 +262,6 @@
   </data>
   <data name="SettingsProviderSelector_NoProviderFoundForSettingsType" xml:space="preserve">
     <value>No provider found for settings type '{settingsType}'.</value>
-  </data>
-  <data name="InjectableFactory_Create_InjectableTypeMustBeInstantiable" xml:space="preserve">
-    <value>The injectable type '{0}' must be an instantiable class.</value>
-    <comment>The injectable type '{0}' must be an instantiable class.</comment>
-  </data>
-  <data name="InjectableFactory_Create_NonNullArguments" xml:space="preserve">
-    <value>Arguments may not be null when instantiating injectable of type '{0}'.</value>
-    <comment>Arguments may not be null when instantiating injectable of type '{0}'.</comment>
-  </data>
-  <data name="InjectableFactory_GetCreatorFunc_CannotFindMatchingConstructor" xml:space="preserve">
-    <value>Cannot find a matching constructor for signature {0} in type '{1}'.</value>
-    <comment>Cannot find a matching constructor for signature {0} in type '{1}'.</comment>
   </data>
   <data name="SerializationExtensions_GetContextFactory_CannotGetContextFactory" xml:space="preserve">
     <value>The type {0} should export a public property {1}: {2} to be able to create a serialization context.</value>

@@ -115,12 +115,12 @@ namespace Kephas.Application
 
             this.BeforeAppManagerInitialize(this.AppArgs);
 
-            await this.InitializeAppManagerAsync(this.AppContext!, cancellationToken).PreserveThreadContext();
+            await this.InitializeAppManagerAsync(this.AppContext!, cancellationToken);
 
             this.AfterAppManagerInitialize();
 
             this.AppLifetimeTokenSource ??= new CancellationTokenSource();
-            var instruction = await this.RunMainLoop(this.AppLifetimeTokenSource.Token).PreserveThreadContext();
+            var instruction = await this.RunMainLoop(this.AppLifetimeTokenSource.Token);
 
             if (instruction != AppShutdownInstruction.Shutdown)
             {
@@ -129,7 +129,7 @@ namespace Kephas.Application
 
             try
             {
-                await this.ShutdownAsync(cancellationToken).PreserveThreadContext();
+                await this.ShutdownAsync(cancellationToken);
             }
             catch (Exception ex)
             {
@@ -167,7 +167,7 @@ namespace Kephas.Application
 
                 this.BeforeAppManagerFinalize();
 
-                var appContext = await this.FinalizeAppManagerAsync(cancellationToken).PreserveThreadContext();
+                var appContext = await this.FinalizeAppManagerAsync(cancellationToken);
                 appContext.Dispose();
 
                 this.Log(LogLevel.Info, null, "Completed the shutdown procedure.");
@@ -319,7 +319,7 @@ namespace Kephas.Application
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error during waiting for shutdown signal.");
+                this.Logger.LogError(ex, "Error during waiting for shutdown signal.");
                 this.AppContext!.Exception = ex;
 
                 return AppShutdownInstruction.Shutdown;
@@ -336,7 +336,7 @@ namespace Kephas.Application
             var mainLoop = this.ServiceProvider!.TryResolve<IAppMainLoop>();
             if (mainLoop != null)
             {
-                return await mainLoop.Main(cancellationToken).PreserveThreadContext();
+                return await mainLoop.Main(cancellationToken);
             }
 
             return new MainLoopResult(0.ToOperationResult(), AppShutdownInstruction.Shutdown);
@@ -388,7 +388,7 @@ namespace Kephas.Application
                 var container = appContext.ServiceProvider;
                 var appManager = container.Resolve<IAppManager>();
 
-                await appManager.InitializeAsync(appContext, cancellationToken).PreserveThreadContext();
+                await appManager.InitializeAsync(appContext, cancellationToken);
 
                 this.Log(LogLevel.Info, null, Strings.App_RunAsync_StartComplete_Message);
 
@@ -410,7 +410,7 @@ namespace Kephas.Application
 
                 try
                 {
-                    await this.ShutdownAsync(cancellationToken).PreserveThreadContext();
+                    await this.ShutdownAsync(cancellationToken);
                 }
                 catch (Exception shutdownEx)
                 {
@@ -439,7 +439,7 @@ namespace Kephas.Application
                 appContext = this.ServiceProvider!.Resolve<IAppContext>();
                 var appManager = this.ServiceProvider!.Resolve<IAppManager>();
 
-                await appManager.FinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
+                await appManager.FinalizeAsync(appContext, cancellationToken);
 
                 this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_Complete_Message);
 

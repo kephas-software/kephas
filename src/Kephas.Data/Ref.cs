@@ -161,7 +161,7 @@ namespace Kephas.Data
             var dataContext = this.GetDataContext(containerEntityEntry);
 
             var findContext = new FindContext<T>(dataContext, id!, throwIfNotFound);
-            refEntity = await dataContext.FindAsync<T>(findContext, cancellationToken).PreserveThreadContext();
+            refEntity = await dataContext.FindAsync<T>(findContext, cancellationToken);
             if (refEntity != null)
             {
                 this.Entity = refEntity;
@@ -180,7 +180,7 @@ namespace Kephas.Data
         /// </returns>
         async Task<object?> IRef.GetAsync(bool throwIfNotFound, CancellationToken cancellationToken)
         {
-            return await this.GetAsync(throwIfNotFound, cancellationToken).PreserveThreadContext();
+            return await this.GetAsync(throwIfNotFound, cancellationToken);
         }
     }
 }

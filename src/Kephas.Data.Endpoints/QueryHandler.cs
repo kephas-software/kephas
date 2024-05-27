@@ -25,20 +25,20 @@ namespace Kephas.Data.Endpoints
     /// </summary>
     public class QueryHandler : IMessageHandler<QueryMessage, QueryResponse>
     {
-        private readonly IInjectableFactory injectableFactory;
+        private readonly IServiceFactory serviceFactory;
         private readonly IClientQueryProcessor clientQueryExecutor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QueryHandler"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="clientQueryExecutor">The client query executor.</param>
-        public QueryHandler(IInjectableFactory injectableFactory, IClientQueryProcessor clientQueryExecutor)
+        public QueryHandler(IServiceFactory serviceFactory, IClientQueryProcessor clientQueryExecutor)
         {
-            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             clientQueryExecutor = clientQueryExecutor ?? throw new System.ArgumentNullException(nameof(clientQueryExecutor));
 
-            this.injectableFactory = injectableFactory;
+            this.serviceFactory = serviceFactory;
             this.clientQueryExecutor = clientQueryExecutor;
         }
 
@@ -58,7 +58,7 @@ namespace Kephas.Data.Endpoints
         {
             var optionsConfig = this.GetQueryExecutionConfig(message, context);
             var clientEntities = await this.clientQueryExecutor.ExecuteQueryAsync(message.Query, optionsConfig, token)
-                                     .PreserveThreadContext();
+                                     ;
 
             return new QueryResponse { Entities = clientEntities.ToArray() };
         }

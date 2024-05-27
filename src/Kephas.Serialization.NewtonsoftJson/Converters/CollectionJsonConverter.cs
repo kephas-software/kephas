@@ -22,7 +22,7 @@ namespace Kephas.Serialization.Json.Converters
     /// <remarks>
     /// Generic collections should be processed after specific collections, that's why the lower priority.
     /// </remarks>
-    [ProcessingPriority(Priority.BelowNormal)]
+    [Priority(Priority.BelowNormal)]
     public class CollectionJsonConverter : JsonConverterBase
     {
         private static readonly MethodInfo WriteJsonMethod =

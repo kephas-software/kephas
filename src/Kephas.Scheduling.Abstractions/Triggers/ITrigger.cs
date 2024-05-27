@@ -11,8 +11,6 @@
 namespace Kephas.Scheduling.Triggers
 {
     using System;
-
-    using Kephas.Data;
     using Kephas.Dynamic;
     using Kephas.Scheduling.Reflection;
 

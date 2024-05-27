@@ -13,7 +13,7 @@ using Kephas.Services;
 /// <summary>
 /// Default naming strategy for MongoDB collections.
 /// </summary>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class DefaultMongoNamingStrategy : IMongoNamingStrategy
 {
     /// <summary>

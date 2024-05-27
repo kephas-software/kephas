@@ -13,8 +13,6 @@ namespace Kephas.Messaging.Distributed
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Data;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;

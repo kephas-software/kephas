@@ -18,7 +18,7 @@ namespace Kephas.Data.Model.Runtime.Construction
     /// <summary>
     /// Constructor for reference properties.
     /// </summary>
-    [ProcessingPriority(Priority.BelowNormal)]
+    [Priority(Priority.BelowNormal)]
     public class RefPropertyConstructor : PropertyConstructor
     {
         /// <summary>

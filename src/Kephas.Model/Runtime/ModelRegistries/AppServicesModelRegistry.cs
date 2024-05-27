@@ -17,7 +17,6 @@ namespace Kephas.Model.Runtime.ModelRegistries
     using System.Threading.Tasks;
     using Kephas.Application;
     using Kephas.Runtime;
-    using Kephas.Services;
     using Kephas.Services.Reflection;
 
     /// <summary>

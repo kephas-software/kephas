@@ -16,7 +16,7 @@ namespace Kephas.AspNetCore.InteractiveTests.EndpointConfigurators
     /// <summary>
     /// Endpoint configurator for the web UI. Should be invoked after the default route.
     /// </summary>
-    [ProcessingPriority(Priority.BelowNormal)]
+    [Priority(Priority.BelowNormal)]
     public class WebUIEndpointConfigurator : IEndpointConfigurator
     {
         /// <summary>

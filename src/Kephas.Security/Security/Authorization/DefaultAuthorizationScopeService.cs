@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Security.Authorization
 {
     using System;
@@ -23,7 +25,7 @@ namespace Kephas.Security.Authorization
     /// <summary>
     /// A default authorization scope service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultAuthorizationScopeService : IAuthorizationScopeService
     {
         private readonly IList<IAuthorizationScopeProvider> providers;
@@ -53,7 +55,7 @@ namespace Kephas.Security.Authorization
             foreach (var provider in this.providers)
             {
                 var (scope, canResolve) = await provider.GetAuthorizationScopeAsync(context, cancellationToken)
-                    .PreserveThreadContext();
+                    ;
                 if (canResolve)
                 {
                     return scope;

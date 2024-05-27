@@ -78,7 +78,7 @@ public interface IMessageHandlerRegistry : IEnumerable<IExportFactory<IMessageHa
         return RegisterFuncHandler<IMessageEnvelope<TMessage>, object?>(
             async (envelope, context, token) =>
             {
-                var response = await handlerFunction(envelope.GetContent(), context, token).PreserveThreadContext();
+                var response = await handlerFunction(envelope.GetContent(), context, token);
                 return response;
             });
     }
@@ -125,7 +125,7 @@ public interface IMessageHandlerRegistry : IEnumerable<IExportFactory<IMessageHa
         where TMessage : class =>
         RegisterHandler<TMessage, object?>(async (message, context, token) =>
         {
-            await handlerFunction(message, context, token).PreserveThreadContext();
+            await handlerFunction(message, context, token);
             return Task.FromResult<object?>(null);
         });
 

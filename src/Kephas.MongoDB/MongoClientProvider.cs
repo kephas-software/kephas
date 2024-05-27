@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.MongoDB;
 
 using System.Collections.Concurrent;
@@ -20,7 +22,7 @@ using Kephas.Services;
 /// <summary>
 /// The default implementation of the <see cref="IMongoClientProvider"/>.
 /// </summary>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class MongoClientProvider : Loggable, IMongoClientProvider
 {
     private static readonly object Sync = new ();

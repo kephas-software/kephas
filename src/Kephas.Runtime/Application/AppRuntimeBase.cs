@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Application
 {
     using System;
@@ -336,7 +338,7 @@ namespace Kephas.Application
                 else if (match == null)
                 {
                     // a match only by name is not accepted.
-                    this.Logger.Warn(
+                    this.Logger.LogWarning(
                         "The best match for assembly '{assembly}' is '{resolvedAssembly}' from '{assemblyLocation}', which is not acceptable.",
                         assemblyFullName, assembly, assembly.Location);
                     assembly = null;
@@ -345,7 +347,7 @@ namespace Kephas.Application
 
             if (assembly != null)
             {
-                this.Logger.Debug(
+                this.Logger.LogDebug(
                     "Assembly '{assembly}' was resolved using '{resolvedAssembly}' from '{assemblyLocation}'.",
                     assemblyFullName, assembly, assembly.Location);
             }
@@ -452,11 +454,6 @@ namespace Kephas.Application
         protected virtual void InitializeCore(IContext? context = null)
         {
             AssemblyLoadContext.Default.Resolving += this.HandleAssemblyResolving;
-        }
-
-        private IEnumerable<Assembly> GetLoadedAssemblies()
-        {
-            return this.appAssemblies ?? RuntimeHelper.GetLoadedAssemblies();
         }
 
         private string ComputeAppLocation(string? basePath)

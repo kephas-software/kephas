@@ -17,7 +17,7 @@ namespace Kephas.Commands
     /// <summary>
     /// A null command identity resolver.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullCommandIdentityResolver : ICommandIdentityResolver
     {
         /// <summary>

@@ -196,9 +196,9 @@ namespace Kephas.Cryptography
             this.WriteIV(output, algorithm.IV);
 
             using var crypto = new CryptoStream(output, algorithm.CreateEncryptor(), CryptoStreamMode.Write);
-            var bytes = await input.ReadAllBytesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            var bytes = await input.ReadAllBytesAsync(cancellationToken: cancellationToken);
 
-            await crypto.WriteAsync(bytes, 0, bytes.Length, cancellationToken).PreserveThreadContext();
+            await crypto.WriteAsync(bytes, 0, bytes.Length, cancellationToken);
             crypto.FlushFinalBlock();
         }
 
@@ -237,8 +237,8 @@ namespace Kephas.Cryptography
             algorithm.IV = iv;
 
             using var crypto = new CryptoStream(output, algorithm.CreateDecryptor(), CryptoStreamMode.Write);
-            var encryptedBytes = await input.ReadAllBytesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
-            await crypto.WriteAsync(encryptedBytes, 0, encryptedBytes.Length, cancellationToken).PreserveThreadContext();
+            var encryptedBytes = await input.ReadAllBytesAsync(cancellationToken: cancellationToken);
+            await crypto.WriteAsync(encryptedBytes, 0, encryptedBytes.Length, cancellationToken);
             crypto.FlushFinalBlock();
         }
 

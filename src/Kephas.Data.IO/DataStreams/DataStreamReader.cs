@@ -24,7 +24,7 @@ namespace Kephas.Data.IO.DataStreams
     /// <summary>
     /// Default class for <see cref="DataStream"/> readers.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DataStreamReader : IDataStreamReader
     {
         private readonly ISerializationService serializationService;
@@ -81,7 +81,7 @@ namespace Kephas.Data.IO.DataStreams
             using (var reader = this.CreateEncodedStreamReader(dataStream))
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                var result = await this.serializationService.DeserializeAsync(reader, serializationConfig, cancellationToken).PreserveThreadContext();
+                var result = await this.serializationService.DeserializeAsync(reader, serializationConfig, cancellationToken);
 
                 return result;
             }

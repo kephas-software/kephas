@@ -16,7 +16,7 @@ namespace Kephas.Messaging
     /// <summary>
     /// A default message match service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultMessageMatchService : IMessageMatchService
     {
         /// <summary>

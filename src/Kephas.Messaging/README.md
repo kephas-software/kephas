@@ -13,7 +13,7 @@ To anticipate a little bit, using the messaging infrastructure is as simple as t
 
 ```C#
     var message = new PingMessage();
-    var pingBack = await messageProcessor.ProcessAsync(message).PreserveThreadContext();
+    var pingBack = await messageProcessor.ProcessAsync(message);
     var serverTime = pingBack.ServerTime;
 ```
 

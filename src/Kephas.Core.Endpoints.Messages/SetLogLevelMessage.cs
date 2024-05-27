@@ -13,7 +13,6 @@ namespace Kephas.Core.Endpoints
     using System.ComponentModel.DataAnnotations;
 
     using Kephas.ComponentModel.DataAnnotations;
-    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Security.Authorization;
@@ -33,7 +32,7 @@ namespace Kephas.Core.Endpoints
         /// <value>
         /// The minimum level.
         /// </value>
-        [Display(Description = "The minimum log level. Use one of the values: Fatal, Error, Warning, Info, Debug, or Trace.")]
+        [Display(Description = "The minimum log level. Use one of the values: Critical, Error, Warning, Information, Debug, or Trace.")]
         public LogLevel MinimumLevel { get; set; }
     }
 }

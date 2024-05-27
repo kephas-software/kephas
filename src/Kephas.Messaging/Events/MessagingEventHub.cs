@@ -9,7 +9,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Interaction;
-using Kephas.Logging;
 using Kephas.Services;
 using Kephas.Threading.Tasks;
 
@@ -18,7 +17,7 @@ namespace Kephas.Messaging.Events;
 /// <summary>
 /// A messaging event hub.
 /// </summary>
-[OverridePriority(Priority.BelowNormal)]
+[Priority(Priority.BelowNormal)]
 public class MessagingEventHub : DefaultEventHub, IMessagingEventHub
 {
     private readonly IMessageMatchService messageMatchService;
@@ -26,16 +25,16 @@ public class MessagingEventHub : DefaultEventHub, IMessagingEventHub
     /// <summary>
     /// Initializes a new instance of the <see cref="MessagingEventHub"/> class.
     /// </summary>
-    /// <param name="injectableFactory">The injectable factory.</param>
+    /// <param name="serviceFactory">The injectable factory.</param>
     /// <param name="messageMatchService">The message match service.</param>
     /// <param name="handlerRegistry">The handler registry.</param>
     /// <param name="logManager">Optional. The log manager.</param>
     public MessagingEventHub(
-        IInjectableFactory injectableFactory,
+        IServiceFactory serviceFactory,
         IMessageMatchService messageMatchService,
         IMessageHandlerRegistry handlerRegistry,
         ILogManager? logManager = null)
-        : base(injectableFactory, logManager)
+        : base(serviceFactory, logManager)
     {
         this.messageMatchService = messageMatchService ?? throw new ArgumentNullException(nameof(messageMatchService));
         handlerRegistry = handlerRegistry ?? throw new ArgumentNullException(nameof(handlerRegistry));
@@ -43,7 +42,7 @@ public class MessagingEventHub : DefaultEventHub, IMessagingEventHub
         handlerRegistry.RegisterHandler(
             new FuncMessageHandler<IEvent, object?>(async (e, ctx, token) =>
             {
-                await this.PublishAsync(e, ctx, token).PreserveThreadContext();
+                await this.PublishAsync(e, ctx, token);
                 return null;
             }),
             new MessageHandlerMetadata(envelopeType: typeof(IEvent), envelopeTypeMatching: MessageTypeMatching.TypeOrHierarchy));

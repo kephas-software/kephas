@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Services.Metadata;
 
 namespace Kephas.Messaging.Tests
 {

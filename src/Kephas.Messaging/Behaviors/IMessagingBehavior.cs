@@ -61,11 +61,11 @@ public interface IMessagingBehavior<in TMessage, out TResult> : IAsyncPipelineBe
         IContext context,
         CancellationToken cancellationToken)
     {
-        await this.BeforeProcessAsync((IMessagingContext)context, cancellationToken).PreserveThreadContext();
+        await this.BeforeProcessAsync((IMessagingContext)context, cancellationToken);
 
-        var result = await next().PreserveThreadContext();
+        var result = await next();
             
-        await this.AfterProcessAsync((IMessagingContext)context, cancellationToken).PreserveThreadContext();
+        await this.AfterProcessAsync((IMessagingContext)context, cancellationToken);
 
         return result;
     }

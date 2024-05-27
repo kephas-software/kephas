@@ -23,7 +23,7 @@ namespace Kephas.Configuration.Providers
     /// <summary>
     /// A default settings provider selector.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultSettingsProviderSelector : Loggable, ISettingsProviderSelector
     {
         private readonly IFactoryEnumerable<ISettingsProvider, SettingsProviderMetadata> providerFactories;
@@ -85,7 +85,7 @@ namespace Kephas.Configuration.Providers
 
             if (!exists)
             {
-                this.Logger.Warn(AbstractionStrings.SettingsProviderSelector_NoProviderFoundForSettingsType, settingsType);
+                this.Logger.LogWarning(AbstractionStrings.SettingsProviderSelector_NoProviderFoundForSettingsType, settingsType);
             }
         }
     }

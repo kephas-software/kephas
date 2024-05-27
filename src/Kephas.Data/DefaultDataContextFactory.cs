@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Data
 {
     using System;
@@ -25,7 +23,7 @@ namespace Kephas.Data
     /// <summary>
     /// Default implementation of a <see cref="IDataContextFactory"/>.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultDataContextFactory : IDataContextFactory
     {
         /// <summary>
@@ -67,7 +65,7 @@ namespace Kephas.Data
                 (from kv in factoriesByDataStoreKind
                  group kv by kv.Key into dataStoreGroup
                  select dataStoreGroup)
-                .ToDictionary(g => g.Key, g => g.OrderBy(i => i.Value.Metadata.ProcessingPriority).Select(i => i.Value).ToList());
+                .ToDictionary(g => g.Key, g => g.OrderBy(i => i.Value.Metadata.Priority).Select(i => i.Value).ToList());
 
             this.dataStoreProvider = dataStoreProvider;
         }
@@ -150,7 +148,7 @@ namespace Kephas.Data
             }
 
             if (dataContextFactories.Count > 1
-                && dataContextFactories[0].Metadata.ProcessingPriority == dataContextFactories[1].Metadata.ProcessingPriority)
+                && dataContextFactories[0].Metadata.Priority == dataContextFactories[1].Metadata.Priority)
             {
                 return new ExportFactory<IDataContext>((Func<IDataContext>)(() =>
                     {

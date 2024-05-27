@@ -185,7 +185,7 @@ namespace Kephas.Data.Linq
 
             var executeAsync = ExecuteAsyncMethod.MakeGenericMethod(expressionType);
             var typedTask = (Task)executeAsync.Call(this, expression, cancellationToken);
-            await typedTask.PreserveThreadContext();
+            await typedTask;
             return typedTask.GetPropertyValue(nameof(Task<int>.Result));
         }
 

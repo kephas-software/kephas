@@ -24,7 +24,7 @@ namespace Kephas.Data.DataSources.Providers
     /// <summary>
     /// A data source provider for enumeration based properties.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class EnumDataSourceProvider : IDataSourceProvider
     {
         /// <summary>

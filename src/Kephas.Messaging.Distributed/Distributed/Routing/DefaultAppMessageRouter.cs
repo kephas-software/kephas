@@ -23,7 +23,7 @@ using Kephas.Threading.Tasks;
 /// <summary>
 /// An in process message router invoking the message processor.
 /// </summary>
-[ProcessingPriority(Priority.Lowest)]
+[Priority(Priority.Lowest)]
 [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
 public class DefaultAppMessageRouter : MessageRouterBase
 {
@@ -41,16 +41,16 @@ public class DefaultAppMessageRouter : MessageRouterBase
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultAppMessageRouter"/> class.
     /// </summary>
-    /// <param name="injectableFactory">The injectable factory.</param>
+    /// <param name="serviceFactory">The injectable factory.</param>
     /// <param name="appRuntime">The application runtime.</param>
     /// <param name="messageProcessor">The message processor.</param>
     /// <param name="queueStore">The message queue store.</param>
     public DefaultAppMessageRouter(
-        IInjectableFactory injectableFactory,
+        IServiceFactory serviceFactory,
         IAppRuntime appRuntime,
         IMessageProcessor messageProcessor,
         IMessageQueueStore queueStore)
-        : base(injectableFactory, appRuntime, messageProcessor)
+        : base(serviceFactory, appRuntime, messageProcessor)
     {
         this.queueStore = queueStore;
     }
@@ -109,11 +109,11 @@ public class DefaultAppMessageRouter : MessageRouterBase
         try
         {
             var brokeredMessage = e.Message;
-            await this.RouteInputAsync(brokeredMessage, this.AppContext, default).PreserveThreadContext();
+            await this.RouteInputAsync(brokeredMessage, this.AppContext, default);
         }
         catch (Exception ex)
         {
-            this.Logger.Error(ex, "Error while handling message '{message}'.", e.Message);
+            this.Logger.LogError(ex, "Error while handling message '{message}'.", e.Message);
         }
     }
 
@@ -137,7 +137,7 @@ public class DefaultAppMessageRouter : MessageRouterBase
             {
                 try
                 {
-                    var result = await base.ProcessAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
+                    var result = await base.ProcessAsync(brokeredMessage, context, cancellationToken);
                     completionSource.SetResult(result);
                 }
                 catch (Exception ex)
@@ -173,19 +173,19 @@ public class DefaultAppMessageRouter : MessageRouterBase
 
             if (groups.Count == 1)
             {
-                await this.PublishAsync(brokeredMessage, groups[0].channelName).PreserveThreadContext();
+                await this.PublishAsync(brokeredMessage, groups[0].channelName);
             }
             else
             {
                 foreach (var (channelName, recipients) in groups)
                 {
-                    await this.PublishAsync(brokeredMessage.Clone(recipients.ToList()), channelName).PreserveThreadContext();
+                    await this.PublishAsync(brokeredMessage.Clone(recipients.ToList()), channelName);
                 }
             }
         }
         else
         {
-            await this.PublishAsync(brokeredMessage, this.RootChannelName).PreserveThreadContext();
+            await this.PublishAsync(brokeredMessage, this.RootChannelName);
         }
 
         return (RoutingInstruction.None, null);
@@ -225,6 +225,6 @@ public class DefaultAppMessageRouter : MessageRouterBase
     private async Task PublishAsync(IBrokeredMessage message, string channelName)
     {
         var queue = this.queueStore.GetMessageQueue(channelName);
-        await queue.PublishAsync(message).PreserveThreadContext();
+        await queue.PublishAsync(message);
     }
 }

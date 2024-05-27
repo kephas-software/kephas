@@ -91,7 +91,7 @@ namespace Kephas.Scripting.Lua
             scriptGlobals ??= new ScriptGlobals(args);
 
             var scope = this.CreateGlobalScope(scriptGlobals);
-            var source = await script.GetSourceCodeAsync(cancellationToken).PreserveThreadContext();
+            var source = await script.GetSourceCodeAsync(cancellationToken);
 
             await Task.Yield();
 

@@ -14,7 +14,7 @@ namespace Kephas.Cryptography.X509Certificates
     /// <summary>
     /// Certificate provider returning a <c>null</c> certificate.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullCertificateProvider : ICertificateProvider
     {
         /// <summary>

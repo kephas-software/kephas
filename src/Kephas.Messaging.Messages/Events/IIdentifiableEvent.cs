@@ -10,8 +10,6 @@
 
 namespace Kephas.Messaging.Events
 {
-    using Kephas.Data;
-
     /// <summary>
     /// Interface for identifiable events.
     /// </summary>

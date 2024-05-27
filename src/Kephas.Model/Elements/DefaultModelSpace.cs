@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Collections.Sets;
+
 namespace Kephas.Model.Elements
 {
     using System;
@@ -19,7 +21,6 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Construction.Internal;
     using Kephas.Reflection;
     using Kephas.Services;
-    using Kephas.Sets;
 
     /// <summary>
     /// The default implementation of the model space.

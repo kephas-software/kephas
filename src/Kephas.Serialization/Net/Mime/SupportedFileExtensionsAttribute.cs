@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Net.Mime
 {
     using System;
@@ -18,7 +20,7 @@ namespace Kephas.Net.Mime
     /// Indicates the supported file extensions for the annotated media type.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class SupportedFileExtensionsAttribute : Attribute, IMetadataValue<string[]>
+    public class SupportedFileExtensionsAttribute : Attribute, IServiceMetadataValue<string[]>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SupportedFileExtensionsAttribute" /> class.

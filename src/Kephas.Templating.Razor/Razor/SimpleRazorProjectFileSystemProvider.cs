@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Razor.Language;
 /// The simple implementation of the <see cref="IRazorProjectFileSystemProvider"/>
 /// handling a single template file without any additional template references.
 /// </summary>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class SimpleRazorProjectFileSystemProvider : IRazorProjectFileSystemProvider
 {
     /// <summary>
@@ -31,7 +31,7 @@ public class SimpleRazorProjectFileSystemProvider : IRazorProjectFileSystemProvi
         CancellationToken cancellationToken = default)
     {
         var projectDirectory = await this.CreateProjectDirectoryAsync(template, cancellationToken)
-            .PreserveThreadContext();
+            ;
         return (RazorProjectFileSystem.Create(projectDirectory), projectDirectory);
     }
 
@@ -52,8 +52,8 @@ public class SimpleRazorProjectFileSystemProvider : IRazorProjectFileSystemProvi
 
         await File.WriteAllTextAsync(
             Path.Combine(projectDirectory, "template.cshtml"),
-            await template.GetContentAsync(cancellationToken).PreserveThreadContext(),
-            cancellationToken).PreserveThreadContext();
+            await template.GetContentAsync(cancellationToken),
+            cancellationToken);
 
         return projectDirectory;
     }

@@ -90,13 +90,13 @@ namespace Kephas.Data.Commands
                                     throw ex;
                                 }
 
-                                await this.ApplyBeforePersistBehaviorsAsync(operationContext, iterationChangeSet, cancellationToken).PreserveThreadContext();
+                                await this.ApplyBeforePersistBehaviorsAsync(operationContext, iterationChangeSet, cancellationToken);
 
-                                changes = await this.ValidateAndPersistChangeSetAsync(iterationChangeSet, changes, operationContext, sb, cancellationToken).PreserveThreadContext();
+                                changes = await this.ValidateAndPersistChangeSetAsync(iterationChangeSet, changes, operationContext, sb, cancellationToken);
 
                                 this.AcceptChanges(operationContext, iterationChangeSet);
 
-                                await this.ApplyAfterPersistBehaviorsAsync(operationContext, iterationChangeSet, cancellationToken).PreserveThreadContext();
+                                await this.ApplyAfterPersistBehaviorsAsync(operationContext, iterationChangeSet, cancellationToken);
 
                                 // NOTE: after calling after save behaviors, it may happen that new changes occur, so try to save the new changes again.
                                 currentIteration++;
@@ -109,12 +109,12 @@ namespace Kephas.Data.Commands
                         {
                             exception = ex;
                         }
-                    }).PreserveThreadContext();
+                    });
 
             // log exceptions and other important data.
             if (exception != null)
             {
-                this.Logger.Error(
+                this.Logger.LogError(
                     exception,
                     "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}, change count: {changeCount}, iteration count: #{iterationCount}, trace: '{opTrace}'",
                     $"{nameof(PersistChangesCommand)}.{nameof(this.ExecuteAsync)}",
@@ -129,7 +129,7 @@ namespace Kephas.Data.Commands
 
             if (opResult.Elapsed.TotalMilliseconds > 1000)
             {
-                this.Logger.Warn(
+                this.Logger.LogWarning(
                     "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}, change count: {changeCount}, iteration count: #{iterationCount}, trace: '{opTrace}'",
                     $"{nameof(PersistChangesCommand)}.{nameof(this.ExecuteAsync)}",
                     "Elapsed time more than 1s",
@@ -141,7 +141,7 @@ namespace Kephas.Data.Commands
             }
             else
             {
-                this.Logger.Debug(
+                this.Logger.LogDebug(
                     "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}, change count: {changeCount}, iteration count: #{iterationCount}, trace: '{opTrace}'",
                     $"{nameof(PersistChangesCommand)}.{nameof(this.ExecuteAsync)}",
                     "Success",
@@ -193,7 +193,7 @@ namespace Kephas.Data.Commands
                 var reversedBehaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entityEntry.Entity).Reverse();
                 foreach (var behavior in reversedBehaviors)
                 {
-                    await behavior.AfterPersistAsync(entityEntry.Entity, entityEntry, operationContext, cancellationToken).PreserveThreadContext();
+                    await behavior.AfterPersistAsync(entityEntry.Entity, entityEntry, operationContext, cancellationToken);
                 }
             }
         }
@@ -214,7 +214,7 @@ namespace Kephas.Data.Commands
                 var behaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entityEntry.Entity);
                 foreach (var behavior in behaviors)
                 {
-                    await behavior.BeforePersistAsync(entityEntry.Entity, entityEntry, operationContext, cancellationToken).PreserveThreadContext();
+                    await behavior.BeforePersistAsync(entityEntry.Entity, entityEntry, operationContext, cancellationToken);
                 }
             }
         }
@@ -279,20 +279,20 @@ namespace Kephas.Data.Commands
                 throw new DataException(Strings.PersistChangesCommand_NoRootEntitiesToSave_Exception);
             }
 
-            await this.ValidateChangeSetAsync(changeSet, operationContext, cancellationToken).PreserveThreadContext();
+            await this.ValidateChangeSetAsync(changeSet, operationContext, cancellationToken);
 
-            await this.PreProcessChangeSetAsync(changeSet, operationContext, cancellationToken).PreserveThreadContext();
+            await this.PreProcessChangeSetAsync(changeSet, operationContext, cancellationToken);
 
             try
             {
-                await this.PersistChangeSetAsync(changeSet, operationContext, cancellationToken).PreserveThreadContext();
+                await this.PersistChangeSetAsync(changeSet, operationContext, cancellationToken);
             }
             catch (TargetInvocationException tie)
             {
                 throw tie.InnerException ?? tie;
             }
 
-            await this.PostProcessChangeSetAsync(changeSet, operationContext, cancellationToken).PreserveThreadContext();
+            await this.PostProcessChangeSetAsync(changeSet, operationContext, cancellationToken);
 
             changes += changeSet.Count;
             return changes;
@@ -322,11 +322,11 @@ namespace Kephas.Data.Commands
                     if (entityPartInfo == null)
                     {
                         // TODO localization
-                        this.Logger.Warn("No entity info provided for graph part '{entity}' ({entityType}), skipping validation.", entityPart, entityPart.GetType());
+                        this.Logger.LogWarning("No entity info provided for graph part '{entity}' ({entityType}), skipping validation.", entityPart, entityPart.GetType());
                     }
                     else
                     {
-                        var validationErrors = await this.ValidateEntityAsync(entityPart, entityPartInfo, operationContext, cancellationToken).PreserveThreadContext();
+                        var validationErrors = await this.ValidateEntityAsync(entityPart, entityPartInfo, operationContext, cancellationToken);
                         if (validationErrors.HasErrors())
                         {
                             throw new ValidationException(entityPart, validationErrors);
@@ -356,7 +356,7 @@ namespace Kephas.Data.Commands
             var result = new ValidationResult();
             foreach (var validator in validators)
             {
-                var validatorResult = await validator.ValidateAsync(entityPart, entityPartEntry, operationContext, cancellationToken).PreserveThreadContext();
+                var validatorResult = await validator.ValidateAsync(entityPart, entityPartEntry, operationContext, cancellationToken);
                 result.Add(validatorResult.ToArray());
             }
 

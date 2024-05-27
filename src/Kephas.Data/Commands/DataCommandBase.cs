@@ -68,7 +68,7 @@ namespace Kephas.Data.Commands
             }
 
             this.EnsureInitialized(operationContext);
-            var result = await this.ExecuteAsync(typedOperationContext, cancellationToken).PreserveThreadContext();
+            var result = await this.ExecuteAsync(typedOperationContext, cancellationToken);
             return result;
         }
 
@@ -90,7 +90,7 @@ namespace Kephas.Data.Commands
             }
 
             this.EnsureInitialized(context);
-            var result = await this.ExecuteAsync(typedOperationContext, cancellationToken).PreserveThreadContext();
+            var result = await this.ExecuteAsync(typedOperationContext, cancellationToken);
             return result;
         }
 

@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Core.Endpoints
 {
     using System;
@@ -14,7 +12,6 @@ namespace Kephas.Core.Endpoints
     using System.Threading.Tasks;
     using Kephas.Configuration;
     using Kephas.ExceptionHandling;
-    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Reflection;
 
@@ -53,7 +50,7 @@ namespace Kephas.Core.Endpoints
                 return new GetSettingsResponse
                 {
                     Message = "Settings type not provided.",
-                    Severity = SeverityLevel.Error,
+                    Severity = LogLevel.Error,
                 };
             }
 
@@ -71,7 +68,7 @@ namespace Kephas.Core.Endpoints
                 return new GetSettingsResponse
                 {
                     Message = $"Settings type {message.SettingsType} not found.",
-                    Severity = SeverityLevel.Error,
+                    Severity = LogLevel.Error,
                 };
             }
 

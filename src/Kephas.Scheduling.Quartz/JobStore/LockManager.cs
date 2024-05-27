@@ -72,7 +72,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                     return lockInstance;
                 }
 
-                await Task.Delay(SleepThreshold, cancellationToken).PreserveThreadContext();
+                await Task.Delay(SleepThreshold, cancellationToken);
             }
         }
 
@@ -96,7 +96,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             if (!this.pendingLocks.TryRemove(lockInstance.LockType, out _))
             {
-                this.Logger.Warn("Unable to remove pending lock {lockType} on {lockInstanceId}", lockInstance.LockType, lockInstance.InstanceId);
+                this.Logger.LogWarning("Unable to remove pending lock {lockType} on {lockInstanceId}", lockInstance.LockType, lockInstance.InstanceId);
             }
         }
 

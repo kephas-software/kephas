@@ -10,9 +10,9 @@ namespace Kephas.Analyzers.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-public static class AnalyzerReflectionHelper
+internal static class AnalyzerReflectionHelper
 {
-    private record FactoryTypeInfo(string Name, bool IsGeneric);
+    private sealed record FactoryTypeInfo(string Name, bool IsGeneric);
 
     private static IEnumerable<FactoryTypeInfo> factoryInterfaceIdentifiers = new FactoryTypeInfo[]
     {
@@ -20,12 +20,12 @@ public static class AnalyzerReflectionHelper
         new ("IRuntimeTypeInfoFactory", false),
     };
 
-    public static bool IsFactoryInterface(INamedTypeSymbol type)
+    public static bool IsFactoryInterface(this INamedTypeSymbol type)
     {
         return factoryInterfaceIdentifiers.Any(i => i.Name == type.Name && (i.IsGeneric ? type.TypeParameters.Length > 0 : type.TypeParameters.Length == 0));
     }
 
-    public static bool IsFactory(ClassDeclarationSyntax type, GeneratorExecutionContext context)
+    public static bool IsFactory(this ClassDeclarationSyntax type, ISourceContext<ClassDeclarationSyntax> context)
     {
         var semanticModel = context.Compilation.GetSemanticModel(type.SyntaxTree);
         var classSymbol = (INamedTypeSymbol)semanticModel.GetDeclaredSymbol(type)!;
@@ -37,7 +37,7 @@ public static class AnalyzerReflectionHelper
         {
             if (type.Identifier.CanBeFactory())
             {
-                context.ReportDiagnostic(
+                context.SourceProductionContext.ReportDiagnostic(
                     Diagnostic.Create("KEPREF101", "SourceGenerator",
                         $"{type.Identifier} was ignored when checking the IRuntimeElementInfoFactory classes",
                         DiagnosticSeverity.Warning, DiagnosticSeverity.Info, true, 1));
@@ -46,9 +46,10 @@ public static class AnalyzerReflectionHelper
             return false;
         }
 
-        if (classSymbol.AllInterfaces.Any(IsFactoryInterface))
+        if (Enumerable.Any(classSymbol.AllInterfaces, IsFactoryInterface) ||
+            classSymbol.BaseType?.IsFactoryInterface() is true)
         {
-            context.ReportDiagnostic(
+            context.SourceProductionContext.ReportDiagnostic(
                 Diagnostic.Create("KEPREF102", "SourceGenerator",
                 $"{type.Identifier} was found when checking the IRuntimeElementInfoFactory classes",
                 DiagnosticSeverity.Info, DiagnosticSeverity.Info, true, 1));
@@ -62,7 +63,7 @@ public static class AnalyzerReflectionHelper
         {
             if (IsFactory(baseType, context))
             {
-                context.ReportDiagnostic(
+                context.SourceProductionContext.ReportDiagnostic(
                     Diagnostic.Create("KEPREF102", "SourceGenerator",
                         $"{type.Identifier} was found when checking the IRuntimeElementInfoFactory classes",
                         DiagnosticSeverity.Info, DiagnosticSeverity.Info, true, 1));
@@ -74,7 +75,7 @@ public static class AnalyzerReflectionHelper
 
         if (type.Identifier.CanBeFactory())
         {
-            context.ReportDiagnostic(
+            context.SourceProductionContext.ReportDiagnostic(
                 Diagnostic.Create("KEPREF101", "SourceGenerator",
                     $"{type.Identifier} was ignored when checking the IRuntimeElementInfoFactory classes",
                     DiagnosticSeverity.Warning, DiagnosticSeverity.Info, true, 1));
@@ -83,7 +84,7 @@ public static class AnalyzerReflectionHelper
         return false;
     }
 
-    public static bool IsFactory(INamedTypeSymbol type, GeneratorExecutionContext context)
+    public static bool IsFactory(INamedTypeSymbol type, ISourceContext<ClassDeclarationSyntax> context)
     {
         if (type.Interfaces.Any(IsFactoryInterface))
         {

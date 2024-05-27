@@ -1,4 +1,6 @@
-﻿namespace Kephas.Messaging.Tests.Distributed;
+﻿using Kephas.Services.Metadata;
+
+namespace Kephas.Messaging.Tests.Distributed;
 
 using System.Text;
 using Kephas.Application;
@@ -130,7 +132,7 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
 
         try
         {
-            await messageBroker.DispatchAsync(brokeredMessage, null).PreserveThreadContext();
+            await messageBroker.DispatchAsync(brokeredMessage, null);
             throw new InvalidOperationException("Should have timed out.");
         }
         catch (TimeoutException tex)
@@ -330,7 +332,7 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
         }
     }
 
-    [OverridePriority(Priority.High)]
+    [Priority(Priority.High)]
     public class ExceptionEventHandler : IMessageHandler<PingMessage, PingBack>
     {
         public override async Task<PingBack> ProcessAsync(PingMessage message, IMessagingContext context, CancellationToken token)
@@ -341,17 +343,17 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
 
     public class TimeoutMessage : IMessage { }
 
-    [OverridePriority(Priority.Normal)]
+    [Priority(Priority.Normal)]
     public class RemoteMessageBroker : DefaultMessageBroker
     {
         private readonly ISerializationService serializationService;
 
         public RemoteMessageBroker(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IAppRuntime appRuntime,
             IEnabledLazyEnumerable<IMessageRouter, MessageRouterMetadata> routerFactories,
             ISerializationService serializationService)
-            : base(injectableFactory, appRuntime, routerFactories)
+            : base(serviceFactory, appRuntime, routerFactories)
         {
             this.serializationService = serializationService;
         }
@@ -371,14 +373,14 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
         }
     }
 
-    [OverridePriority(Priority.High)]
+    [Priority(Priority.High)]
     public class LoggableMessageBroker : DefaultMessageBroker
     {
         public LoggableMessageBroker(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IAppRuntime appRuntime,
             IEnabledLazyEnumerable<IMessageRouter, MessageRouterMetadata> routerFactories)
-            : base(injectableFactory, appRuntime, routerFactories)
+            : base(serviceFactory, appRuntime, routerFactories)
         {
         }
 
@@ -388,13 +390,13 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
         }
     }
 
-    [OverridePriority(Priority.High)]
+    [Priority(Priority.High)]
     public class TestMessageProcessor : DefaultMessageProcessor
     {
-        public TestMessageProcessor(IInjectableFactory injectableFactory, IMessageHandlerRegistry handlerRegistry,
+        public TestMessageProcessor(IServiceFactory serviceFactory, IMessageHandlerRegistry handlerRegistry,
             IMessageMatchService messageMatchService,
             IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
-            : base(injectableFactory, handlerRegistry, behaviorFactories)
+            : base(serviceFactory, handlerRegistry, behaviorFactories)
         {
         }
 
@@ -412,14 +414,14 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
         }
     }
 
-    [ProcessingPriority(Priority.High)]
+    [Priority(Priority.High)]
     [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
     public class CanDisableMessageRouter : DefaultAppMessageRouter
     {
         private object sync = new object();
 
-        public CanDisableMessageRouter(IInjectableFactory injectableFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
-            : base(injectableFactory, appRuntime, messageProcessor, new InProcessMessageQueueStore(injectableFactory))
+        public CanDisableMessageRouter(IServiceFactory serviceFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
+            : base(serviceFactory, appRuntime, messageProcessor, new InProcessMessageQueueStore(serviceFactory))
         {
         }
 
@@ -454,8 +456,8 @@ public abstract class DefaultMessageBrokerTestBase : MessagingTestBase
     [Override]
     public class OverrideMessageRouter : DefaultAppMessageRouter
     {
-        public OverrideMessageRouter(IInjectableFactory injectableFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
-            : base(injectableFactory, appRuntime, messageProcessor, new InProcessMessageQueueStore(injectableFactory))
+        public OverrideMessageRouter(IServiceFactory serviceFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
+            : base(serviceFactory, appRuntime, messageProcessor, new InProcessMessageQueueStore(serviceFactory))
         {
         }
     }

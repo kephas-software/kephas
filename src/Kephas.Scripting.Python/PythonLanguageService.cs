@@ -141,7 +141,7 @@ namespace Kephas.Scripting
             scriptGlobals ??= new ScriptGlobals(args);
 
             var scope = this.CreateScriptScope(scriptGlobals, this.pythonConfiguration?.GetSettings(executionContext));
-            var source = await this.GetScriptSourceAsync(script, cancellationToken).PreserveThreadContext();
+            var source = await this.GetScriptSourceAsync(script, cancellationToken);
 
             await Task.Yield();
 
@@ -239,7 +239,7 @@ namespace Kephas.Scripting
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.Error(ex, "Could not import global module '{module}' from '{modules}'.", globalModule, this.globalModules);
+                    this.Logger.LogError(ex, "Could not import global module '{module}' from '{modules}'.", globalModule, this.globalModules);
                 }
             }
         }
@@ -279,7 +279,7 @@ namespace Kephas.Scripting
                 IStreamScript streamScript => this.engine!.CreateScriptSource(
                     new BasicStreamContentProvider(streamScript.GetSourceCodeStream()), $"dynamicCode.py"),
                 _ => this.engine!.CreateScriptSourceFromString(
-                    await script.GetSourceCodeAsync(cancellationToken).PreserveThreadContext(),
+                    await script.GetSourceCodeAsync(cancellationToken),
                     SourceCodeKind.AutoDetect),
             };
             return source;

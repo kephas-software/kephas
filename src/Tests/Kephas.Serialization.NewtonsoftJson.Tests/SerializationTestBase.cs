@@ -48,7 +48,7 @@ namespace Kephas.Serialization.Json.Tests
             return context;
         }
 
-        protected static DefaultJsonSerializerSettingsProvider GetJsonSerializerSettingsProvider(IInjectableFactory? injectableFactory = null)
+        protected static DefaultJsonSerializerSettingsProvider GetJsonSerializerSettingsProvider(IServiceFactory? injectableFactory = null)
         {
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(
                 new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()),

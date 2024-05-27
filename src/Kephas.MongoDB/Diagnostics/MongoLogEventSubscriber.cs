@@ -69,7 +69,7 @@ internal class MongoLogEventSubscriber : IEventSubscriber
 
     private void Handle(CommandFailedEvent driverEvent)
     {
-        this.logger.Error(
+        this.logger.LogError(
             driverEvent.Failure,
             "{driver} {event}: connection ID: {connectionId}, request ID: {requestId}, elapsed: {elapsed:c}",
             LoggerPrefix,
@@ -88,7 +88,7 @@ internal class MongoLogEventSubscriber : IEventSubscriber
     {
         if (driverEvent.Duration > WarningLimitDuration)
         {
-            this.logger.Warn(
+            this.logger.LogWarning(
                 "{driver} {event}: connection ID: {connectionId}, request ID: {requestId}, elapsed: {elapsed:c}, command: {command}, cursor: {cursor}",
                 LoggerPrefix,
                 driverEvent.GetType().Name,
@@ -166,7 +166,7 @@ internal class MongoLogEventSubscriber : IEventSubscriber
     {
         if (driverEvent.Duration > WarningLimitDuration)
         {
-            this.logger.Warn(
+            this.logger.LogWarning(
                 "{driver} {event}: connection ID: {connectionId}, request ID: {requestId}, elapsed: {elapsed:c}, elapsed (network): {elapsedNetwork:c}, elapsed (deserialization): {elapsedDeserialization:c}",
                 LoggerPrefix,
                 driverEvent.GetType().Name,
@@ -180,7 +180,7 @@ internal class MongoLogEventSubscriber : IEventSubscriber
 
     private void Handle(ConnectionSendingMessagesFailedEvent driverEvent)
     {
-        this.logger.Error(
+        this.logger.LogError(
             driverEvent.Exception,
             "{driver} {event}: connection ID: {connectionId}",
             LoggerPrefix,

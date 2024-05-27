@@ -27,16 +27,16 @@ namespace Kephas.Data.IO.Setup
         /// Initializes a new instance of the <see cref="DirectoryDataInstallerBase" />
         /// class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="dataImportService">The data import service.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
         /// <param name="dataPath">The full pathname of the location containing the data files.</param>
         protected DirectoryDataInstallerBase(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IDataImportService dataImportService,
             IExportFactory<IDataSpace> dataSpaceFactory,
             string dataPath)
-            : base(injectableFactory, dataImportService, dataSpaceFactory)
+            : base(serviceFactory, dataImportService, dataSpaceFactory)
         {
             this.DataPath = dataPath;
         }

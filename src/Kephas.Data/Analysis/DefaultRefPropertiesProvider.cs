@@ -22,7 +22,7 @@ namespace Kephas.Data.Analysis
     /// <summary>
     /// A default reference properties provider.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultRefPropertiesProvider : IRefPropertiesProvider
     {
         /// <summary>

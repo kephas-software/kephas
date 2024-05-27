@@ -23,31 +23,31 @@ namespace Kephas.Commands
     /// <summary>
     /// The default implementation of a command processor.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultCommandProcessor : ICommandProcessor
     {
         private readonly ICommandResolver resolver;
         private readonly ICommandIdentityResolver identityResolver;
-        private readonly IInjectableFactory injectableFactory;
+        private readonly IServiceFactory serviceFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultCommandProcessor"/> class.
         /// </summary>
         /// <param name="resolver">The command resolver.</param>
         /// <param name="identityResolver">The identity resolver.</param>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         public DefaultCommandProcessor(
             ICommandResolver resolver,
             ICommandIdentityResolver identityResolver,
-            IInjectableFactory injectableFactory)
+            IServiceFactory serviceFactory)
         {
             resolver = resolver ?? throw new ArgumentNullException(nameof(resolver));
             identityResolver = identityResolver ?? throw new ArgumentNullException(nameof(identityResolver));
-            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
             this.resolver = resolver;
             this.identityResolver = identityResolver;
-            this.injectableFactory = injectableFactory;
+            this.serviceFactory = serviceFactory;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Kephas.Commands
             var ownsContext = context == null;
             if (ownsContext)
             {
-                context = this.injectableFactory.Create<Context>();
+                context = this.serviceFactory.Create<Context>();
             }
 
             if (context!.Identity == null)
@@ -78,11 +78,11 @@ namespace Kephas.Commands
             if (commandInfo is IPrototype commandPrototype)
             {
                 var operation = (IOperation)commandPrototype.CreateInstance(new object?[] { args });
-                result = await operation.ExecuteAsync(context, cancellationToken).PreserveThreadContext();
+                result = await operation.ExecuteAsync(context, cancellationToken);
             }
             else
             {
-                result = await commandInfo!.InvokeAsync(null, new object?[] { args, context, cancellationToken }).PreserveThreadContext();
+                result = await commandInfo!.InvokeAsync(null, new object?[] { args, context, cancellationToken });
             }
 
             if (ownsContext)

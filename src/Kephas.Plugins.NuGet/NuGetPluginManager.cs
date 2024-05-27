@@ -46,7 +46,7 @@ namespace Kephas.Plugins.NuGet
     /// <summary>
     /// Manager for plugins based on the NuGet infrastructure.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class NuGetPluginManager : PluginManagerBase
     {
         /// <summary>
@@ -80,17 +80,17 @@ namespace Kephas.Plugins.NuGet
         /// Initializes a new instance of the <see cref="NuGetPluginManager"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="pluginsConfig">The plugins configuration.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         public NuGetPluginManager(
             IAppRuntime appRuntime,
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IEventHub eventHub,
             IConfiguration<NuGetSettings> pluginsConfig,
             ILogManager? logManager = null)
-            : base(appRuntime, injectableFactory, eventHub, logManager)
+            : base(appRuntime, serviceFactory, eventHub, logManager)
         {
             this.nativeLogger = new NuGetLogger(this.Logger);
             this.nuGetSettings = pluginsConfig.GetSettings();
@@ -125,12 +125,12 @@ namespace Kephas.Plugins.NuGet
                         {
                             if (searchContext.PluginIdentity != null)
                             {
-                                var findResource = await sourceRepository.GetResourceAsync<FindPackageByIdResource>(cancellationToken).PreserveThreadContext();
+                                var findResource = await sourceRepository.GetResourceAsync<FindPackageByIdResource>(cancellationToken);
                                 var versions = await findResource.GetAllVersionsAsync(
                                     searchContext.PluginIdentity.Id,
                                     cacheContext,
                                     this.nativeLogger,
-                                    cancellationToken).PreserveThreadContext();
+                                    cancellationToken);
 
                                 var query = versions
                                     .OrderByDescending(v => v)
@@ -141,7 +141,7 @@ namespace Kephas.Plugins.NuGet
                             }
                             else
                             {
-                                var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>(cancellationToken).PreserveThreadContext();
+                                var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>(cancellationToken);
                                 var searchFilter = new SearchFilter(includePrerelease: searchContext.IncludePrerelease)
                                 {
                                     OrderBy = SearchOrderBy.Id,
@@ -154,7 +154,7 @@ namespace Kephas.Plugins.NuGet
                                     searchContext.Skip,
                                     searchContext.Take,
                                     this.nativeLogger,
-                                    cancellationToken).PreserveThreadContext();
+                                    cancellationToken);
 
                                 availablePlugins.AddRange(packages.Select(this.ToPluginInfo));
                             }
@@ -162,10 +162,10 @@ namespace Kephas.Plugins.NuGet
                         catch (Exception ex)
                         {
                             result.MergeMessage($"Could not access source repository '{sourceRepository.PackageSource.Source}'.");
-                            this.Logger.Warn(ex, "Could not access source repository '{repository}'.", sourceRepository.PackageSource.Source);
+                            this.Logger.LogWarning(ex, "Could not access source repository '{repository}'.", sourceRepository.PackageSource.Source);
                         }
                     }
-                }).PreserveThreadContext();
+                });
 
             // TODO make sure that the same app ID is not present more than once
             // when it is available, for example, from multiple sources
@@ -201,7 +201,7 @@ namespace Kephas.Plugins.NuGet
             try
             {
                 var pluginPackageIdentity = this.ToPackageIdentity(pluginIdentity);
-                var downloadResult = await this.DownloadPackageAsync(pluginPackageIdentity, packagesFolder, repositories, cacheContext, cancellationToken).PreserveThreadContext();
+                var downloadResult = await this.DownloadPackageAsync(pluginPackageIdentity, packagesFolder, repositories, cacheContext, cancellationToken);
                 if (downloadResult.Status != DownloadResourceResultStatus.Available)
                 {
                     throw new InvalidOperationException($"Plugin package {pluginPackageIdentity} not available ({downloadResult.Status}).");
@@ -242,7 +242,7 @@ namespace Kephas.Plugins.NuGet
 
             var (pluginPackageIdentity, pluginPackageReader, packageReaders)
                 = await this.GetPackageReadersAsync(pluginIdentity, repositories, cacheContext, nugetFramework, cancellationToken)
-                    .PreserveThreadContext();
+                    ;
             pluginIdentity = new AppIdentity(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
 
             var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginStore, pluginIdentity);
@@ -250,7 +250,7 @@ namespace Kephas.Plugins.NuGet
             var pluginData = context.PluginData ?? this.GetInstalledPluginData(pluginIdentity);
             pluginData.ChangeIdentity(pluginIdentity);
 
-            var pluginKind = await this.GetPluginKindAsync(pluginPackageReader, cancellationToken).PreserveThreadContext();
+            var pluginKind = await this.GetPluginKindAsync(pluginPackageReader, cancellationToken);
             pluginData.ChangeKind(pluginKind);
 
             var pluginLocation = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginPackageIdentity.Id);
@@ -266,19 +266,19 @@ namespace Kephas.Plugins.NuGet
                 {
                     result.MergeMessages(
                         await this.InstallBinAsync(pluginData, pluginLocation, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
-                        .PreserveThreadContext());
+                        );
                     result.MergeMessages(
                         await this.InstallContentAsync(pluginData, pluginLocation, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
-                        .PreserveThreadContext());
+                        );
                 }
 
                 result.MergeMessages(
                     await this.InstallConfigAsync(pluginData, pluginLocation, context, cancellationToken)
-                    .PreserveThreadContext());
+                    );
 
                 result.MergeMessages(
                     await this.InstallDataAsync(pluginData, pluginLocation, context, cancellationToken)
-                    .PreserveThreadContext());
+                    );
             }
             catch
             {
@@ -334,7 +334,7 @@ namespace Kephas.Plugins.NuGet
                 if (configFile.Equals(targetFile, StringComparison.OrdinalIgnoreCase))
                 {
                     result.MergeMessage($"Configuration file '{targetFile}' exists already in target and is the same as the source file. Check whether the plugin configuration is correct.");
-                    this.Logger.Warn("Configuration file '{targetFile}' exists already in target and is the same as the source file. Check whether the plugin configuration is correct.", targetFile);
+                    this.Logger.LogWarning("Configuration file '{targetFile}' exists already in target and is the same as the source file. Check whether the plugin configuration is correct.", targetFile);
                 }
                 else if (File.Exists(targetFile))
                 {
@@ -354,7 +354,7 @@ namespace Kephas.Plugins.NuGet
                         File.Copy(configFile, targetFile);
 
                         result.MergeMessage($"Configuration file '{targetFile}' exists already, will be renamed to '{Path.GetFileName(renamedTargetFile)}'. Check whether it should be changed.");
-                        this.Logger.Warn("Configuration file '{targetFile}' exists already, will be renamed to '{sourceFile}'. Check whether it should be changed.", targetFile, Path.GetFileName(renamedTargetFile));
+                        this.Logger.LogWarning("Configuration file '{targetFile}' exists already, will be renamed to '{sourceFile}'. Check whether it should be changed.", targetFile, Path.GetFileName(renamedTargetFile));
                     }
                 }
                 else
@@ -399,14 +399,14 @@ namespace Kephas.Plugins.NuGet
 
             result.MergeMessages(
                 await this.UninstallDataAsync(pluginData, pluginLocation, context, cancellationToken)
-                .PreserveThreadContext());
+                );
 
             result.MergeMessages(
                 await this.UninstallConfigAsync(pluginData, pluginLocation, context, cancellationToken)
-                .PreserveThreadContext());
+                );
 
             var baseResult = await base.UninstallPluginCoreAsync(pluginIdentity, context, cancellationToken)
-                .PreserveThreadContext();
+                ;
 
             return result
                 .Value(baseResult.Value)
@@ -492,7 +492,7 @@ namespace Kephas.Plugins.NuGet
         /// </returns>
         protected virtual async Task<PluginKind> GetPluginKindAsync(PackageReaderBase packageReader, CancellationToken cancellationToken)
         {
-            var nuspecReader = await packageReader.GetNuspecReaderAsync(cancellationToken).PreserveThreadContext();
+            var nuspecReader = await packageReader.GetNuspecReaderAsync(cancellationToken);
             var tags = nuspecReader.GetTags()?
                     .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(t => t.ToLower())
@@ -670,7 +670,7 @@ namespace Kephas.Plugins.NuGet
 
             var libItems = await packageReader
                 .GetLibItemsAsync(cancellationToken)
-                .PreserveThreadContext();
+                ;
             var nearestLibItemFwk = frameworkReducer.GetNearest(
                 nugetFramework,
                 libItems.Select(x => x.TargetFramework));
@@ -683,7 +683,7 @@ namespace Kephas.Plugins.NuGet
                     libItem.Items,
                     (src, target, stream) => this.ExtractPackageFile(src, target, libFolderName, removeFwkMnemonic: true),
                     this.nativeLogger,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
             }
 
             var libFolder = Path.Combine(pluginLocation, libFolderName);
@@ -713,7 +713,7 @@ namespace Kephas.Plugins.NuGet
         {
             const string contentFolderName = "content";
 
-            var contentItems = await packageReader.GetContentItemsAsync(cancellationToken).PreserveThreadContext();
+            var contentItems = await packageReader.GetContentItemsAsync(cancellationToken);
             var nearestLibItemFwk = frameworkReducer.GetNearest(nugetFramework, contentItems.Select(x => x.TargetFramework));
 
             var result = new OperationResult();
@@ -725,7 +725,7 @@ namespace Kephas.Plugins.NuGet
                     contentItem.Items,
                     (src, target, stream) => this.ExtractPackageFile(src, target, contentFolderName, removeFwkMnemonic: false),
                     this.nativeLogger,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
                 result.MergeMessage($"Copied {copiedFiles.Count()} files into {pluginLocation}: '{string.Join("', '", copiedFiles)}'.");
             }
 
@@ -748,7 +748,7 @@ namespace Kephas.Plugins.NuGet
                 ctx => ctx.Set(PackagesFolderContextKey, packagesFolder)
                           .Set(RepositoriesContextKey, repositories)
                           .Set(SourceCacheContextKey, cacheContext),
-                cancellationToken).PreserveThreadContext();
+                cancellationToken);
 
             var downloadResult = (DownloadResourceResult)opResult.Value!;
             var pluginPackageIdentity = this.ToPackageIdentity(pluginIdentity);
@@ -760,7 +760,7 @@ namespace Kephas.Plugins.NuGet
                 cacheContext,
                 this.nativeLogger,
                 repositories,
-                dependencies).PreserveThreadContext();
+                dependencies);
 
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -785,7 +785,7 @@ namespace Kephas.Plugins.NuGet
                 cacheContext,
                 packagesFolder,
                 dependenciesToInstall,
-                cancellationToken).PreserveThreadContext();
+                cancellationToken);
 
             // get the right casing of the package ID, the provided casing might not be the right one.
             pluginPackageIdentity = dependenciesToInstall.FirstOrDefault(d => d.Equals(pluginPackageIdentity)) ?? pluginPackageIdentity;
@@ -829,7 +829,7 @@ namespace Kephas.Plugins.NuGet
             CancellationToken cancellationToken)
         {
             var downloadContext = new PackageDownloadContext(cacheContext);
-            var downloadResources = await this.GetDownloadResourcesAsync(repositories, cancellationToken).PreserveThreadContext();
+            var downloadResources = await this.GetDownloadResourcesAsync(repositories, cancellationToken);
 
             var packageReaders = new List<(PackageIdentity packageId, PackageReaderBase packageReader)>();
 
@@ -847,7 +847,7 @@ namespace Kephas.Plugins.NuGet
                     packagesFolder,
                     downloadResources,
                     downloadContext,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
 
                 packageReaders.Add((dependency, packageReader));
             }
@@ -874,7 +874,7 @@ namespace Kephas.Plugins.NuGet
                 packagesFolder,
                 downloadResources,
                 downloadContext,
-                cancellationToken).PreserveThreadContext();
+                cancellationToken);
             return downloadResult.PackageReader;
         }
 
@@ -885,12 +885,12 @@ namespace Kephas.Plugins.NuGet
             {
                 try
                 {
-                    var downloadResource = await sourceRepository.GetResourceAsync<DownloadResource>(cancellationToken).PreserveThreadContext();
+                    var downloadResource = await sourceRepository.GetResourceAsync<DownloadResource>(cancellationToken);
                     downloadResources.Add(downloadResource);
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.Warn(ex, "Could not get the download resource for repository {repository}.", sourceRepository.PackageSource.Source);
+                    this.Logger.LogWarning(ex, "Could not get the download resource for repository {repository}.", sourceRepository.PackageSource.Source);
                 }
             }
 
@@ -900,8 +900,8 @@ namespace Kephas.Plugins.NuGet
         private async Task<DownloadResourceResult> DownloadPackageAsync(PackageIdentity packageId, string packagesFolder, IList<SourceRepository> repositories, SourceCacheContext cacheContext, CancellationToken cancellationToken)
         {
             var downloadContext = new PackageDownloadContext(cacheContext);
-            var downloadResources = await this.GetDownloadResourcesAsync(repositories, cancellationToken).PreserveThreadContext();
-            return await this.DownloadPackageAsync(packageId, packagesFolder, downloadResources, downloadContext, cancellationToken).PreserveThreadContext();
+            var downloadResources = await this.GetDownloadResourcesAsync(repositories, cancellationToken);
+            return await this.DownloadPackageAsync(packageId, packagesFolder, downloadResources, downloadContext, cancellationToken);
         }
 
         private async Task<DownloadResourceResult> DownloadPackageAsync(PackageIdentity packageId, string packagesFolder, IEnumerable<DownloadResource> downloadResources, PackageDownloadContext downloadContext, CancellationToken cancellationToken)
@@ -909,13 +909,13 @@ namespace Kephas.Plugins.NuGet
             DownloadResourceResult? downloadResult = null;
             if (packageId is SourcePackageDependencyInfo dependencyInfo)
             {
-                var downloadResource = await dependencyInfo.Source.GetResourceAsync<DownloadResource>(cancellationToken).PreserveThreadContext();
+                var downloadResource = await dependencyInfo.Source.GetResourceAsync<DownloadResource>(cancellationToken);
                 downloadResult = await downloadResource.GetDownloadResourceResultAsync(
                     packageId,
                     downloadContext,
                     packagesFolder,
                     this.nativeLogger,
-                    default).PreserveThreadContext();
+                    default);
             }
             else
             {
@@ -926,7 +926,7 @@ namespace Kephas.Plugins.NuGet
                         downloadContext,
                         packagesFolder,
                         this.nativeLogger,
-                        default).PreserveThreadContext();
+                        default);
 
                     if (downloadResult.Status == DownloadResourceResultStatus.Available)
                     {
@@ -958,9 +958,9 @@ namespace Kephas.Plugins.NuGet
 
             foreach (var sourceRepository in repositories)
             {
-                var dependencyInfoResource = await sourceRepository.GetResourceAsync<DependencyInfoResource>().PreserveThreadContext();
+                var dependencyInfoResource = await sourceRepository.GetResourceAsync<DependencyInfoResource>();
                 var dependencyInfo = await dependencyInfoResource.ResolvePackage(
-                    package, framework, cacheContext, logger, CancellationToken.None).PreserveThreadContext();
+                    package, framework, cacheContext, logger, CancellationToken.None);
 
                 if (dependencyInfo == null)
                 {

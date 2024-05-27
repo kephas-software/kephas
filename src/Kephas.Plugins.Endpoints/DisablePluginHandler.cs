@@ -63,21 +63,21 @@ namespace Kephas.Plugins.Endpoints
         /// </returns>
         public override async Task<Response> ProcessAsync(DisablePluginMessage message, IMessagingContext context, CancellationToken token)
         {
-            if (!await this.CanSetupPluginsAsync(context, token).PreserveThreadContext())
+            if (!await this.CanSetupPluginsAsync(context, token))
             {
                 var signal = new ScheduleStartupCommandSignal(message);
-                await this.EventHub.PublishAsync(signal, context, token).PreserveThreadContext();
+                await this.EventHub.PublishAsync(signal, context, token);
 
                 return new Response
                 {
                     Message = $"The {nameof(DisablePluginMessage)} cannot be processed because the plugins are enabled. It has been rescheduled to be executed after the application restart.",
-                    Severity = SeverityLevel.Warning,
+                    Severity = LogLevel.Warning,
                 };
             }
 
             this.appContext.Logger.Info("Disabling plugin {plugin}...", message.Id);
 
-            var result = await this.PluginManager.DisablePluginAsync(new AppIdentity(message.Id), ctx => ctx.Merge(context), token).PreserveThreadContext();
+            var result = await this.PluginManager.DisablePluginAsync(new AppIdentity(message.Id), ctx => ctx.Merge(context), token);
 
             this.appContext.Logger.Info("Plugin {plugin} disabled.", message.Id);
 

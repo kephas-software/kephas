@@ -12,7 +12,6 @@ namespace Kephas.Workflow.Tests
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Logging;
     using Kephas.Runtime;
     using Kephas.Workflow.AttributedModel;
     using Kephas.Workflow.Runtime;

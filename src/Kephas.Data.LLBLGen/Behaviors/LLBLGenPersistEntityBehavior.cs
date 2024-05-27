@@ -23,7 +23,7 @@ namespace Kephas.Data.LLBLGen.Behaviors
     /// <summary>
     /// Behavior for preparing entities for persistence.
     /// </summary>
-    [ProcessingPriority(Priority.High)]
+    [Priority(Priority.High)]
     public class LLBLGenPersistEntityBehavior : DataBehaviorBase<IEntityBase>
     {
         /// <summary>

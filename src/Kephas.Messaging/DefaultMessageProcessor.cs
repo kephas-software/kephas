@@ -18,7 +18,7 @@ namespace Kephas.Messaging;
 /// <summary>
 /// Provides the default implementation of the <see cref="IMessageProcessor"/> application service contract.
 /// </summary>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class DefaultMessageProcessor : Loggable, IMessageProcessor
 {
     private readonly IMessageHandlerResolver handlerResolver;
@@ -27,16 +27,16 @@ public class DefaultMessageProcessor : Loggable, IMessageProcessor
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
     /// </summary>
-    /// <param name="injectableFactory">The injectable factory.</param>
+    /// <param name="serviceFactory">The injectable factory.</param>
     /// <param name="handlerResolver">The handler registry.</param>
     /// <param name="serviceProvider">The service provider.</param>
     public DefaultMessageProcessor(
-        IInjectableFactory injectableFactory,
+        IServiceFactory serviceFactory,
         IMessageHandlerResolver handlerResolver,
         IServiceProvider serviceProvider)
-        : base(injectableFactory)
+        : base(serviceFactory)
     {
-        this.InjectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+        this.ServiceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
         this.handlerResolver = handlerResolver ?? throw new ArgumentNullException(nameof(handlerResolver));
         this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
     }
@@ -47,7 +47,7 @@ public class DefaultMessageProcessor : Loggable, IMessageProcessor
     /// <value>
     /// The injectable factory.
     /// </value>
-    protected IInjectableFactory InjectableFactory { get; }
+    protected IServiceFactory ServiceFactory { get; }
 
     /// <summary>
     /// Processes the specified message asynchronously and returns the response.
@@ -77,7 +77,7 @@ public class DefaultMessageProcessor : Loggable, IMessageProcessor
             {
                 var pipeline = this.serviceProvider.GetRequiredService<IAsyncPipeline<IMessageProcessor, TMessage, TResponse>>();
                 result = await pipeline.ProcessAsync(this, message, context, () => messageHandler.ProcessAsync(message, context, token), token)
-                    .PreserveThreadContext();
+                    ;
             }
             catch (Exception ex)
             {
@@ -105,7 +105,7 @@ public class DefaultMessageProcessor : Loggable, IMessageProcessor
         IMessageBase message,
         Action<IMessagingContext>? optionsConfig)
     {
-        var context = this.InjectableFactory.Create<MessagingContext>(message);
+        var context = this.ServiceFactory.Create<MessagingContext>(message);
         optionsConfig?.Invoke(context);
         return context;
     }

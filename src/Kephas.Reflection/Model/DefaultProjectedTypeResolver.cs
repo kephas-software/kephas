@@ -21,7 +21,7 @@ namespace Kephas.Model
     /// <summary>
     /// A default projected type resolver.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultProjectedTypeResolver : IProjectedTypeResolver
     {
         /// <summary>

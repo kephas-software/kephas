@@ -7,6 +7,7 @@
 
 using Kephas.Model;
 using Kephas.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 [assembly: AppServices(providerType: typeof(ModelAppServiceInfoProvider))]
 
@@ -35,7 +36,7 @@ namespace Kephas.Model
                 new AppServiceInfo(
                     typeof(IModelSpace),
                     ctx => ctx.Resolve<IModelSpaceProvider>().GetModelSpace(),
-                    AppServiceLifetime.Singleton));
+                    ServiceLifetime.Singleton));
         }
     }
 }

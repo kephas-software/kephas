@@ -22,7 +22,7 @@ namespace Kephas.Model.Runtime.Construction
     /// <summary>
     /// A method constructor.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class MethodConstructor : ModelElementConstructorBase<Method, IMethod, IRuntimeMethodInfo>
     {
         /// <summary>

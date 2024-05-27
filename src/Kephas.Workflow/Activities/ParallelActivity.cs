@@ -30,7 +30,7 @@ public class ParallelActivity : BlockActivityBase
         }
 
         var tasks = this.Activities.Select(activity => this.ExecuteChildActivityAsync(activity, context, this.Target, this.Arguments, cancellationToken));
-        return await Task.WhenAll(tasks).PreserveThreadContext();
+        return await Task.WhenAll(tasks);
     }
 
     /// <summary>Creates a new object that is a copy of the current instance.</summary>

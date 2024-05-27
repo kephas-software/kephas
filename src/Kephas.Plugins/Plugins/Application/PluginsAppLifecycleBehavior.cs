@@ -20,7 +20,7 @@ namespace Kephas.Plugins.Application
     /// <summary>
     /// Application lifecycle behavior for plugins.
     /// </summary>
-    [ProcessingPriority(Priority.Highest)]
+    [Priority(Priority.Highest)]
     public class PluginsAppLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly IAppRuntime appRuntime;

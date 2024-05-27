@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services;
+
 namespace Kephas.Orchestration.Application
 {
     using System;

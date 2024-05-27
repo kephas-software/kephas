@@ -102,7 +102,7 @@ namespace Kephas.Workflow
 
             try
             {
-                var result = await this.TransitionCoreAsync(context, transitionInfo, cancellationToken).PreserveThreadContext();
+                var result = await this.TransitionCoreAsync(context, transitionInfo, cancellationToken);
 
                 this.GetTypeInfo().TargetStateProperty.SetValue(this.Target, transitionInfo.To);
 
@@ -110,7 +110,7 @@ namespace Kephas.Workflow
             }
             catch (Exception ex)
             {
-                context.Logger.Error(ex, "Could not transition the state machine for {target} to '{state}' through '{transition}'.", this.Target, transitionInfo.To, transitionInfo.Name);
+                context.Logger.LogError(ex, "Could not transition the state machine for {target} to '{state}' through '{transition}'.", this.Target, transitionInfo.To, transitionInfo.Name);
                 throw;
             }
         }
@@ -216,7 +216,7 @@ namespace Kephas.Workflow
             var args = context.Arguments?.ToDynamic();
             foreach (var paramInfo in transitionInfo.Parameters)
             {
-                if (args?.HasDynamicMember(paramInfo.Name) ?? false)
+                if (args?.HasKey(paramInfo.Name) ?? false)
                 {
                     yield return args[paramInfo.Name];
                 }

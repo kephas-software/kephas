@@ -15,7 +15,6 @@ namespace Kephas.Reflection
     using System.Linq;
 
     using Kephas.Runtime;
-    using Kephas.Services;
 
     /// <summary>
     /// Contract providing type information.

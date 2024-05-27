@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Kephas.Model.Elements
 {
     using System;
@@ -19,7 +21,6 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Construction;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Services;
     using Kephas.Services.Reflection;
 
     /// <summary>
@@ -101,7 +102,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The service lifetime.
         /// </value>
-        public AppServiceLifetime Lifetime => this.appServiceInfo.Lifetime;
+        public ServiceLifetime Lifetime => this.appServiceInfo.Lifetime;
 
         /// <summary>
         /// Adds the metadata with the provided name and value.

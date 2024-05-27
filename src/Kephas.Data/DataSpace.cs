@@ -19,7 +19,6 @@ namespace Kephas.Data
     using Kephas.Data.Store;
     using Kephas.Services;
     using Kephas.Reflection;
-    using Kephas.Services;
 
     /// <summary>
     /// Container class for data contexts indexed by contained entity types.

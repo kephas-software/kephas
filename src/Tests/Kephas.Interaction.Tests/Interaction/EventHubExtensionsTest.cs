@@ -78,9 +78,9 @@ namespace Kephas.Tests.Interaction
             Assert.AreEqual(1, calls);
         }
 
-        private DefaultEventHub CreateEventHub(IInjectableFactory? contextFactory = null)
+        private DefaultEventHub CreateEventHub(IServiceFactory? contextFactory = null)
         {
-            return new DefaultEventHub(Substitute.For<IInjectableFactory>());
+            return new DefaultEventHub(Substitute.For<IServiceFactory>());
         }
     }
 }

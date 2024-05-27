@@ -28,7 +28,7 @@ namespace Kephas.Data.LLBLGen.Behaviors
     /// This is the case when importing bulks of data, when the referencing is resolved over these
     /// temporary IDs.
     /// </remarks>
-    [ProcessingPriority(Priority.AboveNormal)]
+    [Priority(Priority.AboveNormal)]
     public class LLBLGenRefBehavior : DataBehaviorBase<IEntityBase>
     {
         /// <summary>
@@ -68,7 +68,7 @@ namespace Kephas.Data.LLBLGen.Behaviors
             {
                 if (Id.IsTemporary(refProperty.Id))
                 {
-                    await refProperty.GetAsync(throwIfNotFound: false, cancellationToken: cancellationToken).PreserveThreadContext();
+                    await refProperty.GetAsync(throwIfNotFound: false, cancellationToken: cancellationToken);
                 }
             }
         }

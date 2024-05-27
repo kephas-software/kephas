@@ -64,7 +64,7 @@ namespace Kephas.Orchestration.Endpoints
 
             if (this.appRuntime.IsRoot)
             {
-                await this.eventHub.PublishAsync(new RestartSignal("Handle restart."), context, token).PreserveThreadContext();
+                await this.eventHub.PublishAsync(new RestartSignal("Handle restart."), context, token);
                 response.Message = $"App instance {this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}: Application restarted.";
             }
             else
@@ -74,7 +74,7 @@ namespace Kephas.Orchestration.Endpoints
                     message,
                     new Endpoint(appInstanceId: this.lazyOrchestrationManager.Value.GetRootAppInstanceId()),
                     ctx => ctx.Impersonate(context),
-                    cancellationToken: token).PreserveThreadContext();
+                    cancellationToken: token);
 
                 response.Message = $"App instance {this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}: Restart request received, but it is addressed to another application instance(s). Delegated to root.";
             }

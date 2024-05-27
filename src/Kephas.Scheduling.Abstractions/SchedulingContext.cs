@@ -12,7 +12,6 @@ namespace Kephas.Scheduling
     using Kephas.Dynamic;
     using Kephas.Services;
     using Kephas.Scheduling.Reflection;
-    using Kephas.Services;
     using Kephas.Workflow;
 
     /// <summary>

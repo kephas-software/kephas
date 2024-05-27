@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net8.0;net6.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -40,9 +40,6 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NeutralLanguage>en</NeutralLanguage>
         <DefineConstants>KEPHAS</DefineConstants>
-
-        <SignAssembly>True</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -58,33 +55,17 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\Kephas.snk" Link="Kephas.snk" />
-    </ItemGroup>
-
-    <ItemGroup>
         <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
         <None Include="release-notes.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
-
-    <Choose>
-        <When Condition="'$(TargetFramework)'=='netstandard2.1'">
-            <ItemGroup>
-                <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-            </ItemGroup>
-        </When>
-    </Choose>
 
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />

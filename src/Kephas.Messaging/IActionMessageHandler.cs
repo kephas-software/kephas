@@ -27,7 +27,7 @@ namespace Kephas.Messaging
         /// </returns>
         async Task<object?> IMessageHandler<TMessage, object?>.ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
         {
-            await ProcessAsync(message, context, token).PreserveThreadContext();
+            await ProcessAsync(message, context, token);
             return null;
         }
         

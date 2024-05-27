@@ -18,7 +18,6 @@ namespace Kephas.Activation
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Runtime;
-    using Kephas.Services;
 
     /// <summary>
     /// Base abstract class activators.

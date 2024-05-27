@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Messaging
 {
     using System;
@@ -17,7 +19,7 @@ namespace Kephas.Messaging
     /// <summary>
     /// Exception for signalling messaging errors.
     /// </summary>
-    public class MessagingException : Exception, ISeverityQualifiedNotification
+    public class MessagingException : Exception, IErrorNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingException"/> class.
@@ -26,7 +28,7 @@ namespace Kephas.Messaging
         public MessagingException(string message)
             : base(message)
         {
-            this.Severity = SeverityLevel.Error;
+            this.Severity = LogLevel.Error;
         }
 
         /// <summary>
@@ -57,7 +59,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The severity.
         /// </value>
-        public SeverityLevel Severity { get; }
+        public LogLevel Severity { get; }
 
         /// <summary>
         /// Gets the type of the original exception.

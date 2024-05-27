@@ -25,19 +25,19 @@ namespace Kephas.TextProcessing
     /// </summary>
     public class Tokenizer : ITokenizer
     {
-        private readonly IInjectableFactory injectableFactory;
+        private readonly IServiceFactory serviceFactory;
         private readonly IConfiguration<TokenizerSettings>? tokenizerConfig;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tokenizer"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="tokenizerConfig">Optional. The tokenizer configuration.</param>
         public Tokenizer(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IConfiguration<TokenizerSettings>? tokenizerConfig = null)
         {
-            this.injectableFactory = injectableFactory;
+            this.serviceFactory = serviceFactory;
             this.tokenizerConfig = tokenizerConfig;
         }
 
@@ -90,7 +90,7 @@ namespace Kephas.TextProcessing
         /// </returns>
         protected virtual ITokenizerContext CreateTokenizerContext(Action<ITokenizerContext>? optionsConfig = null)
         {
-            return this.injectableFactory.Create<TokenizerContext>().Merge(optionsConfig);
+            return this.serviceFactory.Create<TokenizerContext>().Merge(optionsConfig);
         }
     }
 }

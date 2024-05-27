@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Data
 {
     using System;
@@ -17,7 +19,7 @@ namespace Kephas.Data
     /// <summary>
     /// Exception for signalling generic data errors.
     /// </summary>
-    public class DataException : Exception, ISeverityQualifiedNotification
+    public class DataException : Exception, IErrorNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataException"/> class.
@@ -26,7 +28,7 @@ namespace Kephas.Data
         public DataException(string message)
             : base(message)
         {
-            this.Severity = SeverityLevel.Error;
+            this.Severity = LogLevel.Error;
         }
 
         /// <summary>
@@ -38,7 +40,7 @@ namespace Kephas.Data
         public DataException(string message, Exception inner)
             : base(message, inner)
         {
-            this.Severity = SeverityLevel.Error;
+            this.Severity = LogLevel.Error;
         }
 
         /// <summary>
@@ -47,6 +49,6 @@ namespace Kephas.Data
         /// <value>
         /// The severity.
         /// </value>
-        public SeverityLevel Severity { get; set; }
+        public LogLevel Severity { get; set; }
     }
 }

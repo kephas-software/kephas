@@ -15,7 +15,6 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Services;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Security.Authentication;
-    using Kephas.Services;
 
     /// <summary>
     /// A dispatching context.

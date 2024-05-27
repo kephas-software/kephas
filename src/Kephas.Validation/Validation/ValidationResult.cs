@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Validation
 {
     using System.Collections;
@@ -52,7 +54,7 @@ namespace Kephas.Validation
         /// <param name="message">The message.</param>
         /// <param name="memberName">The name of the member.</param>
         /// <param name="severity">The severity.</param>
-        public ValidationResult(string message, string? memberName = null, SeverityLevel severity = SeverityLevel.Error)
+        public ValidationResult(string message, string? memberName = null, LogLevel severity = LogLevel.Error)
         {
             message = message ?? throw new ArgumentNullException(nameof(message));
 
@@ -66,7 +68,7 @@ namespace Kephas.Validation
         /// <param name="exception">The exception.</param>
         /// <param name="memberName">The name of the member.</param>
         /// <param name="severity">The severity.</param>
-        public ValidationResult(Exception exception, string? memberName = null, SeverityLevel severity = SeverityLevel.Error)
+        public ValidationResult(Exception exception, string? memberName = null, LogLevel severity = LogLevel.Error)
         {
             exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
@@ -115,11 +117,11 @@ namespace Kephas.Validation
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="memberName">Name of the member (optional).</param>
-        /// <param name="severity">The severity (optional). Default value is <see cref="SeverityLevel.Error"/>.</param>
+        /// <param name="severity">The severity (optional). Default value is <see cref="LogLevel.Error"/>.</param>
         /// <returns>
         /// This <see cref="ValidationResult"/>.
         /// </returns>
-        public ValidationResult Add(string message, string? memberName = null, SeverityLevel severity = SeverityLevel.Error)
+        public ValidationResult Add(string message, string? memberName = null, LogLevel severity = LogLevel.Error)
         {
             message = message ?? throw new ArgumentNullException(nameof(message));
 
@@ -132,11 +134,11 @@ namespace Kephas.Validation
         /// </summary>
         /// <param name="exception">The exception.</param>
         /// <param name="memberName">Name of the member (optional).</param>
-        /// <param name="severity">The severity (optional). Default value is <see cref="SeverityLevel.Error"/>.</param>
+        /// <param name="severity">The severity (optional). Default value is <see cref="LogLevel.Error"/>.</param>
         /// <returns>
         /// This <see cref="ValidationResult"/>.
         /// </returns>
-        public ValidationResult Add(Exception exception, string? memberName = null, SeverityLevel severity = SeverityLevel.Error)
+        public ValidationResult Add(Exception exception, string? memberName = null, LogLevel severity = LogLevel.Error)
         {
             exception = exception ?? throw new ArgumentNullException(nameof(exception));
 

@@ -114,12 +114,12 @@ namespace Kephas.Data.LLBLGen
                                     typeof(T),
                                     id,
                                     throwIfNotFound,
-                                    cancellationToken: cancellationToken).PreserveThreadContext();
+                                    cancellationToken: cancellationToken);
                 this.Entity = entity;
                 return entity;
             }
 
-            return await base.GetAsync(throwIfNotFound, cancellationToken).PreserveThreadContext();
+            return await base.GetAsync(throwIfNotFound, cancellationToken);
         }
     }
 }

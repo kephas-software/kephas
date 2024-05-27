@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net8.0;net6.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -48,9 +48,6 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NeutralLanguage>en</NeutralLanguage>
         <DefineConstants>KEPHAS</DefineConstants>
-
-        <SignAssembly>True</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -58,15 +55,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="..\Kephas.snk" Link="Kephas.snk" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -75,7 +64,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\Kephas.Application.Abstractions\Kephas.Application.Abstractions.csproj" />
-		<ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj" />
+		<ProjectReference Include="..\Kephas.Collections.Graphs\Kephas.Collections.Graphs.csproj" />
 		<ProjectReference Include="..\Kephas.Configuration\Kephas.Configuration.csproj" />
 		<ProjectReference Include="..\Kephas.Services\Kephas.Services.csproj" />
 		<ProjectReference Include="..\Kephas.Operations\Kephas.Operations.csproj" />

@@ -11,14 +11,12 @@
 namespace Kephas.Data.IO
 {
     using System;
-
-    using Kephas.Data.Formatting;
     using Kephas.Operations;
 
     /// <summary>
     /// Exception for signaling data I/O errors.
     /// </summary>
-    public class DataIOException : DataException, IDataFormattable
+    public class DataIOException : DataException, ISerializable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataIOException"/> class.

@@ -49,7 +49,7 @@ namespace Kephas.IO
             input = input ?? throw new ArgumentNullException(nameof(input));
 
             using var reader = new StreamReader(input);
-            return await reader.ReadToEndAsync().PreserveThreadContext();
+            return await reader.ReadToEndAsync();
         }
 
         /// <summary>
@@ -95,9 +95,9 @@ namespace Kephas.IO
             const int ChunkSize = 1024;
             var buffer = new byte[ChunkSize];
             var readLength = 0;
-            while ((readLength = await input.ReadAsync(buffer, 0, ChunkSize, cancellationToken).PreserveThreadContext()) > 0)
+            while ((readLength = await input.ReadAsync(buffer, 0, ChunkSize, cancellationToken)) > 0)
             {
-                await mem.WriteAsync(buffer, 0, readLength, cancellationToken).PreserveThreadContext();
+                await mem.WriteAsync(buffer, 0, readLength, cancellationToken);
             }
 
             return mem.ToArray();

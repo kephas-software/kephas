@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Behaviors
 {
-    using Kephas.Logging;
-
     /// <summary>
     /// Base class for behavior rules.
     /// </summary>
@@ -22,9 +22,9 @@ namespace Kephas.Behaviors
         /// <summary>
         /// Initializes a new instance of the <see cref="BehaviorRuleBase{TContext, TValue}"/> class.
         /// </summary>
-        /// <param name="logManager">Optional. The log manager.</param>
-        protected BehaviorRuleBase(ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="logger">The logger.</param>
+        protected BehaviorRuleBase(ILogger<BehaviorRuleBase<TContext, TValue>> logger)
+            : base(logger)
         {
         }
 

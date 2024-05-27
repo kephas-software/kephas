@@ -17,15 +17,11 @@ namespace Kephas.Serialization.Json.Tests
     using System.Reflection;
     using System.Runtime.Serialization;
     using System.Threading.Tasks;
-
-    using Kephas.Application;
     using Kephas.Dynamic;
-    using Kephas.Services;
     using Kephas.Logging;
     using Kephas.Net.Mime;
     using Kephas.Runtime;
     using Kephas.Serialization.Json;
-    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 

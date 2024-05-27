@@ -48,7 +48,7 @@ public class InterpolationTemplatingEngine : ITemplatingEngine
         textWriter = textWriter ?? throw new ArgumentNullException(nameof(textWriter));
 
         var opResult = new OperationResult<object?>();
-        var content = await template.GetContentAsync(cancellationToken).PreserveThreadContext();
+        var content = await template.GetContentAsync(cancellationToken);
 
         var expandoModel = model?.ToDynamic();
         var crtIndex = 0;
@@ -57,13 +57,13 @@ public class InterpolationTemplatingEngine : ITemplatingEngine
         {
             if (match.Index > crtIndex)
             {
-                await textWriter.WriteAsync(content[crtIndex..match.Index]).PreserveThreadContext();
+                await textWriter.WriteAsync(content[crtIndex..match.Index]);
             }
 
             var value = this.GetFormattedValue(expandoModel, match.Groups[1].Value);
             if (value is not null)
             {
-                await textWriter.WriteAsync(value).PreserveThreadContext();
+                await textWriter.WriteAsync(value);
             }
 
             crtIndex = match.Index + match.Length + 1;
@@ -71,7 +71,7 @@ public class InterpolationTemplatingEngine : ITemplatingEngine
 
         if (content.Length > crtIndex)
         {
-            await textWriter.WriteAsync(content[crtIndex..]).PreserveThreadContext();
+            await textWriter.WriteAsync(content[crtIndex..]);
         }
 
         return opResult.Complete();

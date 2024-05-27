@@ -20,7 +20,7 @@ namespace Kephas.Analyzers.Services
     /// <summary>
     /// Helper class for injection source generators.
     /// </summary>
-    public static class AnalyzerServiceHelper
+    internal static class AnalyzerServiceHelper
     {
         private const string AttributeEnding = "Attribute";
         private static readonly List<string> ExcludedAttrs;
@@ -35,7 +35,7 @@ namespace Kephas.Analyzers.Services
             AppServiceContractAttrs.AddRange(GetAttrNames("Kephas.Services.ScopedAppServiceContractAttribute"));
         }
 
-        public static bool IsAppServiceContract(TypeDeclarationSyntax type)
+        public static bool IsAppServiceContract(this TypeDeclarationSyntax type)
         {
             var attrLists = type.AttributeLists;
             var attrs = attrLists.SelectMany(al => al.Attributes).ToList();
@@ -54,7 +54,7 @@ namespace Kephas.Analyzers.Services
                    && type.DeclaredAccessibility == Accessibility.Public;
         }
 
-        public static INamedTypeSymbol? TryGetAppServiceContract(ClassDeclarationSyntax type, GeneratorExecutionContext context)
+        public static INamedTypeSymbol? TryGetAppServiceContract(ClassDeclarationSyntax type, IAppServicesSourceContext context)
         {
             var semanticModel = context.Compilation.GetSemanticModel(type.SyntaxTree);
             var classSymbol = (INamedTypeSymbol)semanticModel.GetDeclaredSymbol(type)!;
@@ -69,12 +69,11 @@ namespace Kephas.Analyzers.Services
                 return null;
             }
 
-            foreach (var baseInterface in classSymbol.AllInterfaces)
+            var baseInterfaceAppServiceContract = classSymbol.AllInterfaces
+                .FirstOrDefault(IsAppServiceContract);
+            if (baseInterfaceAppServiceContract is not null)
             {
-                if (IsAppServiceContract(baseInterface))
-                {
-                    return GetOriginalAppServiceContract(baseInterface);
-                }
+                return GetOriginalAppServiceContract(baseInterfaceAppServiceContract);
             }
 
             var baseType = classSymbol.BaseType;
@@ -118,7 +117,7 @@ namespace Kephas.Analyzers.Services
             return namedTypeSymbol;
         }
 
-        public static bool CanBeAppService(ClassDeclarationSyntax type)
+        public static bool CanBeAppService(this ClassDeclarationSyntax type)
         {
             var attrLists = type.AttributeLists;
             var attrs = attrLists.SelectMany(al => al.Attributes).ToList();
@@ -132,7 +131,7 @@ namespace Kephas.Analyzers.Services
                 && type.Modifiers.All(m => m.ValueText != "abstract");
         }
 
-        public static bool CanBeMetadataType(ClassDeclarationSyntax type)
+        public static bool CanBeMetadataType(this ClassDeclarationSyntax type)
         {
             var attrLists = type.AttributeLists;
             var attrs = attrLists.SelectMany(al => al.Attributes).ToList();
@@ -203,9 +202,9 @@ namespace Kephas.Analyzers.Services
         public static bool AppendAppServicesProviderClass(
             (string typeNamespace, string typeName) serviceTypeProvider,
             StringBuilder source,
-            GeneratorExecutionContext context,
+            IAppServicesSourceContext context,
             IList<ServiceDeclaration> serviceTypes,
-            IAppServicesCompilationContext compilationContext)
+            IAppServicesSourceContext sourceContext)
         {
             var isProviderEmpty = true;
 
@@ -219,16 +218,16 @@ namespace Kephas.Analyzers.Services
             source.AppendLine($@"       IEnumerable<ContractDeclarationInfo>? IAppServiceInfoProvider.GetContractDeclarationTypes()");
             source.AppendLine($@"       {{");
 
-            var contractTypes = compilationContext.ContractTypes;
-            var metadataTypes = compilationContext.MetadataTypes;
+            var contractTypes = sourceContext.ContractTypes;
+            var metadataTypes = sourceContext.MetadataTypes;
             if (contractTypes.Count > 0)
             {
                 var contractTypesBuilder = new StringBuilder();
                 foreach (var typeSyntax in contractTypes)
                 {
-                    var typeFullName = typeSyntax.GetTypeFullName(compilationContext);
+                    var typeFullName = typeSyntax.GetTypeFullName(sourceContext);
                     var metadataTypeSyntax = AnalyzerServiceHelper.TryGetMetadataType(typeSyntax, metadataTypes);
-                    var metadataTypeFullName = metadataTypeSyntax is null ? "null" : $"typeof({metadataTypeSyntax.GetTypeFullName(compilationContext)})";
+                    var metadataTypeFullName = metadataTypeSyntax is null ? "null" : $"typeof({metadataTypeSyntax.GetTypeFullName(sourceContext)})";
                     source.AppendLine($"            yield return new ContractDeclarationInfo(typeof({typeFullName}), {metadataTypeFullName});");
                     contractTypesBuilder.Append($"{typeSyntax.Identifier}, ");
                 }
@@ -237,7 +236,7 @@ namespace Kephas.Analyzers.Services
 
                 contractTypesBuilder.Length -= 2;
 
-                context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG1000", nameof(AppServicesSourceGenerator), $"Identified following application service contracts: {contractTypesBuilder}.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), Location.None));
+                context.SourceProductionContext.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG1000", nameof(AppServicesSourceGenerator), $"Identified following application service contracts: {contractTypesBuilder}.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), Location.None));
             }
             else
             {
@@ -260,14 +259,14 @@ namespace Kephas.Analyzers.Services
                         continue;
                     }
 
-                    var typeFullName = serviceDeclaration.ServiceType.GetTypeFullName(compilationContext);
+                    var typeFullName = serviceDeclaration.ServiceType.GetTypeFullName(sourceContext);
                     try
                     {
                         source.AppendLine($"            yield return new ServiceDeclaration(typeof({typeFullName}), typeof({AnalyzerServiceHelper.GetTypeFullName(appServiceContract)}));");
                     }
                     catch (Exception ex)
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG2000", nameof(AppServicesSourceGenerator), $"Error while generating the service type for {typeFullName}: {ex.Message}", "Kephas", DiagnosticSeverity.Warning, isEnabledByDefault: true), Location.None));
+                        context.SourceProductionContext.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG2000", nameof(AppServicesSourceGenerator), $"Error while generating the service type for {typeFullName}: {ex.Message}", "Kephas", DiagnosticSeverity.Warning, isEnabledByDefault: true), Location.None));
                     }
 
                     serviceTypesBuilder.Append($"{serviceDeclaration.ServiceType.Identifier}, ");
@@ -279,7 +278,7 @@ namespace Kephas.Analyzers.Services
                 {
                     serviceTypesBuilder.Length -= 2;
 
-                    context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG1000", nameof(AppServicesSourceGenerator), $"Identified following application service contracts: {serviceTypesBuilder}.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), Location.None));
+                    context.SourceProductionContext.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("KG1000", nameof(AppServicesSourceGenerator), $"Identified following application service contracts: {serviceTypesBuilder}.", "Kephas", DiagnosticSeverity.Info, isEnabledByDefault: true), Location.None));
                 }
                 else
                 {

@@ -1,0 +1,30 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="InjectableFactory_Create_InjectableTypeMustBeInstantiable" xml:space="preserve">
+        <value>Der Kontexttyp '{0}' muss eine instanziierbare Klasse sein.</value>
+      </data>
+    <data name="InjectableFactory_Create_NonNullArguments" xml:space="preserve">
+        <value>Argumente dürfen nicht null sein, wenn ein Kontext vom Typ '{0}' instanziiert wird.</value>
+      </data>
+    <data name="InjectableFactory_GetCreatorFunc_CannotFindMatchingConstructor" xml:space="preserve">
+        <value>Es kann kein passender Konstruktor für die Signatur {0} vom Typ '{1}' gefunden werden.</value>
+      </data>
+    <data name="ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception" xml:space="preserve">
+    <value>Die Prioritäten des Dienstes '{0}' können für zwei Instanzen nicht aufgelöst werden: {1} und {2}.</value>
+  </data>
+</root>

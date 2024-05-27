@@ -1,13 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;netcoreapp3.1</TargetFrameworks>
+        <TargetFrameworks>net8.0;net6.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
-        <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,13 +19,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="NSubstitute" Version="4.3.0" />
-        <PackageReference Include="NUnit" Version="3.13.2" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.2.1">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
+        <PackageReference Include="NSubstitute" Version="5.1.0" />
+        <PackageReference Include="NUnit" Version="4.0.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.5.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -39,10 +33,6 @@
         <ProjectReference Include="..\..\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
         <ProjectReference Include="..\..\Kephas.Workflow\Kephas.Workflow.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="..\..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
 </Project>

@@ -84,7 +84,7 @@ namespace Kephas.Model.Tests.Security.Permissions.Runtime.ModelRegistries
             Assert.AreEqual(0, result.Count);
         }
 
-        [ExcludeFromModel]
+        [ExcludeFromReflection]
         [PermissionInfo]
         public class ExcludedPermission
         {

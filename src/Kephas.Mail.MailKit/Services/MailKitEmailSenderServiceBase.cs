@@ -49,14 +49,14 @@ namespace Kephas.Mail.Services
         {
             try
             {
-                using var smtpClient = await this.GetSmtpClientAsync(context, cancellationToken).PreserveThreadContext();
+                using var smtpClient = await this.GetSmtpClientAsync(context, cancellationToken);
                 var nativeMessage = this.GetNormalizedMailMessage(emailMessage, context);
-                await smtpClient.SendAsync(nativeMessage, cancellationToken).PreserveThreadContext();
+                await smtpClient.SendAsync(nativeMessage, cancellationToken);
             }
             catch (Exception ex)
             {
                 // TODO localization
-                this.Logger.Error(ex, $"Error while sending mail.");
+                this.Logger.LogError(ex, $"Error while sending mail.");
                 throw;
             }
         }
@@ -121,8 +121,8 @@ namespace Kephas.Mail.Services
             var smtpClient = new SmtpClient();
 
             var (credentials, host, port) = this.GetConnectionData(context);
-            await smtpClient.AuthenticateAsync(credentials, cancellationToken).PreserveThreadContext();
-            await smtpClient.ConnectAsync(host, port, SecureSocketOptions.StartTlsWhenAvailable, cancellationToken).PreserveThreadContext();
+            await smtpClient.AuthenticateAsync(credentials, cancellationToken);
+            await smtpClient.ConnectAsync(host, port, SecureSocketOptions.StartTlsWhenAvailable, cancellationToken);
 
             return smtpClient;
         }

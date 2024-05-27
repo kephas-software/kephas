@@ -23,7 +23,6 @@ namespace Kephas.Data.Client.Tests.Queries
     using Kephas.Model;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -170,7 +169,7 @@ namespace Kephas.Data.Client.Tests.Queries
         public class TestDefaultClientQueryExecutor : DefaultClientQueryProcessor
         {
             public TestDefaultClientQueryExecutor(
-                IInjectableFactory injectableFactory,
+                IServiceFactory serviceFactory,
                 IClientQueryConverter clientQueryConverter,
                 IDataConversionService conversionService,
                 ITypeResolver typeResolver,
@@ -178,7 +177,7 @@ namespace Kephas.Data.Client.Tests.Queries
                 Func<IDataContext> dataContextCreator = null,
                 Func<IDataContext> clientDataContextCreator = null)
                 : base(
-                    injectableFactory,
+                    serviceFactory,
                     clientQueryConverter,
                     conversionService,
                     typeResolver,

@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Collections.Graphs;
+
 namespace Kephas.Data.Security.Permissions
 {
     using System;
@@ -13,7 +15,6 @@ namespace Kephas.Data.Security.Permissions
 
     using Kephas.Data.Model.Associations;
     using Kephas.Data.Reflection;
-    using Kephas.Graphs;
     using Kephas.Reflection;
     using Kephas.Security.Permissions;
     using Kephas.Security.Permissions.AttributedModel;
@@ -44,15 +45,15 @@ namespace Kephas.Data.Security.Permissions
         /// </summary>
         /// <param name="typeRegistry">The type registry.</param>
         /// <param name="associationGraphProvider">The association graph provider.</param>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         protected EntityPermissionScopeResolverBase(
             ITypeRegistry typeRegistry,
             ITypeAssociationGraphProvider associationGraphProvider,
-            IInjectableFactory injectableFactory)
+            IServiceFactory serviceFactory)
         {
             this.TypeRegistry = typeRegistry;
             this.AssociationGraphProvider = associationGraphProvider;
-            this.InjectableFactory = injectableFactory;
+            this.ServiceFactory = serviceFactory;
         }
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace Kephas.Data.Security.Permissions
         /// <summary>
         /// Gets the context factory.
         /// </summary>
-        protected IInjectableFactory InjectableFactory { get; }
+        protected IServiceFactory ServiceFactory { get; }
 
         /// <summary>
         /// Tries to resolve the permission scope name of the provided type information,
@@ -85,7 +86,7 @@ namespace Kephas.Data.Security.Permissions
                 return attr?.ScopeName;
             }
 
-            if (typeInfo.HasDynamicMember(EntityScopeNameKey))
+            if (typeInfo.HasKey(EntityScopeNameKey))
             {
                 return typeInfo[EntityScopeNameKey] as string;
             }
@@ -135,7 +136,7 @@ namespace Kephas.Data.Security.Permissions
                 var current = toSearch.Dequeue();
                 searchedEntities.Add(current);
 
-                if (e.HasDynamicMember(EntityScopeTypeKey))
+                if (e.HasKey(EntityScopeTypeKey))
                 {
                     return e[EntityScopeTypeKey] as IEntityInfo;
                 }

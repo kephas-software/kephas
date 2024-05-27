@@ -69,19 +69,19 @@ namespace Kephas.Plugins.Endpoints
         /// </returns>
         public override async Task<Response> ProcessAsync(UpdatePluginMessage message, IMessagingContext context, CancellationToken token)
         {
-            if (!await this.CanSetupPluginsAsync(context, token).PreserveThreadContext())
+            if (!await this.CanSetupPluginsAsync(context, token))
             {
                 var signal = new ScheduleStartupCommandSignal(message);
-                await this.EventHub.PublishAsync(signal, context, token).PreserveThreadContext();
+                await this.EventHub.PublishAsync(signal, context, token);
 
                 return new Response
                 {
                     Message = $"The {nameof(UpdatePluginMessage)} cannot be processed because the plugins are enabled. It has been rescheduled to be executed after the application restart.",
-                    Severity = SeverityLevel.Warning,
+                    Severity = LogLevel.Warning,
                 };
             }
 
-            var toUpdate = await this.GetPackagesToUpdateAsync(message, token).PreserveThreadContext();
+            var toUpdate = await this.GetPackagesToUpdateAsync(message, token);
 
             if (toUpdate.Count == 0)
             {
@@ -98,7 +98,7 @@ namespace Kephas.Plugins.Endpoints
             foreach (var pluginIdentity in toUpdate)
             {
                 var result = await this.UpdatePluginAsync(pluginIdentity, context, token)
-                    .PreserveThreadContext();
+                    ;
                 if (result.OperationState == OperationState.Failed)
                 {
                     failed++;
@@ -131,7 +131,7 @@ namespace Kephas.Plugins.Endpoints
                     var availablePackages = new List<IAppInfo>();
                     foreach (var installedPlugin in installedPlugins)
                     {
-                        var availablePackage = await this.PluginManager.GetLatestAvailablePluginVersionAsync(installedPlugin.Identity, message.IncludePrerelease, token).PreserveThreadContext();
+                        var availablePackage = await this.PluginManager.GetLatestAvailablePluginVersionAsync(installedPlugin.Identity, message.IncludePrerelease, token);
                         if (availablePackage != null && availablePackage.Identity.Version != installedPlugin.Identity.Version)
                         {
                             availablePackages.Add(availablePackage);
@@ -160,7 +160,7 @@ namespace Kephas.Plugins.Endpoints
                 }
                 else if (UpdatePluginMessage.LatestVersion.Equals(message.Version, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var availablePackage = await this.PluginManager.GetLatestAvailablePluginVersionAsync(new AppIdentity(message.Id), message.IncludePrerelease, token).PreserveThreadContext();
+                    var availablePackage = await this.PluginManager.GetLatestAvailablePluginVersionAsync(new AppIdentity(message.Id), message.IncludePrerelease, token);
                     toUpdate = availablePackage != null && availablePackage.Identity.Version != installedPlugin.Identity.Version
                         ? new List<AppIdentity> { availablePackage.Identity }
                         : new List<AppIdentity>();
@@ -187,7 +187,7 @@ namespace Kephas.Plugins.Endpoints
 
                 var result = await this.PluginManager
                     .UpdatePluginAsync(pluginIdentity, ctx => ctx.Merge(context), token)
-                    .PreserveThreadContext();
+                    ;
 
                 var plugin = result.Value;
                 var pluginId = plugin?.GetTypeInfo().Name ?? pluginIdentity.Id;
@@ -204,7 +204,7 @@ namespace Kephas.Plugins.Endpoints
             }
             catch (Exception ex)
             {
-                this.appContext.Logger.Error(
+                this.appContext.Logger.LogError(
                     ex,
                     "Plugin {plugin} could not be updated to version {version}.",
                     pluginIdentity.Id,

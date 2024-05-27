@@ -8,152 +8,122 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Serialization
+using Kephas.Net.Mime;
+using Kephas.Services;
+
+namespace Kephas.Serialization;
+
+/// <summary>
+/// Base contract for serializers.
+/// </summary>
+/// <remarks>
+/// Serializers handle a single media type and are aggregated by the <see cref="ISerializationService"/>.
+/// </remarks>
+[AppServiceContract(AllowMultiple = true)]
+public interface ISerializer
 {
-    using System.IO;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using Kephas.Net.Mime;
-    using Kephas.Services;
-    using Kephas.Threading.Tasks;
+    /// <summary>
+    /// Serializes the provided object asynchronously.
+    /// </summary>
+    /// <param name="obj">The object to be serialized.</param>
+    /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
+    /// <param name="settingsProvider">Optional. The provider for serialization settings.</param>
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    /// <returns>
+    /// An asynchronous result.
+    /// </returns>
+    Task SerializeAsync(
+        object? obj,
+        TextWriter textWriter,
+        ISerializationSettingsProvider? settingsProvider = null,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Base contract for serializers.
+    /// Serializes the provided object asynchronously.
     /// </summary>
-    /// <remarks>
-    /// Serializers handle a single media type and are aggregated by the <see cref="ISerializationService"/>.
-    /// </remarks>
-    public interface ISerializer
-    {
-        /// <summary>
-        /// Serializes the provided object asynchronously.
-        /// </summary>
-        /// <param name="obj">The object to be serialized.</param>
-        /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
-        /// <param name="context">The context containing serialization options.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        Task SerializeAsync(
-            object? obj,
-            TextWriter textWriter,
-            ISerializationContext? context = null,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Serializes the provided object asynchronously.
-        /// </summary>
-        /// <param name="obj">The object to be serialized.</param>
-        /// <param name="context">The context containing serialization options.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result that yields the serialized object.
-        /// </returns>
-        Task<string> SerializeAsync(
-            object? obj,
-            ISerializationContext? context = null,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Deserializes an object asynchronously.
-        /// </summary>
-        /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
-        /// <param name="context">The context containing serialization options.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result that yields the deserialized object.
-        /// </returns>
-        Task<object?> DeserializeAsync(
-            TextReader textReader,
-            ISerializationContext? context = null,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Deserializes an object asynchronously.
-        /// </summary>
-        /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context containing serialization options.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result that yields the deserialized object.
-        /// </returns>
-        Task<object?> DeserializeAsync(
-            string serializedObj,
-            ISerializationContext? context = null,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Serializes the provided object.
-        /// </summary>
-        /// <param name="obj">The object to be serialized.</param>
-        /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
-        /// <param name="context">The context containing serialization options.</param>
-        void Serialize(
-            object? obj,
-            TextWriter textWriter,
-            ISerializationContext? context = null)
-        {
-            this.SerializeAsync(obj, textWriter, context).WaitNonLocking();
-        }
-
-        /// <summary>
-        /// Serializes the provided object.
-        /// </summary>
-        /// <param name="obj">The object to be serialized.</param>
-        /// <param name="context">The context containing serialization options.</param>
-        /// <returns>
-        /// The serialized object.
-        /// </returns>
-        string Serialize(
-            object? obj,
-            ISerializationContext? context = null)
-        {
-            return this.SerializeAsync(obj, context).GetResultNonLocking();
-        }
-
-        /// <summary>
-        /// Deserializes an object.
-        /// </summary>
-        /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
-        /// <param name="context">The context containing serialization options.</param>
-        /// <returns>
-        /// The deserialized object.
-        /// </returns>
-        object? Deserialize(
-            TextReader textReader,
-            ISerializationContext? context = null)
-        {
-            return this.DeserializeAsync(textReader, context).GetResultNonLocking();
-        }
-
-        /// <summary>
-        /// Deserializes an object.
-        /// </summary>
-        /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context containing serialization options.</param>
-        /// <returns>
-        /// The deserialized object.
-        /// </returns>
-        object? Deserialize(
-            string serializedObj,
-            ISerializationContext? context = null)
-        {
-            return this.DeserializeAsync(serializedObj, context).GetResultNonLocking();
-        }
-    }
+    /// <param name="obj">The object to be serialized.</param>
+    /// <param name="settingsProvider">Optional. The provider for serialization settings.</param>
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    /// <returns>
+    /// An asynchronous result that yields the serialized object.
+    /// </returns>
+    Task<string> SerializeAsync(
+        object? obj,
+        ISerializationSettingsProvider? settingsProvider = null,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Application service contract for a serializer based on the indicated media type.
+    /// Deserializes an object asynchronously.
     /// </summary>
-    /// <remarks>
-    /// Serializers handle a single media type and are aggregated by the <see cref="ISerializationService"/>.
-    /// </remarks>
-    /// <typeparam name="TMedia">The media type.</typeparam>
-    [AppServiceContract(ContractType = typeof(ISerializer), AllowMultiple = true)]
-    public interface ISerializer<TMedia> : ISerializer
-        where TMedia : IMediaType
-    {
-    }
+    /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
+    /// <param name="settingsProvider">Optional. The provider for serialization settings.</param>
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    /// <returns>
+    /// An asynchronous result that yields the deserialized object.
+    /// </returns>
+    Task<object?> DeserializeAsync(
+        TextReader textReader,
+        ISerializationSettingsProvider? settingsProvider = null,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Deserializes an object asynchronously.
+    /// </summary>
+    /// <param name="serializedObj">The serialized object.</param>
+    /// <param name="settingsProvider">Optional. The provider for serialization settings.</param>
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    /// <returns>
+    /// An asynchronous result that yields the deserialized object.
+    /// </returns>
+    Task<object?> DeserializeAsync(
+        string serializedObj,
+        ISerializationSettingsProvider? settingsProvider = null,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Serializes the provided object.
+    /// </summary>
+    /// <param name="obj">The object to be serialized.</param>
+    /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
+    /// <param name="settingsProvider">Optional. The provider for serialization settings.</param>
+    void Serialize(
+        object? obj,
+        TextWriter textWriter,
+        ISerializationSettingsProvider? settingsProvider = null);
+
+    /// <summary>
+    /// Serializes the provided object.
+    /// </summary>
+    /// <param name="obj">The object to be serialized.</param>
+    /// <param name="settingsProvider">Optional. The provider for serialization settings.</param>
+    /// <returns>
+    /// The serialized object.
+    /// </returns>
+    string Serialize(
+        object? obj,
+        ISerializationSettingsProvider? settingsProvider = null);
+
+    /// <summary>
+    /// Deserializes an object.
+    /// </summary>
+    /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
+    /// <param name="settingsProvider">Optional. The provider for serialization settings.</param>
+    /// <returns>
+    /// The deserialized object.
+    /// </returns>
+    object? Deserialize(
+        TextReader textReader,
+        ISerializationSettingsProvider? settingsProvider = null);
+
+    /// <summary>
+    /// Deserializes an object.
+    /// </summary>
+    /// <param name="serializedObj">The serialized object.</param>
+    /// <param name="settingsProvider">Optional. The provider for serialization settings.</param>
+    /// <returns>
+    /// The deserialized object.
+    /// </returns>
+    object? Deserialize(
+        string serializedObj,
+        ISerializationSettingsProvider? settingsProvider = null);
 }

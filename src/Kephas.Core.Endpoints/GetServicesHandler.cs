@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.Services.Metadata;
 
 namespace Kephas.Core.Endpoints
 {

@@ -16,7 +16,7 @@ Check the following packages for more information:
 ```C#
 // normally you would get the processor injected into the service constructor.
 var processor = injector.Resolve<IScriptProcessor>();
-var result = await processor.ExecuteAsync(new PythonStringScript("name[..4] + str(age)"), new Expando { ["name"] = "Johnny", ["age"] = 42 })).PreserveThreadContext();
+var result = await processor.ExecuteAsync(new PythonStringScript("name[..4] + str(age)"), new Expando { ["name"] = "Johnny", ["age"] = 42 }));
 Assert.Equals("John42", result);
 ```
 
@@ -31,11 +31,11 @@ If this is not the case, make sure you specify the language explicitly when crea
 var processor = injector.Resolve<IScriptProcessor>();
 
 // Python scripts ending with *.py
-var result = await processor.ExecuteAsync(new FileScript("myscript.py"), new { name = "Johnny", age = 42 })).PreserveThreadContext();
+var result = await processor.ExecuteAsync(new FileScript("myscript.py"), new { name = "Johnny", age = 42 }));
 Assert.Equals("John42", result);
 
 // Python scripts not ending with *.py
-var result = await processor.ExecuteAsync(new FileScript("myscript.txt", PythonLanguageService.Language), new { name = "Johnny", age = 42 })).PreserveThreadContext();
+var result = await processor.ExecuteAsync(new FileScript("myscript.txt", PythonLanguageService.Language), new { name = "Johnny", age = 42 }));
 Assert.Equals("John42", result);
 ```
 

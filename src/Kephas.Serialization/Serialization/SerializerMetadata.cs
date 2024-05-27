@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Serialization
 {
     using System;
@@ -33,7 +35,7 @@ namespace Kephas.Serialization
                 return;
             }
 
-            this.MediaType = (Type?)metadata.TryGetValue(nameof(this.MediaType), null);
+            this.MediaType = (string?)metadata.TryGetValue(nameof(this.MediaType), null);
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace Kephas.Serialization
         /// <param name="overridePriority"> override priority.</param>
         /// <param name="serviceName">Optional. The name of the service.</param>
         /// <param name="isOverride">Optional. Indicates whether the service overrides its base.</param>
-        public SerializerMetadata(Type mediaType, Priority processingPriority = 0, Priority overridePriority = 0, string? serviceName = null, bool isOverride = false)
+        public SerializerMetadata(string mediaType, Priority processingPriority = 0, Priority overridePriority = 0, string? serviceName = null, bool isOverride = false)
             : base(processingPriority, overridePriority, serviceName, isOverride)
         {
             this.MediaType = mediaType;
@@ -56,6 +58,6 @@ namespace Kephas.Serialization
         /// <value>
         /// The media type.
         /// </value>
-        public Type? MediaType { get; }
+        public string? MediaType { get; }
     }
 }

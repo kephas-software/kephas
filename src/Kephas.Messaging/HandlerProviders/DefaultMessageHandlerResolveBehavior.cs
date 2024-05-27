@@ -20,7 +20,7 @@ namespace Kephas.Messaging.HandlerProviders
     /// <summary>
     /// A default message handler provider.
     /// </summary>
-    [ProcessingPriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class DefaultMessageHandlerResolveBehavior : IMessageHandlerResolveBehavior
     {
         /// <summary>

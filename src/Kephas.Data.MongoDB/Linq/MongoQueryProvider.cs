@@ -66,14 +66,14 @@ namespace Kephas.Data.MongoDB.Linq
                 // vector value
                 var executeAsync = ExecuteEnumerableAsyncMethod.MakeGenericMethod(entityType);
                 var executeTask = (Task<object>)executeAsync.Call(this, expression, cancellationToken);
-                return await executeTask.PreserveThreadContext();
+                return await executeTask;
             }
             else
             {
                 // scalar value
                 var executeAsync = ExecuteScalarAsyncMethod.MakeGenericMethod(expression.Type);
                 var executeTask = (Task<object>)executeAsync.Call(this, expression, cancellationToken);
-                return await executeTask.PreserveThreadContext();
+                return await executeTask;
             }
         }
 
@@ -91,7 +91,7 @@ namespace Kephas.Data.MongoDB.Linq
         /// </returns>
         public override async Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
         {
-            var result = await this.ExecuteAsync(expression, cancellationToken).PreserveThreadContext();
+            var result = await this.ExecuteAsync(expression, cancellationToken);
             return (TResult)result;
         }
 
@@ -128,11 +128,11 @@ namespace Kephas.Data.MongoDB.Linq
             var executeAsyncMethodInfo = nativeProviderTypeInfo.Methods["ExecuteAsync"].Single();
             var executeAsync = executeAsyncMethodInfo.MethodInfo.MakeGenericMethod(typeof(IAsyncCursor<T>));
             var executeAsyncTask = (Task<IAsyncCursor<T>>)executeAsync.Call(this.NativeQueryProvider, expression, cancellationToken);
-            var asyncCursor = await executeAsyncTask.PreserveThreadContext();
+            var asyncCursor = await executeAsyncTask;
 
             var dataContext = this.DataContext;
             var items = new List<T>();
-            while (await asyncCursor.MoveNextAsync(cancellationToken).PreserveThreadContext())
+            while (await asyncCursor.MoveNextAsync(cancellationToken))
             {
                 items.AddRange(asyncCursor.Current.Select(e => (T)dataContext.Attach(e!).Entity));
             }
@@ -146,7 +146,7 @@ namespace Kephas.Data.MongoDB.Linq
             var executeAsyncMethodInfo = nativeProviderTypeInfo.Methods["ExecuteAsync"].Single();
             var executeAsync = executeAsyncMethodInfo.MethodInfo.MakeGenericMethod(typeof(T));
             var executeAsyncTask = (Task<T>)executeAsync.Call(this.NativeQueryProvider, expression, cancellationToken);
-            var value = await executeAsyncTask.PreserveThreadContext();
+            var value = await executeAsyncTask;
 
             var valueType = value?.GetType();
             if (value == null

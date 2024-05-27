@@ -18,64 +18,14 @@ namespace Kephas.Commands
     public static class CommandsExtensions
     {
         /// <summary>
-        /// Converts the provided expando arguments to <see cref="IArgs"/>.
+        /// Converts this arguments list to a list of string arguments for use in command lines.
         /// </summary>
-        /// <typeparam name="TArgs">The arguments type.</typeparam>
-        /// <param name="args">The expando arguments.</param>
-        /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
-        public static TArgs AsArgs<TArgs>(this IDynamic args)
-        {
-            args = args ?? throw new ArgumentNullException(nameof(args));
-            return args is TArgs appArgs ? appArgs : (TArgs)Activator.CreateInstance(typeof(TArgs), args)!;
-        }
-
-        /// <summary>
-        /// Converts the provided expando arguments to <see cref="IArgs"/>.
-        /// </summary>
-        /// <param name="args">The expando arguments.</param>
-        /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
-        public static IArgs AsArgs(this IDynamic args)
-        {
-            args = args ?? throw new ArgumentNullException(nameof(args));
-            return args is IArgs appArgs ? appArgs : new Args(args);
-        }
-
-        /// <summary>
-        /// Converts the provided expando arguments to <see cref="IArgs"/>.
-        /// </summary>
-        /// <typeparam name="TArgs">The arguments type.</typeparam>
-        /// <param name="args">The expando arguments.</param>
-        /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
-        public static TArgs AsArgs<TArgs>(this IDictionary<string, object?> args)
-        {
-            args = args ?? throw new ArgumentNullException(nameof(args));
-            return (TArgs)Activator.CreateInstance(typeof(TArgs), args)!;
-        }
-
-        /// <summary>
-        /// Converts the provided expando arguments to <see cref="IArgs"/>.
-        /// </summary>
-        /// <param name="args">The expando arguments.</param>
-        /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
-        public static IArgs AsArgs(this IDictionary<string, object?> args)
-        {
-            args = args ?? throw new ArgumentNullException(nameof(args));
-            return new Args(args);
-        }
-
-        /// <summary>
-        /// Converts the app arguments list to a list of string arguments for use in command lines.
-        /// </summary>
-        /// <param name="arguments">The arguments as a dictionary.</param>
         /// <returns>A list of string arguments.</returns>
-        public static IEnumerable<string> ToCommandArgs(this IDynamic arguments)
+        public static IEnumerable<string> ToCommandArgs(this IDynamic args)
         {
-            if (arguments is IArgs args)
-            {
-                return args.ToCommandArgs();
-            }
+            _ = args ?? throw new ArgumentNullException(nameof(args));
 
-            return arguments.ToDictionary().ToCommandArgs();
+            return args.ToDictionary().ToCommandArgs();
         }
 
         /// <summary>

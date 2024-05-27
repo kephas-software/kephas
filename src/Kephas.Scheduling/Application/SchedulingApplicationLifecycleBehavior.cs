@@ -21,7 +21,7 @@ namespace Kephas.Scheduling.Application
     /// <summary>
     /// A scheduling application lifecycle behavior.
     /// </summary>
-    [OverridePriority(Priority.High - 100)]
+    [Priority(Priority.High - 100)]
     public class SchedulingApplicationLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly IScheduler scheduler;
@@ -47,7 +47,7 @@ namespace Kephas.Scheduling.Application
             IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.InitializeAsync(this.scheduler, appContext, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.InitializeAsync(this.scheduler, appContext, cancellationToken);
             return true.ToOperationResult();
         }
 
@@ -63,7 +63,7 @@ namespace Kephas.Scheduling.Application
             IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.FinalizeAsync(this.scheduler, appContext, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.FinalizeAsync(this.scheduler, appContext, cancellationToken);
             return true.ToOperationResult();
         }
     }

@@ -12,8 +12,6 @@ namespace Kephas.Core.Endpoints
 {
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Logging;
     using Kephas.Messaging;
 
     /// <summary>

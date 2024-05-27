@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Data.Client.Queries.Conversion
 {
     using System;
@@ -16,7 +18,7 @@ namespace Kephas.Data.Client.Queries.Conversion
     /// <summary>
     /// Metadata attribute providing the operator.
     /// </summary>
-    public class OperatorAttribute : Attribute, IMetadataValue<string>
+    public class OperatorAttribute : Attribute, IServiceMetadataValue<string>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OperatorAttribute"/> class.

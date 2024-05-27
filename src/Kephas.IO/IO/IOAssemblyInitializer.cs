@@ -17,7 +17,7 @@ public class IOAssemblyInitializer : IAssemblyInitializer
     /// <summary>
     /// Initializes the assembly.
     /// </summary>
-    public void Initialize()
+    public void InitializeAssembly()
     {
         IAppServiceCollection.AddAppServicesCollector(ambient => ambient.TryAdd<ILocationsManager, FolderLocationsManager>());
     }

@@ -15,7 +15,7 @@ namespace Kephas.Application.Console
     /// <summary>
     /// A default console.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultConsole : IConsole
     {
         /// <summary>

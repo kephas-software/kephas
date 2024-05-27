@@ -13,9 +13,6 @@ namespace Kephas.Scheduling.Quartz.Logging
     using System;
 
     using global::Quartz.Logging;
-
-    using Kephas.Logging;
-
     using LogLevel = Kephas.Logging.LogLevel;
 
     /// <summary>

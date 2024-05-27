@@ -67,7 +67,7 @@ namespace Kephas.Redis.Logging
         {
             if (this.logger.IsTraceEnabled())
             {
-                this.logger.Trace(this.stringBuilder.ToString());
+                this.logger.LogTrace(this.stringBuilder.ToString());
             }
 
             this.stringBuilder.Clear();

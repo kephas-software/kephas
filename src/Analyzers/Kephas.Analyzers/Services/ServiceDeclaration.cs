@@ -10,16 +10,5 @@ namespace Kephas.Analyzers.Services
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    public class ServiceDeclaration
-    {
-        public ServiceDeclaration(ClassDeclarationSyntax serviceType, INamedTypeSymbol? contractType)
-        {
-            this.ServiceType = serviceType;
-            this.ContractType = contractType;
-        }
-
-        public ClassDeclarationSyntax ServiceType { get; }
-
-        public INamedTypeSymbol? ContractType { get; }
-    }
+    public record ServiceDeclaration(ClassDeclarationSyntax ServiceType, INamedTypeSymbol? ContractType);
 }

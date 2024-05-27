@@ -5,13 +5,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Extensions.DependencyInjection
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Builder;
     using Microsoft.Extensions.DependencyInjection;
@@ -79,9 +79,9 @@ namespace Kephas.Extensions.DependencyInjection
             var logger = servicesBuilder.Logger;
             return s =>
             {
-                logger.Debug($"Configuring services by {s.GetType()}...");
+                logger.LogDebug($"Configuring services by {s.GetType()}...");
                 c.ConfigureServices(context, s, servicesBuilder);
-                logger.Debug($"Services configured by {s.GetType()}.");
+                logger.LogDebug($"Services configured by {s.GetType()}.");
             };
         }
     }

@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Data.Commands.Factory
 {
     using System;
@@ -56,7 +54,7 @@ namespace Kephas.Data.Commands.Factory
                                         .ToList();
             if (commandFactoriesList.Count > 1)
             {
-                if (commandFactoriesList[0].Metadata.OverridePriority == commandFactoriesList[1].Metadata.OverridePriority)
+                if (commandFactoriesList[0].Metadata.Priority == commandFactoriesList[1].Metadata.Priority)
                 {
                     throw new AmbiguousMatchDataException(string.Format(
                         Strings.DataCommandFactory_GetCommandFactory_AmbiguousMatch_Exception,

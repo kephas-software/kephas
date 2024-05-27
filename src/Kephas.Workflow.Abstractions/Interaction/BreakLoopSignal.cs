@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Workflow.Interaction;
 
 using Kephas.ExceptionHandling;
@@ -30,7 +32,7 @@ public class BreakLoopSignal : Exception, ISignal
     public BreakLoopSignal(string message)
         : base(message)
     {
-        this.Severity = SeverityLevel.Info;
+        this.Severity = LogLevel.Information;
     }
 
     /// <summary>
@@ -39,5 +41,5 @@ public class BreakLoopSignal : Exception, ISignal
     /// <value>
     /// The severity.
     /// </value>
-    public SeverityLevel Severity { get; }
+    public LogLevel Severity { get; }
 }

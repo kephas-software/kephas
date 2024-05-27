@@ -18,7 +18,7 @@ namespace Kephas.Model.Runtime.Construction
     /// <summary>
     /// Factory class for runtime property information.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class PropertyConstructor : ModelElementConstructorBase<Property, IProperty, IRuntimePropertyInfo>
     {
         /// <summary>

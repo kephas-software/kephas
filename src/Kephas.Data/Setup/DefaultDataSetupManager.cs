@@ -19,29 +19,28 @@ namespace Kephas.Data.Setup
     using Kephas.Dynamic;
     using Kephas.Services;
     using Kephas.Operations;
-    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A default data setup manager service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultDataSetupManager : IDataSetupManager
     {
-        private readonly IInjectableFactory injectableFactory;
+        private readonly IServiceFactory serviceFactory;
         private readonly IFactoryEnumerable<IDataInstaller, DataInstallerMetadata> dataInstallerFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataSetupManager"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="dataInstallerFactories">The data installer factories.</param>
-        public DefaultDataSetupManager(IInjectableFactory injectableFactory, IFactoryEnumerable<IDataInstaller, DataInstallerMetadata> dataInstallerFactories)
+        public DefaultDataSetupManager(IServiceFactory serviceFactory, IFactoryEnumerable<IDataInstaller, DataInstallerMetadata> dataInstallerFactories)
         {
-            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             dataInstallerFactories = dataInstallerFactories ?? throw new System.ArgumentNullException(nameof(dataInstallerFactories));
 
-            this.injectableFactory = injectableFactory;
+            this.serviceFactory = serviceFactory;
             this.dataInstallerFactories = dataInstallerFactories;
         }
 
@@ -66,7 +65,7 @@ namespace Kephas.Data.Setup
             var result = new OperationResult();
             foreach (var dataInstaller in dataInstallers)
             {
-                var handlerResult = await dataInstaller.InstallDataAsync(optionsConfig, cancellationToken).PreserveThreadContext();
+                var handlerResult = await dataInstaller.InstallDataAsync(optionsConfig, cancellationToken);
                 if (handlerResult != null)
                 {
                     result.MergeMessages(handlerResult);
@@ -96,7 +95,7 @@ namespace Kephas.Data.Setup
                 var result = new OperationResult();
                 foreach (var dataInstaller in dataInstallers)
                 {
-                    var handlerResult = await dataInstaller.UninstallDataAsync(optionsConfig, cancellationToken).PreserveThreadContext();
+                    var handlerResult = await dataInstaller.UninstallDataAsync(optionsConfig, cancellationToken);
                     if (handlerResult != null)
                     {
                         result.MergeMessages(handlerResult);
@@ -116,7 +115,7 @@ namespace Kephas.Data.Setup
         /// </returns>
         protected virtual IDataSetupContext CreateDataSetupContext(Action<IDataSetupContext>? optionsConfig = null)
         {
-            return this.injectableFactory.Create<DataSetupContext>().Merge(optionsConfig);
+            return this.serviceFactory.Create<DataSetupContext>().Merge(optionsConfig);
         }
 
         /// <summary>

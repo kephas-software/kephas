@@ -21,7 +21,7 @@ namespace Kephas.Data.LLBLGen.Linq
     /// <summary>
     /// A null llbl generate query factory provider.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullQueryFactoryProvider : IQueryFactoryProvider
     {
         /// <summary>

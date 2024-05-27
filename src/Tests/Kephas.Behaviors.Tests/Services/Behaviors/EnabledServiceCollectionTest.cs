@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Behaviors.Tests.Services.Behaviors
 {
     using System;
@@ -36,7 +38,7 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
 
             var provider = new EnabledLazyEnumerable<ITestService, AppServiceMetadata>(
                 services,
-                servicesMock.Resolve<IInjectableFactory>(),
+                servicesMock.Resolve<IServiceFactory>(),
                 new LazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>());
             var filteredServices = provider.ToList();
 
@@ -56,7 +58,7 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
 
             var provider = new EnabledEnumerable<ITestService>(
                 services,
-                servicesMock.Resolve<IInjectableFactory>(),
+                servicesMock.Resolve<IServiceFactory>(),
                 new LazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>(new[] { excludeAllBehaviorMock }));
 
             var filteredServices = provider.ToList();
@@ -77,7 +79,7 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
 
             var provider = new EnabledFactoryEnumerable<ITestService, AppServiceMetadata>(
                 services,
-                servicesMock.Resolve<IInjectableFactory>(),
+                servicesMock.Resolve<IServiceFactory>(),
                 new LazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>(new[] { excludeBehaviorMock, includeBehaviorMock }));
 
             var filteredServices = provider.ToList();
@@ -99,7 +101,7 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
 
             var provider = new EnabledEnumerable<ITestService>(
                 services,
-                servicesMock.Resolve<IInjectableFactory>(),
+                servicesMock.Resolve<IServiceFactory>(),
                 new LazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>(new[] { excludeBehaviorMock, includeBehaviorMock }));
 
             var filteredServices = provider.ToList();
@@ -118,8 +120,8 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
                 ci.Arg<object?[]>()[0] as Func<ITestService>,
                 ci.Arg<object?[]>()[1] as AppServiceMetadata));
 
-            injector.Resolve(typeof(IInjectableFactory)).Returns(injectableFactory);
-            injector.Resolve<IInjectableFactory>().Returns(injectableFactory);
+            injector.Resolve(typeof(IServiceFactory)).Returns(injectableFactory);
+            injector.Resolve<IServiceFactory>().Returns(injectableFactory);
 
             return injector;
         }
@@ -144,7 +146,7 @@ namespace Kephas.Behaviors.Tests.Services.Behaviors
                 .CanApply(Arg.Any<IContext>())
                 .Returns(canApply);
             behaviorMock.IsEndRule.Returns(isEndRule);
-            behaviorMock.ProcessingPriority.Returns(processingPriority);
+            behaviorMock.Priority.Returns(processingPriority);
             behaviorMock
                 .GetValue(Arg.Any<IServiceBehaviorContext<ITestService, AppServiceMetadata>>())
                 .Returns(value ? BehaviorValue.True : BehaviorValue.False);

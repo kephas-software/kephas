@@ -18,7 +18,7 @@ namespace Kephas.Data.IO
     /// <summary>
     /// A default data I/O resource service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultDataIOResourceService : IDataIOResourceService
     {
         /// <summary>

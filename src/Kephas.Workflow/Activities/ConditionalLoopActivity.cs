@@ -47,7 +47,7 @@ public class ConditionalLoopActivity : FlowActivityBase
                     context,
                     this.Target,
                     this.Arguments,
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
             if (conditionValue != null && Convert.ToBoolean(conditionValue) is false)
             {
                 break;
@@ -63,7 +63,7 @@ public class ConditionalLoopActivity : FlowActivityBase
                         context,
                         this.Target,
                         this.Arguments,
-                        cancellationToken).PreserveThreadContext();
+                        cancellationToken);
             }
             catch (BreakLoopSignal)
             {

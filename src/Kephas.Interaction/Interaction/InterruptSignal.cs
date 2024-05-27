@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Interaction
 {
     using System;
@@ -14,7 +16,7 @@ namespace Kephas.Interaction
     /// <summary>
     /// Signals that a flow should be interrupted.
     /// Conventions: the call is considered successful if the severity is set to
-    /// if the <see cref="Severity"/> is <see cref="SeverityLevel.Info"/> or <see cref="SeverityLevel.Warning"/>,
+    /// if the <see cref="Severity"/> is <see cref="LogLevel.Information"/> or <see cref="LogLevel.Warning"/>,
     /// otherwise it is an exception. Exceptions should be returned to the caller through the <see cref="Exception.InnerException"/> property.
     /// </summary>
     public class InterruptSignal : Exception, ISignal
@@ -25,11 +27,11 @@ namespace Kephas.Interaction
         /// <param name="result">Optional. The result to be returned to the caller.</param>
         /// <param name="message">Optional. Message to indicate the reason for flow interruption.</param>
         /// <param name="severity">Optional. Indicates the severity.</param>
-        public InterruptSignal(object? result = null, string? message = null, SeverityLevel? severity = null)
+        public InterruptSignal(object? result = null, string? message = null, LogLevel? severity = null)
             : base(message ?? "Interrupt flow.")
         {
             this.Result = result;
-            this.Severity = severity ?? SeverityLevel.Info;
+            this.Severity = severity ?? LogLevel.Information;
         }
 
         /// <summary>
@@ -39,11 +41,11 @@ namespace Kephas.Interaction
         /// <param name="result">Optional. The result to be returned to the caller.</param>
         /// <param name="message">Optional. Message to indicate the reason for flow interruption.</param>
         /// <param name="severity">Optional. Indicates the severity.</param>
-        public InterruptSignal(Exception exception, object? result = null, string? message = null, SeverityLevel? severity = null)
+        public InterruptSignal(Exception exception, object? result = null, string? message = null, LogLevel? severity = null)
             : base(message ?? "Interrupt flow.", exception)
         {
             this.Result = result;
-            this.Severity = severity ?? SeverityLevel.Error;
+            this.Severity = severity ?? LogLevel.Error;
         }
 
         /// <summary>
@@ -54,6 +56,6 @@ namespace Kephas.Interaction
         /// <summary>
         /// Gets the severity.
         /// </summary>
-        public SeverityLevel Severity { get; }
+        public LogLevel Severity { get; }
     }
 }

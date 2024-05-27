@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services.AttributedModel;
+using Kephas.Services;
 
 namespace Kephas.Model.Runtime.Configuration
 {

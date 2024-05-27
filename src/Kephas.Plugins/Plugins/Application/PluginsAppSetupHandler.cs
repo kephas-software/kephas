@@ -23,7 +23,7 @@ namespace Kephas.Plugins.Application
     /// <summary>
     /// Application setup handler for installing/uninstalling plugins.
     /// </summary>
-    [ProcessingPriority(Priority.High)]
+    [Priority(Priority.High)]
     public class PluginsAppSetupHandler : Loggable, IAppSetupHandler
     {
         private readonly IPluginManager pluginManager;
@@ -52,13 +52,13 @@ namespace Kephas.Plugins.Application
             // initializes, uninitializes, or uninstalls pending plugins
             return new OperationResult()
                 .MergeMessages(await this.UpdatePendingPluginsAsync(appContext, cancellationToken)
-                    .PreserveThreadContext())
+                    )
                 .MergeMessages(await this.UninitializePendingPluginsAsync(appContext, cancellationToken)
-                    .PreserveThreadContext())
+                    )
                 .MergeMessages(await this.UninstallPendingPluginsAsync(appContext, cancellationToken)
-                    .PreserveThreadContext())
+                    )
                 .MergeMessages(await this.InitializePendingPluginsAsync(appContext, cancellationToken)
-                    .PreserveThreadContext())
+                    )
                 .Complete();
         }
 
@@ -172,7 +172,7 @@ namespace Kephas.Plugins.Application
                 try
                 {
                     var operationResult = await asyncOperation(plugin, context, cancellationToken)
-                        .PreserveThreadContext();
+                        ;
                     result.MergeMessages(operationResult);
                 }
                 catch (OperationCanceledException cex)

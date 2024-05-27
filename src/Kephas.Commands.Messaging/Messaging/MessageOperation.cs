@@ -71,7 +71,7 @@ namespace Kephas.Commands.Messaging
             var result = await this.LazyMessageProcessor.Value.ProcessAsync(
                     this.Message,
                     ctx => ctx.Merge(context),
-                    cancellationToken).PreserveThreadContext();
+                    cancellationToken);
             return result?.GetContent();
         }
     }

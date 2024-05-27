@@ -19,7 +19,7 @@ using Microsoft.CodeAnalysis.CSharp;
 /// <summary>
 /// The default implementation of the <see cref="IRazorPageCompiler"/> service.
 /// </summary>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class DefaultRazorPageCompiler : IRazorPageCompiler
 {
     private readonly IRazorProjectFileSystemProvider projectProvider;
@@ -69,7 +69,7 @@ public class DefaultRazorPageCompiler : IRazorPageCompiler
         try
         {
             var rootNamespace = GetRootNamespace(context);
-            var (projectFileSystem, basePath) = await this.projectProvider.GetRazorProjectFileSystemAsync(template, context, cancellationToken).PreserveThreadContext();
+            var (projectFileSystem, basePath) = await this.projectProvider.GetRazorProjectFileSystemAsync(template, context, cancellationToken);
             tempProjectPath = basePath;
             context.RootNamespace(rootNamespace)
                 .ModelType(typeof(TModel));
@@ -128,9 +128,9 @@ public class DefaultRazorPageCompiler : IRazorPageCompiler
                 {
                     Severity = m.Severity switch
                     {
-                        DiagnosticSeverity.Error => SeverityLevel.Error,
-                        DiagnosticSeverity.Warning => SeverityLevel.Warning,
-                        _ => SeverityLevel.Info
+                        DiagnosticSeverity.Error => LogLevel.Error,
+                        DiagnosticSeverity.Warning => LogLevel.Warning,
+                        _ => LogLevel.Information
                     },
                 });
             }

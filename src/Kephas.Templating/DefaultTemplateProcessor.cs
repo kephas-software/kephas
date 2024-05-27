@@ -22,7 +22,7 @@ namespace Kephas.Templating
     /// <summary>
     /// The default template processor.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultTemplateProcessor : Loggable, ITemplateProcessor
     {
         private readonly IDictionary<string, Lazy<ITemplatingEngine, TemplatingEngineMetadata>> engineFactories =
@@ -37,20 +37,20 @@ namespace Kephas.Templating
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultTemplateProcessor"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="engineFactories">The templating engine factories.</param>
         /// <param name="behaviorFactories">The template processing behavior factories.</param>
         public DefaultTemplateProcessor(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             ICollection<Lazy<ITemplatingEngine, TemplatingEngineMetadata>> engineFactories,
             ICollection<Lazy<ITemplateProcessingBehavior, TemplateProcessingBehaviorMetadata>> behaviorFactories)
-            : base(injectableFactory)
+            : base(serviceFactory)
         {
-            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             engineFactories = engineFactories ?? throw new ArgumentNullException(nameof(engineFactories));
             behaviorFactories = behaviorFactories ?? throw new ArgumentNullException(nameof(behaviorFactories));
 
-            this.InjectableFactory = injectableFactory;
+            this.ServiceFactory = serviceFactory;
 
             engineFactories
                 .Order()
@@ -93,7 +93,7 @@ namespace Kephas.Templating
         /// <value>
         /// The context factory.
         /// </value>
-        protected IInjectableFactory InjectableFactory { get; }
+        protected IServiceFactory ServiceFactory { get; }
 
         /// <summary>
         /// Processes the provided template asynchronously returning the processed output.
@@ -122,7 +122,7 @@ namespace Kephas.Templating
 
             foreach (var behavior in behaviors)
             {
-                await behavior.BeforeProcessAsync(processingContext, cancellationToken).PreserveThreadContext();
+                await behavior.BeforeProcessAsync(processingContext, cancellationToken);
             }
 
             StringWriter? ownTextWriter = null;
@@ -138,7 +138,7 @@ namespace Kephas.Templating
 
                     var result = await engineFactory.Value
                         .ProcessAsync(template, model, processingContext.TextWriter!, processingContext, cancellationToken)
-                        .PreserveThreadContext();
+                        ;
 
                     if (ownsWriter)
                     {
@@ -159,7 +159,7 @@ namespace Kephas.Templating
 
                 foreach (var behavior in behaviors)
                 {
-                    await behavior.AfterProcessAsync(processingContext, cancellationToken).PreserveThreadContext();
+                    await behavior.AfterProcessAsync(processingContext, cancellationToken);
                 }
             }
             finally
@@ -227,7 +227,7 @@ namespace Kephas.Templating
             object? model,
             Action<ITemplateProcessingContext>? optionsConfig = null)
         {
-            var processingContext = this.InjectableFactory.Create<TemplateProcessingContext>();
+            var processingContext = this.ServiceFactory.Create<TemplateProcessingContext>();
             processingContext.Template = template;
             processingContext.Model = model;
 

@@ -23,7 +23,7 @@ return await new SwitchApp(args)
                     .ConfigureServices((ctx, services) =>
                     {
                         servicesBuilder.WithSerilogManager(ctx.Configuration);
-                        services.AddFromServicesBuilder(servicesBuilder);
+                        services.AddAppServices(servicesBuilder);
                     })
                     .UseServicesConfigurators(servicesBuilder);
             });

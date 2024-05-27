@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Model.Runtime.Construction
 {
     using System.Collections.Generic;
@@ -25,7 +23,7 @@ namespace Kephas.Model.Runtime.Construction
     /// <summary>
     /// The default runtime model element factory.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultRuntimeModelElementFactory : IRuntimeModelElementFactory
     {
         private readonly IDictionary<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata> modelElementConstructors;
@@ -54,7 +52,7 @@ namespace Kephas.Model.Runtime.Construction
                  into cfgGroup
                 select cfgGroup).ToDictionary(
                      g => typeRegistry.GetTypeInfo(g.Key),
-                     g => g.OrderBy(e => e.Metadata.ProcessingPriority).Select(e => e.CreateExportedValue()).ToList());
+                     g => g.OrderBy(e => e.Metadata.Priority).Select(e => e.CreateExportedValue()).ToList());
         }
 
         /// <summary>

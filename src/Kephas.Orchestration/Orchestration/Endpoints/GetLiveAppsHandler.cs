@@ -42,7 +42,7 @@ namespace Kephas.Orchestration.Endpoints
         public async Task<GetLiveAppsResponse> ProcessAsync(GetLiveAppsMessage message, IMessagingContext context, CancellationToken token)
         {
             var liveApps = await this.orchestrationManager.GetLiveAppsAsync(cancellationToken: token)
-                .PreserveThreadContext();
+                ;
             return new GetLiveAppsResponse
             {
                 Apps = liveApps.ToArray(),

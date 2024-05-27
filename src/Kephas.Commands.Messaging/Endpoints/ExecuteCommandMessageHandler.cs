@@ -46,7 +46,7 @@ namespace Kephas.Commands.Endpoints
             if (string.IsNullOrEmpty(message.Command)) throw new ArgumentException("The command name must not be null or empty.", nameof(message.Command));
 
             var result = await this.lazyCommandProcessor.Value
-                .ProcessAsync(message.Command!, message.Args, context, token).PreserveThreadContext();
+                .ProcessAsync(message.Command!, message.Args, context, token);
 
             return new ExecuteCommandResponse
             {

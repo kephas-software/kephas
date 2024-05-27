@@ -60,7 +60,7 @@ namespace Kephas.Application
         public virtual async Task<IOperationResult> SetupAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
             return new OperationResult()
-                .MergeAll(await this.ExecuteSetupCommandsAsync(appContext, cancellationToken).PreserveThreadContext())
+                .MergeAll(await this.ExecuteSetupCommandsAsync(appContext, cancellationToken))
                 .Complete();
         }
 
@@ -92,11 +92,11 @@ namespace Kephas.Application
             {
                 appSettings.SetupCommands = null;
                 await this.appConfiguration.UpdateSettingsAsync(context: appContext, cancellationToken: cancellationToken)
-                    .PreserveThreadContext();
+                    ;
             }
             catch (Exception ex)
             {
-                this.Logger.Error(
+                this.Logger.LogError(
                     ex,
                     "Error while updating the system settings for '{app}/{appInstance}'",
                     appId,
@@ -104,7 +104,7 @@ namespace Kephas.Application
             }
 
             // execute the commands
-            return await this.ExecuteSetupCommandsAsync(setupCommands, appContext, cancellationToken).PreserveThreadContext();
+            return await this.ExecuteSetupCommandsAsync(setupCommands, appContext, cancellationToken);
         }
 
         private async Task<IOperationResult> ExecuteSetupCommandsAsync(IEnumerable<object> setupCommands, IContext appContext, CancellationToken cancellationToken)
@@ -120,7 +120,7 @@ namespace Kephas.Application
                     }
                     else
                     {
-                        var cmdResult = await this.ExecuteCommandAsync(cmd, appContext, cancellationToken).PreserveThreadContext();
+                        var cmdResult = await this.ExecuteCommandAsync(cmd, appContext, cancellationToken);
                         var result = cmdResult.Value.LastOrDefault(r => r != null);
                         if (result == null)
                         {
@@ -135,7 +135,7 @@ namespace Kephas.Application
                 catch (Exception ex)
                 {
                     opResult.MergeException(new AggregateException($"Error while executing the setup command '{cmd}'", ex));
-                    this.Logger.Error(ex, "Error while executing the setup command '{command}'", cmd);
+                    this.Logger.LogError(ex, "Error while executing the setup command '{command}'", cmd);
                 }
             }
 

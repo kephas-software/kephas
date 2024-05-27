@@ -18,7 +18,7 @@ namespace Kephas.Application
     /// <summary>
     /// Application lifecycle behavior for setting up the application.
     /// </summary>
-    [ProcessingPriority(Priority.Highest)]
+    [Priority(Priority.Highest)]
     public class SetupAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
         private readonly IAppSetupService appSetupService;

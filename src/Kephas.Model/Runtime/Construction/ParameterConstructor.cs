@@ -18,7 +18,7 @@ namespace Kephas.Model.Runtime.Construction
     /// <summary>
     /// A parameter constructor.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class ParameterConstructor : ModelElementConstructorBase<Parameter, IParameter, IRuntimeParameterInfo>
     {
         /// <summary>

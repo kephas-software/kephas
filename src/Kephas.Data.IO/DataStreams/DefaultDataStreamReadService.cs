@@ -20,7 +20,7 @@ namespace Kephas.Data.IO.DataStreams
     /// <summary>
     /// A default data stream reader service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultDataStreamReadService : IDataStreamReadService
     {
         /// <summary>

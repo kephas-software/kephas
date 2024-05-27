@@ -40,7 +40,7 @@ namespace Kephas.Messaging.Tests.Events
         {
             var matchService = Substitute.For<IMessageMatchService>();
             matchService.IsMatch(Arg.Any<IMessageMatch>(), (IMessagingContext)Arg.Any<Type>()).Returns(true);
-            var hub = new MessagingEventHub(Substitute.For<IInjectableFactory>(), matchService, Substitute.For<IMessageHandlerRegistry>());
+            var hub = new MessagingEventHub(Substitute.For<IServiceFactory>(), matchService, Substitute.For<IMessageHandlerRegistry>());
             var calls = 0;
             using (var s = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => calls++))
             {
@@ -58,7 +58,7 @@ namespace Kephas.Messaging.Tests.Events
         {
             var matchService = Substitute.For<IMessageMatchService>();
             matchService.IsMatch(Arg.Any<IMessageMatch>(), (IMessagingContext)Arg.Any<Type>()).Returns(false);
-            var hub = new MessagingEventHub(Substitute.For<IInjectableFactory>(), matchService, Substitute.For<IMessageHandlerRegistry>());
+            var hub = new MessagingEventHub(Substitute.For<IServiceFactory>(), matchService, Substitute.For<IMessageHandlerRegistry>());
             var calls = 0;
             using (var s = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => calls++))
             {
@@ -76,7 +76,7 @@ namespace Kephas.Messaging.Tests.Events
         {
             var matchService = Substitute.For<IMessageMatchService>();
             matchService.IsMatch(Arg.Any<IMessageMatch>(), (IMessagingContext)Arg.Any<Type>()).Returns(true);
-            var hub = new MessagingEventHub(Substitute.For<IInjectableFactory>(), matchService, Substitute.For<IMessageHandlerRegistry>());
+            var hub = new MessagingEventHub(Substitute.For<IServiceFactory>(), matchService, Substitute.For<IMessageHandlerRegistry>());
             var s1calls = 0;
             var s2calls = 0;
             using var s1 = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => s1calls++);

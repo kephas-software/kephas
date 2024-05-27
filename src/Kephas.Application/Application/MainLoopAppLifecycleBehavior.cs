@@ -24,7 +24,7 @@ namespace Kephas.Application
     /// Makes sure that the application main loop has a chance to initialize before the application manager starts initializing the features.
     /// Sometimes the features and the behaviors order a shutdown (like a setup routine).
     /// </remarks>
-    [ProcessingPriority(Priority.Highest)]
+    [Priority(Priority.Highest)]
     public class MainLoopAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
         private readonly IAppMainLoop mainLoop;
@@ -50,7 +50,7 @@ namespace Kephas.Application
             IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.InitializeAsync(this.mainLoop, appContext, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.InitializeAsync(this.mainLoop, appContext, cancellationToken);
             return true.ToOperationResult();
         }
 
@@ -66,7 +66,7 @@ namespace Kephas.Application
             IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.FinalizeAsync(this.mainLoop, appContext, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.FinalizeAsync(this.mainLoop, appContext, cancellationToken);
             return true.ToOperationResult();
         }
     }

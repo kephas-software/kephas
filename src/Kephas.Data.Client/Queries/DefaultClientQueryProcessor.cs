@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Data.Client.Queries
 {
     using System;
@@ -30,7 +28,7 @@ namespace Kephas.Data.Client.Queries
     /// <summary>
     /// Base class for client query processors.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultClientQueryProcessor : IClientQueryProcessor
     {
         /// <summary>
@@ -43,7 +41,7 @@ namespace Kephas.Data.Client.Queries
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultClientQueryProcessor"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="clientQueryConverter">The client query converter.</param>
         /// <param name="conversionService">The conversion service.</param>
         /// <param name="typeResolver">The type resolver.</param>
@@ -51,7 +49,7 @@ namespace Kephas.Data.Client.Queries
         /// <param name="dataSpaceFactory">The data space factory.</param>
         /// <param name="typeRegistry">The type registry.</param>
         public DefaultClientQueryProcessor(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IClientQueryConverter clientQueryConverter,
             IDataConversionService conversionService,
             ITypeResolver typeResolver,
@@ -59,7 +57,7 @@ namespace Kephas.Data.Client.Queries
             IExportFactory<IDataSpace> dataSpaceFactory,
             IRuntimeTypeRegistry typeRegistry)
         {
-            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             clientQueryConverter = clientQueryConverter ?? throw new System.ArgumentNullException(nameof(clientQueryConverter));
             conversionService = conversionService ?? throw new ArgumentNullException(nameof(conversionService));
             typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
@@ -68,7 +66,7 @@ namespace Kephas.Data.Client.Queries
 
             this.DataSpaceFactory = dataSpaceFactory;
             this.TypeRegistry = typeRegistry;
-            this.InjectableFactory = injectableFactory;
+            this.ServiceFactory = serviceFactory;
             this.ClientQueryConverter = clientQueryConverter;
             this.ConversionService = conversionService;
             this.TypeResolver = typeResolver;
@@ -91,7 +89,7 @@ namespace Kephas.Data.Client.Queries
         /// <value>
         /// The context factory.
         /// </value>
-        public IInjectableFactory InjectableFactory { get; }
+        public IServiceFactory ServiceFactory { get; }
 
         /// <summary>
         /// Gets the client query converter.
@@ -148,7 +146,7 @@ namespace Kephas.Data.Client.Queries
 
                 var executeQueryMethod = ExecuteQueryAsyncMethod.MakeGenericMethod(clientEntityType, entityType);
                 var asyncResult = (Task<IList<object>>)executeQueryMethod.Call(this, query, executionContext, cancellationToken);
-                var clientEntities = await asyncResult.PreserveThreadContext();
+                var clientEntities = await asyncResult;
                 return clientEntities;
             }
         }
@@ -162,7 +160,7 @@ namespace Kephas.Data.Client.Queries
         /// </returns>
         protected virtual IClientQueryExecutionContext CreateExecutionContext(Action<IClientQueryExecutionContext> optionsConfig = null)
         {
-            var context = this.InjectableFactory.Create<ClientQueryExecutionContext>();
+            var context = this.ServiceFactory.Create<ClientQueryExecutionContext>();
             optionsConfig?.Invoke(context);
             return context;
         }
@@ -207,7 +205,7 @@ namespace Kephas.Data.Client.Queries
             };
             executionContext.QueryConversionConfig?.Invoke(queryConversionContext);
             var query = (IQueryable<TEntity>)this.ClientQueryConverter.ConvertQuery(clientQuery, queryConversionContext);
-            var entities = await query.ToListAsync(token).PreserveThreadContext();
+            var entities = await query.ToListAsync(token);
 
             // skip the conversion if the same types provided
             if (typeof(TClientEntity) == typeof(TEntity))
@@ -221,7 +219,7 @@ namespace Kephas.Data.Client.Queries
                 using var context = new DataConversionContext(dataSpace, this.ConversionService)
                     .RootTargetType(clientEntityTypeInfo.Type);
                 executionContext?.DataConversionConfig?.Invoke(entity, context);
-                var result = await this.ConversionService.ConvertAsync(entity, clientEntityTypeInfo.CreateInstance(), context, token).PreserveThreadContext();
+                var result = await this.ConversionService.ConvertAsync(entity, clientEntityTypeInfo.CreateInstance(), context, token);
                 mappings.Add(((TClientEntity)result.Target, entity));
             }
 

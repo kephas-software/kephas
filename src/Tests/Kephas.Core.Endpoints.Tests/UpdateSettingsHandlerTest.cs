@@ -50,7 +50,7 @@ namespace Kephas.Core.Endpoints.Tests
                 Substitute.For<IMessagingContext>(),
                 default);
 
-            Assert.AreEqual(SeverityLevel.Info, result.Severity);
+            Assert.AreEqual(LogLevel.Information, result.Severity);
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace Kephas.Core.Endpoints.Tests
                 Substitute.For<IMessagingContext>(),
                 default);
 
-            Assert.AreEqual(SeverityLevel.Info, result.Severity);
+            Assert.AreEqual(LogLevel.Information, result.Severity);
         }
     }
 }

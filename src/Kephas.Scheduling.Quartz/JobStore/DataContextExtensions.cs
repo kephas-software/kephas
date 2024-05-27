@@ -56,10 +56,10 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </returns>
         public static async Task AddCalendar(this IDataContext dataContext, string calendarName, global::Quartz.ICalendar calendar, CancellationToken cancellationToken = default)
         {
-            var entity = await dataContext.CreateAsync<Model.ICalendar>(cancellationToken: cancellationToken).PreserveThreadContext();
+            var entity = await dataContext.CreateAsync<Model.ICalendar>(cancellationToken: cancellationToken);
             entity.CalendarName = calendarName;
             entity.Content = ObjectSerializer.Serialize(calendar);
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </returns>
         public static async Task<IEnumerable<string>> GetCalendarNames(this IDataContext dataContext, string instanceName, CancellationToken cancellationToken = default)
         {
-            var calendars = await dataContext.Query<Model.ICalendar>().Where(c => c.InstanceName == instanceName).ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            var calendars = await dataContext.Query<Model.ICalendar>().Where(c => c.InstanceName == instanceName).ToListAsync(cancellationToken: cancellationToken);
             return calendars.Select(c => c.CalendarName).Distinct();
         }
 
@@ -109,7 +109,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             var calendar = await dataContext.FindOneAsync<Model.ICalendar>(
                                c => c.CalendarName == calendarName && c.InstanceName == instanceName,
                                throwIfNotFound: false,
-                               cancellationToken: cancellationToken).PreserveThreadContext();
+                               cancellationToken: cancellationToken);
             return calendar?.GetCalendar();
         }
 
@@ -128,10 +128,10 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             var entity = await dataContext.FindOneAsync<Model.ICalendar>(
                              c => c.InstanceName == instanceName && c.CalendarName == calendarName,
-                             cancellationToken: cancellationToken).PreserveThreadContext();
+                             cancellationToken: cancellationToken);
             entity.Content = ObjectSerializer.Serialize(calendar);
 
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
             return 1;
         }
 
@@ -166,13 +166,13 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </returns>
         public static async Task AddScheduler(this IDataContext dataContext, string instanceName, string instanceId, CancellationToken cancellationToken = default)
         {
-            var scheduler = await dataContext.CreateAsync<Model.IScheduler>(cancellationToken: cancellationToken).PreserveThreadContext();
+            var scheduler = await dataContext.CreateAsync<Model.IScheduler>(cancellationToken: cancellationToken);
             scheduler.InstanceName = instanceName;
             scheduler.InstanceId = instanceId;
             scheduler.State = SchedulerState.Started;
             scheduler.LastCheckIn = DateTime.Now;
 
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             var scheduler = await dataContext.BulkUpdateAsync<Model.IScheduler>(
                                 s => s.InstanceName == instanceName && s.InstanceId == instanceId,
                                 new { State = state },
-                                cancellationToken: cancellationToken).PreserveThreadContext();
+                                cancellationToken: cancellationToken);
         }
 
         #endregion
@@ -218,7 +218,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             var groups = await dataContext.Query<IPausedTriggerGroup>()
                              .Where(g => g.InstanceName == instanceName)
                              .ToListAsync(cancellationToken: cancellationToken)
-                             .PreserveThreadContext();
+                             ;
             return groups.Select(g => g.Group).Distinct().ToList();
         }
 
@@ -231,10 +231,10 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         public static async Task AddPausedTriggerGroup(this IDataContext dataContext, string instanceName, string group, CancellationToken cancellationToken = default)
         {
-            var entity = await dataContext.CreateAsync<IPausedTriggerGroup>(cancellationToken: cancellationToken).PreserveThreadContext();
+            var entity = await dataContext.CreateAsync<IPausedTriggerGroup>(cancellationToken: cancellationToken);
             entity.InstanceName = instanceName;
             entity.Group = group;
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
         }
 
         public static Task DeletePausedTriggerGroup(this IDataContext dataContext, string instanceName, GroupMatcher<TriggerKey> matcher, CancellationToken cancellationToken = default)
@@ -267,7 +267,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </returns>
         public static async Task AddFiredTrigger(this IDataContext dataContext, string instanceId, string firedInstanceId, Model.ITrigger trigger, Model.IJobDetail jobDetail, CancellationToken cancellationToken = default)
         {
-            var firedTrigger = await dataContext.CreateAsync<IFiredTrigger>(cancellationToken: cancellationToken).PreserveThreadContext();
+            var firedTrigger = await dataContext.CreateAsync<IFiredTrigger>(cancellationToken: cancellationToken);
 
             firedTrigger.FiredInstanceId = firedInstanceId;
             firedTrigger.UpdateFiredTrigger(trigger, jobDetail);
@@ -276,7 +276,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             firedTrigger.State = Model.TriggerState.Acquired; // TODO why is this overwritten?
             firedTrigger.InstanceId = instanceId;
 
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
         }
 
         /// <summary>
@@ -294,7 +294,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </returns>
         public static async Task UpdateFiredTrigger(this IDataContext dataContext, string instanceName, string instanceId, string firedInstanceId, Model.ITrigger trigger, Model.IJobDetail jobDetail, CancellationToken cancellationToken = default)
         {
-            var firedTrigger = await dataContext.FindOneAsync<IFiredTrigger>(t => t.InstanceName == instanceName && t.FiredInstanceId == firedInstanceId,cancellationToken: cancellationToken).PreserveThreadContext();
+            var firedTrigger = await dataContext.FindOneAsync<IFiredTrigger>(t => t.InstanceName == instanceName && t.FiredInstanceId == firedInstanceId,cancellationToken: cancellationToken);
 
             firedTrigger.UpdateFiredTrigger(trigger, jobDetail);
 
@@ -302,7 +302,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             firedTrigger.State = Model.TriggerState.Acquired; // TODO why is this overwritten?
             firedTrigger.InstanceId = instanceId;
 
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
         }
 
         /// <summary>
@@ -350,7 +350,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                 .BulkDeleteAsync<IFiredTrigger>(
                     t => t.InstanceName == instanceName && t.FiredInstanceId == firedInstanceId,
                     cancellationToken: cancellationToken)
-                .PreserveThreadContext();
+                ;
         }
 
         /// <summary>
@@ -368,7 +368,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             var result = await dataContext.BulkDeleteAsync<IFiredTrigger>(
                                  trigger => trigger.InstanceName == instanceName && trigger.InstanceId == instanceId,
                                  cancellationToken: cancellationToken)
-                             .PreserveThreadContext();
+                             ;
             return result;
         }
 
@@ -415,7 +415,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         public static async Task<global::Quartz.IJobDetail> GetJobDetail(this IDataContext dataContext, string instanceName, JobKey jobKey, CancellationToken cancellationToken = default)
         {
-            var job = await dataContext.GetJob(instanceName, jobKey, cancellationToken).PreserveThreadContext();
+            var job = await dataContext.GetJob(instanceName, jobKey, cancellationToken);
             return job?.GetJobDetail();
         }
 
@@ -432,7 +432,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             var jobs = await dataContext.Query<Model.IJobDetail>()
                            .Where(matcher.ToFilterExpression<Model.IJobDetail, JobKey>(instanceName))
                            .ToListAsync(cancellationToken: cancellationToken)
-                           .PreserveThreadContext();
+                           ;
             return jobs.Select(j => j.GetJobKey()).ToList();
         }
 
@@ -441,7 +441,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             var jobs = await dataContext.Query<Model.IJobDetail>()
                            .Where(j => j.InstanceName == instanceName)
                            .ToListAsync(cancellationToken: cancellationToken)
-                           .PreserveThreadContext();
+                           ;
             return jobs.Select(j => j.Group).Distinct().ToList();
         }
 
@@ -454,7 +454,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         public static async Task AddJob(this IDataContext dataContext, string instanceName, global::Quartz.IJobDetail jobDetail, CancellationToken cancellationToken = default)
         {
-            var job = await dataContext.CreateAsync<Model.IJobDetail>(cancellationToken: cancellationToken).PreserveThreadContext();
+            var job = await dataContext.CreateAsync<Model.IJobDetail>(cancellationToken: cancellationToken);
             job.InstanceName = instanceName;
             job.Name = jobDetail.Key.Name;
             job.Group = jobDetail.Key.Group;
@@ -466,7 +466,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             job.ConcurrentExecutionDisallowed = jobDetail.ConcurrentExecutionDisallowed;
             job.RequestsRecovery = jobDetail.RequestsRecovery;
 
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
         }
 
         public static async Task<long> UpdateJob(this IDataContext dataContext, string instanceName, global::Quartz.IJobDetail jobDetail, bool upsert, CancellationToken cancellationToken = default)
@@ -474,11 +474,11 @@ namespace Kephas.Scheduling.Quartz.JobStore
             var job = await dataContext.FindOneAsync<Model.IJobDetail>(
                 j => j.InstanceName == instanceName && j.Group == jobDetail.Key.Group && j.Name == jobDetail.Key.Name,
                 throwIfNotFound: !upsert,
-                cancellationToken).PreserveThreadContext();
+                cancellationToken);
 
             if (job == null)
             {
-                await dataContext.AddJob(instanceName, jobDetail, cancellationToken).PreserveThreadContext();
+                await dataContext.AddJob(instanceName, jobDetail, cancellationToken);
                 return 1;
             }
 
@@ -490,7 +490,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             job.ConcurrentExecutionDisallowed = jobDetail.ConcurrentExecutionDisallowed;
             job.RequestsRecovery = jobDetail.RequestsRecovery;
 
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
             return 1;
         }
 
@@ -498,7 +498,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             return await dataContext.Query<Model.IJobDetail>()
                        .Where(j => j.InstanceName == instanceName && j.Name == jobKey.Name && j.Group == jobKey.Group)
-                       .AnyAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                       .AnyAsync(cancellationToken: cancellationToken);
         }
 
         public static async Task UpdateJobData(this IDataContext dataContext, string instanceName, JobKey jobKey, JobDataMap jobDataMap, CancellationToken cancellationToken = default)
@@ -506,9 +506,9 @@ namespace Kephas.Scheduling.Quartz.JobStore
             var jobDetail = await dataContext.FindOneAsync<Model.IJobDetail>(
                     j => j.InstanceName == instanceName && j.Name == jobKey.Name && j.Group == jobKey.Group,
                     cancellationToken: cancellationToken)
-                .PreserveThreadContext();
+                ;
             jobDetail.JobDataMap = jobDataMap;
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
         }
         
         #endregion
@@ -529,7 +529,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
                 var trigger = await dataContext.FindOneAsync<Model.ITrigger>(
                                   t => t.InstanceName == instanceName && t.Name == key.Name && t.Group == key.Group,
-                                  cancellationToken: cancellationToken).PreserveThreadContext();
+                                  cancellationToken: cancellationToken);
                 return trigger.State;
         }
 
@@ -547,7 +547,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             var trigger = await dataContext.FindOneAsync<Model.ITrigger>(
                               t => t.InstanceName == instanceName && t.Name == key.Name && t.Group == key.Group,
-                              cancellationToken: cancellationToken).PreserveThreadContext();
+                              cancellationToken: cancellationToken);
             return trigger.JobDataMap;
         }
 
@@ -568,47 +568,47 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </returns>
         public static async Task<bool> TryAcquireLock(this IDataContext dataContext, string instanceName, LockType lockType, string instanceId, CancellationToken cancellationToken = default)
         {
-            Log.Trace("Trying to acquire lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
+            Log.LogTrace("Trying to acquire lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
             try
             {
                 var entity = await dataContext.CreateAsync<ILock>(cancellationToken: cancellationToken)
-                    .PreserveThreadContext();
+                    ;
                 entity.InstanceName = instanceName;
                 entity.LockType = lockType;
                 entity.InstanceId = instanceId;
                 entity.AcquiredAt = DateTime.Now;
 
-                await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
 
-                Log.Trace("Acquired lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
+                Log.LogTrace("Acquired lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
                 return true;
             }
             catch (Exception ex)
             {
-                Log.Trace(ex, "Failed to acquire lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
+                Log.LogTrace(ex, "Failed to acquire lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
                 return false;
             }
         }
 
         public static async Task<bool> ReleaseLock(this IDataContext dataContext, string instanceName, LockType lockType, string instanceId, CancellationToken cancellationToken = default)
         {
-            Log.Trace("Releasing lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
+            Log.LogTrace("Releasing lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
             var entity = await dataContext.FindOneAsync<ILock>(
                              l => l.InstanceName == instanceName && l.LockType == lockType && l.InstanceId == instanceId,
                              throwIfNotFound: false,
-                             cancellationToken: cancellationToken).PreserveThreadContext();
+                             cancellationToken: cancellationToken);
 
             if (entity == null)
             {
-                Log.Warn("Failed to release lock {instanceName}/{lockType} on {instanceId}. You do not own the lock.", instanceName, lockType, instanceId);
+                Log.LogWarning("Failed to release lock {instanceName}/{lockType} on {instanceId}. You do not own the lock.", instanceName, lockType, instanceId);
                 return false;
             }
 
             dataContext.Delete(entity);
 
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken);
 
-            Log.Trace("Released lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
+            Log.LogTrace("Released lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
             return true;
         }
 

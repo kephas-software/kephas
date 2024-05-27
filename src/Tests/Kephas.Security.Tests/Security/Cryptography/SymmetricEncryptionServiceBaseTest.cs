@@ -85,8 +85,8 @@ namespace Kephas.Core.Tests.Cryptography
         {
             private readonly Func<IEncryptionContext, SymmetricAlgorithm> algorithmCtor;
 
-            public TestEncryptionService(IInjectableFactory injectableFactory, Func<IEncryptionContext, SymmetricAlgorithm> algorithmCtor)
-                : base(() => injectableFactory.Create<EncryptionContext>(), algorithmCtor)
+            public TestEncryptionService(IServiceFactory serviceFactory, Func<IEncryptionContext, SymmetricAlgorithm> algorithmCtor)
+                : base(() => serviceFactory.Create<EncryptionContext>(), algorithmCtor)
             {
                 this.algorithmCtor = algorithmCtor;
             }

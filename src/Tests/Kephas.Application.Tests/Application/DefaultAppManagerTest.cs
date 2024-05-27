@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Tests.Application
 {
     using System;
@@ -280,7 +282,7 @@ namespace Kephas.Tests.Application
             var log = sb.ToString();
             if (!log.Contains("Error: {feature} ({featureKind}) failed to initialize. See the inner exception for more details. (InvalidOperationException)"))
             {
-                Assert.Warn($"The log does not contain 'Error: {{feature}} ({{featureKind}}) failed to initialize. See the inner exception for more details. (InvalidOperationException)'. Log: {log}.");
+                Assert.LogWarning($"The log does not contain 'Error: {{feature}} ({{featureKind}}) failed to initialize. See the inner exception for more details. (InvalidOperationException)'. Log: {log}.");
             }
 
             Assert.IsTrue(log.Contains("(InvalidOperationException)"));
@@ -314,7 +316,7 @@ namespace Kephas.Tests.Application
             var log = sb.ToString();
             if (!log.Contains("Error: {feature} ({featureKind}) failed to initialize. See the inner exception for more details. (InvalidOperationException)"))
             {
-                Assert.Warn($"The log does not contain 'Error: {{feature}} ({{featureKind}}) failed to initialize. See the inner exception for more details. (InvalidOperationException)'. Log: {log}.");
+                Assert.LogWarning($"The log does not contain 'Error: {{feature}} ({{featureKind}}) failed to initialize. See the inner exception for more details. (InvalidOperationException)'. Log: {log}.");
             }
 
             Assert.IsTrue(log.Contains("(InvalidOperationException)"));

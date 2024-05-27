@@ -28,9 +28,9 @@ public class ExpandoJsonConverter : JsonConverterBase
     /// </summary>
     /// <param name="typeRegistry">The runtime type registry.</param>
     /// <param name="typeResolver">The type resolver.</param>
-    /// <param name="injectableFactory">The injectable factory.</param>
-    public ExpandoJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IInjectableFactory injectableFactory)
-        : this(typeRegistry, typeResolver, injectableFactory, typeof(IDynamic), typeof(Expando))
+    /// <param name="serviceFactory">The injectable factory.</param>
+    public ExpandoJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IServiceFactory serviceFactory)
+        : this(typeRegistry, typeResolver, serviceFactory, typeof(IDynamic), typeof(Expando))
     {
     }
 
@@ -39,15 +39,15 @@ public class ExpandoJsonConverter : JsonConverterBase
     /// </summary>
     /// <param name="typeRegistry">The runtime type registry.</param>
     /// <param name="typeResolver">The type resolver.</param>
-    /// <param name="injectableFactory">The injectable factory.</param>
+    /// <param name="serviceFactory">The injectable factory.</param>
     /// <param name="expandoBaseType">The expando base type.</param>
     /// <param name="defaultImplementationType">The expando default implementation type.</param>
-    protected ExpandoJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IInjectableFactory injectableFactory, Type expandoBaseType, Type defaultImplementationType)
+    protected ExpandoJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IServiceFactory serviceFactory, Type expandoBaseType, Type defaultImplementationType)
     {
         expandoBaseType = expandoBaseType ?? throw new ArgumentNullException(nameof(expandoBaseType));
         defaultImplementationType = defaultImplementationType ?? throw new ArgumentNullException(nameof(defaultImplementationType));
 
-        this.InjectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+        this.ServiceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
         this.TypeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
         this.TypeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
 
@@ -73,7 +73,7 @@ public class ExpandoJsonConverter : JsonConverterBase
     /// <summary>
     /// Gets the injectable factory.
     /// </summary>
-    protected IInjectableFactory InjectableFactory { get; }
+    protected IServiceFactory ServiceFactory { get; }
 
     /// <summary>
     /// Gets the runtime type registry.
@@ -270,7 +270,7 @@ public class ExpandoJsonConverter : JsonConverterBase
         var expando = (IDynamic)(
             createInstance
                 ? expandoTypeInfo.Type.IsInjectable()
-                    ? this.InjectableFactory.Create(expandoTypeInfo.Type)
+                    ? this.ServiceFactory.Create(expandoTypeInfo.Type)
                     : expandoTypeInfo.CreateInstance()
                 : existingValue)!;
         return expando;

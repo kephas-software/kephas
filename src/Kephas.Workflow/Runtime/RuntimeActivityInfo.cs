@@ -91,7 +91,7 @@ namespace Kephas.Workflow.Runtime
 
             if (activity is IOperation operation)
             {
-                return await operation.ExecuteAsync(context, cancellationToken).PreserveThreadContext();
+                return await operation.ExecuteAsync(context, cancellationToken);
             }
 
             // TODO localization

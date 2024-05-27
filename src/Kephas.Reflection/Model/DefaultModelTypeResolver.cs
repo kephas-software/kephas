@@ -16,7 +16,7 @@ namespace Kephas.Model
     /// <summary>
     /// A default model type resolver.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultModelTypeResolver : IModelTypeResolver
     {
         /// <summary>

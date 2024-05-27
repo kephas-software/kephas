@@ -19,11 +19,9 @@ namespace Kephas.Messaging.Tests
     using Kephas.Configuration;
     using Kephas.Cryptography;
     using Kephas.Services;
-    using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
     using Kephas.Serialization.Json;
-    using Kephas.Services;
     using Kephas.Testing;
     using Kephas.Testing.Application;
     using NSubstitute;
@@ -56,20 +54,20 @@ namespace Kephas.Messaging.Tests
                                         Substitute.For<IAuthenticationService>(),
                                         args.Length > 0 ? args[0] : null);
 
-            container.Resolve(typeof(IExportFactory<IInjectableFactory>))
+            container.Resolve(typeof(IExportFactory<IServiceFactory>))
                 .Returns(ci =>
-                        new ExportFactory<IInjectableFactory>(
+                        new ExportFactory<IServiceFactory>(
                             () => this.CreateInjectableFactoryMock(ctxCreator)));
 
-            container.Resolve(typeof(Lazy<IInjectableFactory>))
+            container.Resolve(typeof(Lazy<IServiceFactory>))
                 .Returns(ci =>
-                    new Lazy<IInjectableFactory>(
+                    new Lazy<IServiceFactory>(
                         () => this.CreateInjectableFactoryMock(ctxCreator)));
 
-            container.Resolve(typeof(IInjectableFactory))
+            container.Resolve(typeof(IServiceFactory))
                 .Returns(ci => this.CreateInjectableFactoryMock(ctxCreator));
 
-            container.Resolve<IInjectableFactory>()
+            container.Resolve<IServiceFactory>()
                 .Returns(ci => this.CreateInjectableFactoryMock(ctxCreator));
 
             return container;

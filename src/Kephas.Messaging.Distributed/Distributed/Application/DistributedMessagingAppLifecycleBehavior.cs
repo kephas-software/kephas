@@ -24,7 +24,7 @@ namespace Kephas.Messaging.Distributed.Application
     /// <summary>
     /// A distributed messaging application lifecycle behavior.
     /// </summary>
-    [ProcessingPriority(Priority.High)]
+    [Priority(Priority.High)]
     public class DistributedMessagingAppLifecycleBehavior : Loggable, IAppLifecycleBehavior
     {
         private readonly IConfiguration<DistributedMessagingSettings> messagingConfig;
@@ -59,7 +59,7 @@ namespace Kephas.Messaging.Distributed.Application
         {
             this.InitializeConfig(appContext);
 
-            await ServiceHelper.InitializeAsync(this.messageBroker, appContext, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.InitializeAsync(this.messageBroker, appContext, cancellationToken);
             return true.ToOperationResult();
         }
 
@@ -75,7 +75,7 @@ namespace Kephas.Messaging.Distributed.Application
             IAppContext appContext,
             CancellationToken cancellationToken = default)
         {
-            await ServiceHelper.FinalizeAsync(this.messageBroker, appContext, cancellationToken).PreserveThreadContext();
+            await ServiceHelper.FinalizeAsync(this.messageBroker, appContext, cancellationToken);
             return true.ToOperationResult();
         }
 
@@ -89,7 +89,7 @@ namespace Kephas.Messaging.Distributed.Application
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error while trying to set messaging default values.");
+                this.Logger.LogError(ex, "Error while trying to set messaging default values.");
             }
         }
     }

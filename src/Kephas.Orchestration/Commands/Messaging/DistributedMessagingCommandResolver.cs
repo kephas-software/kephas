@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Commands.Messaging
 {
     using System;
@@ -20,7 +22,7 @@ namespace Kephas.Commands.Messaging
     /// <summary>
     /// Distributed messaging command resolver when messaging is available.
     /// </summary>
-    [OverridePriority(Priority.BelowNormal)]
+    [Priority(Priority.BelowNormal)]
     public class DistributedMessagingCommandResolver : DefaultCommandResolver
     {
         private readonly Lazy<IMessageBroker> lazyMessageBroker;
@@ -59,7 +61,7 @@ namespace Kephas.Commands.Messaging
         private (IDynamic? args, object? runAt, bool isOneWay) ExtractEnvelopeArgs(IDynamic? args)
         {
             var expandoArgs = args?.ToDynamic();
-            if (args == null || expandoArgs == null || !expandoArgs.HasDynamicMember(RunAtOperationInfo.RunAtArg))
+            if (args == null || expandoArgs == null || !expandoArgs.HasKey(RunAtOperationInfo.RunAtArg))
             {
                 return (args, null, false);
             }
@@ -67,7 +69,7 @@ namespace Kephas.Commands.Messaging
             var runAt = args[RunAtOperationInfo.RunAtArg];
             args[RunAtOperationInfo.RunAtArg] = null;
 
-            if (!expandoArgs.HasDynamicMember(RunAtOperationInfo.OneWayArg))
+            if (!expandoArgs.HasKey(RunAtOperationInfo.OneWayArg))
             {
                 return (args, runAt, false);
             }

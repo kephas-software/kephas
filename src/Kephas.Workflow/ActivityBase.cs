@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
 namespace Kephas.Workflow
 {
     using System;
@@ -16,7 +18,6 @@ namespace Kephas.Workflow
     using System.Runtime.CompilerServices;
 
     using Kephas.Collections.Concurrent;
-    using Kephas.Data.Formatting;
     using Kephas.Dynamic;
     using Kephas.Operations;
     using Kephas.Reflection;
@@ -26,7 +27,7 @@ namespace Kephas.Workflow
     /// <summary>
     /// Base implementation of <see cref="IActivity"/>.
     /// </summary>
-    public abstract class ActivityBase : IActivity, IExpandoMixin, IDataFormattable
+    public abstract class ActivityBase : IActivity, IExpandoMixin, ISerializable
     {
         private ConcurrentDictionary<string, object?>? dynamicData;
         private object? value;
@@ -179,7 +180,7 @@ namespace Kephas.Workflow
         /// </summary>
         /// <param name="context">Optional. The formatting context.</param>
         /// <returns>A serialization friendly object representing this object.</returns>
-        public virtual object ToData(object? context = null)
+        public virtual object GetObjectData(object? context = null)
         {
             return new Expando
             {

@@ -282,13 +282,13 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             }
         }
 
-        [OverridePriority(Priority.High)]
+        [Priority(Priority.High)]
         public class InProcessStaticMessageQueueStore : InProcessMessageQueueStore
         {
             private static readonly ConcurrentDictionary<string, IMessageQueue> Channels = new ();
 
-            public InProcessStaticMessageQueueStore(IInjectableFactory injectableFactory)
-                : base(injectableFactory)
+            public InProcessStaticMessageQueueStore(IServiceFactory serviceFactory)
+                : base(serviceFactory)
             {
             }
 

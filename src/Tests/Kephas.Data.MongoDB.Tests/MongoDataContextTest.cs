@@ -68,7 +68,7 @@ namespace Kephas.Data.MongoDB.Tests
 
             using var dataSpace2 = container.Resolve<IDataSpace>();
             var dataContext2 = dataSpace2[typeof(NotificationMongoEntity)];
-            var entity2 = await dataContext.FindAsync<NotificationMongoEntity>(entity.Id).PreserveThreadContext();
+            var entity2 = await dataContext.FindAsync<NotificationMongoEntity>(entity.Id);
 
             Assert.AreEqual($"Description for {entity.Id} updated!", entity2.Description);
 
@@ -93,7 +93,7 @@ namespace Kephas.Data.MongoDB.Tests
             var count = await dataContext
                 .Query<NotificationMongoEntity>()
                 .Where(e => e.Id == entity.Id)
-                .CountAsync().PreserveThreadContext();
+                .CountAsync();
 
             Assert.AreEqual(1, count);
 
@@ -117,7 +117,7 @@ namespace Kephas.Data.MongoDB.Tests
             var dataContext2 = dataSpace2[typeof(NotificationMongoEntity)];
             var entity2 = await dataContext
                 .Query<NotificationMongoEntity>()
-                .SingleAsync(e => e.Id == entity.Id).PreserveThreadContext();
+                .SingleAsync(e => e.Id == entity.Id);
 
             Assert.AreEqual(entity.Id, entity2.Id);
 
@@ -142,7 +142,7 @@ namespace Kephas.Data.MongoDB.Tests
             var entities = await dataContext
                 .Query<NotificationMongoEntity>()
                 .Where(e => e.Id == entity.Id)
-                .ToListAsync().PreserveThreadContext();
+                .ToListAsync();
             var entity2 = entities.Single();
 
             Assert.AreEqual($"Description for {entity.Id}", entity2.Description);

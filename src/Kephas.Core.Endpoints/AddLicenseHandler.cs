@@ -82,15 +82,15 @@ namespace Kephas.Core.Endpoints
                 return new Response
                 {
                     Message = $"License saved to '{message.Name}' at the license location.",
-                    Severity = SeverityLevel.Info,
+                    Severity = LogLevel.Information,
                 };
             }
 
-            this.logger.Warn($"License saved to '{message.Name}' at the license location. The existing license was renamed to '{message.Name + oldFileRename}'.");
+            this.logger.LogWarning($"License saved to '{message.Name}' at the license location. The existing license was renamed to '{message.Name + oldFileRename}'.");
             return new Response
             {
                 Message = $"License saved to '{message.Name}' at the license location. The existing license was renamed to '{message.Name + oldFileRename}'.",
-                Severity = SeverityLevel.Warning,
+                Severity = LogLevel.Warning,
             };
         }
     }

@@ -9,7 +9,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Diagnostics.CodeAnalysis;
-using Kephas.Data;
 using Kephas.Services;
 
 namespace Kephas.Messaging

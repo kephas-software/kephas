@@ -13,12 +13,9 @@ namespace Kephas.Reflection.Dynamic
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Kephas.Data;
     using Kephas.Dynamic;
     using Kephas.Resources;
     using Kephas.Serialization;
-    using Kephas.Services;
 
     /// <summary>
     /// Dynamic type information.

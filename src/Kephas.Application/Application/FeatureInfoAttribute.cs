@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Metadata;
+
 namespace Kephas.Application
 {
     using System;
@@ -18,7 +20,7 @@ namespace Kephas.Application
     /// <summary>
     /// Attribute providing feature information.
     /// </summary>
-    public class FeatureInfoAttribute : Attribute, IMetadataValue<FeatureInfo>
+    public class FeatureInfoAttribute : Attribute, IServiceMetadataValue<FeatureInfo>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureInfoAttribute"/> class.

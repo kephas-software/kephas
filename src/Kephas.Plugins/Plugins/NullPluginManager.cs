@@ -23,7 +23,7 @@ namespace Kephas.Plugins
     /// <summary>
     /// The null plugin manager.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullPluginManager : IPluginManager
     {
         /// <summary>

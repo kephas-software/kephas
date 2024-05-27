@@ -14,7 +14,7 @@ namespace Kephas.Reflection
     /// <summary>
     /// Null service implementation for <see cref="ITypeResolver"/>.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullTypeResolver : ITypeResolver
     {
         /// <summary>

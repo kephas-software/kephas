@@ -63,7 +63,7 @@ namespace Kephas.Data.Commands
 
             var findAsync = FindAsyncMethod.MakeGenericMethod(operationContext.EntityType);
             var asyncResult = (Task<IFindResult>)findAsync.Call(this, operationContext, cancellationToken);
-            var result = await asyncResult.PreserveThreadContext();
+            var result = await asyncResult;
             return result;
         }
 
@@ -110,7 +110,7 @@ namespace Kephas.Data.Commands
             }
 
             var query = dataContext.Query<T>().Where(criteria).Take(2);
-            result = await query.ToListAsync(cancellationToken).PreserveThreadContext();
+            result = await query.ToListAsync(cancellationToken);
             return this.GetFindResult(findContext, result, criteria);
         }
 

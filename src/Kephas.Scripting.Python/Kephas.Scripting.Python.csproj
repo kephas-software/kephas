@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net8.0;net6.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -49,9 +49,6 @@
         <NeutralLanguage>en</NeutralLanguage>
         <DefineConstants>KEPHAS</DefineConstants>
 
-        <SignAssembly>True</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-        
         <RootNamespace>Kephas.Scripting</RootNamespace>
     </PropertyGroup>
 
@@ -62,13 +59,9 @@
 	<ItemGroup>
         <PackageReference Include="IronPython" Version="3.4.0-alpha1" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="System.CodeDom" Version="6.0.0" />
     </ItemGroup>

@@ -47,7 +47,7 @@ namespace Kephas.Data.Conversion.TargetResolvers
                        targetType,
                        (TSource)sourceEntity,
                        sourceEntityEntry,
-                       cancellationToken).PreserveThreadContext();
+                       cancellationToken);
         }
 
         /// <summary>

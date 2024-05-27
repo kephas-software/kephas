@@ -12,14 +12,13 @@ using Kephas.Services;
 using Kephas.Reflection;
 using Kephas.Runtime;
 using Kephas.Serialization.Json.ContractResolvers;
-using Kephas.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 /// <summary>
 /// Converter for instances implementing
 /// </summary>
-[ProcessingPriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class InjectableConverter : JsonConverterBase
 {
     /// <summary>
@@ -27,10 +26,10 @@ public class InjectableConverter : JsonConverterBase
     /// </summary>
     /// <param name="typeRegistry">The runtime type registry.</param>
     /// <param name="typeResolver">The type resolver.</param>
-    /// <param name="injectableFactory">The injectable factory.</param>
-    public InjectableConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IInjectableFactory injectableFactory)
+    /// <param name="serviceFactory">The injectable factory.</param>
+    public InjectableConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, IServiceFactory serviceFactory)
     {
-        this.InjectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+        this.ServiceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
         this.TypeRegistry = typeRegistry ?? throw new ArgumentNullException(nameof(typeRegistry));
         this.TypeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
     }
@@ -38,7 +37,7 @@ public class InjectableConverter : JsonConverterBase
     /// <summary>
     /// Gets the injectable factory.
     /// </summary>
-    protected IInjectableFactory InjectableFactory { get; }
+    protected IServiceFactory ServiceFactory { get; }
 
     /// <summary>
     /// Gets the runtime type registry.
@@ -219,7 +218,7 @@ public class InjectableConverter : JsonConverterBase
     protected virtual IInjectable CreateInjectable(IRuntimeTypeInfo injectableTypeInfo, object? existingValue)
     {
         var createInstance = existingValue == null;
-        var injectable = (IInjectable)(createInstance ? this.InjectableFactory.Create(injectableTypeInfo.Type) : existingValue)!;
+        var injectable = (IInjectable)(createInstance ? this.ServiceFactory.Create(injectableTypeInfo.Type) : existingValue)!;
         return injectable;
     }
 

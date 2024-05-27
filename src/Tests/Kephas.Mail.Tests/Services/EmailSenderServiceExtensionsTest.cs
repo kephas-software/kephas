@@ -35,7 +35,7 @@ namespace Kephas.Mail.Tests.Services
             sender.CreateEmailMessageBuilder(Arg.Any<IContext>()).Returns(builder);
             sender.SendAsync(Arg.Any<IEmailMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(0));
 
-            await sender.SendAsync("me@me.com", "subject", "body").PreserveThreadContext();
+            await sender.SendAsync("me@me.com", "subject", "body");
 
             var message = builder.EmailMessage;
             Assert.AreEqual("me@me.com", message.To.Single().Address);
@@ -52,7 +52,7 @@ namespace Kephas.Mail.Tests.Services
             sender.CreateEmailMessageBuilder(Arg.Any<IContext>()).Returns(builder);
             sender.SendAsync(Arg.Any<IEmailMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(0));
 
-            await sender.SendAsync(new [] { "me@me.com", "you@you.com" }, "subject", "body").PreserveThreadContext();
+            await sender.SendAsync(new [] { "me@me.com", "you@you.com" }, "subject", "body");
 
             var message = builder.EmailMessage;
             Assert.AreEqual("me@me.com", message.To.First().Address);

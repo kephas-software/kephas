@@ -20,7 +20,7 @@ namespace Kephas.Security.Authorization
     /// <summary>
     /// A null authorization service.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
+    [Priority(Priority.Lowest)]
     public class NullAuthorizationService : IAuthorizationService
     {
         /// <summary>

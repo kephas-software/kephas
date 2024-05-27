@@ -22,7 +22,7 @@ namespace Kephas.Data.Model.Behaviors
     /// <summary>
     /// An entity validation behavior using the model space classifier, if applicable, for validating the entity using annotations.
     /// </summary>
-    [ProcessingPriority(Priority.High)]
+    [Priority(Priority.High)]
     public class EntityValidationBehavior : DataAnnotationsBehaviorBase<object>
     {
         /// <summary>

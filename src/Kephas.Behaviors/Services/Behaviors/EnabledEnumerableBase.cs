@@ -19,19 +19,19 @@ namespace Kephas.Services.Behaviors
     public abstract class EnabledEnumerableBase<TContract, TMetadata>
         where TContract : class
     {
-        private readonly IInjectableFactory injectableFactory;
+        private readonly IServiceFactory serviceFactory;
         private readonly ICollection<IEnabledServiceBehaviorRule> behaviorFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnabledEnumerableBase{TContract,TMetadata}"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         protected EnabledEnumerableBase(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             ILazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>? behaviorFactories = null)
         {
-            this.injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            this.serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             this.behaviorFactories = this.ComputeEnabledServiceBehaviorRules(behaviorFactories);
         }
 
@@ -71,7 +71,7 @@ namespace Kephas.Services.Behaviors
         protected IServiceBehaviorContext<TContract, TMetadata> CreateServiceBehaviorContext(
             Func<TContract> serviceFactory,
             TMetadata metadata) =>
-            this.injectableFactory.Create<ServiceBehaviorContext<TContract, TMetadata>>(serviceFactory, metadata);
+            this.serviceFactory.Create<ServiceBehaviorContext<TContract, TMetadata>>(serviceFactory, metadata);
 
         private IList<IEnabledServiceBehaviorRule> ComputeEnabledServiceBehaviorRules(ILazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>? behaviorFactories)
         {

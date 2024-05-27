@@ -24,7 +24,7 @@ namespace Kephas.Application
     /// <summary>
     /// A default application shutdown awaiter.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultAppMainLoop : Loggable, IAppMainLoop
     {
         private readonly CancellationTokenSource cancellationTokenSource;
@@ -73,7 +73,7 @@ namespace Kephas.Application
             {
                 try
                 {
-                    await this.RunAttendedAsync(this.cancellationTokenSource.Token).PreserveThreadContext();
+                    await this.RunAttendedAsync(this.cancellationTokenSource.Token);
 
                     this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
@@ -91,7 +91,7 @@ namespace Kephas.Application
 
             try
             {
-                await this.RunUnattendedAsync(this.cancellationTokenSource.Token).PreserveThreadContext();
+                await this.RunUnattendedAsync(this.cancellationTokenSource.Token);
 
                 this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
 

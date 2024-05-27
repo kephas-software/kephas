@@ -19,7 +19,7 @@ namespace Kephas.Mail.Services
     /// <summary>
     /// A MailKit system email sender service.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class MailKitSystemEmailSenderService : MailKitEmailSenderServiceBase, ISystemEmailSenderService
     {
         /// <summary>

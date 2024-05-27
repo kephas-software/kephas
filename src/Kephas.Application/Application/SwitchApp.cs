@@ -96,7 +96,7 @@ public class SwitchApp : AppBase
             if (appEntry.Condition?.Invoke(this.ServicesBuilder, this.AppArgs) ?? true)
             {
                 this.RunningApp = appEntry.AppFactory(this.ServicesBuilder, this.AppArgs);
-                return await this.RunningApp.RunAsync(cancellationToken).PreserveThreadContext();
+                return await this.RunningApp.RunAsync(cancellationToken);
             }
         }
 
@@ -117,7 +117,7 @@ public class SwitchApp : AppBase
             return;
         }
 
-        await this.RunningApp.ShutdownAsync(cancellationToken).PreserveThreadContext();
+        await this.RunningApp.ShutdownAsync(cancellationToken);
     }
 
     /// <summary>

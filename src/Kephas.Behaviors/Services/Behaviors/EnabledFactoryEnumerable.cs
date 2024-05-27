@@ -19,7 +19,7 @@ namespace Kephas.Services.Behaviors
     /// </summary>
     /// <typeparam name="TContract">The contract type.</typeparam>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class EnabledFactoryEnumerable<TContract, TMetadata> : EnabledEnumerableBase<TContract, TMetadata>, IEnabledFactoryEnumerable<TContract, TMetadata>
         where TContract : class
     {
@@ -29,13 +29,13 @@ namespace Kephas.Services.Behaviors
         /// Initializes a new instance of the <see cref="EnabledFactoryEnumerable{TContract,TMetadata}"/> class.
         /// </summary>
         /// <param name="services">The services to filter.</param>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         public EnabledFactoryEnumerable(
             IFactoryEnumerable<TContract, TMetadata> services,
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             ILazyEnumerable<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>? behaviorFactories = null)
-            : base(injectableFactory, behaviorFactories)
+            : base(serviceFactory, behaviorFactories)
         {
             this.services = services;
         }

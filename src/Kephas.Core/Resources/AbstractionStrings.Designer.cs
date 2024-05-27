@@ -114,29 +114,11 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot load assembly &apos;{assembly}&apos;. See the exception for more information..
-        /// </summary>
-        public static string AppRuntimeBase_CannotLoadAssembly_Exception {
-            get {
-                return ResourceManager.GetString("AppRuntimeBase_CannotLoadAssembly_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Multiple constructors marked with {0} are declared for service implementation &apos;{1}&apos; with contract &apos;{2}&apos;..
         /// </summary>
         public static string AppServiceMultipleInjectConstructors {
             get {
                 return ResourceManager.GetString("AppServiceMultipleInjectConstructors", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Could not add the item {0} to the concurrent collection..
-        /// </summary>
-        public static string ConcurrentCollection_CannotAddItem_Exception {
-            get {
-                return ResourceManager.GetString("ConcurrentCollection_CannotAddItem_Exception", resourceCulture);
             }
         }
         
@@ -191,24 +173,6 @@ namespace Kephas.Resources {
         public static string DefaultMediaTypeProvider_NotFound_Exception {
             get {
                 return ResourceManager.GetString("DefaultMediaTypeProvider_NotFound_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Multiple services found for {0}/{1}..
-        /// </summary>
-        public static string DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception {
-            get {
-                return ResourceManager.GetString("DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No service found for {0}/{1}..
-        /// </summary>
-        public static string DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception {
-            get {
-                return ResourceManager.GetString("DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception", resourceCulture);
             }
         }
         
@@ -276,56 +240,11 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An item with the same key is already added..
-        /// </summary>
-        public static string DuplicateKeyException_Message {
-            get {
-                return ResourceManager.GetString("DuplicateKeyException_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot invoke non-delegate value of {0}; it has a type of {1}..
         /// </summary>
         public static string ExpandoBase_CannotInvokeNonDelegate_Exception {
             get {
                 return ResourceManager.GetString("ExpandoBase_CannotInvokeNonDelegate_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Multiple nodes found for value &apos;{0}&apos;..
-        /// </summary>
-        public static string GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception {
-            get {
-                return ResourceManager.GetString("GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The injectable type &apos;{0}&apos; must be an instantiable class..
-        /// </summary>
-        public static string InjectableFactory_Create_InjectableTypeMustBeInstantiable {
-            get {
-                return ResourceManager.GetString("InjectableFactory_Create_InjectableTypeMustBeInstantiable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Arguments may not be null when instantiating injectable of type &apos;{0}&apos;..
-        /// </summary>
-        public static string InjectableFactory_Create_NonNullArguments {
-            get {
-                return ResourceManager.GetString("InjectableFactory_Create_NonNullArguments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot find a matching constructor for signature {0} in type &apos;{1}&apos;..
-        /// </summary>
-        public static string InjectableFactory_GetCreatorFunc_CannotFindMatchingConstructor {
-            get {
-                return ResourceManager.GetString("InjectableFactory_GetCreatorFunc_CannotFindMatchingConstructor", resourceCulture);
             }
         }
         
@@ -371,15 +290,6 @@ namespace Kephas.Resources {
         public static string NullServiceExceptionMessage {
             get {
                 return ResourceManager.GetString("NullServiceExceptionMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The provided comparer function produces cycles in the sorted graph. This indicates that there are cyclic dependencies which need to be broken in order to produce an ordered set. Check the following nodes: {0}..
-        /// </summary>
-        public static string PartialOrderedSet_BadComparer_ProducesCycles_Exception {
-            get {
-                return ResourceManager.GetString("PartialOrderedSet_BadComparer_ProducesCycles_Exception", resourceCulture);
             }
         }
         
@@ -479,15 +389,6 @@ namespace Kephas.Resources {
         public static string SerializationExtensions_GetContextFactory_CannotGetContextFactory {
             get {
                 return ResourceManager.GetString("SerializationExtensions_GetContextFactory_CannotGetContextFactory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot resolve priorities of service &apos;{0}&apos; for two instances: {1} and {2}..
-        /// </summary>
-        public static string ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception {
-            get {
-                return ResourceManager.GetString("ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception", resourceCulture);
             }
         }
         

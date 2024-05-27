@@ -19,7 +19,6 @@ namespace Kephas.Messaging.Distributed
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Data;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed.Routing;
@@ -34,7 +33,7 @@ namespace Kephas.Messaging.Distributed
     /// <summary>
     /// Base implementation of a <see cref="IMessageBroker"/>.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultMessageBroker : Loggable, IMessageBroker, IAsyncInitializable, IAsyncFinalizable, IIdentifiable
     {
         /// <summary>
@@ -44,7 +43,7 @@ namespace Kephas.Messaging.Distributed
             ConcurrentDictionary<string, (CancellationTokenSource? cancellationTokenSource,
                 TaskCompletionSource<object?> taskCompletionSource)> messageSyncDictionary = new ();
 
-        private readonly IInjectableFactory injectableFactory;
+        private readonly IServiceFactory serviceFactory;
         private readonly ILazyEnumerable<IMessageRouter, MessageRouterMetadata> routerFactories;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
         private ICollection<RouterEntry>? routerMap;
@@ -52,17 +51,17 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageBroker"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="routerFactories">The enabled router factories.</param>
         public DefaultMessageBroker(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IAppRuntime appRuntime,
             IEnabledLazyEnumerable<IMessageRouter, MessageRouterMetadata> routerFactories)
-            : base(injectableFactory)
+            : base(serviceFactory)
         {
             this.initMonitor = new InitializationMonitor<IMessageBroker>(this.GetType());
-            this.injectableFactory = injectableFactory;
+            this.serviceFactory = serviceFactory;
             this.routerFactories = routerFactories.Order();
             this.Id = $"{appRuntime.GetAppId()}/{appRuntime.GetAppInstanceId()}";
         }
@@ -121,7 +120,7 @@ namespace Kephas.Messaging.Distributed
                 this.LogBeforeSend(brokeredMessage);
                 this.RouterDispatchAsync(brokeredMessage, context, cancellationToken)
                     .ContinueWith(
-                        t => this.Logger.Error(t.Exception, Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
+                        t => this.Logger.LogError(t.Exception, Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
                         TaskContinuationOptions.OnlyOnFaulted);
                 return Task.FromResult<object?>(null);
             }
@@ -131,7 +130,7 @@ namespace Kephas.Messaging.Distributed
             this.LogBeforeSend(brokeredMessage);
             this.RouterDispatchAsync(brokeredMessage, context, cancellationToken)
                 .ContinueWith(
-                    t => this.Logger.Error(t.Exception, Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
+                    t => this.Logger.LogError(t.Exception, Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
                     TaskContinuationOptions.OnlyOnFaulted);
 
             // Returns an awaiter for the answer, must pair with the reply ID.
@@ -162,7 +161,7 @@ namespace Kephas.Messaging.Distributed
                     metadata: f.Metadata))
                 .ToList();
 
-            await Task.WhenAll(asyncRouterMap.Select(m => m.asyncRouter)).PreserveThreadContext();
+            await Task.WhenAll(asyncRouterMap.Select(m => m.asyncRouter));
 
             this.routerMap = asyncRouterMap
                                 .Where(m => m.asyncRouter.Result != null)
@@ -173,7 +172,7 @@ namespace Kephas.Messaging.Distributed
                 map.Router.ReplyReceived += this.HandleReplyReceived;
             }
 
-            this.Logger.Debug("Message broker {messageBroker} registered message routers: {routers}.", this, this.Id, this.routerMap.Select(r => r.Metadata.ServiceType).ToArray());
+            this.Logger.LogDebug("Message broker {messageBroker} registered message routers: {routers}.", this, this.Id, this.routerMap.Select(r => r.Metadata.ServiceType).ToArray());
 
             this.initMonitor.Complete();
         }
@@ -193,7 +192,7 @@ namespace Kephas.Messaging.Distributed
                 foreach (var (_, _, router, _) in this.routerMap)
                 {
                     router.ReplyReceived -= this.HandleReplyReceived;
-                    await ServiceHelper.FinalizeAsync(router, cancellationToken: cancellationToken).PreserveThreadContext();
+                    await ServiceHelper.FinalizeAsync(router, cancellationToken: cancellationToken);
                 }
             }
 
@@ -221,7 +220,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual IDispatchingContext CreateDispatchingContext(object? message, Action<IDispatchingContext>? optionsConfig = null)
         {
-            var context = this.injectableFactory.Create<DispatchingContext>(message).Merge(optionsConfig);
+            var context = this.serviceFactory.Create<DispatchingContext>(message).Merge(optionsConfig);
             return context;
         }
 
@@ -239,7 +238,7 @@ namespace Kephas.Messaging.Distributed
             IDispatchingContext context,
             CancellationToken cancellationToken)
         {
-            var results = await this.CollectRouterDispatchResultsAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
+            var results = await this.CollectRouterDispatchResultsAsync(brokeredMessage, context, cancellationToken);
             var replies = results
                 .Where(t => t.action == RoutingInstruction.Reply)
                 .Select(t => t.reply)
@@ -251,7 +250,7 @@ namespace Kephas.Messaging.Distributed
                 // router results indicating that the broker should process replies
                 // will generate cascade router dispatches, even for 'null' replies.
                 var replyTasks = replies.Select(r => this.RouterDispatchReplyAsync(r!, brokeredMessage, context, cancellationToken));
-                await Task.WhenAll(replyTasks).PreserveThreadContext();
+                await Task.WhenAll(replyTasks);
             }
         }
 
@@ -274,7 +273,7 @@ namespace Kephas.Messaging.Distributed
             using var replyContext = this.CreateDispatchingContext(
                 reply,
                 ctx => ctx.Impersonate(sendingContext).ReplyTo(message));
-            await this.RouterDispatchAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
+            await this.RouterDispatchAsync(replyContext.BrokeredMessage, replyContext, cancellationToken);
         }
 
         /// <summary>
@@ -291,7 +290,7 @@ namespace Kephas.Messaging.Distributed
             var replyToMessageId = replyMessage.ReplyTo;
             if (string.IsNullOrEmpty(replyToMessageId))
             {
-                this.Logger.Warn(Strings.DefaultMessageBroker_MissingReplyToMessageId_Exception, nameof(IBrokeredMessage.ReplyTo), replyMessage);
+                this.Logger.LogWarning(Strings.DefaultMessageBroker_MissingReplyToMessageId_Exception, nameof(IBrokeredMessage.ReplyTo), replyMessage);
                 return;
             }
 
@@ -308,7 +307,7 @@ namespace Kephas.Messaging.Distributed
                         {
                             if (t.IsFaulted)
                             {
-                                this.Logger.Error(Strings.DefaultMessageBroker_ErrorsOccurredWhileRedirecting_Exception, replyMessage);
+                                this.Logger.LogError(Strings.DefaultMessageBroker_ErrorsOccurredWhileRedirecting_Exception, replyMessage);
                             }
 
                             redirectContext?.Dispose();
@@ -352,7 +351,7 @@ namespace Kephas.Messaging.Distributed
                 throw new InvalidOperationException(Strings.DefaultMessageBroker_BadReceiverMatchProviderType_Exception.FormatWith(receiverMatchProviderType, typeof(IReceiverMatchProvider)));
             }
 
-            var provider = (IReceiverMatchProvider)this.injectableFactory.Create(receiverMatchProviderType);
+            var provider = (IReceiverMatchProvider)this.serviceFactory.Create(receiverMatchProviderType);
             var receiverMatch = provider.GetReceiverMatch(context);
             return this.GetReceiverMatch(receiverMatch, context);
         }
@@ -380,16 +379,16 @@ namespace Kephas.Messaging.Distributed
             try
             {
                 var router = f.Value;
-                await ServiceHelper.InitializeAsync(router, context, cancellationToken).PreserveThreadContext();
+                await ServiceHelper.InitializeAsync(router, context, cancellationToken);
                 return router;
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, "Error while trying to create and initialize router '{router}'.", f.Metadata.ServiceType);
+                this.Logger.LogWarning(ex, "Error while trying to create and initialize router '{router}'.", f.Metadata.ServiceType);
                 f.Metadata[InitializationException] = ex;
                 if (f.Metadata.IsOptional)
                 {
-                    this.Logger.Warn("Router '{router}' will be ignored.", f.Metadata.ServiceType);
+                    this.Logger.LogWarning("Router '{router}' will be ignored.", f.Metadata.ServiceType);
                     return null;
                 }
 
@@ -425,7 +424,7 @@ namespace Kephas.Messaging.Distributed
                     throw new MessagingException(Strings.DefaultMessageBroker_CannotHandleMessagesWithoutRecipients_Exception);
                 }
 
-                var (action, reply) = await this.GetRouterDispatchResultAsync(brokeredMessage, context, router, cancellationToken).PreserveThreadContext();
+                var (action, reply) = await this.GetRouterDispatchResultAsync(brokeredMessage, context, router, cancellationToken);
                 return new[] { (action, reply, router) };
             }
 
@@ -445,7 +444,7 @@ namespace Kephas.Messaging.Distributed
             if (recipientMappings.Count == 1)
             {
                 var router = recipientMappings[0].router!;
-                var (action, reply) = await this.GetRouterDispatchResultAsync(brokeredMessage, context, router, cancellationToken).PreserveThreadContext();
+                var (action, reply) = await this.GetRouterDispatchResultAsync(brokeredMessage, context, router, cancellationToken);
                 return new[] { (action, reply, router) };
             }
 
@@ -456,7 +455,7 @@ namespace Kephas.Messaging.Distributed
                 .ToList();
 
             var routerTasks = routerMappings.Select(m => (m.router, task: this.GetRouterDispatchResultAsync(brokeredMessage.Clone(m.recipients), context, m.router, cancellationToken))).ToList();
-            await Task.WhenAll(routerTasks.Select(rt => rt.task)).PreserveThreadContext();
+            await Task.WhenAll(routerTasks.Select(rt => rt.task));
             return routerTasks.Select(rt => (rt.task.Result.action, rt.task.Result.reply, rt.router!)).ToArray();
         }
 
@@ -471,16 +470,16 @@ namespace Kephas.Messaging.Distributed
                 var recipients = (brokeredMessage.Recipients?.Any() ?? false)
                     ? $"recipients : {string.Join(", ", brokeredMessage.Recipients)}"
                     : $"no recipients";
-                this.Logger.Debug("Message {message} has {recipients}; using router {router}.", brokeredMessage, recipients, router.GetType());
+                this.Logger.LogDebug("Message {message} has {recipients}; using router {router}.", brokeredMessage, recipients, router.GetType());
             }
 
             if (context.InputRouter == router && !string.IsNullOrEmpty(brokeredMessage.ReplyTo))
             {
-                this.Logger.Warn(Strings.DefaultMessageBroker_ReplyToMessageNotFound_Exception, brokeredMessage);
+                this.Logger.LogWarning(Strings.DefaultMessageBroker_ReplyToMessageNotFound_Exception, brokeredMessage);
                 return (RoutingInstruction.None, (IMessageBase?)null);
             }
 
-            return await router.DispatchAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
+            return await router.DispatchAsync(brokeredMessage, context, cancellationToken);
         }
 
         private TaskCompletionSource<object?> GetTaskCompletionSource(IBrokeredMessage brokeredMessage)
@@ -525,7 +524,7 @@ namespace Kephas.Messaging.Distributed
         {
             if (!added)
             {
-                this.Logger.Error(Strings.DefaultMessageBroker_LogOnEnqueue_NotAddedError, brokeredMessage.Id, brokeredMessage, brokeredMessage.Timeout);
+                this.Logger.LogError(Strings.DefaultMessageBroker_LogOnEnqueue_NotAddedError, brokeredMessage.Id, brokeredMessage, brokeredMessage.Timeout);
                 return;
             }
 
@@ -534,7 +533,7 @@ namespace Kephas.Messaging.Distributed
                 return;
             }
 
-            this.Logger.Debug(Strings.DefaultMessageBroker_LogOnEnqueue_Success, brokeredMessage.Id, brokeredMessage, brokeredMessage.Timeout);
+            this.Logger.LogDebug(Strings.DefaultMessageBroker_LogOnEnqueue_Success, brokeredMessage.Id, brokeredMessage, brokeredMessage.Timeout);
         }
 
         /// <summary>
@@ -548,7 +547,7 @@ namespace Kephas.Messaging.Distributed
                 return;
             }
 
-            this.Logger.Debug("Sending brokered message '{message}'.", brokeredMessage);
+            this.Logger.LogDebug("Sending brokered message '{message}'.", brokeredMessage);
         }
 
         /// <summary>
@@ -563,7 +562,7 @@ namespace Kephas.Messaging.Distributed
             }
 
             // TODO localization
-            this.Logger.Debug("Received brokered message '{message}'.", brokeredMessage);
+            this.Logger.LogDebug("Received brokered message '{message}'.", brokeredMessage);
         }
 
         /// <summary>
@@ -579,7 +578,7 @@ namespace Kephas.Messaging.Distributed
             }
 
             // TODO localization
-            this.Logger.Warn(timeoutException, "Timeout after {timeout:c} for '{message}'.", brokeredMessage.Timeout, brokeredMessage);
+            this.Logger.LogWarning(timeoutException, "Timeout after {timeout:c} for '{message}'.", brokeredMessage.Timeout, brokeredMessage);
         }
 
         /// <summary>

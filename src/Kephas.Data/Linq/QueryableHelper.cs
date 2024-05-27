@@ -404,7 +404,7 @@ namespace Kephas.Data.Linq
 
             if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
-                var result = await asyncProvider.ExecuteAsync(query.Expression, cancellationToken).PreserveThreadContext();
+                var result = await asyncProvider.ExecuteAsync(query.Expression, cancellationToken);
 
                 if (result == null)
                 {

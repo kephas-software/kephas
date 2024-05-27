@@ -22,7 +22,7 @@ namespace Kephas.Data.Model.Analysis
     /// <summary>
     /// A reference properties provider which uses the model space.
     /// </summary>
-    [OverridePriority(Priority.BelowNormal)]
+    [Priority(Priority.BelowNormal)]
     public class ModelRefPropertiesProvider : DefaultRefPropertiesProvider
     {
         /// <summary>

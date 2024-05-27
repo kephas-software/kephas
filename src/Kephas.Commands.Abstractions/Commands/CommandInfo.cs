@@ -62,7 +62,7 @@ namespace Kephas.Commands
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return $"{this.Name} {this.Args.AsArgs()}";
+            return $"{this.Name} {this.Args}";
         }
 
         /// <summary>

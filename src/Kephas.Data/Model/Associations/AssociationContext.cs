@@ -11,7 +11,6 @@ namespace Kephas.Data.Model.Associations
     using System.Collections.Generic;
     using Kephas.Services;
     using Kephas.Reflection;
-    using Kephas.Services;
 
     /// <summary>
     /// Context for association operations.

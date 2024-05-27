@@ -36,7 +36,7 @@ namespace Kephas.Logging.Serilog
         /// </summary>
         /// <remarks>
         /// Note for implementors: the <paramref name="exception"/> may be <c>null</c>, so be cautious and handle this case too.
-        /// For example, the <see cref="LoggerExtensions.Log(ILogger,LogLevel,string,object[])"/> extension method passes a <c>null</c> exception.
+        /// For example, the <see cref="LoggingExtensions.Log(ILogger,LogLevel,string,object[])"/> extension method passes a <c>null</c> exception.
         /// </remarks>
         /// <param name="level">The logging level.</param>
         /// <param name="exception">The exception.</param>

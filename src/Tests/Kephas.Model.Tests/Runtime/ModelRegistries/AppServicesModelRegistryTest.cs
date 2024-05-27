@@ -15,9 +15,6 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
-
-    using Kephas.Application;
-    using Kephas.Logging;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.ModelRegistries;
     using Kephas.Runtime;

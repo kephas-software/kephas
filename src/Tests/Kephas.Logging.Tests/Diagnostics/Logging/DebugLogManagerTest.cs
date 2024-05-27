@@ -14,7 +14,6 @@ namespace Kephas.Tests.Diagnostics.Logging
     using System.Text;
 
     using Kephas.Diagnostics.Logging;
-    using Kephas.Logging;
     using NUnit.Framework;
 
     [TestFixture]
@@ -36,7 +35,7 @@ namespace Kephas.Tests.Diagnostics.Logging
             logger.Fatal(new ArgumentException("arg-1"), "Bad arg 1");
 
             var log = sb.ToString();
-            Assert.AreEqual("logger-name: Fatal: Bad arg 1 () System.ArgumentException: arg-1", log);
+            Assert.AreEqual("logger-name: Critical: Bad arg 1 () System.ArgumentException: arg-1", log);
         }
 
         [Test]
@@ -55,7 +54,7 @@ namespace Kephas.Tests.Diagnostics.Logging
             logger.Fatal(new ArgumentException("arg-1"), "Bad arg 1", "a1", 2);
 
             var log = sb.ToString();
-            Assert.AreEqual("logger-name: Fatal: Bad arg 1 (a1, 2) System.ArgumentException: arg-1", log);
+            Assert.AreEqual("logger-name: Critical: Bad arg 1 (a1, 2) System.ArgumentException: arg-1", log);
         }
 
         [Test]
@@ -67,7 +66,7 @@ namespace Kephas.Tests.Diagnostics.Logging
             logger.Fatal(new ArgumentException("arg-1"), "Bad arg 1");
 
             var log = sb.ToString();
-            Assert.AreEqual("[logger-name] [Fatal] Bad arg 1. System.ArgumentException: arg-1\r\n", log);
+            Assert.AreEqual("[logger-name] [Critical] Bad arg 1. System.ArgumentException: arg-1\r\n", log);
         }
 
         [Test]
@@ -79,7 +78,7 @@ namespace Kephas.Tests.Diagnostics.Logging
             logger.Fatal(new ArgumentException("arg-1"), "Bad arg 1", "a1", 2);
 
             var log = sb.ToString();
-            Assert.AreEqual("[logger-name] [Fatal] Bad arg 1 (a1, 2). System.ArgumentException: arg-1\r\n", log);
+            Assert.AreEqual("[logger-name] [Critical] Bad arg 1 (a1, 2). System.ArgumentException: arg-1\r\n", log);
         }
     }
 }

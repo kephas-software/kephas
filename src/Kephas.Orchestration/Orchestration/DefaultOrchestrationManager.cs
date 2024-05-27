@@ -46,7 +46,7 @@ namespace Kephas.Orchestration
     /// <summary>
     /// The default orchestration manager.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class DefaultOrchestrationManager : Loggable, IOrchestrationManager, IAsyncInitializable, IAsyncFinalizable
     {
         private readonly IExportFactory<IProcessStarterFactory> processStarterFactoryFactory;
@@ -188,13 +188,13 @@ namespace Kephas.Orchestration
                 throw new ArgumentException($"Expected an instance of {nameof(IAppContext)}.", nameof(context));
             }
 
-            await this.InitializeLiveAppsAsync(cancellationToken).PreserveThreadContext();
+            await this.InitializeLiveAppsAsync(cancellationToken);
 
             this.appStartedSubscription = this.EventHub.Subscribe<AppStartedEvent>(this.HandleAppStartedAsync);
             this.appStoppedSubscription = this.EventHub.Subscribe<AppStoppedEvent>(this.HandleAppStoppedAsync);
             this.appHeartbeatSubscription = this.EventHub.Subscribe<AppHeartbeatEvent>(this.HandleAppHeartbeatAsync);
 
-            this.Logger.Debug("The orchestration manager is initialized.");
+            this.Logger.LogDebug("The orchestration manager is initialized.");
         }
 
         /// <summary>
@@ -281,9 +281,9 @@ namespace Kephas.Orchestration
 
             var processStarter = processStarterFactory.CreateProcessStarter();
 
-            await this.EventHub.PublishAsync(new AppStartingEvent { AppInfo = appInfo.GetRuntimeAppInfo() }, this.AppContext, cancellationToken).PreserveThreadContext();
+            await this.EventHub.PublishAsync(new AppStartingEvent { AppInfo = appInfo.GetRuntimeAppInfo() }, this.AppContext, cancellationToken);
 
-            var processStartResult = await processStarter.StartAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            var processStartResult = await processStarter.StartAsync(cancellationToken: cancellationToken);
             processStartResult[nameof(AppInfo)] = appInfo;
             return processStartResult;
         }
@@ -314,7 +314,7 @@ namespace Kephas.Orchestration
                     var response = await this.MessageProcessor.ProcessAsync(
                         stopMessage,
                         ctx => ctx.Merge(optionsConfig),
-                        cancellationToken).PreserveThreadContext();
+                        cancellationToken);
                     IOperationResult result = new OperationResult().Complete();
                     result[nameof(StopAppResponse)] = response;
                     return result;
@@ -330,7 +330,7 @@ namespace Kephas.Orchestration
                             stopMessage,
                             new Endpoint(appId: runtimeAppInfo.AppId, appInstanceId: runtimeAppInfo.AppInstanceId),
                             ctx => ctx.Merge(optionsConfig),
-                            cancellationToken).PreserveThreadContext();
+                            cancellationToken);
 
                         // wait for the notification or process termination
                         const int delayms = 100;
@@ -339,7 +339,7 @@ namespace Kephas.Orchestration
                         var process = this.TryGetProcess(runtimeAppInfo);
                         while (!stopped && elapsed < timeout && !(process?.HasExited ?? false))
                         {
-                            await Task.Delay(delayms).PreserveThreadContext();
+                            await Task.Delay(delayms);
                         }
                     }
 
@@ -354,7 +354,7 @@ namespace Kephas.Orchestration
             catch (Exception ex)
             {
                 // TODO localization
-                this.Logger.Error(ex, $"Error while trying to stop application {runtimeAppInfo}.");
+                this.Logger.LogError(ex, $"Error while trying to stop application {runtimeAppInfo}.");
                 return new OperationResult().Fail(ex);
             }
         }
@@ -385,7 +385,7 @@ namespace Kephas.Orchestration
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, $"Could not get the process with ID: {runtimeAppInfo.ProcessId}.");
+                this.Logger.LogWarning(ex, $"Could not get the process with ID: {runtimeAppInfo.ProcessId}.");
                 return null;
             }
         }
@@ -411,11 +411,11 @@ namespace Kephas.Orchestration
             try
             {
                 var heartbeatEvent = this.CreateAppHeartbeatEvent();
-                await this.MessageBroker.PublishAsync(heartbeatEvent, ctx => ctx.Impersonate((IContext)state)).PreserveThreadContext();
+                await this.MessageBroker.PublishAsync(heartbeatEvent, ctx => ctx.Impersonate((IContext)state));
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Exception on application heartbeat.");
+                this.Logger.LogError(ex, "Exception on application heartbeat.");
             }
         }
 

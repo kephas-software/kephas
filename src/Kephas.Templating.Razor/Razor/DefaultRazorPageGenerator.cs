@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Razor.Language;
 /// <summary>
 /// The default implementation of the <see cref="IRazorPageGenerator"/>.
 /// </summary>
-[OverridePriority(Priority.Low)]
+[Priority(Priority.Low)]
 public class DefaultRazorPageGenerator : Loggable, IRazorPageGenerator
 {
     /// <summary>
@@ -45,14 +45,14 @@ public class DefaultRazorPageGenerator : Loggable, IRazorPageGenerator
         var cSharpDocument = codeDocument.GetCSharpDocument();
         if (cSharpDocument.Diagnostics.Any())
         {
-            this.Logger.Error($"One or more parse errors encountered. This will not prevent the generator from continuing: {Environment.NewLine}{{diagnostics}}.", cSharpDocument.Diagnostics);
+            this.Logger.LogError($"One or more parse errors encountered. This will not prevent the generator from continuing: {Environment.NewLine}{{diagnostics}}.", cSharpDocument.Diagnostics);
 
             var diagnostics = string.Join(Environment.NewLine, cSharpDocument.Diagnostics);
             cSharpDocument.Diagnostics.ForEach(m =>
             {
                 if (m.Severity is RazorDiagnosticSeverity.Error)
                 {
-                    genResult.MergeException(new OperationException(m.GetMessage()) { Severity = SeverityLevel.Error });
+                    genResult.MergeException(new OperationException(m.GetMessage()) { Severity = LogLevel.Error });
                 }
                 else
                 {

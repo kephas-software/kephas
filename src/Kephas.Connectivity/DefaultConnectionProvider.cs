@@ -28,22 +28,22 @@ public class DefaultConnectionProvider : Loggable, IConnectionProvider
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultConnectionProvider"/> class.
     /// </summary>
-    /// <param name="injectableFactory">The injectable factory.</param>
+    /// <param name="serviceFactory">The injectable factory.</param>
     /// <param name="factoryFactories">The factory factories.</param>
     /// <param name="behaviorFactories">Optional. The behavior factories.</param>
     public DefaultConnectionProvider(
-        IInjectableFactory injectableFactory,
+        IServiceFactory serviceFactory,
         ICollection<Lazy<IConnectionFactory, ConnectionFactoryMetadata>> factoryFactories,
         ICollection<IExportFactory<IConnectionCreateBehavior, ConnectionCreateBehaviorMetadata>>? behaviorFactories = null)
-        : base(injectableFactory)
+        : base(serviceFactory)
     {
-        injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+        serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
         factoryFactories = factoryFactories ?? throw new ArgumentNullException(nameof(factoryFactories));
 
         this.behaviorFactories = behaviorFactories?.Order().ToList()
                                  ?? new List<IExportFactory<IConnectionCreateBehavior, ConnectionCreateBehaviorMetadata>>();
 
-        this.InjectableFactory = injectableFactory;
+        this.ServiceFactory = serviceFactory;
 
         factoryFactories
             .Order()
@@ -66,7 +66,7 @@ public class DefaultConnectionProvider : Loggable, IConnectionProvider
     /// <value>
     /// The context factory.
     /// </value>
-    protected IInjectableFactory InjectableFactory { get; }
+    protected IServiceFactory ServiceFactory { get; }
 
     /// <summary>
     /// Creates the connection configured through the connection options.
@@ -156,7 +156,7 @@ public class DefaultConnectionProvider : Loggable, IConnectionProvider
     /// </returns>
     protected virtual IConnectionContext CreateConnectionContext(Uri host, ICredentials? credentials = null, string? kind = null, Action<IConnectionContext>? optionsConfig = null)
     {
-        var context = this.InjectableFactory.Create<ConnectionContext>();
+        var context = this.ServiceFactory.Create<ConnectionContext>();
 
         context.Host = host;
         context.Credentials = credentials;

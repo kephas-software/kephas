@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging;
+
 namespace Kephas.Workflow.Interaction
 {
     using System;
@@ -36,7 +38,7 @@ namespace Kephas.Workflow.Interaction
         public ResumeNextActivitySignal(string message)
             : base(message)
         {
-            this.Severity = SeverityLevel.Info;
+            this.Severity = LogLevel.Information;
         }
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace Kephas.Workflow.Interaction
         public ResumeNextActivitySignal(string message, Exception inner)
             : base(message, inner)
         {
-            this.Severity = SeverityLevel.Info;
+            this.Severity = LogLevel.Information;
         }
 
         /// <summary>
@@ -56,6 +58,6 @@ namespace Kephas.Workflow.Interaction
         /// <value>
         /// The severity.
         /// </value>
-        public SeverityLevel Severity { get; }
+        public LogLevel Severity { get; }
     }
 }

@@ -13,7 +13,7 @@ namespace Kephas.Security;
 /// <summary>
 /// <see cref="IIdentityAccessor"/> getting a <c>null</c> identity.
 /// </summary>
-[OverridePriority(Priority.Lowest)]
+[Priority(Priority.Lowest)]
 public class NullIdentityAccessor : IIdentityAccessor
 {
     /// <summary>

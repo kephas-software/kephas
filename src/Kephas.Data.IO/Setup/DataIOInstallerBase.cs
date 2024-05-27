@@ -35,20 +35,20 @@ namespace Kephas.Data.IO.Setup
         /// <summary>
         /// Initializes a new instance of the <see cref="DataIOInstallerBase"/> class.
         /// </summary>
-        /// <param name="injectableFactory">The injectable factory.</param>
+        /// <param name="serviceFactory">The injectable factory.</param>
         /// <param name="dataImportService">The data import service.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
         protected DataIOInstallerBase(
-            IInjectableFactory injectableFactory,
+            IServiceFactory serviceFactory,
             IDataImportService dataImportService,
             IExportFactory<IDataSpace> dataSpaceFactory)
-            : base(injectableFactory)
+            : base(serviceFactory)
         {
-            injectableFactory = injectableFactory ?? throw new ArgumentNullException(nameof(injectableFactory));
+            serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
             dataImportService = dataImportService ?? throw new System.ArgumentNullException(nameof(dataImportService));
             dataSpaceFactory = dataSpaceFactory ?? throw new System.ArgumentNullException(nameof(dataSpaceFactory));
 
-            this.InjectableFactory = injectableFactory;
+            this.ServiceFactory = serviceFactory;
             this.DataImportService = dataImportService;
             this.DataSpaceFactory = dataSpaceFactory;
         }
@@ -59,7 +59,7 @@ namespace Kephas.Data.IO.Setup
         /// <value>
         /// The context factory.
         /// </value>
-        public IInjectableFactory InjectableFactory { get; }
+        public IServiceFactory ServiceFactory { get; }
 
         /// <summary>
         /// Gets the data import service.
@@ -91,7 +91,7 @@ namespace Kephas.Data.IO.Setup
         {
             using (var dataSetupContext = this.CreateDataSetupContext(optionsConfig))
             {
-                return await this.InstallDataCoreAsync(dataSetupContext, cancellationToken).PreserveThreadContext();
+                return await this.InstallDataCoreAsync(dataSetupContext, cancellationToken);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Kephas.Data.IO.Setup
         {
             using (var dataSetupContext = this.CreateDataSetupContext(optionsConfig))
             {
-                return await this.UninstallDataCoreAsync(dataSetupContext, cancellationToken).PreserveThreadContext();
+                return await this.UninstallDataCoreAsync(dataSetupContext, cancellationToken);
             }
         }
 
@@ -152,7 +152,7 @@ namespace Kephas.Data.IO.Setup
         /// </returns>
         protected virtual IDataSetupContext CreateDataSetupContext(Action<IDataSetupContext>? optionsConfig = null)
         {
-            return this.InjectableFactory.Create<DataSetupContext>().Merge(optionsConfig);
+            return this.ServiceFactory.Create<DataSetupContext>().Merge(optionsConfig);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace Kephas.Data.IO.Setup
             {
                 foreach (var dataFilePath in dataFilePaths)
                 {
-                    var fileResult = await this.ImportDataFileAsync(dataSetupContext, dataFilePath, cancellationToken).PreserveThreadContext();
+                    var fileResult = await this.ImportDataFileAsync(dataSetupContext, dataFilePath, cancellationToken);
                     result.MergeMessages(fileResult);
                 }
             }
@@ -248,7 +248,7 @@ namespace Kephas.Data.IO.Setup
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Exception while importing {file}.", dataFilePath);
+                this.Logger.LogError(ex, "Exception while importing {file}.", dataFilePath);
                 return ex.ToOperationResult();
             }
         }

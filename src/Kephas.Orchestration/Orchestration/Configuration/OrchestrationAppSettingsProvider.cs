@@ -22,7 +22,7 @@ namespace Kephas.Orchestration.Configuration
     /// Settings provider for <see cref="AppSettings"/> retrieving them from the <see cref="OrchestrationSettings"/>
     /// for the current application instance.
     /// </summary>
-    [OverridePriority(Priority.AboveNormal)]
+    [Priority(Priority.AboveNormal)]
     [SettingsType(typeof(AppSettings))]
     public class OrchestrationAppSettingsProvider : ISettingsProvider
     {

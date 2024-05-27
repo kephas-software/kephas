@@ -18,7 +18,7 @@ namespace Kephas.Orchestration
     /// <summary>
     /// The default implementation of the <see cref="IHostInfoProvider"/>.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [Priority(Priority.Low)]
     public class HostInfoProvider : IHostInfoProvider
     {
         private readonly IAppRuntime appRuntime;

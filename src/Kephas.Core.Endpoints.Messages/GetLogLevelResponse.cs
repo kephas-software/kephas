@@ -7,7 +7,6 @@
 
 namespace Kephas.Core.Endpoints
 {
-    using Kephas.Logging;
     using Kephas.Messaging.Messages;
 
     /// <summary>

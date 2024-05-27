@@ -79,7 +79,7 @@ namespace Kephas.Application.AspNetCore.Controllers
             }
 
             var identity = await this.AuthenticationService.GetIdentityAsync(this.User, cancellationToken: cancellationToken)
-                               .PreserveThreadContext();
+                               ;
 
             return identity;
         }
