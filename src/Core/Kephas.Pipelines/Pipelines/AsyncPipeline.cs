@@ -34,7 +34,7 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
         ILogger<AsyncPipeline<TTarget, TOperationArgs, TResult>>? logger = null)
     {
         this.behaviors = behaviors;
-        this.Logger = logger;
+        Logger = logger;
     }
 
     /// <summary>
@@ -57,12 +57,12 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
         Func<Task<TResult>> operation,
         CancellationToken cancellationToken = default)
     {
-        var pipelineBehaviors = this.GetPipelineBehaviors();
+        var pipelineBehaviors = GetPipelineBehaviors();
         if (pipelineBehaviors?.Count is not > 0)
         {
-            if (this.Logger.IsDebugEnabled())
+            if (Logger.IsDebugEnabled())
             {
-                this.Logger?.LogDebug(
+                Logger?.LogDebug(
                     PipelinesStrings.Pipeline_ProcessAsync_InvokingOperation_Message,
                     typeof(TTarget),
                     typeof(TOperationArgs),
@@ -71,9 +71,9 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
 
             var result = operation();
 
-            if (this.Logger.IsDebugEnabled())
+            if (Logger.IsDebugEnabled())
             {
-                this.Logger?.LogDebug(
+                Logger?.LogDebug(
                     PipelinesStrings.Pipeline_ProcessAsync_InvokedOperation_Message,
                     typeof(TTarget),
                     typeof(TOperationArgs),
@@ -89,11 +89,11 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
         {
             var hasBehavior = enumerator.MoveNext();
             var behavior = hasBehavior ? enumerator.Current : null;
-            if (this.Logger.IsDebugEnabled())
+            if (Logger.IsDebugEnabled())
             {
                 if (hasBehavior)
                 {
-                    this.Logger?.LogDebug(
+                    Logger?.LogDebug(
                         PipelinesStrings.Pipeline_ProcessAsync_InvokingBehavior_Message,
                         behavior?.GetType(),
                         typeof(TTarget),
@@ -102,7 +102,7 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
                 }
                 else
                 {
-                    this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokingOperation_Message,
+                    Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokingOperation_Message,
                         typeof(TTarget),
                         typeof(TOperationArgs),
                         typeof(TResult));
@@ -115,11 +115,11 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
                     : throw new NullReferenceException(PipelinesStrings.Pipeline_ProcessAsync_NullBehavior_Exception)
                 : await operation();
 
-            if (this.Logger.IsDebugEnabled())
+            if (Logger.IsDebugEnabled())
             {
                 if (hasBehavior)
                 {
-                    this.Logger?.LogDebug(
+                    Logger?.LogDebug(
                         PipelinesStrings.Pipeline_ProcessAsync_InvokedBehavior_Message,
                         behavior?.GetType(),
                         typeof(TTarget),
@@ -128,7 +128,7 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
                 }
                 else
                 {
-                    this.Logger?.LogDebug(
+                    Logger?.LogDebug(
                         PipelinesStrings.Pipeline_ProcessAsync_InvokedOperation_Message,
                         typeof(TTarget),
                         typeof(TOperationArgs),
@@ -147,7 +147,7 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
     /// </summary>
     /// <returns></returns>
     protected virtual IReadOnlyList<IAsyncPipelineBehavior<TTarget, TOperationArgs, TResult>>? GetPipelineBehaviors() =>
-        this.cachedPipelineBehaviors ??= this.behaviors?
+        cachedPipelineBehaviors ??= behaviors?
             .SelectServices(b =>
                 (b.Metadata.TargetType?.IsAssignableFrom(typeof(TTarget)) ?? true) &&                       // covariant
                 (b.Metadata.OperationArgsType?.IsAssignableFrom(typeof(TOperationArgs)) ?? true) &&         // covariant

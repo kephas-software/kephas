@@ -28,9 +28,9 @@ public class PipelineMetadata : AppServiceMetadata
             return;
         }
 
-        this.TargetType = (Type?)metadata.TryGetValue(nameof(this.TargetType));
-        this.OperationArgsType = (Type?)metadata.TryGetValue(nameof(this.OperationArgsType));
-        this.ResultType = (Type?)metadata.TryGetValue(nameof(this.ResultType));
+        TargetType = (Type?)metadata.TryGetValue(nameof(TargetType));
+        OperationArgsType = (Type?)metadata.TryGetValue(nameof(OperationArgsType));
+        ResultType = (Type?)metadata.TryGetValue(nameof(ResultType));
     }
 
     /// <summary>
