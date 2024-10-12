@@ -12,14 +12,10 @@ using Kephas.Services.Metadata;
 
 namespace Kephas.Services
 {
-    using System;
-
-    using Kephas.Services;
-
     /// <summary>
     /// Attribute for naming services.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class ServiceNameAttribute : Attribute, IServiceMetadataValue<string>
     {
         /// <summary>
@@ -28,7 +24,7 @@ namespace Kephas.Services
         /// <param name="value">The value.</param>
         public ServiceNameAttribute(string value)
         {
-            this.Value = value ?? throw new ArgumentNullException(nameof(value));
+            Value = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         /// <summary>Gets the metadata value.</summary>

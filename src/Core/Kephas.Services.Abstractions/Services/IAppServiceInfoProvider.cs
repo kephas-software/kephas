@@ -9,7 +9,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Diagnostics.CodeAnalysis;
-
 using Kephas.Services.Reflection;
 
 namespace Kephas.Services;

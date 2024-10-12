@@ -8,12 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services.Resources;
+
 namespace Kephas.Services
 {
-    using System;
-
-    using Kephas.Services.Resources;
-
     /// <summary>
     /// Exception thrown by null services.
     /// </summary>

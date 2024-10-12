@@ -10,8 +10,6 @@
 
 namespace Kephas.Services
 {
-    using System;
-
     /// <summary>
     /// Exception which occurs on injection errors.
     /// </summary>

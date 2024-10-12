@@ -7,10 +7,6 @@
 
 namespace Kephas.Services;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 /// <summary>
 /// Assembly attribute decorating an assembly and collecting the application services, both contract types and implementation types.
 /// </summary>
@@ -70,7 +66,7 @@ public sealed class AppServicesAttribute(Type providerType, Priority priority = 
     /// <footer><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object.ToString?view=netstandard-2.1">`Object.ToString` on docs.microsoft.com</a></footer>
     public override string ToString()
     {
-        return $"AppServices/{providerType}/{this.Priority}";
+        return $"AppServices/{providerType}/{Priority}";
     }
 }
 
@@ -134,6 +130,6 @@ public sealed class AppServicesAttribute<T>(Priority priority = Priority.Normal)
     /// <footer><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object.ToString?view=netstandard-2.1">`Object.ToString` on docs.microsoft.com</a></footer>
     public override string ToString()
     {
-        return $"AppServices/{typeof(T)}/{this.Priority}";
+        return $"AppServices/{typeof(T)}/{Priority}";
     }
 }

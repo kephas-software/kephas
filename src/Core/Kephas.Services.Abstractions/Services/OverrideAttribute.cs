@@ -15,7 +15,7 @@ namespace Kephas.Services;
 /// <summary>
 /// Attribute for indicating that classifiers or members override their base. This class cannot be inherited.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Property | AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Property | AttributeTargets.Method, Inherited = false)]
 public sealed class OverrideAttribute : Attribute, IServiceMetadataValue<bool>
 {
     /// <summary>

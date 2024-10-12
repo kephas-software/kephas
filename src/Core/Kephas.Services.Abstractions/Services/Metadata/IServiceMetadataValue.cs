@@ -37,11 +37,11 @@ namespace Kephas.Services.Metadata
         /// Gets the metadata as an enumeration of (name, value) pairs.
         /// </summary>
         /// <returns>An enumeration of (name, value) pairs.</returns>
-        IEnumerable<(string name, object? value)> IServiceMetadataProvider.GetMetadata()
+        IEnumerable<KeyValuePair<string, object?>> IServiceMetadataProvider.GetMetadata()
         {
-            var thisType = this.GetType();
-            var name = this.Name ?? (this is Attribute ? GetMetadataNameFromAttributeType(thisType) : thisType.Name);
-            yield return (name, this.Value);
+            var thisType = GetType();
+            var name = Name ?? (this is Attribute ? GetMetadataNameFromAttributeType(thisType) : thisType.Name);
+            yield return KeyValuePair.Create(name, Value);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Kephas.Services.Metadata
         /// <value>
         /// The metadata value.
         /// </value>
-        object? IServiceMetadataValue.Value => this.Value;
+        object? IServiceMetadataValue.Value => Value;
 
         /// <summary>
         /// Gets the metadata value.

@@ -55,7 +55,7 @@ public class AppServiceContractAttribute<TContractDeclaration> : AppServiceContr
 /// <summary>
 /// Marks an interface or a class to be a transient application service contract.
 /// </summary>
-[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = false)]
 public class AppServiceContractAttribute : Attribute, IAppServiceInfo
 {
     /// <summary>
@@ -72,7 +72,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo
     /// <param name="lifetime">The lifetime.</param>
     protected AppServiceContractAttribute(AppServiceLifetime lifetime)
     {
-        this.Lifetime = lifetime;
+        Lifetime = lifetime;
     }
 
     /// <summary>
@@ -137,9 +137,9 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo
     /// </returns>
     public override string ToString()
     {
-        var multiple = this.AllowMultiple ? ", multi" : string.Empty;
-        var openGeneric = this.AsOpenGeneric ? ", open generic" : string.Empty;
+        var multiple = AllowMultiple ? ", multi" : string.Empty;
+        var openGeneric = AsOpenGeneric ? ", open generic" : string.Empty;
 
-        return $"{this.ContractType}{multiple}{openGeneric}, {this.Lifetime}";
+        return $"{ContractType}{multiple}{openGeneric}, {Lifetime}";
     }
 }

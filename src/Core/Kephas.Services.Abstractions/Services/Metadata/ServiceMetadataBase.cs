@@ -11,7 +11,7 @@
 namespace Kephas.Services.Metadata
 {
     /// <summary>
-    /// Base class for export metadata.
+    /// Base class for service metadata.
     /// </summary>
     public abstract class ServiceMetadataBase : Dictionary<string, object?>
     {

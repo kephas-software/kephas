@@ -26,7 +26,10 @@ public static class AppServiceCollectionExtensions
     /// <returns>
     /// This <paramref name="appServices"/>.
     /// </returns>
-    public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, TContract serviceInstance, Action<AppServiceInfo>? builder = null)
+    public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
+        this IAppServiceCollection appServices,
+        TContract serviceInstance,
+        Action<AppServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -51,7 +54,10 @@ public static class AppServiceCollectionExtensions
     /// <returns>
     /// This <paramref name="appServices"/>.
     /// </returns>
-    public static IAppServiceCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, TContract serviceInstance, Action<AppServiceInfo>? builder = null)
+    public static IAppServiceCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
+        this IAppServiceCollection appServices,
+        TContract serviceInstance,
+        Action<AppServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -76,7 +82,10 @@ public static class AppServiceCollectionExtensions
     /// <returns>
     /// This <paramref name="appServices"/>.
     /// </returns>
-    public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, TContract serviceInstance, Action<AppServiceInfo>? builder = null)
+    public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
+        this IAppServiceCollection appServices,
+        TContract serviceInstance,
+        Action<AppServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -101,7 +110,11 @@ public static class AppServiceCollectionExtensions
     /// <returns>
     /// This <paramref name="appServices"/>.
     /// </returns>
-    public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IAppServiceCollection appServices, Action<AppServiceInfo>? builder = null)
+    public static IAppServiceCollection TryAdd<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        this IAppServiceCollection appServices,
+        Action<AppServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -125,7 +138,11 @@ public static class AppServiceCollectionExtensions
     /// <returns>
     /// This <paramref name="appServices"/>.
     /// </returns>
-    public static IAppServiceCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IAppServiceCollection appServices, Action<AppServiceInfo>? builder = null)
+    public static IAppServiceCollection Add<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        this IAppServiceCollection appServices,
+        Action<AppServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -259,7 +276,7 @@ public static class AppServiceCollectionExtensions
 
         return appServices.TryAddService(
             typeof(TContract),
-            (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
+            (Func<IServiceProvider, object>)(_ => serviceFactory()),
             b =>
             {
                 builder?.Invoke(b);
@@ -287,7 +304,7 @@ public static class AppServiceCollectionExtensions
 
         return appServices.AddService(
             typeof(TContract),
-            (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
+            (Func<IServiceProvider, object>)(_ => serviceFactory()),
             b =>
             {
                 builder?.Invoke(b);
@@ -315,7 +332,7 @@ public static class AppServiceCollectionExtensions
 
         return appServices.ReplaceService(
             typeof(TContract),
-            (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
+            (Func<IServiceProvider, object>)(_ => serviceFactory()),
             b =>
             {
                 builder?.Invoke(b);
@@ -343,7 +360,7 @@ public static class AppServiceCollectionExtensions
 
         return appServices.TryAddService(
             typeof(TContract),
-            (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
+            (Func<IServiceProvider, object>)(injector => serviceFactory(injector)),
             b =>
             {
                 builder?.Invoke(b);
@@ -371,7 +388,7 @@ public static class AppServiceCollectionExtensions
 
         return appServices.AddService(
             typeof(TContract),
-            (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
+            (Func<IServiceProvider, object>)(injector => serviceFactory(injector)),
             b =>
             {
                 builder?.Invoke(b);
@@ -399,7 +416,7 @@ public static class AppServiceCollectionExtensions
 
         return appServices.ReplaceService(
             typeof(TContract),
-            (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
+            (Func<IServiceProvider, object>)(injector => serviceFactory(injector)),
             b =>
             {
                 builder?.Invoke(b);
@@ -428,7 +445,7 @@ public static class AppServiceCollectionExtensions
 
         return appServices.TryAddService(
             contractType,
-            (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
+            (Func<IServiceProvider, object>)(_ => serviceFactory()),
             b =>
             {
                 builder?.Invoke(b);

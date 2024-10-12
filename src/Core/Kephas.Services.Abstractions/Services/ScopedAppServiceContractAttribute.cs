@@ -30,7 +30,7 @@ public class ScopedAppServiceContractAttribute<TContractDeclaration> : AppServic
 /// <summary>
 /// Marks an interface or a class to be a scoped application service contract.
 /// </summary>
-[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = false)]
 public class ScopedAppServiceContractAttribute : AppServiceContractAttribute
 {
     /// <summary>

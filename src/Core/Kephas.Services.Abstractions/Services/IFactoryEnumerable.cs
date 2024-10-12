@@ -8,10 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services;
-
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+
+namespace Kephas.Services;
 
 /// <summary>
 /// Interface for ordered service factory collection.

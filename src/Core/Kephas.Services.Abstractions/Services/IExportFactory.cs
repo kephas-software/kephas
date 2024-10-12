@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace Kephas.Services
 {
-    using System.Diagnostics.CodeAnalysis;
-
     /// <summary>
     /// Contract used to import parts that wish to dynamically create instances of other parts.
     /// </summary>

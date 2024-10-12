@@ -10,8 +10,6 @@
 
 namespace Kephas.Services
 {
-    using System;
-
     /// <summary>
     /// Exception for signalling service not initialized errors.
     /// </summary>

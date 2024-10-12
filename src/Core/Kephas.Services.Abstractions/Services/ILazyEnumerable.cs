@@ -8,13 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services;
-
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-using Kephas.Services.Resources;
+namespace Kephas.Services;
 
 /// <summary>
 /// Interface for ordered lazy service collection.

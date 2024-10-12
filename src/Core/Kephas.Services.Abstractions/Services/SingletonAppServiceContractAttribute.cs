@@ -29,7 +29,7 @@ public class SingletonAppServiceContractAttribute<TContractDeclaration> : AppSer
 /// <summary>
 /// Marks an interface or a class to be a singleton application service contract.
 /// </summary>
-[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = false)]
 public class SingletonAppServiceContractAttribute : AppServiceContractAttribute
 {
     /// <summary>

@@ -28,9 +28,9 @@ public class AppServiceInfo : IAppServiceInfo
     {
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
-        this.SetContractType(contractType);
-        this.AsOpenGeneric = asOpenGeneric;
-        this.SetLifetime(lifetime);
+        SetContractType(contractType);
+        AsOpenGeneric = asOpenGeneric;
+        SetLifetime(lifetime);
     }
 
     /// <summary>
@@ -43,9 +43,9 @@ public class AppServiceInfo : IAppServiceInfo
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-        this.SetContractType(contractType);
-        this.InstancingStrategy = serviceInstance;
-        this.SetLifetime(AppServiceLifetime.Singleton);
+        SetContractType(contractType);
+        InstancingStrategy = serviceInstance;
+        SetLifetime(AppServiceLifetime.Singleton);
     }
 
     /// <summary>
@@ -59,9 +59,9 @@ public class AppServiceInfo : IAppServiceInfo
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceInstanceFactory = serviceInstanceFactory ?? throw new ArgumentNullException(nameof(serviceInstanceFactory));
 
-        this.SetContractType(contractType);
-        this.InstancingStrategy = serviceInstanceFactory;
-        this.SetLifetime(lifetime);
+        SetContractType(contractType);
+        InstancingStrategy = serviceInstanceFactory;
+        SetLifetime(lifetime);
     }
 
     /// <summary>
@@ -79,10 +79,10 @@ public class AppServiceInfo : IAppServiceInfo
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
-        this.SetContractType(contractType);
-        this.InstancingStrategy = serviceType;
-        this.AsOpenGeneric = asOpenGeneric;
-        this.SetLifetime(lifetime);
+        SetContractType(contractType);
+        InstancingStrategy = serviceType;
+        AsOpenGeneric = asOpenGeneric;
+        SetLifetime(lifetime);
     }
 
     /// <summary>
@@ -97,18 +97,18 @@ public class AppServiceInfo : IAppServiceInfo
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         appServiceInfo = appServiceInfo ?? throw new ArgumentNullException(nameof(appServiceInfo));
 
-        this.SetContractType(contractType ?? appServiceInfo.ContractType);
+        SetContractType(contractType ?? appServiceInfo.ContractType);
         if (contractDeclarationType != null)
         {
-            this.ContractDeclarationType = contractDeclarationType;
+            ContractDeclarationType = contractDeclarationType;
         }
 
-        this.InstancingStrategy = instancingStrategy ?? appServiceInfo.InstancingStrategy;
+        InstancingStrategy = instancingStrategy ?? appServiceInfo.InstancingStrategy;
 
-        this.AsOpenGeneric = appServiceInfo.AsOpenGeneric;
-        this.SetLifetime(appServiceInfo.Lifetime);
-        this.Metadata = appServiceInfo.Metadata;
-        this.AllowMultiple = appServiceInfo.AllowMultiple;
+        AsOpenGeneric = appServiceInfo.AsOpenGeneric;
+        SetLifetime(appServiceInfo.Lifetime);
+        Metadata = appServiceInfo.Metadata;
+        AllowMultiple = appServiceInfo.AllowMultiple;
     }
 
     /// <summary>
@@ -128,12 +128,12 @@ public class AppServiceInfo : IAppServiceInfo
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
 
-        this.SetContractType(contractType);
-        this.ContractDeclarationType = contractDeclarationType ?? contractType;
-        this.InstancingStrategy = instancingStrategy;
-        this.AsOpenGeneric = asOpenGeneric;
-        this.SetLifetime(lifetime);
-        this.Metadata = metadata;
+        SetContractType(contractType);
+        ContractDeclarationType = contractDeclarationType ?? contractType;
+        InstancingStrategy = instancingStrategy;
+        AsOpenGeneric = asOpenGeneric;
+        SetLifetime(lifetime);
+        Metadata = metadata;
     }
 
     /// <summary>
@@ -211,7 +211,7 @@ public class AppServiceInfo : IAppServiceInfo
     /// <returns>This <see cref="AppServiceInfo"/>.</returns>
     public IAppServiceInfo AddMetadata(string name, object? value)
     {
-        ((this.Metadata ??= new Dictionary<string, object?>())!)[name] = value;
+        ((Metadata ??= new Dictionary<string, object?>())!)[name] = value;
         return this;
     }
 
@@ -223,28 +223,28 @@ public class AppServiceInfo : IAppServiceInfo
     /// </returns>
     public override string ToString()
     {
-        var multiple = this.AllowMultiple ? ", multi" : string.Empty;
-        var openGeneric = this.AsOpenGeneric ? ", open generic" : string.Empty;
+        var multiple = AllowMultiple ? ", multi" : string.Empty;
+        var openGeneric = AsOpenGeneric ? ", open generic" : string.Empty;
         IAppServiceInfo serviceInfo = this;
         var instanceTypeString = serviceInfo.InstanceType != null ? $"/type:{serviceInfo.InstanceType}" : string.Empty;
         var instanceString = serviceInfo.Instance != null ? $"/instance:{serviceInfo.Instance}" : string.Empty;
-        var factoryString = serviceInfo.InstanceFactory != null ? $"/instanceFactory" : string.Empty;
+        var factoryString = serviceInfo.InstanceFactory != null ? "/instanceFactory" : string.Empty;
 
-        return $"{this.ContractType}{multiple}{openGeneric}, {this.Lifetime}{instanceTypeString}{instanceString}{factoryString}";
+        return $"{ContractType}{multiple}{openGeneric}, {Lifetime}{instanceTypeString}{instanceString}{factoryString}";
     }
 
     private void SetContractType(Type? contractType)
     {
-        this.ContractType = contractType;
-        this.ContractDeclarationType = contractType;
+        ContractType = contractType;
+        ContractDeclarationType = contractType;
         if (contractType?.IsGenericTypeDefinition ?? false)
         {
-            this.AsOpenGeneric = true;
+            AsOpenGeneric = true;
         }
     }
 
     private void SetLifetime(AppServiceLifetime lifetime)
     {
-        this.Lifetime = lifetime;
+        Lifetime = lifetime;
     }
 }

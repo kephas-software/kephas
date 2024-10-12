@@ -5,9 +5,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services;
-
 using System.Diagnostics.CodeAnalysis;
+
+namespace Kephas.Services;
 
 /// <summary>
 /// Factory of injectable instances.

@@ -12,14 +12,10 @@ using Kephas.Services.Metadata;
 
 namespace Kephas.Services
 {
-    using System;
-
-    using Kephas.Services;
-
     /// <summary>
     /// Indicates a processing priority used when more services must be processed.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class)]
     public class PriorityAttribute : Attribute, IServiceMetadataValue<Priority>, IHasPriority
     {
         /// <summary>
@@ -28,7 +24,7 @@ namespace Kephas.Services
         /// <param name="priority">The processing priority.</param>
         public PriorityAttribute(int priority)
         {
-            this.Value = (Priority)priority;
+            Value = (Priority)priority;
         }
 
         /// <summary>
@@ -37,7 +33,7 @@ namespace Kephas.Services
         /// <param name="priority">The processing priority.</param>
         public PriorityAttribute(Priority priority)
         {
-            this.Value = priority;
+            Value = priority;
         }
 
         /// <summary>
@@ -54,6 +50,6 @@ namespace Kephas.Services
         /// <value>
         /// The processing priority.
         /// </value>
-        Priority IHasPriority.Priority => this.Value;
+        Priority IHasPriority.Priority => Value;
     }
 }

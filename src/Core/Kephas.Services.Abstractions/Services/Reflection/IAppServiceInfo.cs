@@ -81,7 +81,7 @@ public interface IAppServiceInfo
 #else
         [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
-        get => this.ContractType;
+        get => ContractType;
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ public interface IAppServiceInfo
     /// <value>
     /// The service instance.
     /// </value>
-    object? Instance => this.InstanceType != null || this.InstanceFactory != null ? null : this.InstancingStrategy;
+    object? Instance => InstanceType != null || InstanceFactory != null ? null : InstancingStrategy;
 
     /// <summary>
     /// Gets the type of the service instance.
@@ -125,7 +125,7 @@ public interface IAppServiceInfo
 #else
         [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
-        get => this.InstancingStrategy as Type;
+        get => InstancingStrategy as Type;
     }
 
     /// <summary>
@@ -139,7 +139,7 @@ public interface IAppServiceInfo
     /// <value>
     /// The service instance factory.
     /// </value>
-    Func<IServiceProvider, object>? InstanceFactory => this.InstancingStrategy as Func<IServiceProvider, object>;
+    Func<IServiceProvider, object>? InstanceFactory => InstancingStrategy as Func<IServiceProvider, object>;
 
     /// <summary>
     /// Indicates whether the service information is only a contract definition (<c>true</c>)
@@ -148,7 +148,7 @@ public interface IAppServiceInfo
     /// <returns>
     /// <c>true</c> if the service information is only a contract definition;
     /// otherwise <c>false</c>.</returns>
-    bool IsContractDefinition() => this.InstancingStrategy == null;
+    bool IsContractDefinition() => InstancingStrategy == null;
 
     /// <summary>
     /// Adds the metadata with the provided name and value.
@@ -158,12 +158,12 @@ public interface IAppServiceInfo
     /// <returns>This <see cref="IAppServiceInfo"/>.</returns>
     public IAppServiceInfo AddMetadata(string name, object? value)
     {
-        if (this.Metadata == null)
+        if (Metadata == null)
         {
             throw new InvalidOperationException("Cannot add metadata as long as the instance is not set.");
         }
 
-        this.Metadata[name] = value;
+        Metadata[name] = value;
 
         return this;
     }
@@ -182,7 +182,7 @@ public interface IAppServiceInfo
 
         foreach (var (name, value) in metadata)
         {
-            this.AddMetadata(name, value);
+            AddMetadata(name, value);
         }
 
         return this;

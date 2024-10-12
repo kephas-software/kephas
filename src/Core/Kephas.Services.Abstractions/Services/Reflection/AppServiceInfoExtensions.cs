@@ -5,11 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace Kephas.Services.Reflection
 {
-    using System;
-    using System.Runtime.CompilerServices;
-
     /// <summary>
     /// Extension methods for <see cref="IAppServiceInfo"/>.
     /// </summary>

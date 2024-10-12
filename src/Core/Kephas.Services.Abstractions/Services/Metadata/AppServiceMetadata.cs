@@ -29,10 +29,10 @@ public class AppServiceMetadata : ServiceMetadataBase, IAppServiceMetadata
             return;
         }
 
-        this.Priority = (Priority)Convert.ChangeType(metadata.TryGetValue(nameof(this.Priority), Priority.Normal)!, typeof(int));
-        this.ServiceName = (string?)metadata.TryGetValue(nameof(this.ServiceName));
-        this.IsOverride = (bool)metadata.TryGetValue(nameof(this.IsOverride), false)!;
-        this.ServiceType = (Type?)metadata.TryGetValue(nameof(this.ServiceType));
+        Priority = (Priority)Convert.ChangeType(metadata.TryGetValue(nameof(Priority), Priority.Normal)!, typeof(int));
+        ServiceName = (string?)metadata.TryGetValue(nameof(ServiceName));
+        IsOverride = (bool)metadata.TryGetValue(nameof(IsOverride), false)!;
+        ServiceType = (Type?)metadata.TryGetValue(nameof(ServiceType));
     }
 
     /// <summary>
@@ -44,9 +44,9 @@ public class AppServiceMetadata : ServiceMetadataBase, IAppServiceMetadata
     public AppServiceMetadata(Priority priority = 0, string? serviceName = null, bool isOverride = false)
         : base(new Dictionary<string, object?>())
     {
-        this.Priority = priority;
-        this.ServiceName = serviceName;
-        this.IsOverride = isOverride;
+        Priority = priority;
+        ServiceName = serviceName;
+        IsOverride = isOverride;
     }
 
     /// <summary>
@@ -98,7 +98,7 @@ public class AppServiceMetadata : ServiceMetadataBase, IAppServiceMetadata
     /// </returns>
     public override string ToString()
     {
-        var serviceName = string.IsNullOrEmpty(this.ServiceName) ? string.Empty : $"Name: {this.ServiceName}, ";
-        return $"Priority: {this.Priority}, {serviceName}Impl: {this.ServiceType}";
+        var serviceName = string.IsNullOrEmpty(ServiceName) ? string.Empty : $"Name: {ServiceName}, ";
+        return $"Priority: {Priority}, {serviceName}Impl: {ServiceType}";
     }
 }

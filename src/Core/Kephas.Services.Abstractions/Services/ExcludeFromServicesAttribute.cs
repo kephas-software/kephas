@@ -13,7 +13,7 @@ namespace Kephas.Services
     /// <summary>
     /// Marks an eligible class for an application service implementation to be excluded from dependency injection.
     /// </summary>
-    [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.All, Inherited = false)]
     public sealed class ExcludeFromServicesAttribute : Attribute
     {
     }

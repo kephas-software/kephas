@@ -7,8 +7,6 @@
 
 namespace Kephas.Services
 {
-    using System;
-
     /// <summary>
     /// Occurs when the service resolution is ambiguous.
     /// </summary>
