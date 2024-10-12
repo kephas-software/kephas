@@ -5,27 +5,25 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Text;
+using Kephas.Services;
+using Kephas.Services.Builder;
+using Kephas.Tests.Services.CustomNamedValueAppServiceMetadata;
+using Kephas.Tests.Services.CustomValueAppServiceMetadata;
+using Kephas.Tests.Services.DefaultAppServiceMetadata;
+using Kephas.Tests.Services.DefaultExplicitAppServiceMetadata;
+using NSubstitute;
+using Xunit;
+
 using Kephas.Services.Metadata;
 using Microsoft.Extensions.Logging;
 
 namespace Kephas.Tests.Services
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using Kephas.Services;
-    using Kephas.Services.Builder;
-    using Kephas.Tests.Services.CustomNamedValueAppServiceMetadata;
-    using Kephas.Tests.Services.CustomValueAppServiceMetadata;
-    using Kephas.Tests.Services.DefaultAppServiceMetadata;
-    using Kephas.Tests.Services.DefaultExplicitAppServiceMetadata;
-    using NSubstitute;
-    using Xunit;
-
     /// <summary>
     /// Test class for <see cref="AppServiceCollectionBuilder"/>.
     /// </summary>
-        public class AppServiceCollectionBuilderTest
+    public class AppServiceCollectionBuilderTest
     {
         [Fact]
         public void Build_Multiple()
@@ -540,10 +538,10 @@ namespace Kephas.Tests.Services
 
             public string? Description { get; }
 
-            public IEnumerable<(string name, object? value)> GetMetadata()
+            public IEnumerable<KeyValuePair<string, object?>> GetMetadata()
             {
-                yield return (nameof(Name), Name);
-                yield return (nameof(IconName), IconName);
+                yield return KeyValuePair.Create(nameof(Name), (object?)Name);
+                yield return KeyValuePair.Create(nameof(IconName), (object?)IconName);
             }
         }
     }
