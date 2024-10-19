@@ -8,37 +8,36 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Collections
-{
-    using System;
-    using System.Collections.Generic;
+namespace Kephas.Collections;
 
+using System;
+using System.Collections.Generic;
+
+/// <summary>
+///   Extension methods for all kinds of (typed) enumerable data (Array, List, ...)
+/// </summary>
+public static class EnumerableExtensions
+{
     /// <summary>
-    ///   Extension methods for all kinds of (typed) enumerable data (Array, List, ...)
+    ///   Performs an action for each item in the enumerable.
     /// </summary>
-    public static class EnumerableExtensions
+    /// <typeparam name = "T">The enumerable data type.</typeparam>
+    /// <param name = "values">The data values.</param>
+    /// <param name = "action">The action to be performed.</param>
+    /// <example>
+    /// <code>
+    ///   var values = new[] { "1", "2", "3" };
+    ///   values.ConvertList&lt;string, int&gt;().ForEach(Console.WriteLine);
+    /// </code>
+    /// </example>
+    /// <remarks>
+    ///   This method was intended to return the passed values to provide method chaining. However due to deferred execution the compiler would actually never run the entire code at all.
+    /// </remarks>
+    public static void ForEach<T>(this IEnumerable<T> values, Action<T> action)
     {
-        /// <summary>
-        ///   Performs an action for each item in the enumerable.
-        /// </summary>
-        /// <typeparam name = "T">The enumerable data type.</typeparam>
-        /// <param name = "values">The data values.</param>
-        /// <param name = "action">The action to be performed.</param>
-        /// <example>
-        /// <code>
-        ///   var values = new[] { "1", "2", "3" };
-        ///   values.ConvertList&lt;string, int&gt;().ForEach(Console.WriteLine);
-        /// </code>
-        /// </example>
-        /// <remarks>
-        ///   This method was intended to return the passed values to provide method chaining. However due to deferred execution the compiler would actually never run the entire code at all.
-        /// </remarks>
-        public static void ForEach<T>(this IEnumerable<T> values, Action<T> action)
+        foreach (var value in values)
         {
-            foreach (var value in values)
-            {
-                action(value);
-            }
+            action(value);
         }
     }
 }
