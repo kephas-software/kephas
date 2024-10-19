@@ -15,7 +15,7 @@ namespace Kephas.Collections;
 /// <summary>
 /// Exception for signalling duplicate key errors.
 /// </summary>
-public class DuplicateKeyException : ApplicationException
+public class DuplicateKeyException : Exception
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="DuplicateKeyException"/> class.
