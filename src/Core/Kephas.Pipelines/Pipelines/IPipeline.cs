@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.DependencyInjection;
 
 namespace Kephas.Pipelines;
 
@@ -15,7 +15,7 @@ namespace Kephas.Pipelines;
 /// <typeparam name="TTarget">The target type.</typeparam>
 /// <typeparam name="TOperationArgs">The operation arguments type.</typeparam>
 /// <typeparam name="TResult">The result type.</typeparam>
-[AppServiceContract(AsOpenGeneric = true)]
+[TransientService(AsOpenGeneric = true)]
 public interface IPipeline<in TTarget, in TOperationArgs, TResult>
 {
     /// <summary>

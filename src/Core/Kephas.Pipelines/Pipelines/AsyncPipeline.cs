@@ -5,9 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Metadata;
 using Kephas.Logging;
 using Kephas.Resources;
-using Kephas.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Kephas.Pipelines;

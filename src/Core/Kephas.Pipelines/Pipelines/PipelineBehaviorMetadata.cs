@@ -6,14 +6,14 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Collections;
-using Kephas.Services.Metadata;
+using Kephas.DependencyInjection.Metadata;
 
 namespace Kephas.Pipelines;
 
 /// <summary>
 /// Metadata class for <see cref="IAsyncPipelineBehavior"/>.
 /// </summary>
-public class PipelineBehaviorMetadata : AppServiceMetadata
+public class PipelineBehaviorMetadata : ServiceMetadata
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PipelineBehaviorMetadata"/> class.
