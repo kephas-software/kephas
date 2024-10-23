@@ -1,13 +1,13 @@
-﻿using Kephas.Services;
+﻿using Kephas.DependencyInjection;
+using Kephas.Services;
 
-namespace Kephas.Analyzers.TestAssembly
+namespace Kephas.Analyzers.TestAssembly;
+
+[TransientService]
+public abstract class ServiceBase
 {
-    [AppServiceContract]
-    public abstract class ServiceBase
-    {
-    }
+}
 
-    public class DerivedService : ServiceBase
-    {
-    }
+public class DerivedService : ServiceBase
+{
 }

@@ -9,26 +9,27 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Kephas.Analyzers
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+namespace Kephas.Analyzers;
+
+public class SourceContext<T>(((Compilation, ImmutableArray<T>), ImmutableArray<FileScopedNamespaceDeclarationSyntax>) output, SourceProductionContext productionContext) : ISourceContext<T>
+    where T : SyntaxNode
 {
-    public class SourceContext<T>(((Compilation, ImmutableArray<T>), ImmutableArray<FileScopedNamespaceDeclarationSyntax>) output, SourceProductionContext productionContext) : ISourceContext<T>
-        where T : SyntaxNode
+    private IDictionary<string, FileScopedNamespaceDeclarationSyntax>? fileScopedNamespaces;
+
+    public IDictionary<string, FileScopedNamespaceDeclarationSyntax> FileScopedNamespaces
     {
-        private IDictionary<string, FileScopedNamespaceDeclarationSyntax>? fileScopedNamespaces;
-
-        public IDictionary<string, FileScopedNamespaceDeclarationSyntax> FileScopedNamespaces
-        {
-            get => fileScopedNamespaces
-                ??= output.Item2
-                    .OfType<FileScopedNamespaceDeclarationSyntax>()
-                    .Where(ns => !string.IsNullOrEmpty(ns.SyntaxTree.FilePath))
-                    .ToImmutableDictionary(
-                        ns => ns.SyntaxTree.FilePath,
-                        ns => ns);
-        }
-
-        public Compilation Compilation => output.Item1.Item1;
-        public SourceProductionContext SourceProductionContext { get; } = productionContext;
-        public IEnumerable<T> Nodes => output.Item1.Item2;
+        get => fileScopedNamespaces
+            ??= output.Item2
+                .OfType<FileScopedNamespaceDeclarationSyntax>()
+                .Where(ns => !string.IsNullOrEmpty(ns.SyntaxTree.FilePath))
+                .ToImmutableDictionary(
+                    ns => ns.SyntaxTree.FilePath,
+                    ns => ns);
     }
+
+    public Compilation Compilation => output.Item1.Item1;
+    public SourceProductionContext SourceProductionContext { get; } = productionContext;
+    public IEnumerable<T> Nodes => output.Item1.Item2;
 }

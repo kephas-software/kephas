@@ -7,13 +7,12 @@
 
 using Kephas.Runtime;
 
-namespace Kephas.Analyzers.TestAssembly
+namespace Kephas.Analyzers.TestAssembly;
+
+public class TestAssemblyInitializer : IAssemblyInitializer
 {
-    public class TestAssemblyInitializer : IAssemblyInitializer
+    public void InitializeAssembly()
     {
-        public void InitializeAssembly()
-        {
-            // just for fun
-        }
+        // just for fun
     }
 }

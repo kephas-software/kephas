@@ -1,21 +1,22 @@
-﻿namespace Kephas.Analyzers.TestAssembly
+﻿using Kephas.DependencyInjection;
+
+namespace Kephas.Analyzers.TestAssembly;
+
+using Kephas.Services;
+
+public interface INonGenericContract
 {
-    using Kephas.Services;
-
-    public interface INonGenericContract
-    {
-    } 
+} 
     
-    [AppServiceContract(ContractType = typeof(INonGenericContract))]
-    public interface IGenericContractDeclaration<TName, TValue>
-    {
-    }
+[TransientService(ServiceType = typeof(INonGenericContract))]
+public interface IGenericContractDeclaration<TName, TValue>
+{
+}
 
-    public class NonGenericService : IGenericContractDeclaration<string, int>
-    {
-    }
+public class NonGenericService : IGenericContractDeclaration<string, int>
+{
+}
 
-    public class NonServiceButNonGenericContract : INonGenericContract
-    {
-    }
+public class NonServiceButNonGenericContract : INonGenericContract
+{
 }

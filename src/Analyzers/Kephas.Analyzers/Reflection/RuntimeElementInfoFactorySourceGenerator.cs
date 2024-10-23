@@ -12,6 +12,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
+/// <summary>
+/// Source generator for assembly initializers registering runtime element info factories.
+/// </summary>
 [Generator]
 public class RuntimeElementInfoFactorySourceGenerator : IncrementalGeneratorBase<ClassDeclarationSyntax>
 {
@@ -29,7 +32,7 @@ public class RuntimeElementInfoFactorySourceGenerator : IncrementalGeneratorBase
             return;
         }
 
-        var (initializerNamespace, initializerName) = this.GetAssemblyInitializerClassName(context);
+        var (initializerNamespace, initializerName) = GetAssemblyInitializerClassName(context);
 
         var source = new StringBuilder();
         source.AppendLine(
@@ -73,7 +76,7 @@ public class RuntimeElementInfoFactorySourceGenerator : IncrementalGeneratorBase
         context.SourceProductionContext.AddSource("ReflectionInitializer.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
     }
 
-    private (string typeNamespace, string typeName) GetAssemblyInitializerClassName(ISourceContext<ClassDeclarationSyntax> context)
+    private static (string typeNamespace, string typeName) GetAssemblyInitializerClassName(ISourceContext<ClassDeclarationSyntax> context)
     {
         return ("Kephas.Reflection.Generated",
             $"ReflectionInitializer_{context.Compilation.Assembly.Name.Replace(".", "_")}");

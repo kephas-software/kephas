@@ -1,12 +1,12 @@
-﻿namespace Kephas.Analyzers.TestAssembly;
+﻿using Kephas.DependencyInjection;
 
-using Kephas.Services;
+namespace Kephas.Analyzers.TestAssembly;
 
 public class MetaServiceMetadata
 {
 }
 
-[AppServiceContract]
+[TransientService]
 public interface IMetaService
 {
 }

@@ -1,13 +1,12 @@
-﻿namespace Kephas.Analyzers.TestAssembly
+﻿using Kephas.DependencyInjection;
+
+namespace Kephas.Analyzers.TestAssembly;
+
+[ScopedService(AsOpenGeneric = true)]
+public interface IOpenGenericContract<TValue>
 {
-    using Kephas.Services;
+}
 
-    [ScopedAppServiceContract(AsOpenGeneric = true)]
-    public interface IOpenGenericContract<TValue>
-    {
-    }
-
-    public class OpenGenericService<TValue> : IOpenGenericContract<TValue>
-    {
-    }
+public class OpenGenericService<TValue> : IOpenGenericContract<TValue>
+{
 }

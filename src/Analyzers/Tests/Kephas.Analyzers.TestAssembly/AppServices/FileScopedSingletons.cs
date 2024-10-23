@@ -1,8 +1,8 @@
-﻿using Kephas.Services;
+﻿using Kephas.DependencyInjection;
 
 namespace Kephas.Analyzers.TestAssembly;
 
-[SingletonAppServiceContract]
+[SingletonService]
 public interface IFileScopedNsSingletonServiceContract
 {
 }

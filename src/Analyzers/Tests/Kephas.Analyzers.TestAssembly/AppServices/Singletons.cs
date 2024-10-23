@@ -1,13 +1,13 @@
-﻿using Kephas.Services;
+﻿using Kephas.DependencyInjection;
+using Kephas.Services;
 
-namespace Kephas.Analyzers.TestAssembly
+namespace Kephas.Analyzers.TestAssembly;
+
+[SingletonService]
+public interface ISingletonServiceContract
 {
-    [SingletonAppServiceContract]
-    public interface ISingletonServiceContract
-    {
-    }
+}
     
-    public class SingletonService : ISingletonServiceContract
-    {
-    }
+public class SingletonService : ISingletonServiceContract
+{
 }
