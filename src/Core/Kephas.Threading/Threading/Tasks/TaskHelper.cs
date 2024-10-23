@@ -8,612 +8,611 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Threading.Tasks
-{
-    using System;
-    using System.Diagnostics;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
-    using System.Threading;
-    using System.Threading.Tasks;
+namespace Kephas.Threading.Tasks;
 
-    using Kephas.Reflection;
+using System;
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Reflection;
+
+/// <summary>
+/// Extension methods for the <see cref="Task"/> and <see cref="Task{TResult}"/> classes.
+/// </summary>
+public static class TaskHelper
+{
+    private static readonly MethodInfo GetResultMethod = ReflectionHelper.GetGenericMethodOf(_ => GetResult<int>(null!));
 
     /// <summary>
-    /// Extension methods for the <see cref="Task"/> and <see cref="Task{TResult}"/> classes.
+    /// Gets or sets the default value of milliseconds to wait a task in a completion check cycle when simulating synchronous calls.
+    /// The default value is 20 milliseconds, but it can be changed to accomodate application needs.
     /// </summary>
-    public static class TaskHelper
+    public static int DefaultWaitMilliseconds { get; set; } = 20;
+
+    /// <summary>
+    /// Gets or sets the default timeout when waiting for task completion in simulating synchronous calls.
+    /// The default value is 30 seconds, but it can be changed to accomodate application needs.
+    /// </summary>
+    public static TimeSpan DefaultTimeout { get; set; } = TimeSpan.FromSeconds(30);
+
+    /// <summary>
+    /// Waits the task avoiding the current thread to be locked. On timeout, <c>false</c> is returned.
+    /// </summary>
+    /// <param name="task">The task.</param>
+    /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
+    /// <param name="waitMilliseconds">Optional. The milliseconds used to wait until checking again the state of the task. The default value is <see cref="DefaultWaitMilliseconds"/>.</param>
+    /// <returns>
+    ///   <c>true</c> if the task completed execution within the allotted time; otherwise, <c>false</c>.
+    /// </returns>
+    /// <remarks>
+    /// It is a bad practice to run synchronously tasks meant to be async "by birth".
+    /// However, if there is no other chance than waiting for a task to complete synchronously,
+    /// DO NOT USE task.Wait(), because there are situations when it deadlocks the thread.
+    /// An option would be to use task.ConfigureAwait(false).Wait(), but all the tasks down
+    /// the task chain must be exactly the same way configured, which may not not be always the case.
+    /// An alternative implementation might be the one provided below, but this must be tried if it really works:
+    /// http://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously.
+    /// For more information see also http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html
+    /// and http://blogs.msdn.com/b/pfxteam/archive/2012/04/13/10293638.aspx.
+    /// </remarks>
+    public static bool TryWaitNonLocking(this Task task, TimeSpan? timeout = null, int? waitMilliseconds = null)
+        => WaitNonLockingCore(task, timeout, waitMilliseconds, false);
+
+    /// <summary>
+    /// Waits the task avoiding the current thread to be locked. On timeout, a <see cref="TaskTimeoutException"/> occurs.
+    /// </summary>
+    /// <param name="task">The task.</param>
+    /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
+    /// <param name="waitMilliseconds">The milliseconds used to wait until checking again the state of the task (optional). The default value is <see cref="DefaultWaitMilliseconds"/>.</param>
+    /// <remarks>
+    /// It is a bad practice to run synchronously tasks meant to be async "by birth".
+    /// However, if there is no other chance than waiting for a task to complete synchronously,
+    /// DO NOT USE task.Wait(), because there are situations when it deadlocks the thread.
+    /// An option would be to use task.ConfigureAwait(false).Wait(), but all the tasks down
+    /// the task chain must be exactly the same way configured, which may not not be always the case.
+    /// An alternative implementation might be the one provided below, but this must be tried if it really works:
+    /// http://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously.
+    /// For more information see also http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html
+    /// and http://blogs.msdn.com/b/pfxteam/archive/2012/04/13/10293638.aspx.
+    /// </remarks>
+    public static void WaitNonLocking(this Task task, TimeSpan? timeout = null, int? waitMilliseconds = null)
+        => WaitNonLockingCore(task, timeout, waitMilliseconds, true);
+
+    /// <summary>
+    /// Waits the task avoiding the current thread to be locked. On timeout, the default of <typeparamref name="T"/> will be returned.
+    /// </summary>
+    /// <typeparam name="T">The return type.</typeparam>
+    /// <param name="task">The task.</param>
+    /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
+    /// <param name="waitMilliseconds">
+    /// Optional. The milliseconds used to wait until checking again the state of the task. The default value is
+    /// <see cref="DefaultWaitMilliseconds"/>.</param>
+    /// <returns>
+    /// The task result or the default of <typeparamref name="T"/>.
+    /// </returns>
+    public static T? TryGetResultNonLocking<T>(this Task<T> task, TimeSpan? timeout = null, int? waitMilliseconds = null)
     {
-        private static readonly MethodInfo GetResultMethod = ReflectionHelper.GetGenericMethodOf(_ => TaskHelper.GetResult<int>(null!));
+        task = task ?? throw new ArgumentNullException(nameof(task));
 
-        /// <summary>
-        /// Gets or sets the default value of milliseconds to wait a task in a completion check cycle when simulating synchronous calls.
-        /// The default value is 20 milliseconds, but it can be changed to accomodate application needs.
-        /// </summary>
-        public static int DefaultWaitMilliseconds { get; set; } = 20;
+        return TryWaitNonLocking(task, timeout, waitMilliseconds) ? task.Result : default;
+    }
 
-        /// <summary>
-        /// Gets or sets the default timeout when waiting for task completion in simulating synchronous calls.
-        /// The default value is 30 seconds, but it can be changed to accomodate application needs.
-        /// </summary>
-        public static TimeSpan DefaultTimeout { get; set; } = TimeSpan.FromSeconds(30);
+    /// <summary>
+    /// Waits the task avoiding the current thread to be locked. On timeout, a <see cref="TaskTimeoutException"/> occurs.
+    /// </summary>
+    /// <typeparam name="T">The return type.</typeparam>
+    /// <param name="task">The task.</param>
+    /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
+    /// <param name="waitMilliseconds">
+    /// Optional. The milliseconds used to wait until checking again the state of the task. The default value is
+    /// <see cref="DefaultWaitMilliseconds"/>.</param>
+    /// <returns>
+    /// The task result.
+    /// </returns>
+    public static T GetResultNonLocking<T>(this Task<T> task, TimeSpan? timeout = null, int? waitMilliseconds = null)
+    {
+        task = task ?? throw new ArgumentNullException(nameof(task));
 
-        /// <summary>
-        /// Waits the task avoiding the current thread to be locked. On timeout, <c>false</c> is returned.
-        /// </summary>
-        /// <param name="task">The task.</param>
-        /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
-        /// <param name="waitMilliseconds">Optional. The milliseconds used to wait until checking again the state of the task. The default value is <see cref="DefaultWaitMilliseconds"/>.</param>
-        /// <returns>
-        ///   <c>true</c> if the task completed execution within the allotted time; otherwise, <c>false</c>.
-        /// </returns>
-        /// <remarks>
-        /// It is a bad practice to run synchronously tasks meant to be async "by birth".
-        /// However, if there is no other chance than waiting for a task to complete synchronously,
-        /// DO NOT USE task.Wait(), because there are situations when it deadlocks the thread.
-        /// An option would be to use task.ConfigureAwait(false).Wait(), but all the tasks down
-        /// the task chain must be exactly the same way configured, which may not not be always the case.
-        /// An alternative implementation might be the one provided below, but this must be tried if it really works:
-        /// http://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously.
-        /// For more information see also http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html
-        /// and http://blogs.msdn.com/b/pfxteam/archive/2012/04/13/10293638.aspx.
-        /// </remarks>
-        public static bool TryWaitNonLocking(this Task task, TimeSpan? timeout = null, int? waitMilliseconds = null)
-            => WaitNonLockingCore(task, timeout, waitMilliseconds, false);
+        WaitNonLocking(task, timeout, waitMilliseconds);
 
-        /// <summary>
-        /// Waits the task avoiding the current thread to be locked. On timeout, a <see cref="TaskTimeoutException"/> occurs.
-        /// </summary>
-        /// <param name="task">The task.</param>
-        /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
-        /// <param name="waitMilliseconds">The milliseconds used to wait until checking again the state of the task (optional). The default value is <see cref="DefaultWaitMilliseconds"/>.</param>
-        /// <remarks>
-        /// It is a bad practice to run synchronously tasks meant to be async "by birth".
-        /// However, if there is no other chance than waiting for a task to complete synchronously,
-        /// DO NOT USE task.Wait(), because there are situations when it deadlocks the thread.
-        /// An option would be to use task.ConfigureAwait(false).Wait(), but all the tasks down
-        /// the task chain must be exactly the same way configured, which may not not be always the case.
-        /// An alternative implementation might be the one provided below, but this must be tried if it really works:
-        /// http://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously.
-        /// For more information see also http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html
-        /// and http://blogs.msdn.com/b/pfxteam/archive/2012/04/13/10293638.aspx.
-        /// </remarks>
-        public static void WaitNonLocking(this Task task, TimeSpan? timeout = null, int? waitMilliseconds = null)
-            => WaitNonLockingCore(task, timeout, waitMilliseconds, true);
+        return task.Result;
+    }
 
-        /// <summary>
-        /// Waits the task avoiding the current thread to be locked. On timeout, the default of <typeparamref name="T"/> will be returned.
-        /// </summary>
-        /// <typeparam name="T">The return type.</typeparam>
-        /// <param name="task">The task.</param>
-        /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
-        /// <param name="waitMilliseconds">
-        /// Optional. The milliseconds used to wait until checking again the state of the task. The default value is
-        /// <see cref="DefaultWaitMilliseconds"/>.</param>
-        /// <returns>
-        /// The task result or the default of <typeparamref name="T"/>.
-        /// </returns>
-        public static T? TryGetResultNonLocking<T>(this Task<T> task, TimeSpan? timeout = null, int? waitMilliseconds = null)
+    /// <summary>
+    /// Waits the task avoiding the current thread to be locked. On timeout, <c>false</c> is returned.
+    /// </summary>
+    /// <param name="valueTask">The value task.</param>
+    /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
+    /// <param name="waitMilliseconds">The milliseconds used to wait until checking again the state of the task (optional). The default value is <see cref="DefaultWaitMilliseconds"/>.</param>
+    /// <returns>
+    ///   <c>true</c> if the task completed execution within the allotted time; otherwise, <c>false</c>.
+    /// </returns>
+    /// <remarks>
+    /// It is a bad practice to run synchronously tasks meant to be async "by birth".
+    /// However, if there is no other chance than waiting for a task to complete synchronously,
+    /// DO NOT USE task.Wait(), because there are situations when it deadlocks the thread.
+    /// An option would be to use task.ConfigureAwait(false).Wait(), but all the tasks down
+    /// the task chain must be exactly the same way configured, which may not not be always the case.
+    /// An alternative implementation might be the one provided below, but this must be tried if it really works:
+    /// http://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously.
+    /// For more information see also http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html
+    /// and http://blogs.msdn.com/b/pfxteam/archive/2012/04/13/10293638.aspx.
+    /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool TryWaitNonLocking(this ValueTask valueTask, TimeSpan? timeout = null, int? waitMilliseconds = null)
+    {
+        return TryWaitNonLocking(valueTask.AsTask(), timeout, waitMilliseconds);
+    }
+
+    /// <summary>
+    /// Waits the task avoiding the current thread to be locked. On timeout, a <see cref="TaskTimeoutException"/> occurs.
+    /// </summary>
+    /// <param name="valueTask">The value task.</param>
+    /// <param name="timeout">The timeout (optional). The default value is <see cref="DefaultTimeout"/>.</param>
+    /// <param name="waitMilliseconds">The milliseconds used to wait until checking again the state of the task (optional). The default value is <see cref="DefaultWaitMilliseconds"/>.</param>
+    /// <remarks>
+    /// It is a bad practice to run synchronously tasks meant to be async "by birth".
+    /// However, if there is no other chance than waiting for a task to complete synchronously,
+    /// DO NOT USE task.Wait(), because there are situations when it deadlocks the thread.
+    /// An option would be to use task.ConfigureAwait(false).Wait(), but all the tasks down
+    /// the task chain must be exactly the same way configured, which may not not be always the case.
+    /// An alternative implementation might be the one provided below, but this must be tried if it really works:
+    /// http://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously.
+    /// For more information see also http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html
+    /// and http://blogs.msdn.com/b/pfxteam/archive/2012/04/13/10293638.aspx.
+    /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void WaitNonLocking(this ValueTask valueTask, TimeSpan? timeout = null, int? waitMilliseconds = null)
+    {
+        WaitNonLocking(valueTask.AsTask(), timeout, waitMilliseconds);
+    }
+
+    /// <summary>
+    /// Waits the task avoiding the current thread to be locked. On timeout, the default of <typeparamref name="T"/> will be returned.
+    /// </summary>
+    /// <typeparam name="T">The return type.</typeparam>
+    /// <param name="valueTask">The value task.</param>
+    /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
+    /// <param name="waitMilliseconds">
+    /// Optional. The milliseconds used to wait until checking again the state of the task. The default value is
+    /// <see cref="DefaultWaitMilliseconds"/>.</param>
+    /// <returns>
+    /// The task result.
+    /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static T? TryGetResultNonLocking<T>(this ValueTask<T> valueTask, TimeSpan? timeout = null, int? waitMilliseconds = null)
+    {
+        return TryGetResultNonLocking(valueTask.AsTask(), timeout, waitMilliseconds);
+    }
+
+    /// <summary>
+    /// Waits the task avoiding the current thread to be locked. On timeout, a <see cref="TaskTimeoutException"/> occurs.
+    /// </summary>
+    /// <typeparam name="T">The return type.</typeparam>
+    /// <param name="valueTask">The value task.</param>
+    /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
+    /// <param name="waitMilliseconds">
+    /// Optional. The milliseconds used to wait until checking again the state of the task. The default value is
+    /// <see cref="DefaultWaitMilliseconds"/>.</param>
+    /// <returns>
+    /// The task result.
+    /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static T GetResultNonLocking<T>(this ValueTask<T> valueTask, TimeSpan? timeout = null, int? waitMilliseconds = null)
+    {
+        return GetResultNonLocking(valueTask.AsTask(), timeout, waitMilliseconds);
+    }
+
+    /// <summary>
+    /// Configures a timeout for the provided task. If the task ends within the indicated time,
+    /// the original task result is returned, otherwise a <see cref="TaskTimeoutException"/> occurs.
+    /// </summary>
+    /// <remarks>
+    /// The <see cref="TaskTimeoutException"/> contains the original task that timed out.
+    /// </remarks>
+    /// <param name="task">The task.</param>
+    /// <param name="timeout">The timeout.</param>
+    /// <returns>
+    /// The result of the original task.
+    /// </returns>
+    public static async Task WithTimeout(this Task task, TimeSpan timeout)
+    {
+        var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
+        if (completedTask == task)
         {
-            task = task ?? throw new ArgumentNullException(nameof(task));
-
-            return TryWaitNonLocking(task, timeout, waitMilliseconds) ? task.Result : default;
-        }
-
-        /// <summary>
-        /// Waits the task avoiding the current thread to be locked. On timeout, a <see cref="TaskTimeoutException"/> occurs.
-        /// </summary>
-        /// <typeparam name="T">The return type.</typeparam>
-        /// <param name="task">The task.</param>
-        /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
-        /// <param name="waitMilliseconds">
-        /// Optional. The milliseconds used to wait until checking again the state of the task. The default value is
-        /// <see cref="DefaultWaitMilliseconds"/>.</param>
-        /// <returns>
-        /// The task result.
-        /// </returns>
-        public static T GetResultNonLocking<T>(this Task<T> task, TimeSpan? timeout = null, int? waitMilliseconds = null)
-        {
-            task = task ?? throw new ArgumentNullException(nameof(task));
-
-            WaitNonLocking(task, timeout, waitMilliseconds);
-
-            return task.Result;
-        }
-
-        /// <summary>
-        /// Waits the task avoiding the current thread to be locked. On timeout, <c>false</c> is returned.
-        /// </summary>
-        /// <param name="valueTask">The value task.</param>
-        /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
-        /// <param name="waitMilliseconds">The milliseconds used to wait until checking again the state of the task (optional). The default value is <see cref="DefaultWaitMilliseconds"/>.</param>
-        /// <returns>
-        ///   <c>true</c> if the task completed execution within the allotted time; otherwise, <c>false</c>.
-        /// </returns>
-        /// <remarks>
-        /// It is a bad practice to run synchronously tasks meant to be async "by birth".
-        /// However, if there is no other chance than waiting for a task to complete synchronously,
-        /// DO NOT USE task.Wait(), because there are situations when it deadlocks the thread.
-        /// An option would be to use task.ConfigureAwait(false).Wait(), but all the tasks down
-        /// the task chain must be exactly the same way configured, which may not not be always the case.
-        /// An alternative implementation might be the one provided below, but this must be tried if it really works:
-        /// http://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously.
-        /// For more information see also http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html
-        /// and http://blogs.msdn.com/b/pfxteam/archive/2012/04/13/10293638.aspx.
-        /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryWaitNonLocking(this ValueTask valueTask, TimeSpan? timeout = null, int? waitMilliseconds = null)
-        {
-            return TryWaitNonLocking(valueTask.AsTask(), timeout, waitMilliseconds);
-        }
-
-        /// <summary>
-        /// Waits the task avoiding the current thread to be locked. On timeout, a <see cref="TaskTimeoutException"/> occurs.
-        /// </summary>
-        /// <param name="valueTask">The value task.</param>
-        /// <param name="timeout">The timeout (optional). The default value is <see cref="DefaultTimeout"/>.</param>
-        /// <param name="waitMilliseconds">The milliseconds used to wait until checking again the state of the task (optional). The default value is <see cref="DefaultWaitMilliseconds"/>.</param>
-        /// <remarks>
-        /// It is a bad practice to run synchronously tasks meant to be async "by birth".
-        /// However, if there is no other chance than waiting for a task to complete synchronously,
-        /// DO NOT USE task.Wait(), because there are situations when it deadlocks the thread.
-        /// An option would be to use task.ConfigureAwait(false).Wait(), but all the tasks down
-        /// the task chain must be exactly the same way configured, which may not not be always the case.
-        /// An alternative implementation might be the one provided below, but this must be tried if it really works:
-        /// http://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously.
-        /// For more information see also http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html
-        /// and http://blogs.msdn.com/b/pfxteam/archive/2012/04/13/10293638.aspx.
-        /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WaitNonLocking(this ValueTask valueTask, TimeSpan? timeout = null, int? waitMilliseconds = null)
-        {
-            WaitNonLocking(valueTask.AsTask(), timeout, waitMilliseconds);
-        }
-
-        /// <summary>
-        /// Waits the task avoiding the current thread to be locked. On timeout, the default of <typeparamref name="T"/> will be returned.
-        /// </summary>
-        /// <typeparam name="T">The return type.</typeparam>
-        /// <param name="valueTask">The value task.</param>
-        /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
-        /// <param name="waitMilliseconds">
-        /// Optional. The milliseconds used to wait until checking again the state of the task. The default value is
-        /// <see cref="DefaultWaitMilliseconds"/>.</param>
-        /// <returns>
-        /// The task result.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T? TryGetResultNonLocking<T>(this ValueTask<T> valueTask, TimeSpan? timeout = null, int? waitMilliseconds = null)
-        {
-            return TryGetResultNonLocking(valueTask.AsTask(), timeout, waitMilliseconds);
-        }
-
-        /// <summary>
-        /// Waits the task avoiding the current thread to be locked. On timeout, a <see cref="TaskTimeoutException"/> occurs.
-        /// </summary>
-        /// <typeparam name="T">The return type.</typeparam>
-        /// <param name="valueTask">The value task.</param>
-        /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
-        /// <param name="waitMilliseconds">
-        /// Optional. The milliseconds used to wait until checking again the state of the task. The default value is
-        /// <see cref="DefaultWaitMilliseconds"/>.</param>
-        /// <returns>
-        /// The task result.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T GetResultNonLocking<T>(this ValueTask<T> valueTask, TimeSpan? timeout = null, int? waitMilliseconds = null)
-        {
-            return GetResultNonLocking(valueTask.AsTask(), timeout, waitMilliseconds);
-        }
-
-        /// <summary>
-        /// Configures a timeout for the provided task. If the task ends within the indicated time,
-        /// the original task result is returned, otherwise a <see cref="TaskTimeoutException"/> occurs.
-        /// </summary>
-        /// <remarks>
-        /// The <see cref="TaskTimeoutException"/> contains the original task that timed out.
-        /// </remarks>
-        /// <param name="task">The task.</param>
-        /// <param name="timeout">The timeout.</param>
-        /// <returns>
-        /// The result of the original task.
-        /// </returns>
-        public static async Task WithTimeout(this Task task, TimeSpan timeout)
-        {
-            var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
-            if (completedTask == task)
-            {
-                EnsureCompletedSuccessfully(task);
-                return;
-            }
-
-            throw new TaskTimeoutException(task);
-        }
-
-        /// <summary>
-        /// Configures a timeout for the provided task. If the task ends within the indicated time,
-        /// the original task result is returned, otherwise a <see cref="TaskTimeoutException"/> occurs.
-        /// </summary>
-        /// <remarks>
-        /// The <see cref="TaskTimeoutException"/> contains the original task that timed out.
-        /// </remarks>
-        /// <typeparam name="T">The task result type.</typeparam>
-        /// <param name="task">The task.</param>
-        /// <param name="timeout">The timeout.</param>
-        /// <returns>
-        /// The result of the original task.
-        /// </returns>
-        public static async Task<T> WithTimeout<T>(this Task<T> task, TimeSpan timeout)
-        {
-            var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
-            if (completedTask == task)
-            {
-                EnsureCompletedSuccessfully(task);
-                return task.Result;
-            }
-
-            throw new TaskTimeoutException(task);
-        }
-
-        /// <summary>
-        /// Converts the action into an asynchronous operation.
-        /// </summary>
-        /// <remarks>
-        /// Caution is to be considered because, when the action
-        /// does not complete in the indicated time or when cancellation is issued,
-        /// the task running the operation does not complete.
-        /// In this case, the running task is returned in the Task property of either the TaskCanceledException
-        /// or TaskTimeoutException.
-        /// </remarks>
-        /// <param name="action">The action to be executed.</param>
-        /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        public static Task AsAsync(
-            this Action action,
-            CancellationToken cancellationToken = default)
-        {
-            return AsAsync(
-                action,
-                null,
-                cancellationToken);
-        }
-
-        /// <summary>
-        /// Converts the action into an asynchronous operation.
-        /// </summary>
-        /// <remarks>
-        /// Caution is to be considered because, when the action
-        /// does not complete in the indicated time or when cancellation is issued,
-        /// the task running the operation does not complete.
-        /// In this case, the running task is returned in the Task property of either the TaskCanceledException
-        /// or TaskTimeoutException.
-        /// </remarks>
-        /// <param name="action">The action to be executed.</param>
-        /// <param name="timeout">The timeout in milliseconds.</param>
-        /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        public static Task AsAsync(
-            this Action action,
-            int timeout,
-            CancellationToken cancellationToken = default)
-        {
-            return AsAsync(
-                action,
-                TimeSpan.FromMilliseconds(timeout),
-                cancellationToken);
-        }
-
-        /// <summary>
-        /// Converts the action into an asynchronous operation.
-        /// </summary>
-        /// <remarks>
-        /// Caution is to be considered because, when the action
-        /// does not complete in the indicated time or when cancellation is issued,
-        /// the task running the operation does not complete.
-        /// In this case, the running task is returned in the Task property of either the TaskCanceledException
-        /// or TaskTimeoutException.
-        /// </remarks>
-        /// <param name="action">The action to be executed.</param>
-        /// <param name="timeout">The timeout. If <c>null</c> specified, indefinite wait is considered.</param>
-        /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        public static async Task AsAsync(
-            this Action action,
-            TimeSpan? timeout,
-            CancellationToken cancellationToken = default)
-        {
-            var task = Task.Run(action ?? throw new ArgumentNullException(nameof(action)), cancellationToken);
-            Task? completedTask = null;
-            try
-            {
-                completedTask = await AsAsync(task, timeout, cancellationToken);
-            }
-            catch (TaskCanceledException)
-            {
-                throw;
-            }
-            catch (OperationCanceledException)
-            {
-                throw new TaskCanceledException(task);
-            }
-
-            if (completedTask != task)
-            {
-                throw cancellationToken.IsCancellationRequested
-                          ? (Exception)new TaskCanceledException(task)
-                          : new TaskTimeoutException(task);
-            }
-
             EnsureCompletedSuccessfully(task);
+            return;
         }
 
-        /// <summary>
-        /// Converts the function into an asynchronous operation.
-        /// </summary>
-        /// <remarks>
-        /// Caution is to be considered because, when the function does not complete in the indicated
-        /// time or when cancellation is issued, the task running the operation does not complete.
-        /// In this case, the running task is returned in the Task property of either the TaskCanceledException
-        /// or TaskTimeoutException.
-        /// </remarks>
-        /// <typeparam name="T">The function return type.</typeparam>
-        /// <param name="func">The function to be executed.</param>
-        /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        public static Task<T> AsAsync<T>(
-            this Func<T> func,
-            CancellationToken cancellationToken = default)
+        throw new TaskTimeoutException(task);
+    }
+
+    /// <summary>
+    /// Configures a timeout for the provided task. If the task ends within the indicated time,
+    /// the original task result is returned, otherwise a <see cref="TaskTimeoutException"/> occurs.
+    /// </summary>
+    /// <remarks>
+    /// The <see cref="TaskTimeoutException"/> contains the original task that timed out.
+    /// </remarks>
+    /// <typeparam name="T">The task result type.</typeparam>
+    /// <param name="task">The task.</param>
+    /// <param name="timeout">The timeout.</param>
+    /// <returns>
+    /// The result of the original task.
+    /// </returns>
+    public static async Task<T> WithTimeout<T>(this Task<T> task, TimeSpan timeout)
+    {
+        var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
+        if (completedTask == task)
         {
-            return AsAsync(
-                func,
-                null,
-                cancellationToken);
-        }
-
-        /// <summary>
-        /// Converts the function into an asynchronous operation.
-        /// </summary>
-        /// <remarks>
-        /// Caution is to be considered because, when the function does not complete in the indicated
-        /// time or when cancellation is issued, the task running the operation does not complete.
-        /// In this case, the running task is returned in the Task property of either the TaskCanceledException
-        /// or TaskTimeoutException.
-        /// </remarks>
-        /// <typeparam name="T">The function return type.</typeparam>
-        /// <param name="func">The function to be executed.</param>
-        /// <param name="timeout">The timeout in milliseconds.</param>
-        /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        public static Task<T> AsAsync<T>(
-            this Func<T> func,
-            int timeout,
-            CancellationToken cancellationToken = default)
-        {
-            return AsAsync(
-                func,
-                TimeSpan.FromMilliseconds(timeout),
-                cancellationToken);
-        }
-
-        /// <summary>
-        /// Converts the function into an asynchronous operation.
-        /// </summary>
-        /// <remarks>
-        /// Caution is to be considered because, when the function does not complete in the indicated
-        /// time or when cancellation is issued, the task running the operation does not complete.
-        /// In this case, the running task is returned in the Task property of either the TaskCanceledException
-        /// or TaskTimeoutException.
-        /// </remarks>
-        /// <typeparam name="T">The function return type.</typeparam>
-        /// <param name="func">The function to be executed.</param>
-        /// <param name="timeout">The timeout. If <c>null</c> specified, indefinite wait is considered.</param>
-        /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        public static async Task<T> AsAsync<T>(
-            this Func<T> func,
-            TimeSpan? timeout,
-            CancellationToken cancellationToken = default)
-        {
-            var task = Task.Run(func ?? throw new ArgumentNullException(nameof(func)), cancellationToken);
-            Task? completedTask = null;
-            try
-            {
-                completedTask = await AsAsync(task, timeout, cancellationToken);
-            }
-            catch (TaskCanceledException)
-            {
-                throw;
-            }
-            catch (OperationCanceledException)
-            {
-                throw new TaskCanceledException(task);
-            }
-
-            if (task == completedTask)
-            {
-                EnsureCompletedSuccessfully(task);
-                return task.Result;
-            }
-
-            throw cancellationToken.IsCancellationRequested
-                      ? (Exception)new TaskCanceledException(task)
-                      : new TaskTimeoutException(task);
-        }
-
-        /// <summary>
-        /// Gets the result type of a generic task type.
-        /// If the task does not return any result, <c>null</c> is returned.
-        /// </summary>
-        /// <param name="task">The task.</param>
-        /// <returns>
-        /// The result type.
-        /// </returns>
-        public static Type? GetResultType(this Task task)
-        {
-            task = task ?? throw new ArgumentNullException(nameof(task));
-
-            var taskType = task.GetType();
-            return taskType.IsConstructedGenericType
-                ? taskType.GetGenericArguments()[0]
-                : null;
-        }
-
-        /// <summary>
-        /// Gets the result of a task.
-        /// If the task does not return any result, <c>null</c> is returned.
-        /// </summary>
-        /// <param name="task">The task.</param>
-        /// <returns>
-        /// The result type.
-        /// </returns>
-        public static object? GetResult(this Task task)
-        {
-            task = task ?? throw new ArgumentNullException(nameof(task));
-
-            var taskType = task.GetType();
-            object? result = null;
-            if (taskType.IsConstructedGenericType)
-            {
-                var taskValueType = taskType.GetGenericArguments()[0];
-                if (taskValueType.Name != "VoidTaskResult")
-                {
-                    var getResult = GetResultMethod.MakeGenericMethod(taskValueType);
-                    result = getResult.Call(null, task);
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Ensures that the task completed successfully.
-        /// </summary>
-        /// <param name="task">The task.</param>
-        public static void EnsureCompletedSuccessfully(this Task task)
-        {
-            task = task ?? throw new ArgumentNullException(nameof(task));
-
-            if (!task.IsCompleted)
-            {
-                throw new TaskNotCompletedException(task);
-            }
-
-            var taskException = task.Exception;
-            if (taskException != null)
-            {
-                throw taskException.InnerExceptions.Count == 1 ? taskException.InnerExceptions[0] : taskException;
-            }
-
-            if (task.IsCanceled)
-            {
-                throw new TaskCanceledException(task);
-            }
-        }
-
-        /// <summary>
-        /// Ensures that the task completed successfully.
-        /// </summary>
-        /// <typeparam name="TResult">The result type.</typeparam>
-        /// <param name="task">The task.</param>
-        /// <returns>The task result.</returns>
-        public static TResult EnsureCompletedSuccessfully<TResult>(this Task<TResult> task)
-        {
-            EnsureCompletedSuccessfully((Task)task);
+            EnsureCompletedSuccessfully(task);
             return task.Result;
         }
 
-        private static async Task<Task> AsAsync(
-            Task task,
-            TimeSpan? timeout = null,
-            CancellationToken cancellationToken = default)
+        throw new TaskTimeoutException(task);
+    }
+
+    /// <summary>
+    /// Converts the action into an asynchronous operation.
+    /// </summary>
+    /// <remarks>
+    /// Caution is to be considered because, when the action
+    /// does not complete in the indicated time or when cancellation is issued,
+    /// the task running the operation does not complete.
+    /// In this case, the running task is returned in the Task property of either the TaskCanceledException
+    /// or TaskTimeoutException.
+    /// </remarks>
+    /// <param name="action">The action to be executed.</param>
+    /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
+    /// <returns>
+    /// An asynchronous result.
+    /// </returns>
+    public static Task AsAsync(
+        this Action action,
+        CancellationToken cancellationToken = default)
+    {
+        return AsAsync(
+            action,
+            null,
+            cancellationToken);
+    }
+
+    /// <summary>
+    /// Converts the action into an asynchronous operation.
+    /// </summary>
+    /// <remarks>
+    /// Caution is to be considered because, when the action
+    /// does not complete in the indicated time or when cancellation is issued,
+    /// the task running the operation does not complete.
+    /// In this case, the running task is returned in the Task property of either the TaskCanceledException
+    /// or TaskTimeoutException.
+    /// </remarks>
+    /// <param name="action">The action to be executed.</param>
+    /// <param name="timeout">The timeout in milliseconds.</param>
+    /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
+    /// <returns>
+    /// An asynchronous result.
+    /// </returns>
+    public static Task AsAsync(
+        this Action action,
+        int timeout,
+        CancellationToken cancellationToken = default)
+    {
+        return AsAsync(
+            action,
+            TimeSpan.FromMilliseconds(timeout),
+            cancellationToken);
+    }
+
+    /// <summary>
+    /// Converts the action into an asynchronous operation.
+    /// </summary>
+    /// <remarks>
+    /// Caution is to be considered because, when the action
+    /// does not complete in the indicated time or when cancellation is issued,
+    /// the task running the operation does not complete.
+    /// In this case, the running task is returned in the Task property of either the TaskCanceledException
+    /// or TaskTimeoutException.
+    /// </remarks>
+    /// <param name="action">The action to be executed.</param>
+    /// <param name="timeout">The timeout. If <c>null</c> specified, indefinite wait is considered.</param>
+    /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
+    /// <returns>
+    /// An asynchronous result.
+    /// </returns>
+    public static async Task AsAsync(
+        this Action action,
+        TimeSpan? timeout,
+        CancellationToken cancellationToken = default)
+    {
+        var task = Task.Run(action ?? throw new ArgumentNullException(nameof(action)), cancellationToken);
+        Task? completedTask = null;
+        try
         {
-            if (task.IsCompleted)
-            {
-                return task;
-            }
-
-            using var cts = new CancellationTokenSource();
-            using var registration = cancellationToken.Register(() => cts.Cancel());
-            var delayTask = timeout == null ? Task.Delay(-1, cts.Token) : Task.Delay(timeout.Value, cts.Token);
-            var completedTask = await Task.WhenAny(task, delayTask);
-            if (completedTask == task)
-            {
-                return task;
-            }
-
-            // TODO: the original task will not end.
-            cts.Token.ThrowIfCancellationRequested();
-            return task.IsCompleted ? task : delayTask;
+            completedTask = await AsAsync(task, timeout, cancellationToken);
+        }
+        catch (TaskCanceledException)
+        {
+            throw;
+        }
+        catch (OperationCanceledException)
+        {
+            throw new TaskCanceledException(task);
         }
 
-        private static object? GetResult<T>(this Task<T> task) => task.Result;
-
-        private static bool WaitNonLockingCore(this Task task, TimeSpan? timeout, int? waitMilliseconds, bool throwOnTimeout)
+        if (completedTask != task)
         {
-            task = task ?? throw new ArgumentNullException(nameof(task));
+            throw cancellationToken.IsCancellationRequested
+                ? (Exception)new TaskCanceledException(task)
+                : new TaskTimeoutException(task);
+        }
 
-            timeout ??= DefaultTimeout;
-            var timeoutOccurred = false;
-            var waitInterval = waitMilliseconds ?? DefaultWaitMilliseconds;
-            var startTime = DateTime.Now;
+        EnsureCompletedSuccessfully(task);
+    }
 
-            AggregateException? taskException = null;
-            try
+    /// <summary>
+    /// Converts the function into an asynchronous operation.
+    /// </summary>
+    /// <remarks>
+    /// Caution is to be considered because, when the function does not complete in the indicated
+    /// time or when cancellation is issued, the task running the operation does not complete.
+    /// In this case, the running task is returned in the Task property of either the TaskCanceledException
+    /// or TaskTimeoutException.
+    /// </remarks>
+    /// <typeparam name="T">The function return type.</typeparam>
+    /// <param name="func">The function to be executed.</param>
+    /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
+    /// <returns>
+    /// An asynchronous result.
+    /// </returns>
+    public static Task<T> AsAsync<T>(
+        this Func<T> func,
+        CancellationToken cancellationToken = default)
+    {
+        return AsAsync(
+            func,
+            null,
+            cancellationToken);
+    }
+
+    /// <summary>
+    /// Converts the function into an asynchronous operation.
+    /// </summary>
+    /// <remarks>
+    /// Caution is to be considered because, when the function does not complete in the indicated
+    /// time or when cancellation is issued, the task running the operation does not complete.
+    /// In this case, the running task is returned in the Task property of either the TaskCanceledException
+    /// or TaskTimeoutException.
+    /// </remarks>
+    /// <typeparam name="T">The function return type.</typeparam>
+    /// <param name="func">The function to be executed.</param>
+    /// <param name="timeout">The timeout in milliseconds.</param>
+    /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
+    /// <returns>
+    /// An asynchronous result.
+    /// </returns>
+    public static Task<T> AsAsync<T>(
+        this Func<T> func,
+        int timeout,
+        CancellationToken cancellationToken = default)
+    {
+        return AsAsync(
+            func,
+            TimeSpan.FromMilliseconds(timeout),
+            cancellationToken);
+    }
+
+    /// <summary>
+    /// Converts the function into an asynchronous operation.
+    /// </summary>
+    /// <remarks>
+    /// Caution is to be considered because, when the function does not complete in the indicated
+    /// time or when cancellation is issued, the task running the operation does not complete.
+    /// In this case, the running task is returned in the Task property of either the TaskCanceledException
+    /// or TaskTimeoutException.
+    /// </remarks>
+    /// <typeparam name="T">The function return type.</typeparam>
+    /// <param name="func">The function to be executed.</param>
+    /// <param name="timeout">The timeout. If <c>null</c> specified, indefinite wait is considered.</param>
+    /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
+    /// <returns>
+    /// An asynchronous result.
+    /// </returns>
+    public static async Task<T> AsAsync<T>(
+        this Func<T> func,
+        TimeSpan? timeout,
+        CancellationToken cancellationToken = default)
+    {
+        var task = Task.Run(func ?? throw new ArgumentNullException(nameof(func)), cancellationToken);
+        Task? completedTask = null;
+        try
+        {
+            completedTask = await AsAsync(task, timeout, cancellationToken);
+        }
+        catch (TaskCanceledException)
+        {
+            throw;
+        }
+        catch (OperationCanceledException)
+        {
+            throw new TaskCanceledException(task);
+        }
+
+        if (task == completedTask)
+        {
+            EnsureCompletedSuccessfully(task);
+            return task.Result;
+        }
+
+        throw cancellationToken.IsCancellationRequested
+            ? (Exception)new TaskCanceledException(task)
+            : new TaskTimeoutException(task);
+    }
+
+    /// <summary>
+    /// Gets the result type of a generic task type.
+    /// If the task does not return any result, <c>null</c> is returned.
+    /// </summary>
+    /// <param name="task">The task.</param>
+    /// <returns>
+    /// The result type.
+    /// </returns>
+    public static Type? GetResultType(this Task task)
+    {
+        task = task ?? throw new ArgumentNullException(nameof(task));
+
+        var taskType = task.GetType();
+        return taskType.IsConstructedGenericType
+            ? taskType.GetGenericArguments()[0]
+            : null;
+    }
+
+    /// <summary>
+    /// Gets the result of a task.
+    /// If the task does not return any result, <c>null</c> is returned.
+    /// </summary>
+    /// <param name="task">The task.</param>
+    /// <returns>
+    /// The result type.
+    /// </returns>
+    public static object? GetResult(this Task task)
+    {
+        task = task ?? throw new ArgumentNullException(nameof(task));
+
+        var taskType = task.GetType();
+        object? result = null;
+        if (taskType.IsConstructedGenericType)
+        {
+            var taskValueType = taskType.GetGenericArguments()[0];
+            if (taskValueType.Name != "VoidTaskResult")
             {
-                while (!task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
+                var getResult = GetResultMethod.MakeGenericMethod(taskValueType);
+                result = getResult.Call(null, task);
+            }
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Ensures that the task completed successfully.
+    /// </summary>
+    /// <param name="task">The task.</param>
+    public static void EnsureCompletedSuccessfully(this Task task)
+    {
+        task = task ?? throw new ArgumentNullException(nameof(task));
+
+        if (!task.IsCompleted)
+        {
+            throw new TaskNotCompletedException(task);
+        }
+
+        var taskException = task.Exception;
+        if (taskException != null)
+        {
+            throw taskException.InnerExceptions.Count == 1 ? taskException.InnerExceptions[0] : taskException;
+        }
+
+        if (task.IsCanceled)
+        {
+            throw new TaskCanceledException(task);
+        }
+    }
+
+    /// <summary>
+    /// Ensures that the task completed successfully.
+    /// </summary>
+    /// <typeparam name="TResult">The result type.</typeparam>
+    /// <param name="task">The task.</param>
+    /// <returns>The task result.</returns>
+    public static TResult EnsureCompletedSuccessfully<TResult>(this Task<TResult> task)
+    {
+        EnsureCompletedSuccessfully((Task)task);
+        return task.Result;
+    }
+
+    private static async Task<Task> AsAsync(
+        Task task,
+        TimeSpan? timeout = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (task.IsCompleted)
+        {
+            return task;
+        }
+
+        using var cts = new CancellationTokenSource();
+        using var registration = cancellationToken.Register(() => cts.Cancel());
+        var delayTask = timeout == null ? Task.Delay(-1, cts.Token) : Task.Delay(timeout.Value, cts.Token);
+        var completedTask = await Task.WhenAny(task, delayTask);
+        if (completedTask == task)
+        {
+            return task;
+        }
+
+        // TODO: the original task will not end.
+        cts.Token.ThrowIfCancellationRequested();
+        return task.IsCompleted ? task : delayTask;
+    }
+
+    private static object? GetResult<T>(this Task<T> task) => task.Result;
+
+    private static bool WaitNonLockingCore(this Task task, TimeSpan? timeout, int? waitMilliseconds, bool throwOnTimeout)
+    {
+        task = task ?? throw new ArgumentNullException(nameof(task));
+
+        timeout ??= DefaultTimeout;
+        var timeoutOccurred = false;
+        var waitInterval = waitMilliseconds ?? DefaultWaitMilliseconds;
+        var startTime = DateTime.Now;
+
+        AggregateException? taskException = null;
+        try
+        {
+            while (!task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
+            {
+                task.Wait(waitInterval);
+                var elapsed = DateTime.Now - startTime;
+                if (elapsed > timeout)
                 {
-                    task.Wait(waitInterval);
-                    var elapsed = DateTime.Now - startTime;
-                    if (elapsed > timeout)
+                    if (throwOnTimeout)
                     {
-                        if (throwOnTimeout)
-                        {
-                            throw new TaskTimeoutException(task, $"The allotted time of {timeout} expired. Please try again the operation.");
-                        }
-
-                        timeoutOccurred = true;
-                        break;
+                        throw new TaskTimeoutException(task, $"The allotted time of {timeout} expired. Please try again the operation.");
                     }
+
+                    timeoutOccurred = true;
+                    break;
                 }
             }
-            catch (AggregateException ex)
-            {
-                taskException = ex;
-            }
-
-            if (taskException == null && task.IsFaulted)
-            {
-                taskException = task.Exception;
-            }
-
-            if (taskException != null)
-            {
-                if (taskException.InnerExceptions.Count == 1)
-                {
-                    throw taskException.InnerExceptions[0];
-                }
-
-                throw taskException;
-            }
-
-            if (task.IsCanceled)
-            {
-                throw new TaskCanceledException(task);
-            }
-
-            return !timeoutOccurred;
         }
+        catch (AggregateException ex)
+        {
+            taskException = ex;
+        }
+
+        if (taskException == null && task.IsFaulted)
+        {
+            taskException = task.Exception;
+        }
+
+        if (taskException != null)
+        {
+            if (taskException.InnerExceptions.Count == 1)
+            {
+                throw taskException.InnerExceptions[0];
+            }
+
+            throw taskException;
+        }
+
+        if (task.IsCanceled)
+        {
+            throw new TaskCanceledException(task);
+        }
+
+        return !timeoutOccurred;
     }
 }

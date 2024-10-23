@@ -5,109 +5,108 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Threading
+namespace Kephas.Threading;
+
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+/// <summary>
+/// Class used for execution synchronization in asynchronous calls.
+/// </summary>
+public sealed class Lock : IDisposable
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
+    private readonly SemaphoreSlim semaphore = new(1, 1);
 
     /// <summary>
-    /// Class used for execution synchronization in asynchronous calls.
+    /// Enters the lock and ensures that the action is executed within the lock.
     /// </summary>
-    public sealed class Lock : IDisposable
+    /// <param name="action">The action to be executed.</param>
+    /// <returns>An asynchronous result.</returns>
+    public async Task EnterAsync(Func<Task> action)
     {
-        private readonly SemaphoreSlim semaphore = new(1, 1);
+        action = action ?? throw new ArgumentNullException(nameof(action));
 
-        /// <summary>
-        /// Enters the lock and ensures that the action is executed within the lock.
-        /// </summary>
-        /// <param name="action">The action to be executed.</param>
-        /// <returns>An asynchronous result.</returns>
-        public async Task EnterAsync(Func<Task> action)
+        await semaphore.WaitAsync();
+        try
         {
-            action = action ?? throw new ArgumentNullException(nameof(action));
-
-            await this.semaphore.WaitAsync();
-            try
-            {
-                await action();
-            }
-            finally
-            {
-                this.semaphore.Release();
-            }
+            await action();
         }
-
-        /// <summary>
-        /// Enters the lock and ensures that the action is executed within the lock.
-        /// </summary>
-        /// <param name="action">The action to be executed.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>An asynchronous result.</returns>
-        public async Task EnterAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
+        finally
         {
-            action = action ?? throw new ArgumentNullException(nameof(action));
-
-            await this.semaphore.WaitAsync(cancellationToken);
-            try
-            {
-                await action(cancellationToken);
-            }
-            finally
-            {
-                this.semaphore.Release();
-            }
+            semaphore.Release();
         }
+    }
 
-        /// <summary>
-        /// Enters the lock and ensures that the action is executed within the lock.
-        /// </summary>
-        /// <typeparam name="T">The asynchronous result type.</typeparam>
-        /// <param name="action">The action to be executed.</param>
-        /// <returns>An asynchronous result.</returns>
-        public async Task<T> EnterAsync<T>(Func<Task<T>> action)
+    /// <summary>
+    /// Enters the lock and ensures that the action is executed within the lock.
+    /// </summary>
+    /// <param name="action">The action to be executed.</param>
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    /// <returns>An asynchronous result.</returns>
+    public async Task EnterAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
+    {
+        action = action ?? throw new ArgumentNullException(nameof(action));
+
+        await semaphore.WaitAsync(cancellationToken);
+        try
         {
-            action = action ?? throw new ArgumentNullException(nameof(action));
-
-            await this.semaphore.WaitAsync();
-            try
-            {
-                return await action();
-            }
-            finally
-            {
-                this.semaphore.Release();
-            }
+            await action(cancellationToken);
         }
-
-        /// <summary>
-        /// Enters the lock and ensures that the action is executed within the lock.
-        /// </summary>
-        /// <typeparam name="T">The asynchronous result type.</typeparam>
-        /// <param name="action">The action to be executed.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>An asynchronous result.</returns>
-        public async Task<T> EnterAsync<T>(Func<CancellationToken, Task<T>> action, CancellationToken cancellationToken = default)
+        finally
         {
-            action = action ?? throw new ArgumentNullException(nameof(action));
-
-            await this.semaphore.WaitAsync(cancellationToken);
-            try
-            {
-                return await action(cancellationToken);
-            }
-            finally
-            {
-                this.semaphore.Release();
-            }
+            semaphore.Release();
         }
+    }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
+    /// <summary>
+    /// Enters the lock and ensures that the action is executed within the lock.
+    /// </summary>
+    /// <typeparam name="T">The asynchronous result type.</typeparam>
+    /// <param name="action">The action to be executed.</param>
+    /// <returns>An asynchronous result.</returns>
+    public async Task<T> EnterAsync<T>(Func<Task<T>> action)
+    {
+        action = action ?? throw new ArgumentNullException(nameof(action));
+
+        await semaphore.WaitAsync();
+        try
         {
-            this.semaphore.Dispose();
+            return await action();
         }
+        finally
+        {
+            semaphore.Release();
+        }
+    }
+
+    /// <summary>
+    /// Enters the lock and ensures that the action is executed within the lock.
+    /// </summary>
+    /// <typeparam name="T">The asynchronous result type.</typeparam>
+    /// <param name="action">The action to be executed.</param>
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    /// <returns>An asynchronous result.</returns>
+    public async Task<T> EnterAsync<T>(Func<CancellationToken, Task<T>> action, CancellationToken cancellationToken = default)
+    {
+        action = action ?? throw new ArgumentNullException(nameof(action));
+
+        await semaphore.WaitAsync(cancellationToken);
+        try
+        {
+            return await action(cancellationToken);
+        }
+        finally
+        {
+            semaphore.Release();
+        }
+    }
+
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        semaphore.Dispose();
     }
 }
