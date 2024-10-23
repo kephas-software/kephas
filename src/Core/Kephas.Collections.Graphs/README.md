@@ -11,7 +11,7 @@ Typically used areas and classes/interfaces/services:
 * [Kephas.Dynamic](https://www.nuget.org/packages/Kephas.Dynamic)
 * [Kephas.Exceptions](https://www.nuget.org/packages/Kephas.Exceptions)
 * [Kephas.Logging.Abstractions](https://www.nuget.org/packages/Kephas.Logging.Abstractions)
-* [Kephas.Services.Abstractions](https://www.nuget.org/packages/Kephas.Services.Abstractions)
+* [Kephas.DependencyInjection.Abstractions](https://www.nuget.org/packages/Kephas.DependencyInjection.Abstractions)
 * [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
 * [Kephas.Reflection](https://www.nuget.org/packages/Kephas.Reflection)
 * [Kephas.Analyzers](https://www.nuget.org/packages/Kephas.Analyzers)
