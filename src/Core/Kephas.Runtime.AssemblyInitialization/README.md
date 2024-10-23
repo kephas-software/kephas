@@ -36,7 +36,7 @@ internal static class ModuleInitializer_My_Assembly
 ## Other resources
 
 * [Kephas.Logging.Abstractions](https://www.nuget.org/packages/Kephas.Logging.Abstractions)
-* [Kephas.Services.Abstractions](https://www.nuget.org/packages/Kephas.Services.Abstractions)
+* [Kephas.DependencyInjection.Abstractions](https://www.nuget.org/packages/Kephas.DependencyInjection.Abstractions)
 
 > Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
 
