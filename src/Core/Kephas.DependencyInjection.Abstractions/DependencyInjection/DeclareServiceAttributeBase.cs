@@ -18,7 +18,7 @@ namespace Kephas.DependencyInjection;
 public abstract class DeclareServiceAttributeBase<TService> : ServiceAttributeBase, IServiceInfo, IServiceInfoProvider
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ServiceAttributeBase"/> class.
+    /// Initializes a new instance of the <see cref="DeclareServiceAttributeBase{TService}"/> class.
     /// </summary>
     /// <param name="lifetime">The lifetime.</param>
     protected DeclareServiceAttributeBase(AppServiceLifetime lifetime)
@@ -56,11 +56,46 @@ public abstract class DeclareServiceAttributeBase<TService> : ServiceAttributeBa
 /// This is useful when the service to be annotated is not accessible for modification.
 /// </summary>
 /// <typeparam name="TService">The service type.</typeparam>
-/// <typeparam name="TMetadata">The metadata type.</typeparam>
-public abstract class DeclareServiceAttributeBase<TService, TMetadata> : DeclareServiceAttributeBase<TService>
+/// <typeparam name="TImplementation">The implementation type.</typeparam>
+public abstract class DeclareServiceAttributeBase<TService, TImplementation> : DeclareServiceAttributeBase<TService>, IServiceInfo, IServiceInfoProvider
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ServiceAttributeBase"/> class.
+    /// Initializes a new instance of the <see cref="DeclareServiceAttributeBase{TService,TMetadata}"/> class.
+    /// </summary>
+    /// <param name="lifetime">The lifetime.</param>
+    protected DeclareServiceAttributeBase(AppServiceLifetime lifetime)
+        : base(lifetime)
+    {
+    }
+
+    /// <summary>
+    /// Gets the instancing strategy: factory, implementation type, or instance.
+    /// </summary>
+    object? IServiceInfo.InstancingStrategy => typeof(TImplementation);
+
+    /// <summary>
+    /// Gets an enumeration of <see cref="ServiceImplementationDeclaration"/>.
+    /// </summary>
+    /// <returns>
+    /// An enumeration of <see cref="ServiceImplementationDeclaration"/>.
+    /// </returns>
+    IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations()
+    {
+        yield return new ServiceImplementationDeclaration(typeof(TImplementation), ((IServiceInfo)this).ServiceDeclarationType!);
+    }
+}
+
+/// <summary>
+/// Marks an interface or a class to be an application service, declared at assembly level.
+/// This is useful when the service to be annotated is not accessible for modification.
+/// </summary>
+/// <typeparam name="TService">The service type.</typeparam>
+/// <typeparam name="TImplementation">The implementation type.</typeparam>
+/// <typeparam name="TMetadata">The metadata type.</typeparam>
+public abstract class DeclareServiceAttributeBase<TService, TImplementation, TMetadata> : DeclareServiceAttributeBase<TService, TImplementation>
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DeclareServiceAttributeBase{TService,TImplementation,TMetadata}"/> class.
     /// </summary>
     /// <param name="lifetime">The lifetime.</param>
     protected DeclareServiceAttributeBase(AppServiceLifetime lifetime)

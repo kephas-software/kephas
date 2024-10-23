@@ -13,31 +13,26 @@ namespace Kephas.DependencyInjection;
 /// </summary>
 /// <typeparam name="TService">The service type.</typeparam>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public sealed class DeclareScopedServiceAttribute<TService> : DeclareServiceAttributeBase<TService>
-{
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DeclareScopedServiceAttribute{TService}"/> class.
-    /// </summary>
-    public DeclareScopedServiceAttribute()
-        : base(AppServiceLifetime.Scoped)
-    {
-    }
-}
+public sealed class DeclareScopedServiceAttribute<TService>()
+    : DeclareServiceAttributeBase<TService>(AppServiceLifetime.Scoped);
 
 /// <summary>
 /// Marks an interface or a class to be a scoped application service, declared at assembly level.
 /// This is useful when the service to be annotated is not accessible for modification.
 /// </summary>
 /// <typeparam name="TService">The service type.</typeparam>
+/// <typeparam name="TImplementation">The implementation type.</typeparam>
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+public sealed class DeclareScopedServiceAttribute<TService, TImplementation>()
+    : DeclareServiceAttributeBase<TService, TImplementation>(AppServiceLifetime.Scoped);
+
+/// <summary>
+/// Marks an interface or a class to be a scoped application service, declared at assembly level.
+/// This is useful when the service to be annotated is not accessible for modification.
+/// </summary>
+/// <typeparam name="TService">The service type.</typeparam>
+/// <typeparam name="TImplementation">The implementation type.</typeparam>
 /// <typeparam name="TMetadata">The metadata type.</typeparam>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public sealed class DeclareScopedServiceAttribute<TService, TMetadata> : DeclareServiceAttributeBase<TService, TMetadata>
-{
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DeclareScopedServiceAttribute{TService,TMetadata}"/> class.
-    /// </summary>
-    public DeclareScopedServiceAttribute()
-        : base(AppServiceLifetime.Scoped)
-    {
-    }
-}
+public sealed class DeclareScopedServiceAttribute<TService, TImplementation, TMetadata>()
+    : DeclareServiceAttributeBase<TService, TImplementation, TMetadata>(AppServiceLifetime.Scoped);
