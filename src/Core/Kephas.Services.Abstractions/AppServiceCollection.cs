@@ -5,37 +5,38 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Reflection;
 using Kephas.Services;
-using Kephas.Services.Reflection;
 
 namespace Kephas;
 
 /// <summary>
 /// Collection of application service registrations.
 /// </summary>
-[ExcludeFromServices]
-public class AppServiceCollection : List<IAppServiceInfo>, IAppServiceCollection
+[ExcludeFromDependencyInjection]
+public class AppServiceCollection : List<IServiceInfo>, IAppServiceCollection
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="AppServiceCollection"/> class.
     /// </summary>
     public AppServiceCollection()
     {
-        this.Add<IAppServiceCollection>(this, b => b.IsExternallyOwned = true);
+        this.Add<IAppServiceCollection>(this);
     }
 
     /// <summary>
     /// Replaces the service with the provided contract.
     /// </summary>
-    /// <param name="appServiceInfo">The application service registration.</param>
+    /// <param name="serviceInfo">The application service registration.</param>
     /// <returns>
     /// This <see cref="IAppServiceCollection"/>.
     /// </returns>
-    public IAppServiceCollection Replace(IAppServiceInfo appServiceInfo)
+    public IAppServiceCollection Replace(IServiceInfo serviceInfo)
     {
         var toDelete = this
             .Select((i, idx) => (appServiceInfo: i, index: idx))
-            .Where(t => t.appServiceInfo.ContractType == appServiceInfo.ContractType)
+            .Where(t => t.appServiceInfo.ServiceType == serviceInfo.ServiceType)
             .Select(t => t.index)
             .OrderBy(i => i)
             .ToList();
@@ -45,7 +46,7 @@ public class AppServiceCollection : List<IAppServiceInfo>, IAppServiceCollection
             RemoveAt(i + (delta--));
         }
 
-        Add(appServiceInfo);
+        Add(serviceInfo);
 
         return this;
     }

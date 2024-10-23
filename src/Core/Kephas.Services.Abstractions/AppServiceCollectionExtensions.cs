@@ -6,7 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Diagnostics.CodeAnalysis;
-using Kephas.Services.Reflection;
+using Kephas.DependencyInjection.Reflection;
 using Kephas.Services.Resources;
 
 namespace Kephas;
@@ -29,7 +29,7 @@ public static class AppServiceCollectionExtensions
     public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
         this IAppServiceCollection appServices,
         TContract serviceInstance,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -57,7 +57,7 @@ public static class AppServiceCollectionExtensions
     public static IAppServiceCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
         this IAppServiceCollection appServices,
         TContract serviceInstance,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -85,7 +85,7 @@ public static class AppServiceCollectionExtensions
     public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
         this IAppServiceCollection appServices,
         TContract serviceInstance,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -114,7 +114,7 @@ public static class AppServiceCollectionExtensions
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
         this IAppServiceCollection appServices,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -142,7 +142,7 @@ public static class AppServiceCollectionExtensions
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
         this IAppServiceCollection appServices,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -166,7 +166,7 @@ public static class AppServiceCollectionExtensions
     /// <returns>
     /// This <paramref name="appServices"/>.
     /// </returns>
-    public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IAppServiceCollection appServices, Action<AppServiceInfo>? builder = null)
+    public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IAppServiceCollection appServices, Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -190,7 +190,7 @@ public static class AppServiceCollectionExtensions
     /// <returns>
     /// This <paramref name="appServices"/>.
     /// </returns>
-    public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<AppServiceInfo>? builder = null)
+    public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -215,7 +215,7 @@ public static class AppServiceCollectionExtensions
     /// <returns>
     /// This <paramref name="appServices"/>.
     /// </returns>
-    public static IAppServiceCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<AppServiceInfo>? builder = null)
+    public static IAppServiceCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -240,7 +240,7 @@ public static class AppServiceCollectionExtensions
     /// <returns>
     /// This <paramref name="appServices"/>.
     /// </returns>
-    public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<AppServiceInfo>? builder = null)
+    public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -268,7 +268,7 @@ public static class AppServiceCollectionExtensions
     public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
         this IAppServiceCollection appServices,
         Func<TContract> serviceFactory,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -296,7 +296,7 @@ public static class AppServiceCollectionExtensions
     public static IAppServiceCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
         this IAppServiceCollection appServices,
         Func<TContract> serviceFactory,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -324,7 +324,7 @@ public static class AppServiceCollectionExtensions
     public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
         this IAppServiceCollection appServices,
         Func<TContract> serviceFactory,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -352,7 +352,7 @@ public static class AppServiceCollectionExtensions
     public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
         this IAppServiceCollection appServices,
         Func<IServiceProvider, TContract> serviceFactory,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -380,7 +380,7 @@ public static class AppServiceCollectionExtensions
     public static IAppServiceCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
         this IAppServiceCollection appServices,
         Func<IServiceProvider, TContract> serviceFactory,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -408,7 +408,7 @@ public static class AppServiceCollectionExtensions
     public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
         this IAppServiceCollection appServices,
         Func<IServiceProvider, TContract> serviceFactory,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
         where TContract : class
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -437,7 +437,7 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         Func<object> serviceFactory,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -466,7 +466,7 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         Func<object> serviceFactory,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -495,7 +495,7 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         Func<object> serviceFactory,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -524,7 +524,7 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         Func<IServiceProvider, object> serviceFactory,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -553,7 +553,7 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         Func<IServiceProvider, object> serviceFactory,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -582,7 +582,7 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         Func<IServiceProvider, object> serviceFactory,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -611,7 +611,7 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -641,7 +641,7 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -670,7 +670,7 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -700,7 +700,7 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         object serviceInstance,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -730,7 +730,7 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         object serviceInstance,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -759,7 +759,7 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         object serviceInstance,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
@@ -787,7 +787,7 @@ public static class AppServiceCollectionExtensions
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
-        return appServices.LastOrDefault(i => i.ContractType == contractType && i.Instance is not null)?.Instance;
+        return appServices.LastOrDefault(i => i.ServiceType == contractType && i.Instance is not null)?.Instance;
     }
 
     /// <summary>
@@ -836,17 +836,17 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         Type contractDeclarationType,
         object instancingStrategy,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
         instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
 
-        var serviceBuilder = new AppServiceInfo(contractDeclarationType, instancingStrategy);
+        var serviceBuilder = new ServiceInfo(contractDeclarationType, instancingStrategy);
         builder?.Invoke(serviceBuilder);
         var appServiceInfo = serviceBuilder;
 
-        if (appServiceInfo.ContractType is not null && !appServices.Contains(appServiceInfo.ContractType))
+        if (appServiceInfo.ServiceType is not null && !appServices.Contains(appServiceInfo.ServiceType))
         {
             appServices.Add(appServiceInfo);
         }
@@ -868,13 +868,13 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         Type contractDeclarationType,
         object instancingStrategy,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
         instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
 
-        var serviceBuilder = new AppServiceInfo(contractDeclarationType, instancingStrategy);
+        var serviceBuilder = new ServiceInfo(contractDeclarationType, instancingStrategy);
         builder?.Invoke(serviceBuilder);
         appServices.Add(serviceBuilder);
 
@@ -895,13 +895,13 @@ public static class AppServiceCollectionExtensions
         this IAppServiceCollection appServices,
         Type contractDeclarationType,
         object instancingStrategy,
-        Action<AppServiceInfo>? builder = null)
+        Action<ServiceInfo>? builder = null)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
         contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
         instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
 
-        var serviceBuilder = new AppServiceInfo(contractDeclarationType, instancingStrategy);
+        var serviceBuilder = new ServiceInfo(contractDeclarationType, instancingStrategy);
         builder?.Invoke(serviceBuilder);
         appServices.Replace(serviceBuilder);
 

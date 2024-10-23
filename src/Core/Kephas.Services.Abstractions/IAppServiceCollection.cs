@@ -5,14 +5,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services.Reflection;
+using Kephas.DependencyInjection.Reflection;
 
 namespace Kephas;
 
 /// <summary>
 /// Provides a registration container for application services.
 /// </summary>
-public interface IAppServiceCollection : IList<IAppServiceInfo>
+public interface IAppServiceCollection : IList<IServiceInfo>
 {
     private static readonly List<Action<IAppServiceCollection>> Collectors = new ();
 
@@ -24,16 +24,16 @@ public interface IAppServiceCollection : IList<IAppServiceInfo>
     /// <c>true</c> if the service is registered, <c>false</c> if not.
     /// </returns>
     public bool Contains(Type contractType)
-        => this.Any(r => r.ContractType == contractType);
+        => this.Any(r => r.ServiceType == contractType);
 
     /// <summary>
     /// Replaces the service with the provided contract.
     /// </summary>
-    /// <param name="appServiceInfo">The application service registration.</param>
+    /// <param name="serviceInfo">The application service registration.</param>
     /// <returns>
     /// This <see cref="IAppServiceCollection"/>.
     /// </returns>
-    public IAppServiceCollection Replace(IAppServiceInfo appServiceInfo);
+    public IAppServiceCollection Replace(IServiceInfo serviceInfo);
 
     /// <summary>
     /// Adds an collector for <see cref="IAppServiceCollection"/>.

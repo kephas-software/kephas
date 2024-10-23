@@ -8,37 +8,38 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services
+using Kephas.DependencyInjection;
+
+namespace Kephas.Services;
+
+/// <summary>
+/// Exception for signalling service not initialized errors.
+/// </summary>
+public class ServiceNotInitializedException : ServiceException
 {
     /// <summary>
-    /// Exception for signalling service not initialized errors.
+    /// Initializes a new instance of the <see cref="ServiceNotInitializedException"/> class.
     /// </summary>
-    public class ServiceNotInitializedException : ServiceException
+    public ServiceNotInitializedException()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceNotInitializedException"/> class.
-        /// </summary>
-        public ServiceNotInitializedException()
-        {
-        }
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceNotInitializedException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        public ServiceNotInitializedException(string message)
-            : base(message)
-        {
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ServiceNotInitializedException"/> class.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    public ServiceNotInitializedException(string message)
+        : base(message)
+    {
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceNotInitializedException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="inner">The inner.</param>
-        public ServiceNotInitializedException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ServiceNotInitializedException"/> class.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    /// <param name="inner">The inner.</param>
+    public ServiceNotInitializedException(string message, Exception inner)
+        : base(message, inner)
+    {
     }
 }

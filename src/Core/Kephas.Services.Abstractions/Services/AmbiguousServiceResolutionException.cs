@@ -5,30 +5,31 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services
+using Kephas.DependencyInjection;
+
+namespace Kephas.Services;
+
+/// <summary>
+/// Occurs when the service resolution is ambiguous.
+/// </summary>
+public class AmbiguousServiceResolutionException : ServiceException
 {
     /// <summary>
-    /// Occurs when the service resolution is ambiguous.
+    /// Initializes a new instance of the <see cref="AmbiguousServiceResolutionException"/> class.
     /// </summary>
-    public class AmbiguousServiceResolutionException : ServiceException
+    /// <param name="message">The message.</param>
+    public AmbiguousServiceResolutionException(string message)
+        : base(message)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AmbiguousServiceResolutionException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        public AmbiguousServiceResolutionException(string message)
-            : base(message)
-        {
-        }
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AmbiguousServiceResolutionException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="inner">The inner exception.</param>
-        public AmbiguousServiceResolutionException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AmbiguousServiceResolutionException"/> class.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    /// <param name="inner">The inner exception.</param>
+    public AmbiguousServiceResolutionException(string message, Exception inner)
+        : base(message, inner)
+    {
     }
 }

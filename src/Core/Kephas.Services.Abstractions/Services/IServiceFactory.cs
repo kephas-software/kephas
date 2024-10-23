@@ -6,13 +6,14 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Diagnostics.CodeAnalysis;
+using Kephas.DependencyInjection;
 
 namespace Kephas.Services;
 
 /// <summary>
 /// Factory of injectable instances.
 /// </summary>
-[AppServiceContract]
+[TransientService]
 public interface IServiceFactory
 {
     /// <summary>

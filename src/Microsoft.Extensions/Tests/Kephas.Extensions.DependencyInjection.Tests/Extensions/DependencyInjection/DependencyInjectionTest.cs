@@ -5,13 +5,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Metadata;
+using Kephas.DependencyInjection.ServiceProviders;
 using Kephas.Services;
 using Kephas.Services.Builder;
-using Kephas.Services.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Xunit;
-using Kephas.Services.Metadata;
 using Kephas.Testing;
 
 namespace Kephas.Tests.Extensions.DependencyInjection;
@@ -162,7 +163,7 @@ public class DependencyInjectionTest
     public void ResolveMany_various_same_contract_registrations()
     {
         var builder = Test.CreateTestServicesBuilder()
-            .AddProviders(new MultiFilterAppServiceInfoProvider());
+            .AddProviders(new MultiFilterServiceInfoProvider());
         var container = builder.BuildServiceProvider();
 
         var filters = (IEnumerable<object>)container.GetRequiredService(typeof(IEnumerable<IFilter>));
@@ -176,7 +177,7 @@ public class DependencyInjectionTest
     public void GetService_various_same_contract_registrations()
     {
         var container = Test.CreateTestServicesBuilder()
-            .AddProviders(new MultiFilterAppServiceInfoProvider())
+            .AddProviders(new MultiFilterServiceInfoProvider())
             .BuildServiceProvider();
 
         var filters = container.GetRequiredService<IEnumerable<IFilter>>();
@@ -206,7 +207,7 @@ public class DependencyInjectionTest
     public void CreateScopedInjector_ScopeExportedClass()
     {
         var appServices = new AppServiceCollection();
-        appServices.Add(new AppServiceInfo(
+        appServices.Add(new ServiceInfo(
             typeof(ScopeExportedClass),
             typeof(ScopeExportedClass),
             AppServiceLifetime.Scoped));
@@ -288,18 +289,18 @@ public class DependencyInjectionTest
 
     public class ExportedClassImplicitFactoryImporter
     {
-        public IExportFactory<ExportedClass> ExportedClassFactory { get; set; }
+        public IFactory<ExportedClass> ExportedClassFactory { get; set; }
     }
 
     public class ExportedClassImplicitManyFactoryImporter
     {
-        public ICollection<IExportFactory<ExportedClass>> ExportedClassFactoryCollection { get; set; }
-        public IList<IExportFactory<ExportedClass>> ExportedClassFactoryList { get; set; }
-        public IEnumerable<IExportFactory<ExportedClass>> ExportedClassFactoryEnumerable { get; set; }
-        public IExportFactory<ExportedClass>[] ExportedClassFactoryArray { get; set; }
+        public ICollection<IFactory<ExportedClass>> ExportedClassFactoryCollection { get; set; }
+        public IList<IFactory<ExportedClass>> ExportedClassFactoryList { get; set; }
+        public IEnumerable<IFactory<ExportedClass>> ExportedClassFactoryEnumerable { get; set; }
+        public IFactory<ExportedClass>[] ExportedClassFactoryArray { get; set; }
     }
 
-    public class TestMetadata : AppServiceMetadata
+    public class TestMetadata : ServiceMetadata
     {
         public TestMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
@@ -307,13 +308,13 @@ public class DependencyInjectionTest
         }
     }
 
-    public class MultiFilterAppServiceInfoProvider : IAppServiceInfoProvider
+    public class MultiFilterServiceInfoProvider : IServiceInfoProvider
     {
-        public IEnumerable<ContractDeclaration> GetAppServiceContracts()
+        public IEnumerable<ServiceDeclarationInfo> GetServiceInfos()
         {
-            yield return new ContractDeclaration(typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(OneFilter), AppServiceLifetime.Singleton) { AllowMultiple = true });
-            yield return new ContractDeclaration(typeof(IFilter), new AppServiceInfo(typeof(IFilter), typeof(TwoFilter), AppServiceLifetime.Transient) { AllowMultiple = true });
-            yield return new ContractDeclaration(typeof(IFilter), new AppServiceInfo(typeof(IFilter), Substitute.For<IFilter>()) { AllowMultiple = true });
+            yield return new ServiceDeclarationInfo(typeof(IFilter), new ServiceInfo(typeof(IFilter), typeof(OneFilter), AppServiceLifetime.Singleton));
+            yield return new ServiceDeclarationInfo(typeof(IFilter), new ServiceInfo(typeof(IFilter), typeof(TwoFilter), AppServiceLifetime.Transient));
+            yield return new ServiceDeclarationInfo(typeof(IFilter), new ServiceInfo(typeof(IFilter), Substitute.For<IFilter>()));
         }
     }
 

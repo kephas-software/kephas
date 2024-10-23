@@ -5,26 +5,25 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services
+namespace Kephas.Services;
+
+/// <summary>
+/// Strategy for resolving ambiguous service registrations.
+/// </summary>
+public enum AmbiguousServiceResolutionStrategy
 {
     /// <summary>
-    /// Strategy for resolving ambiguous service registrations.
+    /// Uses the last registered service.
     /// </summary>
-    public enum AmbiguousServiceResolutionStrategy
-    {
-        /// <summary>
-        /// Uses the last registered service.
-        /// </summary>
-        UseLast = 0,
+    UseLast = 0,
 
-        /// <summary>
-        /// Uses the first registered service.
-        /// </summary>
-        UseFirst = 1,
+    /// <summary>
+    /// Uses the first registered service.
+    /// </summary>
+    UseFirst = 1,
 
-        /// <summary>
-        /// Forces the use of priority order. If the priority indicate the same value, an exception occurs.
-        /// </summary>
-        ForcePriority = 0x10,
-    }
+    /// <summary>
+    /// Forces the use of priority order. If the priority indicate the same value, an exception occurs.
+    /// </summary>
+    ForcePriority = 0x10,
 }
