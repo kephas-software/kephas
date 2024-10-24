@@ -24,10 +24,5 @@
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\..\..\Microsoft.Extensions\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
-        <ProjectReference Include="..\..\Kephas.Services\Kephas.Services.csproj" />
-        <ProjectReference Include="..\..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
-    </ItemGroup>
 
 </Project>

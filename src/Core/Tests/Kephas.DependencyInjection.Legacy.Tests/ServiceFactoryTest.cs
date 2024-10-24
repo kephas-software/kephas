@@ -8,6 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Reflection;
 using Microsoft.Extensions.Logging;
 

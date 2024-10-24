@@ -6,28 +6,20 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
+using Kephas.DependencyInjection.Reflection;
 using Xunit;
 
 namespace Kephas.Tests;
 
 /// <summary>
-/// Test class for <see cref="AppServiceCollectionExtensions"/>.
+/// Test class for <see cref="ServiceInfoCollectionExtensions"/>.
 /// </summary>
-public class AppServiceCollectionExtensionsTest
+public class ServiceInfoCollectionExtensionsTest
 {
-    [Fact]
-    public void Constructor_register_ambient_services()
-    {
-        var appServices = new AppServiceCollection();
-
-        Assert.Same(appServices, appServices.GetServiceInstance(typeof(IAppServiceCollection)));
-    }
-
     [Fact]
     public void TryAdd_TContract_existing_instance()
     {
-        var appServices = new AppServiceCollection();
+        var appServices = new ServiceInfoCollection();
         var service = new Service();
         appServices.TryAdd<IService>(new Service());
         appServices.TryAdd<IService>(service, b => b.AddMetadata("test", "value"));
@@ -40,7 +32,7 @@ public class AppServiceCollectionExtensionsTest
     [Fact]
     public void TryAdd_TContract_non_existing_instance()
     {
-        var appServices = new AppServiceCollection();
+        var appServices = new ServiceInfoCollection();
         var service = new Service();
         appServices.TryAdd<IService>(service, b => b.AddMetadata("test", "value"));
 
@@ -53,7 +45,7 @@ public class AppServiceCollectionExtensionsTest
     [Fact]
     public void TryAdd_existing_instance()
     {
-        var appServices = new AppServiceCollection();
+        var appServices = new ServiceInfoCollection();
         var service = new Service();
         appServices.TryAdd(typeof(IService), new Service());
         appServices.TryAdd(typeof(IService), service, b => b.AddMetadata("test", "value"));
@@ -66,7 +58,7 @@ public class AppServiceCollectionExtensionsTest
     [Fact]
     public void TryAdd_non_existing_instance()
     {
-        var appServices = new AppServiceCollection();
+        var appServices = new ServiceInfoCollection();
         var service = new Service();
         appServices.TryAdd(typeof(IService), service, b => b.AddMetadata("test", "value"));
 
@@ -79,7 +71,7 @@ public class AppServiceCollectionExtensionsTest
     [Fact]
     public void TryAdd_TContract_TService_existing_type()
     {
-        var appServices = new AppServiceCollection();
+        var appServices = new ServiceInfoCollection();
         appServices.TryAdd<IService, Service>();
         appServices.TryAdd<IService, OtherService>(b => b.AddMetadata("test", "value"));
 
@@ -91,7 +83,7 @@ public class AppServiceCollectionExtensionsTest
     [Fact]
     public void TryAdd_TContract_TService_non_existing_type()
     {
-        var appServices = new AppServiceCollection();
+        var appServices = new ServiceInfoCollection();
         appServices.TryAdd<IService, Service>(b => b.AddMetadata("test", "value"));
 
         var serviceInfo = appServices.Single(r => r.ServiceType == typeof(IService));
@@ -103,7 +95,7 @@ public class AppServiceCollectionExtensionsTest
     [Fact]
     public void TryAdd_TContract_existing_type()
     {
-        var appServices = new AppServiceCollection();
+        var appServices = new ServiceInfoCollection();
         appServices.TryAdd<IService>(typeof(Service));
         appServices.TryAdd<IService>(typeof(OtherService), b => b.AddMetadata("test", "value"));
 
@@ -115,7 +107,7 @@ public class AppServiceCollectionExtensionsTest
     [Fact]
     public void TryAdd_TContract_non_existing_type()
     {
-        var appServices = new AppServiceCollection();
+        var appServices = new ServiceInfoCollection();
         appServices.TryAdd<IService, Service>(b => b.AddMetadata("test", "value"));
 
         var serviceInfo = appServices.Single(r => r.ServiceType == typeof(IService));
@@ -127,7 +119,7 @@ public class AppServiceCollectionExtensionsTest
     [Fact]
     public void TryAdd_existing_type()
     {
-        var appServices = new AppServiceCollection();
+        var appServices = new ServiceInfoCollection();
         appServices.TryAdd(typeof(IService), typeof(Service));
         appServices.TryAdd(typeof(IService), typeof(OtherService), b => b.AddMetadata("test", "value"));
 
@@ -139,7 +131,7 @@ public class AppServiceCollectionExtensionsTest
     [Fact]
     public void TryAdd_non_existing_type()
     {
-        var appServices = new AppServiceCollection();
+        var appServices = new ServiceInfoCollection();
         appServices.TryAdd(typeof(IService), typeof(Service));
 
         var serviceInfo = appServices.Single(r => r.ServiceType == typeof(IService));

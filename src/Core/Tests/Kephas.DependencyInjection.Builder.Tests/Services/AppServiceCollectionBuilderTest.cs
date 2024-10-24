@@ -7,9 +7,10 @@
 
 using System.Text;
 using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.Metadata;
-using Kephas.Services;
-using Kephas.Services.Builder;
+using Kephas.DependencyInjection.Reflection;
+using Kephas.Testing.Logging;
 using Kephas.Tests.Services.CustomNamedValueAppServiceMetadata;
 using Kephas.Tests.Services.CustomValueAppServiceMetadata;
 using Kephas.Tests.Services.DefaultAppServiceMetadata;
@@ -21,9 +22,9 @@ using Microsoft.Extensions.Logging;
 namespace Kephas.Tests.Services
 {
     /// <summary>
-    /// Test class for <see cref="AppServiceCollectionBuilder"/>.
+    /// Test class for <see cref="ServiceCollectionBuilder"/>.
     /// </summary>
-    public class AppServiceCollectionBuilderTest
+    public class ServiceCollectionBuilderTest
     {
         [Fact]
         public void Build_Multiple()
@@ -137,7 +138,6 @@ namespace Kephas.Tests.Services
                 typeof(SingleSameOverrideTestService),
             };
             var builder = CreateAppServiceCollectionBuilder();
-            builder.Settings.AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.UseFirst;
             var services = builder.AddTypes(parts).Build();
 
             Assert.NotEmpty(services.Where(s => s.ImplementationType == typeof(SingleTestService)));
@@ -155,26 +155,10 @@ namespace Kephas.Tests.Services
                 typeof(SingleSameOverrideTestService),
             };
             var builder = CreateAppServiceCollectionBuilder();
-            builder.Settings.AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.UseLast;
             var services = builder.AddTypes(parts).Build();
 
             Assert.NotEmpty(services.Where(s => s.ImplementationType == typeof(SingleSameOverrideTestService)));
             Assert.Empty(services.Where(s => s.ImplementationType == typeof(SingleTestService)));
-        }
-
-
-        [Fact]
-        public void Build_Single_service_multiple_registrations_force_failure()
-        {
-            var parts = new[]
-            {
-                typeof(ISingleTestAppService),
-                typeof(SingleTestService),
-                typeof(SingleSameOverrideTestService),
-            };
-            var builder = CreateAppServiceCollectionBuilder();
-            builder.Settings.AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.ForcePriority;
-            Assert.Throws<AmbiguousServiceResolutionException>(() => builder.AddTypes(parts).Build());
         }
 
         [Fact]
@@ -408,35 +392,30 @@ namespace Kephas.Tests.Services
             Assert.Throws<ServiceException>(() => builder.AddTypes(parts).Build());
         }
 
-        private AppServiceCollectionBuilder CreateAppServiceCollectionBuilder(IAppServiceCollection? appServices = null)
+        private ServiceCollectionBuilder CreateAppServiceCollectionBuilder(IList<IServiceInfo>? services = null)
         {
-            var builder = new AppServiceCollectionBuilder(appServices ?? new AppServiceCollection());
+            var builder = new ServiceCollectionBuilder(services ?? new List<IServiceInfo>());
             return builder;
         }
 
-        private IAppServiceCollection GetTestAppServices(Action<string>? logAction = null)
+        private IList<IServiceInfo> GetTestAppServices(Action<string>? logAction = null)
         {
-            var logger = Substitute.For<ILogger>();
-            logger.IsEnabled(Arg.Any<LogLevel>()).Returns(true);
-            if (logAction != null)
-            {
-                logger.When(l => l.Log(Arg.Any<LogLevel>(), Arg.Any<Exception>(), Arg.Any<string>(), Arg.Any<object[]>()))
-                    .Do(ci => logAction(ci.Arg<LogLevel>().ToString() + ": " + ci.Arg<string>()));
-            }
-
+            var logger = new TestLogger<string>((_, _, message) => logAction?.Invoke(message));
             var logManager = Substitute.For<ILogManager>();
             logManager.GetLogger(Arg.Any<string>()).Returns(logger);
 
-            var appServices = new AppServiceCollection();
-            appServices.Add(logManager);
+            var appServices = new List<IServiceInfo>
+            {
+                new ServiceInfo(typeof(ILogManager), logManager)
+            };
 
             return appServices;
         }
 
-        [SingletonService(AllowMultiple = false)]
+        [SingletonService]
         public interface ISingleTestAppService { }
 
-        [SingletonService(AllowMultiple = true)]
+        [SingletonService]
         public interface IMultipleTestAppService { }
 
         public class SingleTestService : ISingleTestAppService { }
@@ -495,7 +474,7 @@ namespace Kephas.Tests.Services
 
     namespace CustomValueAppServiceMetadata
     {
-        [SingletonService(AllowMultiple = true)]
+        [SingletonService]
         public interface ICustomValueMetadataAppService { }
 
         [CustomValueServiceMetadata("hi there")]
@@ -516,7 +495,7 @@ namespace Kephas.Tests.Services
 
     namespace CustomNamedValueAppServiceMetadata
     {
-        [SingletonService(AllowMultiple = true)]
+        [SingletonService]
         public interface ICustomNamedValueMetadataAppService { }
 
         [CustomNamedValueMetadata("hi there", "bob", IconName = "ICXP")]
@@ -558,7 +537,7 @@ namespace Kephas.Tests.Services
 
     namespace DefaultExplicitAppServiceMetadata
     {
-        [SingletonService(AllowMultiple = true)]
+        [SingletonService]
         public interface IExplicitMetadataAppService { }
 
         [Priority(100)]
