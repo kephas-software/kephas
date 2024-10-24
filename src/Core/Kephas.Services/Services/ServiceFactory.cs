@@ -8,7 +8,7 @@
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-
+using Kephas.DependencyInjection.Metadata;
 using Kephas.Reflection;
 using Kephas.Services.Resources;
 using Microsoft.Extensions.Logging;
@@ -115,11 +115,11 @@ public class ServiceFactory : IServiceFactory
             }
             else
             {
-                var appServiceInfo = appServices.FirstOrDefault(i => i.ContractDeclarationType == paramType);
+                var appServiceInfo = appServices.FirstOrDefault(i => i.ServiceDeclarationType == paramType);
                 if (appServiceInfo == null && paramType.IsGenericType)
                 {
                     var genericDefParamType = paramType.GetGenericTypeDefinition();
-                    appServiceInfo = appServices.FirstOrDefault(i => i.ContractDeclarationType == genericDefParamType);
+                    appServiceInfo = appServices.FirstOrDefault(i => i.ServiceDeclarationType == genericDefParamType);
                 }
 
                 if (appServiceInfo != null && !appServiceInfo.AllowMultiple)

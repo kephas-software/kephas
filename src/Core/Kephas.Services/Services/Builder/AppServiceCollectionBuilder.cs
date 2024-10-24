@@ -12,6 +12,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using Kephas.Collections;
+using Kephas.DependencyInjection.Metadata;
+using Kephas.DependencyInjection.ServiceProviders;
 using Microsoft.Extensions.Logging;
 using Kephas.Logging;
 using Kephas.Reflection;
@@ -59,7 +61,7 @@ public class AppServiceCollectionBuilder : IAppServiceCollectionBuilder
     /// <value>
     /// The application service information providers.
     /// </value>
-    protected internal ICollection<IAppServiceInfoProvider> Providers { get; } = new List<IAppServiceInfoProvider>();
+    protected internal ICollection<IServiceInfoProvider> Providers { get; } = new List<IServiceInfoProvider>();
 
     /// <summary>
     /// Gets the list of assemblies used in injection.
@@ -85,11 +87,11 @@ public class AppServiceCollectionBuilder : IAppServiceCollectionBuilder
     protected ILogger? Logger { get; }
 
     /// <summary>
-    /// Adds the <see cref="IAppServiceInfoProvider"/>s.
+    /// Adds the <see cref="IServiceInfoProvider"/>s.
     /// </summary>
     /// <param name="providers">An array of providers.</param>
     /// <returns>This builder.</returns>
-    public IAppServiceCollectionBuilder AddProviders(params IAppServiceInfoProvider[] providers)
+    public IAppServiceCollectionBuilder AddProviders(params IServiceInfoProvider[] providers)
     {
         Providers.AddRange(providers);
         return this;
@@ -118,7 +120,7 @@ public class AppServiceCollectionBuilder : IAppServiceCollectionBuilder
     }
 
     /// <summary>
-    /// Adds the application services from the <see cref="IAppServiceInfoProvider"/>s identified in the assemblies.
+    /// Adds the application services from the <see cref="IServiceInfoProvider"/>s identified in the assemblies.
     /// </summary>
     /// <returns>The provided app services.</returns>
     public IAppServiceCollection Build()
@@ -130,21 +132,21 @@ public class AppServiceCollectionBuilder : IAppServiceCollectionBuilder
 
     private IAppServiceCollection AddAppServices(
         IAppServiceCollection appServices,
-        IEnumerable<IAppServiceInfoProvider> appServiceInfoProviders,
+        IEnumerable<IServiceInfoProvider> appServiceInfoProviders,
         AmbiguousServiceResolutionStrategy resolutionStrategy = AmbiguousServiceResolutionStrategy.ForcePriority)
     {
         var logger = Logger;
         if (logger.IsDebugEnabled())
         {
-            logger?.LogDebug("Adding app services from providers '{appServiceInfoProviders}...", appServiceInfoProviders);
+            logger?.LogDebug("Adding app services from providers '{AppServiceInfoProviders}...", appServiceInfoProviders);
         }
 
         // get all type infos from the injection assemblies
         var appServiceInfoList = appServiceInfoProviders
-            .SelectMany(p => p.GetAppServiceContracts())
+            .SelectMany(p => p.GetServiceInfos())
             .Select(t => t with
             {
-                ContractDeclarationType = t.ContractDeclarationType.ToNormalizedType(),
+                ServiceDeclarationType = t.ServiceDeclarationType.ToNormalizedType(),
             })
             .ToList();
 
@@ -154,39 +156,39 @@ public class AppServiceCollectionBuilder : IAppServiceCollectionBuilder
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerable<ServiceDeclaration> GetAppServices(IAppServiceInfoProvider appServiceInfoProvider)
+        IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(IServiceInfoProvider appServiceInfoProvider)
         {
             if (logger.IsDebugEnabled())
             {
-                logger?.LogDebug("Getting the app services from provider {provider}...", appServiceInfoProvider);
+                logger?.LogDebug("Getting the service implementations from provider {Provider}...", appServiceInfoProvider);
             }
 
-            var providerAppServices = appServiceInfoProvider.GetAppServices();
+            var serviceImplementations = appServiceInfoProvider.GetImplementationDeclarations();
 
             if (logger.IsTraceEnabled())
             {
-                logger?.LogTrace("Getting the app services from provider {provider} succeeded.", appServiceInfoProvider);
+                logger?.LogTrace("Getting the service implementations from provider {Provider} succeeded.", appServiceInfoProvider);
             }
 
-            return providerAppServices;
+            return serviceImplementations;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        ServiceDeclaration NormalizeAppService(ServiceDeclaration serviceDeclaration)
+        ServiceImplementationDeclaration NormalizeDeclaration(ServiceImplementationDeclaration serviceDeclaration)
         {
-            var (serviceType, contractDeclarationType) = serviceDeclaration;
+            var (serviceType, serviceDeclarationType) = serviceDeclaration;
 
             if (logger.IsTraceEnabled())
             {
-                logger?.LogTrace("Normalizing the service declaration for {serviceType}/{contractDeclarationType}.", serviceType, contractDeclarationType);
+                logger?.LogTrace("Normalizing the service declaration for {ServiceType}/{ServiceDeclarationType}.", serviceType, serviceDeclarationType);
             }
 
-            return new ServiceDeclaration(serviceType.ToNormalizedType(), contractDeclarationType.ToNormalizedType());
+            return new ServiceImplementationDeclaration(serviceType.ToNormalizedType(), serviceDeclarationType.ToNormalizedType());
         }
 
         var serviceTypes = appServiceInfoProviders
-            .SelectMany(GetAppServices)
-            .Select(NormalizeAppService)
+            .SelectMany(GetImplementationDeclarations)
+            .Select(NormalizeDeclaration)
             .ToList();
 
         return appServices.AddAppServices(appServiceInfoList, serviceTypes, resolutionStrategy, logger);
@@ -197,14 +199,14 @@ public class AppServiceCollectionBuilder : IAppServiceCollectionBuilder
     /// </summary>
     /// <param name="appAssemblies">The application assemblies.</param>
     /// <returns>
-    /// An enumeration of <see cref="IAppServiceInfoProvider"/> objects.
+    /// An enumeration of <see cref="IServiceInfoProvider"/> objects.
     /// </returns>
-    private IEnumerable<IAppServiceInfoProvider> GetProviders(IEnumerable<Assembly> appAssemblies)
+    private static IEnumerable<IServiceInfoProvider> GetProviders(IEnumerable<Assembly> appAssemblies)
     {
         appAssemblies = appAssemblies ?? throw new ArgumentNullException(nameof(appAssemblies));
 
         var providers = appAssemblies
-            .SelectMany(a => a.GetCustomAttributes().OfType<IAppServiceInfoProvider>())
+            .SelectMany(a => a.GetCustomAttributes().OfType<IServiceInfoProvider>())
             .OrderBy(a => a is IHasPriority hasPriority ? hasPriority.Priority : Priority.Normal);
 
         return providers;
@@ -214,9 +216,9 @@ public class AppServiceCollectionBuilder : IAppServiceCollectionBuilder
     /// Gets the application service information providers.
     /// </summary>
     /// <returns>
-    /// An enumeration of <see cref="IAppServiceInfoProvider"/> objects.
+    /// An enumeration of <see cref="IServiceInfoProvider"/> objects.
     /// </returns>
-    private IEnumerable<IAppServiceInfoProvider> GetProviders()
+    private IEnumerable<IServiceInfoProvider> GetProviders()
     {
         var assemblies = GetServiceAssemblies();
 
@@ -224,7 +226,7 @@ public class AppServiceCollectionBuilder : IAppServiceCollectionBuilder
         {
             try
             {
-                Logger?.LogDebug("Using application assemblies: {assemblies}.", assemblies.Select(a => $"{a?.GetName()?.Name}, {a?.GetName()?.Version}").ToList());
+                Logger?.LogDebug("Using application assemblies: {Assemblies}.", assemblies.Select(a => $"{a?.GetName()?.Name}, {a?.GetName()?.Version}").ToList());
             }
             catch (Exception ex)
             {
@@ -238,7 +240,7 @@ public class AppServiceCollectionBuilder : IAppServiceCollectionBuilder
 
         if (Types.Count > 0)
         {
-            providers.Add(new TypesAppServiceInfoProvider(Types));
+            providers.Add(new TypesServiceInfoProvider(Types));
         }
 
         return providers;
@@ -248,7 +250,7 @@ public class AppServiceCollectionBuilder : IAppServiceCollectionBuilder
     {
         var searchPattern = Settings.ServiceAssemblyFileNamePattern;
 
-        Logger?.LogDebug("{operation}. With assemblies matching pattern '{searchPattern}'.", nameof(GetServiceAssemblies), searchPattern);
+        Logger?.LogDebug("{Operation}. With assemblies matching pattern '{SearchPattern}'.", nameof(GetServiceAssemblies), searchPattern);
 
         var getAssemblies = Settings.GetServiceAssemblies
                             ?? (() => AssemblyLoader.Instance.LoadAssemblies());

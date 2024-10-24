@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -32,7 +32,7 @@ public class AppServiceCollectionExtensionsTest
         appServices.TryAdd<IService>(new Service());
         appServices.TryAdd<IService>(service, b => b.AddMetadata("test", "value"));
 
-        var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
+        var serviceInfo = appServices.Single(r => r.ServiceType == typeof(IService));
         Assert.NotSame(service, serviceInfo.Instance);
         Assert.Null(serviceInfo.Metadata?["test"]);
     }
@@ -44,7 +44,7 @@ public class AppServiceCollectionExtensionsTest
         var service = new Service();
         appServices.TryAdd<IService>(service, b => b.AddMetadata("test", "value"));
 
-        var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
+        var serviceInfo = appServices.Single(r => r.ServiceType == typeof(IService));
         Assert.Same(service, serviceInfo.Instance);
         Assert.Equal("value", serviceInfo.Metadata?["test"]);
         Assert.Equal(AppServiceLifetime.Singleton, serviceInfo.Lifetime);
@@ -58,7 +58,7 @@ public class AppServiceCollectionExtensionsTest
         appServices.TryAdd(typeof(IService), new Service());
         appServices.TryAdd(typeof(IService), service, b => b.AddMetadata("test", "value"));
 
-        var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
+        var serviceInfo = appServices.Single(r => r.ServiceType == typeof(IService));
         Assert.NotSame(service, serviceInfo.Instance);
         Assert.Null(serviceInfo.Metadata?["test"]);
     }
@@ -70,7 +70,7 @@ public class AppServiceCollectionExtensionsTest
         var service = new Service();
         appServices.TryAdd(typeof(IService), service, b => b.AddMetadata("test", "value"));
 
-        var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
+        var serviceInfo = appServices.Single(r => r.ServiceType == typeof(IService));
         Assert.Same(service, serviceInfo.Instance);
         Assert.Equal("value", serviceInfo.Metadata?["test"]);
         Assert.Equal(AppServiceLifetime.Singleton, serviceInfo.Lifetime);
@@ -83,8 +83,8 @@ public class AppServiceCollectionExtensionsTest
         appServices.TryAdd<IService, Service>();
         appServices.TryAdd<IService, OtherService>(b => b.AddMetadata("test", "value"));
 
-        var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
-        Assert.Same(typeof(Service), serviceInfo.InstanceType);
+        var serviceInfo = appServices.Single(r => r.ServiceType == typeof(IService));
+        Assert.Same(typeof(Service), serviceInfo.ImplementationType);
         Assert.Null(serviceInfo.Metadata?["test"]);
     }
 
@@ -94,8 +94,8 @@ public class AppServiceCollectionExtensionsTest
         var appServices = new AppServiceCollection();
         appServices.TryAdd<IService, Service>(b => b.AddMetadata("test", "value"));
 
-        var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
-        Assert.Same(typeof(Service), serviceInfo.InstanceType);
+        var serviceInfo = appServices.Single(r => r.ServiceType == typeof(IService));
+        Assert.Same(typeof(Service), serviceInfo.ImplementationType);
         Assert.Equal("value", serviceInfo.Metadata?["test"]);
         Assert.Equal(AppServiceLifetime.Singleton, serviceInfo.Lifetime);
     }
@@ -107,8 +107,8 @@ public class AppServiceCollectionExtensionsTest
         appServices.TryAdd<IService>(typeof(Service));
         appServices.TryAdd<IService>(typeof(OtherService), b => b.AddMetadata("test", "value"));
 
-        var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
-        Assert.Same(typeof(Service), serviceInfo.InstanceType);
+        var serviceInfo = appServices.Single(r => r.ServiceType == typeof(IService));
+        Assert.Same(typeof(Service), serviceInfo.ImplementationType);
         Assert.Null(serviceInfo.Metadata?["test"]);
     }
 
@@ -118,8 +118,8 @@ public class AppServiceCollectionExtensionsTest
         var appServices = new AppServiceCollection();
         appServices.TryAdd<IService, Service>(b => b.AddMetadata("test", "value"));
 
-        var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
-        Assert.Same(typeof(Service), serviceInfo.InstanceType);
+        var serviceInfo = appServices.Single(r => r.ServiceType == typeof(IService));
+        Assert.Same(typeof(Service), serviceInfo.ImplementationType);
         Assert.Equal("value", serviceInfo.Metadata?["test"]);
         Assert.Equal(AppServiceLifetime.Singleton, serviceInfo.Lifetime);
     }
@@ -131,8 +131,8 @@ public class AppServiceCollectionExtensionsTest
         appServices.TryAdd(typeof(IService), typeof(Service));
         appServices.TryAdd(typeof(IService), typeof(OtherService), b => b.AddMetadata("test", "value"));
 
-        var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
-        Assert.Same(typeof(Service), serviceInfo.InstanceType);
+        var serviceInfo = appServices.Single(r => r.ServiceType == typeof(IService));
+        Assert.Same(typeof(Service), serviceInfo.ImplementationType);
         Assert.Null(serviceInfo.Metadata?["test"]);
     }
 
@@ -142,8 +142,8 @@ public class AppServiceCollectionExtensionsTest
         var appServices = new AppServiceCollection();
         appServices.TryAdd(typeof(IService), typeof(Service));
 
-        var serviceInfo = appServices.Single(r => r.ContractType == typeof(IService));
-        Assert.Same(typeof(Service), serviceInfo.InstanceType);
+        var serviceInfo = appServices.Single(r => r.ServiceType == typeof(IService));
+        Assert.Same(typeof(Service), serviceInfo.ImplementationType);
         Assert.Null(serviceInfo.Metadata?["test"]);
     }
 

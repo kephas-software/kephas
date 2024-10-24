@@ -4,7 +4,7 @@
 This package provides support for application services and dependency injection.
 
 Typically used areas and classes/interfaces/services:
-- Services: `IAppServiceInfo`, `IAppServiceInfoProvider`, `SingletonAppServiceContractAttribute`, `AppServiceContractAttribute`, `PriorityAttribute`.
+- Services: `IServiceInfo`, `IServiceInfoProvider`, `SingletonServiceAttribute`, `ScopedServiceAttribute`, `TransientServiceAttribute`, `PriorityAttribute`.
 - Services.Builder: `IAppServiceCollectionBuilder`, `AppServiceCollectionBuilder`. 
 - `IAppServiceCollection`, `AppServiceCollection`.
 
@@ -70,7 +70,7 @@ public class ServicesAssemblyInitializer : IAssemblyInitializer
 
 ## Collecting services and building the service provider
 
-Services can be auto discovered using the `[AppServiceContract]` attribute, or one of its derivatives, or can be registered manually.
+Services can be auto discovered using the `[TransientAppServiceContract]` attribute, or one of its derivatives, or can be registered manually.
 Once they are collected, a service provider can be built using one of yours favorite DI frameworks.
 Kephas provides support for both [Microsoft.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection) and [Autofac](https://www.nuget.org/packages/Kephas.Services.Autofac).
 
@@ -114,7 +114,7 @@ var logger = appServices.Resolve<ILogger<MyComponent>>();
 ## Steps for defining an application service
 
 * Define the application service contract and configure it using one of the `AppServiceContract` attributes:
-`[SingletonAppServiceContract]`, `[ScopeSingletonAppServiceContract]`, or `[AppServiceContract]` attributes.
+`[SingletonAppServiceContract]`, `[ScopeSingletonAppServiceContract]`, or `[TransientAppServiceContract]` attributes.
 For the semantics of each of the attributes, please see below.
 * Implement one or more application services based on the contract defined in the step above.
   * Note: for contracts not allowing multiple service implementations, it is a recommended practice to decorate the service implementation
@@ -182,7 +182,7 @@ In Kephas, the emphasis is set on the service contract and that's why we configu
 
 * For a singleton service, one single instance will be available within the injector. Use the `[SingletonAppServiceContract]` attribute in this case.
 * For a scoped service, one single instance will be available within a scope created by the injector. Use the `[ScopedAppServiceContract]` attribute in this case.
-* For an instance based service, each dependency will trigger the creation of a new instance. Use the `[AppServiceContract]` attribute in this case.
+* For an instance based service, each dependency will trigger the creation of a new instance. Use the `[TransientAppServiceContract]` attribute in this case.
 
 ### Single or multiple mode
 
@@ -193,7 +193,7 @@ In such a case, set the `AllowMultiple` option to true in the contract declarati
 #### Example:
 
 ```C#
-    [AppServiceContract(AllowMultiple = true)]
+    [TransientAppServiceContract(AllowMultiple = true)]
     public interface IConverter<TSource, TTarget>
     {
         ConversionResult Convert(TSource source, TTarget target);
@@ -409,7 +409,7 @@ When exposing generic application service contracts, Kephas will export the part
     /// Application service for handling requests.
     /// </summary>
     /// <typeparam name="TRequest">The type of the request.</typeparam>
-    [AppServiceContract]
+    [TransientAppServiceContract]
     public interface IRequestHandler<TRequest>
     {
         //...
@@ -455,7 +455,7 @@ Generic service contracts may be declared with a contract type different than th
     /// Application service for request processing interception.
     /// </summary>
     /// <typeparam name="TRequest">The type of the request.</typeparam>
-    [AppServiceContract(AllowMultiple = true, ContractType = typeof(IRequestProcessingFilter))]
+    [TransientAppServiceContract(ContractType = typeof(IRequestProcessingFilter))]
     public interface IRequestProcessingFilter<TRequest> : IRequestProcessingFilter
         where TRequest : IRequest
     {

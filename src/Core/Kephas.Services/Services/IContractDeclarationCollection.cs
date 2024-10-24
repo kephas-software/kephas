@@ -5,11 +5,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.DependencyInjection.ServiceProviders;
+
 namespace Kephas.Services;
 
 /// <summary>
 /// Enumerates the contract declarations.
 /// </summary>
-public interface IContractDeclarationCollection : IEnumerable<ContractDeclaration>
+public interface IContractDeclarationCollection : IEnumerable<ServiceDeclarationInfo>
 {
 }

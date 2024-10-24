@@ -6,6 +6,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Text;
+using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Metadata;
 using Kephas.Services;
 using Kephas.Services.Builder;
 using Kephas.Tests.Services.CustomNamedValueAppServiceMetadata;
@@ -14,8 +16,6 @@ using Kephas.Tests.Services.DefaultAppServiceMetadata;
 using Kephas.Tests.Services.DefaultExplicitAppServiceMetadata;
 using NSubstitute;
 using Xunit;
-
-using Kephas.Services.Metadata;
 using Microsoft.Extensions.Logging;
 
 namespace Kephas.Tests.Services
@@ -37,10 +37,10 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            Assert.Equal(2, services.Count(s => s.InstanceType is not null));
+            Assert.Equal(2, services.Count(s => s.ImplementationType is not null));
 
-            Assert.NotEmpty(services.Where(s => s.InstanceType == typeof(MultipleTestService)));
-            Assert.NotEmpty(services.Where(s => s.InstanceType == typeof(NewMultipleTestService)));
+            Assert.NotEmpty(services.Where(s => s.ImplementationType == typeof(MultipleTestService)));
+            Assert.NotEmpty(services.Where(s => s.ImplementationType == typeof(NewMultipleTestService)));
         }
 
         [Fact]
@@ -56,11 +56,11 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            Assert.Equal(3, services.Count(s => s.InstanceType is not null));
+            Assert.Equal(3, services.Count(s => s.ImplementationType is not null));
 
-            Assert.NotEmpty(services.Where(s => s.InstanceType == typeof(MultipleTestService)));
-            Assert.NotEmpty(services.Where(s => s.InstanceType == typeof(NewMultipleTestService)));
-            Assert.NotEmpty(services.Where(s => s.InstanceType == typeof(DerivedMultipleTestService)));
+            Assert.NotEmpty(services.Where(s => s.ImplementationType == typeof(MultipleTestService)));
+            Assert.NotEmpty(services.Where(s => s.ImplementationType == typeof(NewMultipleTestService)));
+            Assert.NotEmpty(services.Where(s => s.ImplementationType == typeof(DerivedMultipleTestService)));
         }
 
         [Fact]
@@ -74,8 +74,8 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            Assert.Equal(1, services.Count(s => s.InstanceType is not null));
-            Assert.NotEmpty(services.Where(s => s.InstanceType == typeof(SingleTestService)));
+            Assert.Equal(1, services.Count(s => s.ImplementationType is not null));
+            Assert.NotEmpty(services.Where(s => s.ImplementationType == typeof(SingleTestService)));
         }
 
         [Fact]
@@ -91,8 +91,8 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            Assert.Equal(1, services.Count(s => s.InstanceType is not null));
-            Assert.NotEmpty(services.Where(s => s.InstanceType == typeof(ChainSingleOverrideTestService)));
+            Assert.Equal(1, services.Count(s => s.ImplementationType is not null));
+            Assert.NotEmpty(services.Where(s => s.ImplementationType == typeof(ChainSingleOverrideTestService)));
         }
 
         [Fact]
@@ -107,8 +107,8 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            Assert.Equal(1, services.Count(s => s.InstanceType is not null));
-            Assert.NotEmpty(services.Where(s => s.InstanceType == typeof(DerivedOverrideSingleTestService)));
+            Assert.Equal(1, services.Count(s => s.ImplementationType is not null));
+            Assert.NotEmpty(services.Where(s => s.ImplementationType == typeof(DerivedOverrideSingleTestService)));
         }
 
         [Fact]
@@ -123,8 +123,8 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            Assert.Equal(1, services.Count(s => s.InstanceType is not null));
-            Assert.NotEmpty(services.Where(s => s.InstanceType == typeof(SingleOverrideTestService)));
+            Assert.Equal(1, services.Count(s => s.ImplementationType is not null));
+            Assert.NotEmpty(services.Where(s => s.ImplementationType == typeof(SingleOverrideTestService)));
         }
 
         [Fact]
@@ -140,8 +140,8 @@ namespace Kephas.Tests.Services
             builder.Settings.AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.UseFirst;
             var services = builder.AddTypes(parts).Build();
 
-            Assert.NotEmpty(services.Where(s => s.InstanceType == typeof(SingleTestService)));
-            Assert.Empty(services.Where(s => s.InstanceType == typeof(SingleSameOverrideTestService)));
+            Assert.NotEmpty(services.Where(s => s.ImplementationType == typeof(SingleTestService)));
+            Assert.Empty(services.Where(s => s.ImplementationType == typeof(SingleSameOverrideTestService)));
         }
 
 
@@ -158,8 +158,8 @@ namespace Kephas.Tests.Services
             builder.Settings.AmbiguousResolutionStrategy = AmbiguousServiceResolutionStrategy.UseLast;
             var services = builder.AddTypes(parts).Build();
 
-            Assert.NotEmpty(services.Where(s => s.InstanceType == typeof(SingleSameOverrideTestService)));
-            Assert.Empty(services.Where(s => s.InstanceType == typeof(SingleTestService)));
+            Assert.NotEmpty(services.Where(s => s.ImplementationType == typeof(SingleSameOverrideTestService)));
+            Assert.Empty(services.Where(s => s.ImplementationType == typeof(SingleTestService)));
         }
 
 
@@ -188,9 +188,9 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            Assert.Equal(1, services.Count(s => s.InstanceType is not null));
-            var match = services.First(s => s.InstanceType is not null);
-            Assert.Equal(match.InstanceType, typeof(GenericAppService<>));
+            Assert.Equal(1, services.Count(s => s.ImplementationType is not null));
+            var match = services.First(s => s.ImplementationType is not null);
+            Assert.Equal(match.ImplementationType, typeof(GenericAppService<>));
         }
 
         [Fact]
@@ -204,12 +204,12 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            var testBuilder = services.Single(s => s.InstanceType == typeof(DefaultMetadataAppService));
+            var testBuilder = services.Single(s => s.ImplementationType == typeof(DefaultMetadataAppService));
             var metadata = testBuilder.Metadata!;
 
             Assert.Equal(1, metadata.Count);
-            Assert.True(metadata.ContainsKey(nameof(AppServiceMetadata.ServiceType)));
-            Assert.Equal(typeof(DefaultMetadataAppService), metadata[nameof(AppServiceMetadata.ServiceType)]);
+            Assert.True(metadata.ContainsKey(nameof(ServiceMetadata.ImplementationType)));
+            Assert.Equal(typeof(DefaultMetadataAppService), metadata[nameof(ServiceMetadata.ImplementationType)]);
         }
 
         [Fact]
@@ -223,9 +223,9 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            Assert.Equal(1, services.Count(s => s.InstanceType is not null));
-            var testBuilder = services.Single(s => s.InstanceType is not null);
-            Assert.Equal(typeof(IOneGenericAppService), testBuilder.ContractType);
+            Assert.Equal(1, services.Count(s => s.ImplementationType is not null));
+            var testBuilder = services.Single(s => s.ImplementationType is not null);
+            Assert.Equal(typeof(IOneGenericAppService), testBuilder.ServiceType);
         }
 
         [Fact]
@@ -239,7 +239,7 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            var testBuilder = services.First(s => s.InstanceType is not null);
+            var testBuilder = services.First(s => s.ImplementationType is not null);
             var metadata = testBuilder.Metadata;
 
             Assert.Equal(2, metadata.Count);
@@ -258,7 +258,7 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            var testBuilder = services.First(s => s.InstanceType is not null);
+            var testBuilder = services.First(s => s.ImplementationType is not null);
             var metadata = testBuilder.Metadata;
 
             Assert.Equal(3, metadata.Count);
@@ -283,7 +283,7 @@ namespace Kephas.Tests.Services
                 GetTestAppServices(m => log.AppendLine(m)));
             var services = builder.AddTypes(parts).Build();
 
-            var testBuilder = services.Single(s => s.InstanceType is not null);
+            var testBuilder = services.Single(s => s.ImplementationType is not null);
             var metadata = testBuilder.Metadata;
 
             // should not warn that metadata attributes are not supported
@@ -304,19 +304,19 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            Assert.Equal(2, services.Count(s => s.InstanceType is not null));
-            var nullBuilderEntry = services.Single(s => s.InstanceType == typeof(NullExplicitMetadataAppService));
-            var explicitBuilderEntry = services.Single(s => s.InstanceType == typeof(ExplicitMetadataAppService));
+            Assert.Equal(2, services.Count(s => s.ImplementationType is not null));
+            var nullBuilderEntry = services.Single(s => s.ImplementationType == typeof(NullExplicitMetadataAppService));
+            var explicitBuilderEntry = services.Single(s => s.ImplementationType == typeof(ExplicitMetadataAppService));
 
             var nullMetadata = nullBuilderEntry.Metadata!;
             var explicitMetadata = explicitBuilderEntry.Metadata!;
 
             Assert.Equal(1, nullMetadata.Count);
-            Assert.False(nullMetadata.ContainsKey(nameof(AppServiceMetadata.Priority)));
+            Assert.False(nullMetadata.ContainsKey(nameof(ServiceMetadata.Priority)));
 
             Assert.Equal(2, explicitMetadata.Count);
-            Assert.True(explicitMetadata.ContainsKey(nameof(AppServiceMetadata.Priority)));
-            Assert.Equal((Priority)100, explicitMetadata[nameof(AppServiceMetadata.Priority)]);
+            Assert.True(explicitMetadata.ContainsKey(nameof(ServiceMetadata.Priority)));
+            Assert.Equal((Priority)100, explicitMetadata[nameof(ServiceMetadata.Priority)]);
         }
 
         [Fact]
@@ -331,9 +331,9 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            Assert.Equal(2, services.Count(s => s.InstanceType is not null));
-            var customEntry = services.First(s => s.InstanceType == typeof(CustomValueMetadataAppService));
-            var nullEntry = services.First(s => s.InstanceType == typeof(CustomValueNullMetadataAppService));
+            Assert.Equal(2, services.Count(s => s.ImplementationType is not null));
+            var customEntry = services.First(s => s.ImplementationType == typeof(CustomValueMetadataAppService));
+            var nullEntry = services.First(s => s.ImplementationType == typeof(CustomValueNullMetadataAppService));
 
             var customMetadata = customEntry.Metadata!;
 
@@ -355,14 +355,14 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            Assert.Equal(2, services.Count(s => s.InstanceType is not null));
+            Assert.Equal(2, services.Count(s => s.ImplementationType is not null));
 
-            var customBuilderEntry = services.First(s => s.InstanceType == typeof(CustomValueMetadataAppService));
+            var customBuilderEntry = services.First(s => s.ImplementationType == typeof(CustomValueMetadataAppService));
             var customMetadata = customBuilderEntry.Metadata!;
             Assert.Equal(2, customMetadata.Count);
             Assert.Equal("hi there", customMetadata["CustomValueMetadata"]);
 
-            var nullBuilderEntry = services.First(s => s.InstanceType == typeof(CustomValueNullMetadataAppService));
+            var nullBuilderEntry = services.First(s => s.ImplementationType == typeof(CustomValueNullMetadataAppService));
             var nullMetadata = nullBuilderEntry.Metadata!;
             Assert.False(nullMetadata.ContainsKey("CustomValueMetadata"));
         }
@@ -379,10 +379,10 @@ namespace Kephas.Tests.Services
             var builder = CreateAppServiceCollectionBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            Assert.Equal(2, services.Count(s => s.InstanceType is not null));
-            var customBuilderEntry = services.First(s => s.InstanceType == typeof(CustomNamedValueMetadataAppService));
+            Assert.Equal(2, services.Count(s => s.ImplementationType is not null));
+            var customBuilderEntry = services.First(s => s.ImplementationType == typeof(CustomNamedValueMetadataAppService));
 
-            var nullBuilderEntry = services.First(s => s.InstanceType == typeof(CustomNamedValueNullMetadataAppService));
+            var nullBuilderEntry = services.First(s => s.ImplementationType == typeof(CustomNamedValueNullMetadataAppService));
 
             var customMetadata = customBuilderEntry.Metadata!;
             var nullMetadata = nullBuilderEntry.Metadata!;
@@ -405,7 +405,7 @@ namespace Kephas.Tests.Services
                 typeof(BadAppService),
             };
             var builder = CreateAppServiceCollectionBuilder();
-            Assert.Throws<AppServiceException>(() => builder.AddTypes(parts).Build());
+            Assert.Throws<ServiceException>(() => builder.AddTypes(parts).Build());
         }
 
         private AppServiceCollectionBuilder CreateAppServiceCollectionBuilder(IAppServiceCollection? appServices = null)
@@ -433,10 +433,10 @@ namespace Kephas.Tests.Services
             return appServices;
         }
 
-        [SingletonAppServiceContract(AllowMultiple = false)]
+        [SingletonService(AllowMultiple = false)]
         public interface ISingleTestAppService { }
 
-        [SingletonAppServiceContract(AllowMultiple = true)]
+        [SingletonService(AllowMultiple = true)]
         public interface IMultipleTestAppService { }
 
         public class SingleTestService : ISingleTestAppService { }
@@ -452,24 +452,24 @@ namespace Kephas.Tests.Services
 
         public class DerivedMultipleTestService : MultipleTestService { }
 
-        [Override]
+        [OverrideBaseImplementation]
         public class ChainSingleOverrideTestService : SingleOverrideTestService { }
 
-        [Override]
+        [OverrideBaseImplementation]
         public class DerivedOverrideSingleTestService : SingleTestService { }
 
 
-        [SingletonAppServiceContract]
+        [SingletonService]
         public interface IGenericAppService<T> { }
 
         public interface IOneGenericAppService { }
 
-        [SingletonAppServiceContract(ContractType = typeof(IOneGenericAppService))]
+        [SingletonService(ServiceType = typeof(IOneGenericAppService))]
         public interface IOneGenericAppService<T> : IOneGenericAppService { }
 
         public interface ITwoGenericAppService { }
 
-        [SingletonAppServiceContract(ContractType = typeof(ITwoGenericAppService))]
+        [SingletonService(ServiceType = typeof(ITwoGenericAppService))]
         public interface ITwoGenericAppService<TFrom, ToType> : ITwoGenericAppService { }
 
         public class GenericAppService<T> : IGenericAppService<T> { }
@@ -478,7 +478,7 @@ namespace Kephas.Tests.Services
 
         public class TwoGenericAppServiceIntBool : ITwoGenericAppService<int, bool> { }
 
-        [SingletonAppServiceContract(ContractType = typeof(IDisposable))]
+        [SingletonService(ServiceType = typeof(IDisposable))]
         public interface IBadAppService { }
 
         public class BadAppService : IBadAppService { }
@@ -488,14 +488,14 @@ namespace Kephas.Tests.Services
             ILogger GetLogger(string name);
         }
 
-        [SingletonAppServiceContract(AsOpenGeneric = true)]
+        [SingletonService(AsOpenGeneric = true)]
         public interface ITypedLogger<T> {}
         public class TypedLogger<T> : ITypedLogger<T> {}
     }
 
     namespace CustomValueAppServiceMetadata
     {
-        [SingletonAppServiceContract(AllowMultiple = true)]
+        [SingletonService(AllowMultiple = true)]
         public interface ICustomValueMetadataAppService { }
 
         [CustomValueServiceMetadata("hi there")]
@@ -516,7 +516,7 @@ namespace Kephas.Tests.Services
 
     namespace CustomNamedValueAppServiceMetadata
     {
-        [SingletonAppServiceContract(AllowMultiple = true)]
+        [SingletonService(AllowMultiple = true)]
         public interface ICustomNamedValueMetadataAppService { }
 
         [CustomNamedValueMetadata("hi there", "bob", IconName = "ICXP")]
@@ -548,7 +548,7 @@ namespace Kephas.Tests.Services
 
     namespace DefaultAppServiceMetadata
     {
-        [AppServiceContract]
+        [TransientService]
         public interface IDefaultMetadataAppService { }
 
         public class DefaultMetadataAppService : IDefaultMetadataAppService
@@ -558,7 +558,7 @@ namespace Kephas.Tests.Services
 
     namespace DefaultExplicitAppServiceMetadata
     {
-        [SingletonAppServiceContract(AllowMultiple = true)]
+        [SingletonService(AllowMultiple = true)]
         public interface IExplicitMetadataAppService { }
 
         [Priority(100)]

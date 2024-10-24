@@ -10,9 +10,9 @@
 
 using System.Runtime.CompilerServices;
 using Kephas.Collections;
-using Kephas.Services.Resources;
+using Kephas.DependencyInjection.Metadata;
 
-namespace Kephas.Services;
+namespace Kephas.DependencyInjection;
 
 /// <summary>
 /// An ordered service collection extensions.
@@ -29,9 +29,10 @@ public static class ServiceEnumerableExtensions
     /// A list of ordered services.
     /// </returns>
     public static IFactoryEnumerable<T, TMetadata> Order<T, TMetadata>(
-        this IEnumerable<IExportFactory<T, TMetadata>> factories)
+        this IEnumerable<IFactory<T, TMetadata>> factories)
     {
-        return new FactoryEnumerable<T, TMetadata>(factories);
+        return factories as IFactoryEnumerable<T, TMetadata>
+               ?? new FactoryEnumerable<T, TMetadata>(factories);
     }
 
     /// <summary>
@@ -46,7 +47,8 @@ public static class ServiceEnumerableExtensions
     public static ILazyEnumerable<T, TMetadata> Order<T, TMetadata>(
         this IEnumerable<Lazy<T, TMetadata>> factories)
     {
-        return new LazyEnumerable<T, TMetadata>(factories);
+        return factories as ILazyEnumerable<T, TMetadata>
+               ?? new LazyEnumerable<T, TMetadata>(factories);
     }
 
     /// <summary>
@@ -70,9 +72,9 @@ public static class ServiceEnumerableExtensions
     /// The given data converted to a IDictionary&lt;TKey,TValue&gt;.
     /// </returns>
     public static IDictionary<TKey, TValue> OrderAsDictionary<T, TMetadata, TKey, TValue>(
-        this IEnumerable<IExportFactory<T, TMetadata>> serviceFactories,
-        Func<IExportFactory<T, TMetadata>, TKey> keyFunc,
-        Func<IExportFactory<T, TMetadata>, TValue> valueFunc,
+        this IEnumerable<IFactory<T, TMetadata>> serviceFactories,
+        Func<IFactory<T, TMetadata>, TKey> keyFunc,
+        Func<IFactory<T, TMetadata>, TValue> valueFunc,
         IEqualityComparer<TKey>? keyComparer = null)
         where TKey : notnull
     {
@@ -82,7 +84,7 @@ public static class ServiceEnumerableExtensions
 
         return serviceFactories
             .Order()
-            .OrderAsDictionary<T, TMetadata, TKey, TValue, IExportFactory<T, TMetadata>>(
+            .OrderAsDictionary<T, TMetadata, TKey, TValue, IFactory<T, TMetadata>>(
                 f => f.Metadata,
                 keyFunc,
                 valueFunc,
@@ -147,15 +149,15 @@ public static class ServiceEnumerableExtensions
     /// The given data converted to an IDictionary&lt;TKey,TValue&gt;.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IDictionary<TKey, IExportFactory<T, TMetadata>> OrderAsDictionary<T, TMetadata, TKey>(
-        this IEnumerable<IExportFactory<T, TMetadata>> serviceFactories,
-        Func<IExportFactory<T, TMetadata>, TKey> keyFunc,
+    public static IDictionary<TKey, IFactory<T, TMetadata>> OrderAsDictionary<T, TMetadata, TKey>(
+        this IEnumerable<IFactory<T, TMetadata>> serviceFactories,
+        Func<IFactory<T, TMetadata>, TKey> keyFunc,
         IEqualityComparer<TKey>? keyComparer = null)
         where TKey : notnull
     {
         return serviceFactories
             .Order()
-            .OrderAsDictionary<T, TMetadata, TKey, IExportFactory<T, TMetadata>, IExportFactory<T, TMetadata>>(
+            .OrderAsDictionary<T, TMetadata, TKey, IFactory<T, TMetadata>, IFactory<T, TMetadata>>(
                 f => f.Metadata,
                 keyFunc,
                 f => f,

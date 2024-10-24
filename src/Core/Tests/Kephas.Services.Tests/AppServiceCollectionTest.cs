@@ -5,11 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services.Metadata;
-using Kephas.Services.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using FluentAssertions;
+using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Metadata;
 using Kephas.Reflection;
 using Kephas.Services;
 using Kephas.Services.Builder;
@@ -291,8 +291,8 @@ public class AppServiceCollectionTest
         appServices.Add(typeof(ILogManager), logManager);
 
         var container = appServices.BuildServiceProvider();
-        var logManagerFactory = container.GetService<IExportFactory<ILogManager>>();
-        Assert.Same(logManager, logManagerFactory.CreateExportedValue());
+        var logManagerFactory = container.GetService<IFactory<ILogManager>>();
+        Assert.Same(logManager, logManagerFactory.Create());
     }
 
     [Fact]
@@ -317,7 +317,7 @@ public class AppServiceCollectionTest
         var container = appServices.BuildServiceProvider();
         var dependent = container.GetService<DependentCollectionService>();
         Assert.NotNull(dependent.Factories);
-        Assert.IsType<SimpleService>(dependent.Factories.Single().CreateExportedValue());
+        Assert.IsType<SimpleService>(dependent.Factories.Single().Create());
     }
 
     [Fact]
@@ -342,7 +342,7 @@ public class AppServiceCollectionTest
         var container = appServices.BuildServiceProvider();
         var dependent = container.GetService<DependentEnumerationService>();
         Assert.NotNull(dependent.Factories);
-        Assert.IsType<SimpleService>(dependent.Factories.Single().CreateExportedValue());
+        Assert.IsType<SimpleService>(dependent.Factories.Single().Create());
     }
 
     [Fact]
@@ -358,8 +358,8 @@ public class AppServiceCollectionTest
         Assert.NotNull(dependent.Factories);
         var factories = dependent.Factories.ToList();
         Assert.Equal(2, factories.Count);
-        Assert.True(factories.Any(f => f.CreateExportedValue() is SimpleService));
-        Assert.True(factories.Any(f => f.CreateExportedValue() is OptionalDependentService));
+        Assert.True(factories.Any(f => f.Create() is SimpleService));
+        Assert.True(factories.Any(f => f.Create() is OptionalDependentService));
     }
 
     [Fact]
@@ -374,10 +374,10 @@ public class AppServiceCollectionTest
                 .AddMetadata("IsOverride", true));
 
         var container = appServices.BuildServiceProvider();
-        var service = container.GetService<Lazy<IDependency, AppServiceMetadata>>();
+        var service = container.GetService<Lazy<IDependency, ServiceMetadata>>();
         Assert.NotNull(service.Metadata);
         Assert.Equal(Priority.Low, service.Metadata.Priority);
-        Assert.True(service.Metadata.IsOverride);
+        Assert.True(service.Metadata.OverrideBaseImplementation);
     }
 
     [Fact]
@@ -387,24 +387,24 @@ public class AppServiceCollectionTest
         appServices.Add<IService, DependentService>();
 
         var container = appServices.BuildServiceProvider();
-        var service = container.GetRequiredService<IExportFactory<IService, AppServiceMetadata>>();
+        var service = container.GetRequiredService<IFactory<IService, ServiceMetadata>>();
         Assert.NotNull(service.Metadata);
         Assert.Equal(Priority.High, service.Metadata.Priority);
-        Assert.Equal(typeof(DependentService), service.Metadata.ServiceType);
+        Assert.Equal(typeof(DependentService), service.Metadata.ImplementationType);
     }
 
     [Fact]
     public void GetService_exportFactory_with_metadata_from_generic()
     {
         var appServices = Test.CreateTestServices();
-        appServices.Add(new AppServiceInfo(
-            new AppServiceInfo(typeof(IService<,>), typeof(GenericService)),
+        appServices.Add(new ServiceInfo(
+            new ServiceInfo(typeof(IService<,>), typeof(GenericService)),
             typeof(IService),
             typeof(IService<,>),
             typeof(GenericService)));
 
         var container = appServices.BuildServiceProvider();
-        var service = container.GetService<IExportFactory<IService, AppServiceMetadata>>()!;
+        var service = container.GetService<IFactory<IService, ServiceMetadata>>()!;
         Assert.NotNull(service.Metadata);
         Assert.Same(typeof(string), service.Metadata["ValueType"]);
         Assert.Same(typeof(int), service.Metadata["Type"]);
@@ -418,10 +418,10 @@ public class AppServiceCollectionTest
         appServices.Add<IDependency>(Substitute.For<IDependency>());
 
         var container = appServices.BuildServiceProvider();
-        var service = container.GetService<Lazy<IService, AppServiceMetadata>>();
+        var service = container.GetService<Lazy<IService, ServiceMetadata>>();
         Assert.NotNull(service.Metadata);
         Assert.Equal(Priority.High, service.Metadata.Priority);
-        Assert.Equal(typeof(DependentService), service.Metadata.ServiceType);
+        Assert.Equal(typeof(DependentService), service.Metadata.ImplementationType);
     }
 
     [Fact]
@@ -432,24 +432,24 @@ public class AppServiceCollectionTest
         appServices.Add<IDependency>(Substitute.For<IDependency>());
 
         var container = appServices.BuildServiceProvider();
-        var service = container.GetService<Lazy<IService, AppServiceMetadata>>();
+        var service = container.GetService<Lazy<IService, ServiceMetadata>>();
         Assert.NotNull(service.Metadata);
         Assert.Equal(Priority.High, service.Metadata.Priority);
-        Assert.Equal(typeof(DependentService), service.Metadata.ServiceType);
+        Assert.Equal(typeof(DependentService), service.Metadata.ImplementationType);
     }
 
     [Fact]
     public void GetService_lazy_with_metadata_from_generic()
     {
         var appServices = Test.CreateTestServices();
-        appServices.Add(new AppServiceInfo(
-            new AppServiceInfo(typeof(IService<,>), typeof(GenericService)),
+        appServices.Add(new ServiceInfo(
+            new ServiceInfo(typeof(IService<,>), typeof(GenericService)),
             typeof(IService),
             typeof(IService<,>),
             typeof(GenericService)));
 
         var container = appServices.BuildServiceProvider();
-        var service = container.GetService<Lazy<IService, AppServiceMetadata>>();
+        var service = container.GetService<Lazy<IService, ServiceMetadata>>();
         Assert.NotNull(service.Metadata);
         Assert.Same(typeof(string), service.Metadata["ValueType"]);
         Assert.Same(typeof(int), service.Metadata["Type"]);
@@ -487,9 +487,9 @@ public class AppServiceCollectionTest
         appServices = new AppServiceCollectionBuilder(appServices).Build();
         var contracts = appServices.GetServiceInstance<IContractDeclarationCollection>();
 
-        var (c, info) = contracts.Single(i => i.ContractDeclarationType == typeof(IServiceFactory));
+        var (c, info) = contracts.Single(i => i.ServiceDeclarationType == typeof(IServiceFactory));
         Assert.NotNull(info);
-        Assert.Null(info.ContractType);
+        Assert.Null(info.ServiceType);
         Assert.Null(info.Metadata);
     }
 
@@ -515,22 +515,22 @@ public class AppServiceCollectionTest
 
     public class DependentCollectionService
     {
-        public DependentCollectionService(ICollection<IExportFactory<IService>> factories)
+        public DependentCollectionService(ICollection<IFactory<IService>> factories)
         {
             Factories = factories;
         }
 
-        public ICollection<IExportFactory<IService>> Factories { get; }
+        public ICollection<IFactory<IService>> Factories { get; }
     }
 
     public class DependentEnumerationService
     {
-        public DependentEnumerationService(IEnumerable<IExportFactory<IService>> factories)
+        public DependentEnumerationService(IEnumerable<IFactory<IService>> factories)
         {
             Factories = factories;
         }
 
-        public IEnumerable<IExportFactory<IService>> Factories { get; }
+        public IEnumerable<IFactory<IService>> Factories { get; }
     }
 
     public class SimpleService : IService { }

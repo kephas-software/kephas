@@ -7,8 +7,8 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Kephas.Services;
-using Kephas.Services.Metadata;
+using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Metadata;
 using Kephas.Services.Resources;
 
 namespace Kephas;
@@ -23,16 +23,16 @@ public static class ServiceProviderExtensions
     /// </summary>
     /// <typeparam name="T">The service type.</typeparam>
     /// <param name="serviceProvider">The service provider.</param>
-    /// <param name="serviceName">Name of the service.</param>
+    /// <param name="serviceKey">The key of the service.</param>
     /// <returns>
     /// The named service.
     /// </returns>
-    public static T? GetServiceByName<T>(this IServiceProvider serviceProvider, string serviceName)
+    public static T? GetServiceByName<T>(this IServiceProvider serviceProvider, string serviceKey)
     {
-        var exportFactories = ((IEnumerable<Lazy<T, AppServiceMetadata>>)(
-                serviceProvider.GetService(typeof(ILazyEnumerable<T, AppServiceMetadata>))
-                    ?? Array.Empty<IEnumerable<Lazy<T, AppServiceMetadata>>>()))
-            .Where(f => f.Metadata.ServiceName == serviceName)
+        var exportFactories = ((IEnumerable<Lazy<T, ServiceMetadata>>)(
+                serviceProvider.GetService(typeof(ILazyEnumerable<T, ServiceMetadata>))
+                    ?? Array.Empty<IEnumerable<Lazy<T, ServiceMetadata>>>()))
+            .Where(f => f.Metadata.ServiceKey == serviceKey)
             .ToList();
         return exportFactories.Count switch
         {
@@ -40,7 +40,7 @@ public static class ServiceProviderExtensions
             > 1 => throw new AmbiguousMatchException(
                 string.Format(
                     Strings.DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception,
-                    serviceName,
+                    serviceKey,
                     typeof(T))),
             _ => exportFactories[0].Value
         };
@@ -51,19 +51,19 @@ public static class ServiceProviderExtensions
     /// </summary>
     /// <typeparam name="T">The service type.</typeparam>
     /// <param name="serviceProvider">The service provider.</param>
-    /// <param name="serviceName">Name of the service.</param>
+    /// <param name="serviceKey">The key of the service.</param>
     /// <returns>
     /// The named service.
     /// </returns>
     [return: NotNull]
-    public static T GetRequiredServiceByName<T>(this IServiceProvider serviceProvider, string serviceName)
+    public static T GetRequiredServiceByName<T>(this IServiceProvider serviceProvider, string serviceKey)
     {
-        var service = GetServiceByName<T>(serviceProvider, serviceName);
+        var service = GetServiceByName<T>(serviceProvider, serviceKey);
         return service is null
             ? throw new ServiceException(
                 string.Format(
                     Strings.DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception,
-                    serviceName,
+                    serviceKey,
                     typeof(T)))
             : service;
     }

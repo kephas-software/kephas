@@ -9,6 +9,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
+using Kephas.DependencyInjection.ServiceProviders;
 
 namespace Kephas.Services.Builder;
 
@@ -18,11 +19,11 @@ namespace Kephas.Services.Builder;
 public interface IAppServiceCollectionBuilder
 {
     /// <summary>
-    /// Adds the <see cref="IAppServiceInfoProvider"/>s.
+    /// Adds the <see cref="IServiceInfoProvider"/>s.
     /// </summary>
     /// <param name="providers">An array of providers.</param>
     /// <returns>This builder.</returns>
-    IAppServiceCollectionBuilder AddProviders(params IAppServiceInfoProvider[] providers);
+    IAppServiceCollectionBuilder AddProviders(params IServiceInfoProvider[] providers);
 
     /// <summary>
     /// Adds the <see cref="Assembly"/>s.
@@ -39,7 +40,7 @@ public interface IAppServiceCollectionBuilder
     IAppServiceCollectionBuilder AddTypes(params Type[] types);
 
     /// <summary>
-    /// Adds the application services from the <see cref="IAppServiceInfoProvider"/>s identified in the assemblies.
+    /// Adds the application services from the <see cref="IServiceInfoProvider"/>s identified in the assemblies.
     /// </summary>
     /// <returns>The provided app services.</returns>
     IAppServiceCollection Build();

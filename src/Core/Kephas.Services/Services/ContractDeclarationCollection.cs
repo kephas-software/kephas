@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.DependencyInjection.ServiceProviders;
+
 namespace Kephas.Services;
 
 using System.Collections;
@@ -14,20 +16,20 @@ using System.Collections;
 /// </summary>
 public class ContractDeclarationCollection : IContractDeclarationCollection
 {
-    private readonly IEnumerable<ContractDeclaration> contracts;
+    private readonly IEnumerable<ServiceDeclarationInfo> contracts;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ContractDeclarationCollection"/> class.
     /// </summary>
     /// <param name="contracts">The contract declarations.</param>
-    public ContractDeclarationCollection(IEnumerable<ContractDeclaration> contracts)
+    public ContractDeclarationCollection(IEnumerable<ServiceDeclarationInfo> contracts)
     {
-        this.contracts = new List<ContractDeclaration>(contracts ?? throw new ArgumentNullException(nameof(contracts)));
+        this.contracts = new List<ServiceDeclarationInfo>(contracts ?? throw new ArgumentNullException(nameof(contracts)));
     }
 
     /// <summary>Returns an enumerator that iterates through the collection.</summary>
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-    public IEnumerator<ContractDeclaration> GetEnumerator() => contracts.GetEnumerator();
+    public IEnumerator<ServiceDeclarationInfo> GetEnumerator() => contracts.GetEnumerator();
 
     /// <summary>Returns an enumerator that iterates through a collection.</summary>
     /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>

@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.DependencyInjection.Reflection;
 using Microsoft.Extensions.Logging;
 
 namespace Kephas.Tests.Services;
 
 using System.Linq;
 using Kephas.Services;
-using Kephas.Services.Reflection;
 using NSubstitute;
 using Xunit;
 
@@ -45,7 +45,7 @@ public class ServiceFactoryTest
     {
         var testService = Substitute.For<ITestService>();
 
-        var (appServices, injector) = GetServices(new AppServiceInfo(typeof(ITestService), testService));
+        var (appServices, injector) = GetServices(new ServiceInfo(typeof(ITestService), testService));
         injector.GetService(typeof(ITestService)).Returns(testService);
         IServiceFactory factory = new ServiceFactory(injector, appServices, Substitute.For<ILoggerFactory>());
         var context = factory.Create<TestContext>(typeof(string));
@@ -55,7 +55,7 @@ public class ServiceFactoryTest
         Assert.Same(typeof(string), context.MediaType);
     }
 
-    private (IAppServiceCollection appServices, IServiceProvider injector) GetServices(params IAppServiceInfo[] appServiceInfos)
+    private (IAppServiceCollection appServices, IServiceProvider injector) GetServices(params IServiceInfo[] appServiceInfos)
     {
         var appServices = Substitute.For<IAppServiceCollection>();
         var injector = Substitute.For<IServiceProvider>();
