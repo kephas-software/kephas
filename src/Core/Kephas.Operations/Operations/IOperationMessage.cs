@@ -8,52 +8,46 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Logging;
-using Microsoft.Extensions.Logging;
+using Kephas.ExceptionHandling;
 
-namespace Kephas.Operations
+namespace Kephas.Operations;
+
+/// <summary>
+/// Contract for data operation messages.
+/// </summary>
+public interface IOperationMessage : IHasSeverityLevel
 {
-    using System;
-
-    using Kephas.ExceptionHandling;
+    /// <summary>
+    /// Gets the message.
+    /// </summary>
+    /// <value>
+    /// The message.
+    /// </value>
+    string? Message { get; }
 
     /// <summary>
-    /// Contract for data operation messages.
+    /// Gets the exception, if any.
     /// </summary>
-    public interface IOperationMessage : IHasLogLevel
-    {
-        /// <summary>
-        /// Gets the message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        string? Message { get; }
+    Exception? Exception { get; }
 
-        /// <summary>
-        /// Gets the exception, if any.
-        /// </summary>
-        Exception? Exception { get; }
+    /// <summary>
+    /// Gets the timestamp.
+    /// </summary>
+    long? Timestamp { get; }
 
-        /// <summary>
-        /// Gets the timestamp.
-        /// </summary>
-        long? Timestamp { get; }
+    /// <summary>
+    /// Gets a value indicating whether this message is an error.
+    /// </summary>
+    /// <returns><c>true</c> if this message is an error, <c>false</c> otherwise.</returns>
+    bool IsError()
+        => this is IErrorNotification { Severity: SeverityLevel.Error or SeverityLevel.Critical }
+           || Exception is IErrorNotification { Severity: SeverityLevel.Error or SeverityLevel.Critical } or { } and not IErrorNotification;
 
-        /// <summary>
-        /// Gets a value indicating whether this message is an error.
-        /// </summary>
-        /// <returns><c>true</c> if this message is an error, <c>false</c> otherwise.</returns>
-        bool IsError()
-            => this is IErrorNotification { Severity: LogLevel.Error or LogLevel.Critical }
-               || Exception is IErrorNotification { Severity: LogLevel.Error or LogLevel.Critical } or { } and not IErrorNotification;
-
-        /// <summary>
-        /// Gets a value indicating whether this message is a warning.
-        /// </summary>
-        /// <returns><c>true</c> if this message is a warning, <c>false</c> otherwise.</returns>
-        bool IsWarning() =>
-            this is IErrorNotification { Severity: LogLevel.Warning }
-            || Exception is IErrorNotification { Severity: LogLevel.Warning };
-    }
+    /// <summary>
+    /// Gets a value indicating whether this message is a warning.
+    /// </summary>
+    /// <returns><c>true</c> if this message is a warning, <c>false</c> otherwise.</returns>
+    bool IsWarning() =>
+        this is IErrorNotification { Severity: SeverityLevel.Warning }
+        || Exception is IErrorNotification { Severity: SeverityLevel.Warning };
 }

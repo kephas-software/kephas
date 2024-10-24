@@ -8,9 +8,14 @@
 namespace Kephas.Operations;
 
 /// <summary>
-/// The operation state.
+/// The operation status.
 /// </summary>
-public enum OperationState
+/// <remarks>
+/// We use state when talking about an overall condition of an entity or a result of some operation with the entity
+/// (such as Idle, Running, Disabled, Verified and so on), while status stands for the current condition of an entity
+/// with respect to particular circumstances (such as Success, Failed, Warning and so on).
+/// </remarks>
+public enum OperationStatus
 {
     /// <summary>
     /// The operation is not yet started.
@@ -61,4 +66,9 @@ public enum OperationState
     /// The operation timed out.
     /// </summary>
     TimedOut = -0x0020,
+
+    /// <summary>
+    /// The operation did not complete successfully and was scheduled for retry.
+    /// </summary>
+    ScheduledForRetry = -0x0010,
 }

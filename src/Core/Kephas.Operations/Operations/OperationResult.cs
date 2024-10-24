@@ -43,7 +43,7 @@ public record OperationResult() : IOperationResult
     /// <value>
     /// The state of the operation.
     /// </value>
-    public OperationState OperationState { get; set; }
+    public OperationStatus OperationStatus { get; set; }
 
     /// <summary>
     /// Gets or sets the percent completed.

@@ -79,34 +79,34 @@ public record AsyncOperationResult<T> : OperationResult<T>, IAsyncOperationResul
         Reset();
 
         var opState = t.IsFaulted
-            ? OperationState.Failed
+            ? OperationStatus.Failed
             : t.IsCanceled
-                ? OperationState.Canceled
+                ? OperationStatus.Canceled
                 : t.Status == TaskStatus.RanToCompletion
-                    ? OperationState.Completed
+                    ? OperationStatus.Completed
                     : t.Status == TaskStatus.Running
-                        ? OperationState.InProgress
-                        : OperationState.NotStarted;
+                        ? OperationStatus.InProgress
+                        : OperationStatus.NotStarted;
 
-        OperationState = opState;
+        OperationStatus = opState;
         var value = default(T);
         switch (opState)
         {
-            case OperationState.Failed:
+            case OperationStatus.Failed:
                 t.Exception!.InnerExceptions.ForEach(ex => this.MergeException(ex));
                 if (throwOnError)
                 {
                     throw t.Exception?.InnerException ?? new OperationFailedException("Operation failed.");
                 }
                 break;
-            case OperationState.Canceled:
+            case OperationStatus.Canceled:
                 this.MergeException(new TaskCanceledException());
                 if (throwOnError)
                 {
                     throw new TaskCanceledException();
                 }
                 break;
-            case OperationState.Completed:
+            case OperationStatus.Completed:
                 PercentCompleted = 1f;
                 value = t.Result;
                 break;
@@ -118,7 +118,7 @@ public record AsyncOperationResult<T> : OperationResult<T>, IAsyncOperationResul
     private void Reset()
     {
         PercentCompleted = 0f;
-        OperationState = OperationState.NotStarted;
+        OperationStatus = OperationStatus.NotStarted;
         EndedAt = null;
         StartedAt = DateTimeOffset.Now;
         Messages.Clear();

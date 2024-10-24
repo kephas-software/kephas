@@ -18,7 +18,7 @@ public class OperationResultOfTValueTest
     {
         var opResult = new OperationResult<int>(12).Complete();
 
-        Assert.Equal(OperationState.Completed, opResult.OperationState);
+        Assert.Equal(OperationStatus.Completed, opResult.OperationStatus);
         Assert.Equal(1f, opResult.PercentCompleted);
         Assert.Equal(12, opResult.Value);
     }
@@ -27,7 +27,7 @@ public class OperationResultOfTValueTest
     public void OperationResult_complete_exception()
     {
         var opResult = new ArgumentException("arg").ToOperationResult<int>();
-        Assert.Equal(OperationState.Failed, opResult.OperationState);
+        Assert.Equal(OperationStatus.Failed, opResult.OperationStatus);
         Assert.Equal(0f, opResult.PercentCompleted);
         opResult.Value.Should().Be(0);
     }
@@ -48,6 +48,6 @@ public class OperationResultOfTValueTest
         var (value, state) = result;
 
         Assert.Equal("hello", value);
-        Assert.Equal(OperationState.Completed, state);
+        Assert.Equal(OperationStatus.Completed, state);
     }
 }

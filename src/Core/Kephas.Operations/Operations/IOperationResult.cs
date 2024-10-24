@@ -29,7 +29,7 @@ public interface IOperationResult
     /// <value>
     /// The state of the operation.
     /// </value>
-    OperationState OperationState { get; set; }
+    OperationStatus OperationStatus { get; set; }
 
     /// <summary>
     /// Gets or sets the timestamp when the operation started.
@@ -69,11 +69,11 @@ public interface IOperationResult
     /// Deconstructs this instance.
     /// </summary>
     /// <param name="value">The result value.</param>
-    /// <param name="state">The result state.</param>
-    void Deconstruct(out object? value, out OperationState state)
+    /// <param name="status">The result state.</param>
+    void Deconstruct(out object? value, out OperationStatus status)
     {
         value = Value;
-        state = OperationState;
+        status = OperationStatus;
     }
 }
 
@@ -99,10 +99,10 @@ public interface IOperationResult<TValue> : IOperationResult
     /// Deconstructs this instance.
     /// </summary>
     /// <param name="value">The result value.</param>
-    /// <param name="state">The result state.</param>
-    void Deconstruct(out TValue value, out OperationState state)
+    /// <param name="status">The result state.</param>
+    void Deconstruct(out TValue value, out OperationStatus status)
     {
         value = Value;
-        state = OperationState;
+        status = OperationStatus;
     }
 }

@@ -22,7 +22,7 @@ public class AsyncOperationResultTest
         var opResult = new AsyncOperationResult(Task.FromResult((object)12));
         await opResult.AsTask();
 
-        Assert.Equal(OperationState.Completed, opResult.OperationState);
+        Assert.Equal(OperationStatus.Completed, opResult.OperationStatus);
         Assert.Equal(1f, opResult.PercentCompleted);
         Assert.Equal(12, opResult.Value);
     }
@@ -33,7 +33,7 @@ public class AsyncOperationResultTest
         var opResult = new AsyncOperationResult(Task.Delay(100).ContinueWith(t => 12));
         await opResult.AsTask();
 
-        Assert.Equal(OperationState.Completed, opResult.OperationState);
+        Assert.Equal(OperationStatus.Completed, opResult.OperationStatus);
         Assert.Equal(1f, opResult.PercentCompleted);
         Assert.Equal(12, opResult.Value);
     }
@@ -44,7 +44,7 @@ public class AsyncOperationResultTest
         var opResult = new AsyncOperationResult(Task.FromException(new ArgumentException("arg")));
         await opResult.AsTask().ContinueWith(t =>
         {
-            Assert.Equal(OperationState.Failed, opResult.OperationState);
+            Assert.Equal(OperationStatus.Failed, opResult.OperationStatus);
             Assert.Equal(0f, opResult.PercentCompleted);
             var ex = Assert.Throws<AggregateException>(() => { var _ = opResult.Value; });
             ex!.InnerException.Should().BeOfType<ArgumentException>();
@@ -57,7 +57,7 @@ public class AsyncOperationResultTest
         var opResult = new AsyncOperationResult(Task.FromCanceled(new CancellationToken(true)));
         await opResult.AsTask().ContinueWith(t =>
         {
-            Assert.Equal(OperationState.Canceled, opResult.OperationState);
+            Assert.Equal(OperationStatus.Canceled, opResult.OperationStatus);
             Assert.Equal(0f, opResult.PercentCompleted);
             var ex = Assert.Throws<AggregateException>(() => { var _ = opResult.Value; });
             ex!.InnerException.Should().BeOfType<TaskCanceledException>();
@@ -121,6 +121,6 @@ public class AsyncOperationResultTest
         var (value, state) = result;
 
         value.Should().BeNull();
-        state.Should().Be(OperationState.Completed);
+        state.Should().Be(OperationStatus.Completed);
     }
 }

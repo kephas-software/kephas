@@ -11,7 +11,6 @@
 using FluentAssertions;
 using Kephas.ExceptionHandling;
 using Kephas.Operations;
-using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Kephas.Tests.Operations;
@@ -28,14 +27,14 @@ public class OperationMessageTest
     }
 
     [Theory]
-    [InlineData(typeof(ArgumentException), "hello", LogLevel.Warning, "[Warning] hello (ArgumentException)")]
+    [InlineData(typeof(ArgumentException), "hello", SeverityLevel.Warning, "[Warning] hello (ArgumentException)")]
     [InlineData(typeof(TestCriticalException), "hello", null, "[Critical] hello (TestCriticalException)")]
-    [InlineData(typeof(TestCriticalException), "hello", LogLevel.Warning, "[Warning] hello (TestCriticalException)")]
-    public void ToString_contains_exception(Type exceptionType, string exceptionMessage, LogLevel? logLevel, string expectedValue)
+    [InlineData(typeof(TestCriticalException), "hello", SeverityLevel.Warning, "[Warning] hello (TestCriticalException)")]
+    public void ToString_contains_exception(Type exceptionType, string exceptionMessage, SeverityLevel? logLevel, string expectedValue)
     {
         var exception = (Exception)Activator.CreateInstance(exceptionType, exceptionMessage)!;
         var msg = logLevel is not null
-            ? new OperationMessage(exception) { LogLevel = logLevel.Value }
+            ? new OperationMessage(exception) { SeverityLevel = logLevel.Value }
             : new OperationMessage(exception);
 
         msg.ToString().Should().Be(expectedValue);
@@ -46,7 +45,7 @@ public class OperationMessageTest
         public TestCriticalException(string message)
             : base(message)
         {
-            Severity = LogLevel.Critical;
+            Severity = SeverityLevel.Critical;
         }
     }
 }
