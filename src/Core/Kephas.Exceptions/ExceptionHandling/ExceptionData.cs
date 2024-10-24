@@ -8,65 +8,62 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Microsoft.Extensions.Logging;
+namespace Kephas.ExceptionHandling;
 
-namespace Kephas.ExceptionHandling
+using System;
+
+/// <summary>
+/// An exception data.
+/// </summary>
+public record ExceptionData() : IErrorNotification
 {
-    using System;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ExceptionData"/> class.
+    /// </summary>
+    /// <param name="exception">The exception.</param>
+    /// <param name="severity">Optional. The severity level. If this value is set, it overwrites the severity level provided by the exception.</param>
+    public ExceptionData(Exception exception, SeverityLevel? severity = null)
+        : this()
+    {
+        exception = exception ?? throw new ArgumentNullException(nameof(exception));
+
+        severity ??= exception is IErrorNotification notification ? notification.Severity : SeverityLevel.Error;
+
+        ExceptionType = exception.GetType().FullName!;
+        Message = exception.Message;
+        Severity = severity.Value;
+    }
 
     /// <summary>
-    /// An exception data.
+    /// Gets or sets the type of the exception.
     /// </summary>
-    public record ExceptionData() : IErrorNotification
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionData"/> class.
-        /// </summary>
-        /// <param name="exception">The exception.</param>
-        /// <param name="severity">Optional. The severity level. If this value is set, it overwrites the severity level provided by the exception.</param>
-        public ExceptionData(Exception exception, LogLevel? severity = null)
-            : this()
-        {
-            exception = exception ?? throw new ArgumentNullException(nameof(exception));
+    /// <value>
+    /// The type of the exception.
+    /// </value>
+    public string? ExceptionType { get; set; }
 
-            severity ??= exception is IErrorNotification notification ? notification.Severity : LogLevel.Error;
+    /// <summary>
+    /// Gets or sets the message.
+    /// </summary>
+    /// <value>
+    /// The message.
+    /// </value>
+    public string? Message { get; set; }
 
-            ExceptionType = exception.GetType().FullName!;
-            Message = exception.Message;
-            Severity = severity.Value;
-        }
+    /// <summary>
+    /// Gets or sets the severity level.
+    /// </summary>
+    /// <value>
+    /// The severity level.
+    /// </value>
+    public SeverityLevel Severity { get; set; } = SeverityLevel.Error;
 
-        /// <summary>
-        /// Gets or sets the type of the exception.
-        /// </summary>
-        /// <value>
-        /// The type of the exception.
-        /// </value>
-        public string? ExceptionType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        public string? Message { get; set; }
-
-        /// <summary>
-        /// Gets or sets the severity level.
-        /// </summary>
-        /// <value>
-        /// The severity level.
-        /// </value>
-        public LogLevel Severity { get; set; } = LogLevel.Error;
-
-        /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        /// A string that represents the current object.
-        /// </returns>
-        public override string ToString() =>
-            $"{Message} ({ExceptionType}: {Severity})";
-    }
+    /// <summary>
+    /// Returns a string that represents the current object.
+    /// </summary>
+    /// <returns>
+    /// A string that represents the current object.
+    /// </returns>
+    public override string ToString() =>
+        $"{Message} ({ExceptionType}: {Severity})";
 }

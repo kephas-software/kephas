@@ -8,91 +8,88 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Microsoft.Extensions.Logging;
+namespace Kephas.Tests.ExceptionHandling;
 
-namespace Kephas.Tests.ExceptionHandling
+using System;
+
+using Kephas.ExceptionHandling;
+using Xunit;
+
+public class ExceptionDataTest
 {
-    using System;
-
-    using Kephas.ExceptionHandling;
-    using Xunit;
-
-        public class ExceptionDataTest
+    [Fact]
+    public void ExceptionData_copy_from_exception_default()
     {
-        [Fact]
-        public void ExceptionData_copy_from_exception_default()
-        {
-            var exceptionData = new ExceptionData(new Exception("hello"));
+        var exceptionData = new ExceptionData(new Exception("hello"));
 
-            Assert.Equal("hello", exceptionData.Message);
-            Assert.Equal(typeof(Exception).FullName, exceptionData.ExceptionType);
-            Assert.Equal(LogLevel.Error, exceptionData.Severity);
-        }
+        Assert.Equal("hello", exceptionData.Message);
+        Assert.Equal(typeof(Exception).FullName, exceptionData.ExceptionType);
+        Assert.Equal(SeverityLevel.Error, exceptionData.Severity);
+    }
 
-        [Fact]
-        public void ExceptionData_copy_from_exception_default_with_severity()
-        {
-            var exceptionData = new ExceptionData(new DataException("hello") { Severity = LogLevel.Critical });
+    [Fact]
+    public void ExceptionData_copy_from_exception_default_with_severity()
+    {
+        var exceptionData = new ExceptionData(new DataException("hello") { Severity = SeverityLevel.Critical });
 
-            Assert.Equal("hello", exceptionData.Message);
-            Assert.Equal(typeof(DataException).FullName, exceptionData.ExceptionType);
-            Assert.Equal(LogLevel.Critical, exceptionData.Severity);
-        }
+        Assert.Equal("hello", exceptionData.Message);
+        Assert.Equal(typeof(DataException).FullName, exceptionData.ExceptionType);
+        Assert.Equal(SeverityLevel.Critical, exceptionData.Severity);
+    }
 
-        [Fact]
-        public void ExceptionData_copy_from_exception_overwrite_severity()
-        {
-            var exceptionData = new ExceptionData(new Exception("hello"), LogLevel.Warning);
+    [Fact]
+    public void ExceptionData_copy_from_exception_overwrite_severity()
+    {
+        var exceptionData = new ExceptionData(new Exception("hello"), SeverityLevel.Warning);
 
-            Assert.Equal("hello", exceptionData.Message);
-            Assert.Equal(typeof(Exception).FullName, exceptionData.ExceptionType);
-            Assert.Equal(LogLevel.Warning, exceptionData.Severity);
-        }
+        Assert.Equal("hello", exceptionData.Message);
+        Assert.Equal(typeof(Exception).FullName, exceptionData.ExceptionType);
+        Assert.Equal(SeverityLevel.Warning, exceptionData.Severity);
+    }
 
-        [Fact]
-        public void ExceptionData_copy_from_exception_with_severity_overwrite_severity()
-        {
-            var exceptionData = new ExceptionData(new DataException("hello") { Severity = LogLevel.Critical }, LogLevel.Information);
+    [Fact]
+    public void ExceptionData_copy_from_exception_with_severity_overwrite_severity()
+    {
+        var exceptionData = new ExceptionData(new DataException("hello") { Severity = SeverityLevel.Critical }, SeverityLevel.Information);
 
-            Assert.Equal("hello", exceptionData.Message);
-            Assert.Equal(typeof(DataException).FullName, exceptionData.ExceptionType);
-            Assert.Equal(LogLevel.Information, exceptionData.Severity);
-        }
+        Assert.Equal("hello", exceptionData.Message);
+        Assert.Equal(typeof(DataException).FullName, exceptionData.ExceptionType);
+        Assert.Equal(SeverityLevel.Information, exceptionData.Severity);
+    }
+}
+
+/// <summary>
+/// Exception for signalling generic data errors.
+/// </summary>
+internal class DataException : Exception, IErrorNotification
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataException"/> class.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    public DataException(string message)
+        : base(message)
+    {
+        Severity = SeverityLevel.Error;
     }
 
     /// <summary>
-    /// Exception for signalling generic data errors.
+    /// Initializes a new instance of the <see cref="DataException"/>
+    ///  class.
     /// </summary>
-    internal class DataException : Exception, IErrorNotification
+    /// <param name="message">The message.</param>
+    /// <param name="inner">The inner.</param>
+    public DataException(string message, Exception inner)
+        : base(message, inner)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        public DataException(string message)
-            : base(message)
-        {
-            this.Severity = LogLevel.Error;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataException"/>
-        ///  class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="inner">The inner.</param>
-        public DataException(string message, Exception inner)
-            : base(message, inner)
-        {
-            this.Severity = LogLevel.Error;
-        }
-
-        /// <summary>
-        /// Gets or sets the severity.
-        /// </summary>
-        /// <value>
-        /// The severity.
-        /// </value>
-        public LogLevel Severity { get; set; }
+        Severity = SeverityLevel.Error;
     }
+
+    /// <summary>
+    /// Gets or sets the severity.
+    /// </summary>
+    /// <value>
+    /// The severity.
+    /// </value>
+    public SeverityLevel Severity { get; set; }
 }
