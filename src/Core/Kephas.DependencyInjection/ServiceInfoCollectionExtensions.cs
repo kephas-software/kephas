@@ -104,7 +104,7 @@ public static class ServiceInfoCollectionExtensions
     /// Registers the provided service with implementation type, by default as transient, if not previously registered.
     /// </summary>
     /// <typeparam name="TService">The service type.</typeparam>
-    /// <typeparam name="TService">Type of the service implementation.</typeparam>
+    /// <typeparam name="TImplementation">Type of the service implementation.</typeparam>
     /// <param name="services">The application services.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
@@ -360,7 +360,7 @@ public static class ServiceInfoCollectionExtensions
 
         return services.TryAddService(
             typeof(TService),
-            (Func<IServiceProvider, object>)(injector => serviceFactory(injector)),
+            (Func<IServiceProvider, object>)(sp => serviceFactory(sp)),
             b =>
             {
                 builder?.Invoke(b);
@@ -388,7 +388,7 @@ public static class ServiceInfoCollectionExtensions
 
         return services.AddService(
             typeof(TService),
-            (Func<IServiceProvider, object>)(injector => serviceFactory(injector)),
+            (Func<IServiceProvider, object>)(sp => serviceFactory(sp)),
             b =>
             {
                 builder?.Invoke(b);
@@ -416,7 +416,7 @@ public static class ServiceInfoCollectionExtensions
 
         return services.ReplaceService(
             typeof(TService),
-            (Func<IServiceProvider, object>)(injector => serviceFactory(injector)),
+            (Func<IServiceProvider, object>)(sp => serviceFactory(sp)),
             b =>
             {
                 builder?.Invoke(b);
@@ -474,7 +474,7 @@ public static class ServiceInfoCollectionExtensions
 
         return services.AddService(
             contractType,
-            (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
+            (Func<IServiceProvider, object>)(_ => serviceFactory()),
             b =>
             {
                 builder?.Invoke(b);
@@ -503,7 +503,7 @@ public static class ServiceInfoCollectionExtensions
 
         return services.ReplaceService(
             contractType,
-            (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
+            (Func<IServiceProvider, object>)(_ => serviceFactory()),
             b =>
             {
                 builder?.Invoke(b);
@@ -532,7 +532,7 @@ public static class ServiceInfoCollectionExtensions
 
         return services.TryAddService(
             contractType,
-            (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
+            (Func<IServiceProvider, object>)(sp => serviceFactory(sp)),
             b =>
             {
                 builder?.Invoke(b);
@@ -561,7 +561,7 @@ public static class ServiceInfoCollectionExtensions
 
         return services.AddService(
             contractType,
-            (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
+            (Func<IServiceProvider, object>)(sp => serviceFactory(sp)),
             b =>
             {
                 builder?.Invoke(b);
@@ -590,7 +590,7 @@ public static class ServiceInfoCollectionExtensions
 
         return services.ReplaceService(
             contractType,
-            (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
+            (Func<IServiceProvider, object>)(sp => serviceFactory(sp)),
             b =>
             {
                 builder?.Invoke(b);

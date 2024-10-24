@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Kephas.DependencyInjection.Abstractions\Kephas.DependencyInjection.Abstractions.csproj" />
+      <ProjectReference Include="..\..\Kephas.DependencyInjection\Kephas.DependencyInjection.csproj" />
     </ItemGroup>
 
 </Project>

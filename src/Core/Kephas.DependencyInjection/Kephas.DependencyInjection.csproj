@@ -18,7 +18,7 @@
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>Provides abstractions for the dependency injection/services infrastructure.</Description>
+        <Description>Provides extended dependency injection/services infrastructure.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -30,7 +30,7 @@
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageTags>kephas dependency injection abstractions</PackageTags>
+        <PackageTags>kephas dependency injection</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>

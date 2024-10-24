@@ -23,22 +23,22 @@ public class EnumerableServiceExtensionsTest
             new(() => "123", "y"),
         };
             
-        Assert.Equal(new[] { "abc", "123" }, services.SelectServices());
+        Assert.Equal(["abc", "123"], services.SelectServices());
     }
 
     [Theory]
-    [InlineData("a", new[] { "abc", "a123" })]
-    [InlineData("ab", new[] { "abc" })]
+    [InlineData("a", new[] { "x", "y" })]
+    [InlineData("ab", new[] { "x" })]
     [InlineData("x", new string[0])]
     public void SelectServices_lazy_predicate(string start, string[] result)
     {
         var services = new Lazy<string, string>[]
         {
-            new(() => "abc", "x"),
-            new(() => "a123", "y"),
+            new(() => "x", "abc"),
+            new(() => "y", "a123"),
         };
             
-        Assert.Equal(result, services.SelectServices(s => s.Value.StartsWith(start)));
+        services.SelectServices(m => m.StartsWith(start)).Should().BeEquivalentTo(result);
     }
 
     [Theory]
@@ -46,22 +46,7 @@ public class EnumerableServiceExtensionsTest
     [InlineData("m-a", "a123")]
     [InlineData("m-a1", "a123")]
     [InlineData("x", null)]
-    public void TryGetService_lazy_predicate(string start, string? result)
-    {
-        var services = new Lazy<string, string>[]
-        {
-            new(() => "abc", "m-abc"),
-            new(() => "a123", "m-a123"),
-        };
-            
-        Assert.Equal(result, services.TryGetService(m => m.StartsWith(start)));
-    }
-
-    [Theory]
-    [InlineData("m-ab", "abc")]
-    [InlineData("m-a", "a123")]
-    [InlineData("m-a1", "a123")]
-    public void GetService_lazy_predicate_found(string start, string? result)
+    public void GetService_lazy_predicate(string start, string? result)
     {
         var services = new Lazy<string, string>[]
         {
@@ -72,13 +57,28 @@ public class EnumerableServiceExtensionsTest
         Assert.Equal(result, services.GetService(m => m.StartsWith(start)));
     }
 
+    [Theory]
+    [InlineData("m-ab", "abc")]
+    [InlineData("m-a", "a123")]
+    [InlineData("m-a1", "a123")]
+    public void GetRequiredService_lazy_predicate_found(string start, string? result)
+    {
+        var services = new Lazy<string, string>[]
+        {
+            new(() => "abc", "m-abc"),
+            new(() => "a123", "m-a123"),
+        };
+            
+        Assert.Equal(result, services.GetRequiredService(m => m.StartsWith(start)));
+    }
+
     [Fact]
-    public void GetService_lazy_predicate_notfound()
+    public void GetRequiredService_lazy_predicate_notfound()
     {
         var services = Array.Empty<Lazy<string, string>>();
             
-        Assert.Throws<InvalidOperationException>(() => services.GetService(m => m.StartsWith("x")));
-        Assert.Throws<InvalidOperationException>(() => services.GetService(m => m.StartsWith("x")));
+        Assert.Throws<InvalidOperationException>(() => services.GetRequiredService(m => m.StartsWith("x")));
+        Assert.Throws<InvalidOperationException>(() => services.GetRequiredService(m => m.StartsWith("x")));
     }
 
     [Fact]
@@ -118,7 +118,7 @@ public class EnumerableServiceExtensionsTest
     [InlineData(new[] { "abc", "a123" }, "m-a", "a123")]
     [InlineData(new[] { "abc", "a123" }, "m-a1", "a123")]
     [InlineData(new[] { "abc", "a123" }, "m-x", null)]
-    public void TryGetService_factory_predicate(string[] values, string start, string? result)
+    public void GetService_factory_predicate(string[] values, string start, string? result)
     {
         var services = values.Select(v =>
         {
@@ -128,15 +128,15 @@ public class EnumerableServiceExtensionsTest
             return f;
         }).ToList();
             
-        Assert.Equal(result, services.TryGetService(m => m.StartsWith(start)));
-        Assert.Equal(result is null ? null : result + "-2", services.TryGetService(m => m.StartsWith(start)));
+        Assert.Equal(result, services.GetService(m => m.StartsWith(start)));
+        Assert.Equal(result is null ? null : result + "-2", services.GetService(m => m.StartsWith(start)));
     }
 
     [Theory]
     [InlineData(new[] { "a123", "abc" }, "m-a", "abc")]
     [InlineData(new[] { "abc", "a123" }, "m-a", "a123")]
     [InlineData(new[] { "abc", "a123" }, "m-a1", "a123")]
-    public void GetService_factory_predicate_found(string[] values, string start, string? result)
+    public void GetRequiredService_factory_predicate_found(string[] values, string start, string? result)
     {
         var services = values.Select(v =>
         {
@@ -146,18 +146,18 @@ public class EnumerableServiceExtensionsTest
             return f;
         }).ToList();
             
-        services.GetService(m => m.StartsWith(start))
+        services.GetRequiredService(m => m.StartsWith(start))
             .Should().Be(result);
-        services.GetService(m => m.StartsWith(start))
+        services.GetRequiredService(m => m.StartsWith(start))
             .Should().Be(result is null ? null : result + "-2");
     }
 
     [Fact]
-    public void GetService_factory_predicate_notfound()
+    public void GetRequiredService_factory_predicate_notfound()
     {
         var services = Array.Empty<IFactory<string, string>>();
             
-        Assert.Throws<InvalidOperationException>(() => services.GetService(m => m.StartsWith("x")));
-        Assert.Throws<InvalidOperationException>(() => services.GetService(m => m.StartsWith("x")));
+        Assert.Throws<InvalidOperationException>(() => services.GetRequiredService(m => m.StartsWith("x")));
+        Assert.Throws<InvalidOperationException>(() => services.GetRequiredService(m => m.StartsWith("x")));
     }
 }

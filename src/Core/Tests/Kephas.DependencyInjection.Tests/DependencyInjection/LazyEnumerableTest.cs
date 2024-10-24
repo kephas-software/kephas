@@ -1,11 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FactoryEnumerableTest.cs" company="Kephas Software SRL">
+// <copyright file="LazyEnumerableTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the ordered service collection test class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.DependencyInjection;
@@ -15,96 +12,88 @@ using Xunit;
 
 namespace Kephas.Tests.DependencyInjection;
 
-public class FactoryEnumerableTest
+public class LazyEnumerableTest
 {
     [Fact]
-    public void FactoryEnumerable_null()
+    public void LazyEnumerable_null()
     {
-        var ordered = new FactoryEnumerable<IInstance, ServiceMetadata>(null);
+        var ordered = new LazyEnumerable<IInstance, ServiceMetadata>(null);
 
         Assert.Equal(0, ordered.Count());
     }
 
     [Fact]
-    public void FactoryEnumerable_proper_order_same_override_priority()
+    public void LazyEnumerable_proper_order_same_override_priority()
     {
         var instance1 = Substitute.For<IInstance>();
         var instance2 = Substitute.For<IInstance>();
-        var orderedList = new FactoryEnumerable<IInstance, ServiceMetadata>(
-            new List<IFactory<IInstance, ServiceMetadata>>
+        var orderedList = new LazyEnumerable<IInstance, ServiceMetadata>(
+            new List<Lazy<IInstance, ServiceMetadata>>
             {
-                new Factory<IInstance, ServiceMetadata>(
+                new Lazy<IInstance, ServiceMetadata>(
                     () => instance1,
                     new ServiceMetadata(priority: (Priority)1)),
-                new Factory<IInstance, ServiceMetadata>(
+                new Lazy<IInstance, ServiceMetadata>(
                     () => instance2,
                     new ServiceMetadata(priority: (Priority)(-1))),
             }).ToList();
 
 
         Assert.Equal(2, orderedList.Count);
-        Assert.Same(instance2, orderedList[0].Create());
-        Assert.Same(instance1, orderedList[1].Create());
+        Assert.Same(instance2, orderedList[0].Value);
+        Assert.Same(instance1, orderedList[1].Value);
     }
 
     [Fact]
-    public void FactoryEnumerable_proper_order()
+    public void LazyEnumerable_proper_order()
     {
         var instance1 = Substitute.For<IInstance>();
         var instance2 = Substitute.For<IInstance>();
         var instance3 = Substitute.For<IInstance>();
         var instance4 = Substitute.For<IInstance>();
-        var orderedList = new FactoryEnumerable<IInstance, ServiceMetadata>(
-            new List<IFactory<IInstance, ServiceMetadata>>
+        var orderedList = new LazyEnumerable<IInstance, ServiceMetadata>(
+            new List<Lazy<IInstance, ServiceMetadata>>
             {
-                new Factory<IInstance, ServiceMetadata>(
-                    () => instance1,
-                    new ServiceMetadata(priority: (Priority)1)),
-                new Factory<IInstance, ServiceMetadata>(
-                    () => instance2,
-                    new ServiceMetadata(priority: (Priority)2)),
-                new Factory<IInstance, ServiceMetadata>(
-                    () => instance3,
-                    new ServiceMetadata(priority: (Priority)3)),
-                new Factory<IInstance, ServiceMetadata>(
-                    () => instance4,
-                    new ServiceMetadata(priority: (Priority)1)),
+                new(() => instance1, new ServiceMetadata(priority: (Priority)1)),
+                new(() => instance2, new ServiceMetadata(priority: (Priority)2)),
+                new(() => instance3, new ServiceMetadata(priority: (Priority)3)),
+                new(() => instance4, new ServiceMetadata(priority: (Priority)1)),
             }).ToList();
 
 
         Assert.Equal(4, orderedList.Count);
-        Assert.Same(instance1, orderedList[0].Create());
-        Assert.Same(instance4, orderedList[1].Create());
-        Assert.Same(instance2, orderedList[2].Create());
-        Assert.Same(instance3, orderedList[3].Create());
+        Assert.Same(instance1, orderedList[0].Value);
+        Assert.Same(instance4, orderedList[1].Value);
+        Assert.Same(instance2, orderedList[2].Value);
+        Assert.Same(instance3, orderedList[3].Value);
     }
 
     [Fact]
-    public void FactoryEnumerable_proper_order_with_override()
+    public void LazyEnumerable_proper_order_with_override()
     {
         var instance1 = Substitute.For<TestDerived>();
         var instance2 = Substitute.For<Test>();
         var instance3 = Substitute.For<IInstance>();
         var instance4 = Substitute.For<TestMostDerived>();
-        var orderedList = new FactoryEnumerable<IInstance, ServiceMetadata>(
-            new List<IFactory<IInstance, ServiceMetadata>>
+        var orderedList = new LazyEnumerable<IInstance, ServiceMetadata>(
+            new List<Lazy<IInstance, ServiceMetadata>>
             {
-                new Factory<IInstance, ServiceMetadata>(
+                new Lazy<IInstance, ServiceMetadata>(
                     () => instance1,
                     new ServiceMetadata(priority: (Priority)1)
                     {
                         ImplementationType = typeof(TestDerived),
                     }),
-                new Factory<IInstance, ServiceMetadata>(
+                new Lazy<IInstance, ServiceMetadata>(
                     () => instance2,
                     new ServiceMetadata(priority: (Priority)2)
                     {
                         ImplementationType = typeof(Test),
                     }),
-                new Factory<IInstance, ServiceMetadata>(
+                new Lazy<IInstance, ServiceMetadata>(
                     () => instance3,
                     new ServiceMetadata(priority: (Priority)3)),
-                new Factory<IInstance, ServiceMetadata>(
+                new Lazy<IInstance, ServiceMetadata>(
                     () => instance4,
                     new ServiceMetadata(priority: (Priority)1, overrideBaseImplementation: true)
                     {
@@ -112,39 +101,38 @@ public class FactoryEnumerableTest
                     }),
             }).ToList();
 
-
         Assert.Equal(3, orderedList.Count);
-        Assert.Same(instance4, orderedList[0].Create());
-        Assert.Same(instance2, orderedList[1].Create());
-        Assert.Same(instance3, orderedList[2].Create());
+        Assert.Same(instance4, orderedList[0].Value);
+        Assert.Same(instance2, orderedList[1].Value);
+        Assert.Same(instance3, orderedList[2].Value);
     }
 
     [Fact]
-    public void FactoryEnumerable_proper_order_with_override_chain()
+    public void LazyEnumerable_proper_order_with_override_chain()
     {
         var instance1 = Substitute.For<TestDerived>();
         var instance2 = Substitute.For<Test>();
         var instance3 = Substitute.For<IInstance>();
         var instance4 = Substitute.For<TestMostDerived>();
-        var orderedList = new FactoryEnumerable<IInstance, ServiceMetadata>(
-            new List<IFactory<IInstance, ServiceMetadata>>
+        var orderedList = new LazyEnumerable<IInstance, ServiceMetadata>(
+            new List<Lazy<IInstance, ServiceMetadata>>
             {
-                new Factory<IInstance, ServiceMetadata>(
+                new (
                     () => instance1,
                     new ServiceMetadata(priority: (Priority)1, overrideBaseImplementation: true)
                     {
                         ImplementationType = typeof(TestDerived),
                     }),
-                new Factory<IInstance, ServiceMetadata>(
+                new (
                     () => instance2,
                     new ServiceMetadata(priority: (Priority)2, overrideBaseImplementation: true)
                     {
                         ImplementationType = typeof(Test),
                     }),
-                new Factory<IInstance, ServiceMetadata>(
+                new (
                     () => instance3,
                     new ServiceMetadata(priority: (Priority)3)),
-                new Factory<IInstance, ServiceMetadata>(
+                new (
                     () => instance4,
                     new ServiceMetadata(priority: (Priority)1, overrideBaseImplementation: true)
                     {
@@ -154,64 +142,64 @@ public class FactoryEnumerableTest
 
 
         Assert.Equal(2, orderedList.Count);
-        Assert.Same(instance4, orderedList[0].Create());
-        Assert.Same(instance3, orderedList[1].Create());
+        Assert.Same(instance4, orderedList[0].Value);
+        Assert.Same(instance3, orderedList[1].Value);
     }
 
     [Fact]
     public void TryGetService_not_found()
     {
-        var factoryEnumerable = new FactoryEnumerable<IInstance, ServiceMetadata>(
-            new List<Factory<IInstance, ServiceMetadata>>
+        var lazyEnumerable = new LazyEnumerable<IInstance, ServiceMetadata>(
+            new List<Lazy<IInstance, ServiceMetadata>>
             {
                 new (
                     () => Substitute.For<IInstance>(),
                     new ServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.Null(((IFactoryEnumerable<IInstance, ServiceMetadata>)factoryEnumerable).TryGetService(m => m.Priority == Priority.Normal));
+        Assert.Null(((ILazyEnumerable<IInstance, ServiceMetadata>)lazyEnumerable).GetService(m => m.Priority == Priority.Normal));
     }
 
     [Fact]
     public void GetService_not_found()
     {
-        var factoryEnumerable = new FactoryEnumerable<IInstance, ServiceMetadata>(
-            new List<Factory<IInstance, ServiceMetadata>>
+        var lazyEnumerable = new LazyEnumerable<IInstance, ServiceMetadata>(
+            new List<Lazy<IInstance, ServiceMetadata>>
             {
                 new (
                     () => Substitute.For<IInstance>(),
                     new ServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.Throws<InvalidOperationException>(() => factoryEnumerable.GetService(m => m.Priority == Priority.Normal));
+        Assert.Throws<InvalidOperationException>(() => lazyEnumerable.GetRequiredService(m => m.Priority == Priority.Normal));
     }
 
     [Fact]
     public void TryGetService_found()
     {
-        var factoryEnumerable = new FactoryEnumerable<IInstance, ServiceMetadata>(
-            new List<Factory<IInstance, ServiceMetadata>>
+        var lazyEnumerable = new LazyEnumerable<IInstance, ServiceMetadata>(
+            new List<Lazy<IInstance, ServiceMetadata>>
             {
                 new (
                     () => Substitute.For<IInstance>(),
                     new ServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.NotNull(((IFactoryEnumerable<IInstance, ServiceMetadata>)factoryEnumerable).TryGetService(m => m.Priority == Priority.High));
+        Assert.NotNull(((ILazyEnumerable<IInstance, ServiceMetadata>)lazyEnumerable).GetService(m => m.Priority == Priority.High));
     }
 
     [Fact]
     public void GetService_found()
     {
-        var factoryEnumerable = new FactoryEnumerable<IInstance, ServiceMetadata>(
-            new List<Factory<IInstance, ServiceMetadata>>
+        var lazyEnumerable = new LazyEnumerable<IInstance, ServiceMetadata>(
+            new List<Lazy<IInstance, ServiceMetadata>>
             {
                 new (
                     () => Substitute.For<IInstance>(),
                     new ServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.NotNull(((IFactoryEnumerable<IInstance, ServiceMetadata>)factoryEnumerable).TryGetService(m => m.Priority == Priority.High));
+        Assert.NotNull(((ILazyEnumerable<IInstance, ServiceMetadata>)lazyEnumerable).GetRequiredService(m => m.Priority == Priority.High));
     }
 
     [Fact]
@@ -221,23 +209,24 @@ public class FactoryEnumerableTest
         var instance2 = Substitute.For<IInstance>();
         var instance3 = Substitute.For<IInstance>();
         var instance4 = Substitute.For<IInstance>();
-        var instance = ((IFactoryEnumerable<IInstance, ServiceMetadata>)new FactoryEnumerable<IInstance, ServiceMetadata>(
-                new List<IFactory<IInstance, ServiceMetadata>>
+        var instance = ((ILazyEnumerable<IInstance, ServiceMetadata>)new LazyEnumerable<IInstance, ServiceMetadata>(
+                new List<Lazy<IInstance, ServiceMetadata>>
                 {
-                    new Factory<IInstance, ServiceMetadata>(
+                    new (
                         () => instance1,
                         new ServiceMetadata(priority: (Priority)1)),
-                    new Factory<IInstance, ServiceMetadata>(
+                    new (
                         () => instance2,
                         new ServiceMetadata(priority: (Priority)2)),
-                    new Factory<IInstance, ServiceMetadata>(
+                    new (
                         () => instance3,
                         new ServiceMetadata(priority: (Priority)3)),
-                    new Factory<IInstance, ServiceMetadata>(
+                    new (
                         () => instance4,
                         new ServiceMetadata(priority: (Priority)1)),
                 }))
-            .TryGetService(m => m.Priority == (Priority)1);
+            .GetService(m => m.Priority == (Priority)1);
+
 
         Assert.Same(instance4, instance);
     }
@@ -249,23 +238,15 @@ public class FactoryEnumerableTest
         var instance2 = Substitute.For<IInstance>();
         var instance3 = Substitute.For<IInstance>();
         var instance4 = Substitute.For<IInstance>();
-        var instance = new FactoryEnumerable<IInstance, ServiceMetadata>(
-                new List<IFactory<IInstance, ServiceMetadata>>
+        var instance = new LazyEnumerable<IInstance, ServiceMetadata>(
+                new List<Lazy<IInstance, ServiceMetadata>>
                 {
-                    new Factory<IInstance, ServiceMetadata>(
-                        () => instance1,
-                        new ServiceMetadata(priority: (Priority)1)),
-                    new Factory<IInstance, ServiceMetadata>(
-                        () => instance2,
-                        new ServiceMetadata(priority: (Priority)2)),
-                    new Factory<IInstance, ServiceMetadata>(
-                        () => instance3,
-                        new ServiceMetadata(priority: (Priority)3)),
-                    new Factory<IInstance, ServiceMetadata>(
-                        () => instance4,
-                        new ServiceMetadata(priority: (Priority)1)),
+                    new (() => instance1, new ServiceMetadata(priority: (Priority)1)),
+                    new (() => instance2, new ServiceMetadata(priority: (Priority)2)),
+                    new (() => instance3, new ServiceMetadata(priority: (Priority)3)),
+                    new (() => instance4, new ServiceMetadata(priority: (Priority)1)),
                 })
-            .GetService(m => m.Priority == (Priority)1);
+            .GetRequiredService(m => m.Priority == (Priority)1);
 
         Assert.Same(instance4, instance);
     }
@@ -277,25 +258,16 @@ public class FactoryEnumerableTest
         var instance2 = Substitute.For<IInstance>();
         var instance3 = Substitute.For<IInstance>();
         var instance4 = Substitute.For<IInstance>();
-        var orderedList = new FactoryEnumerable<IInstance, ServiceMetadata>(
-                new List<IFactory<IInstance, ServiceMetadata>>
+        var orderedList = new LazyEnumerable<IInstance, ServiceMetadata>(
+                new List<Lazy<IInstance, ServiceMetadata>>
                 {
-                    new Factory<IInstance, ServiceMetadata>(
-                        () => instance1,
-                        new ServiceMetadata(priority: (Priority)1)),
-                    new Factory<IInstance, ServiceMetadata>(
-                        () => instance2,
-                        new ServiceMetadata(priority: (Priority)2)),
-                    new Factory<IInstance, ServiceMetadata>(
-                        () => instance3,
-                        new ServiceMetadata(priority: (Priority)3)),
-                    new Factory<IInstance, ServiceMetadata>(
-                        () => instance4,
-                        new ServiceMetadata(priority: (Priority)1)),
+                    new(() => instance1, new ServiceMetadata(priority: (Priority)1)),
+                    new(() => instance2, new ServiceMetadata(priority: (Priority)2)),
+                    new(() => instance3, new ServiceMetadata(priority: (Priority)3)),
+                    new(() => instance4, new ServiceMetadata(priority: (Priority)1)),
                 })
-            .SelectServices(f => f.Metadata.Priority < (Priority)3)
+            .SelectServices(m => m.Priority < (Priority)3)
             .ToList();
-
 
         Assert.Equal(3, orderedList.Count);
         Assert.Same(instance1, orderedList[0]);
@@ -305,7 +277,9 @@ public class FactoryEnumerableTest
 
     public class TestMostDerived : TestDerived {}
 
-    public class TestDerived : Test {}
+    public class TestDerived : Test
+    {
+    }
 
     public interface IInstance
     {

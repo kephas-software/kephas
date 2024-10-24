@@ -5,9 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.DependencyInjection;
-
+using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Resources;
+
+namespace Kephas.DependencyInjection;
 
 /// <summary>
 /// Extension methods for enumerable services.
@@ -22,38 +23,60 @@ public static class EnumerableServiceExtensions
     /// <returns>
     /// The ordered services.
     /// </returns>
-    public static IEnumerable<TService> SelectServices<TService, TMetadata>(this IEnumerable<Lazy<TService, TMetadata>> lazyServices, Func<Lazy<TService, TMetadata>, bool>? predicate = null)
+    public static IEnumerable<TService> SelectServices<TService, TMetadata>(this IEnumerable<Lazy<TService, TMetadata>> lazyServices, Func<TMetadata, bool>? predicate = null)
     {
         _ = lazyServices  ?? throw new ArgumentNullException(nameof(lazyServices));
 
-        return (predicate == null ? lazyServices : lazyServices.Where(predicate))
+        return (predicate == null ? lazyServices : lazyServices.Where(l => predicate(l.Metadata)))
             .Select(e => e.Value);
     }
 
     /// <summary>
     /// Tries to get the service based on the provided predicate.
     /// </summary>
+    /// <remarks>
+    /// If multiple are found with the same criteria, the last one with the highest priority is chosen,
+    /// as the services are assumed to be ordered by their priority.
+    /// </remarks>
     /// <param name="lazyServices">The lazy services.</param>
     /// <param name="predicate">The predicate function.</param>
     /// <returns>The requested service or <c>null</c>.</returns>
-    public static TService? TryGetService<TService, TMetadata>(this IEnumerable<Lazy<TService, TMetadata>> lazyServices, Func<TMetadata, bool> predicate)
+    public static TService? GetService<TService, TMetadata>(this IEnumerable<Lazy<TService, TMetadata>> lazyServices, Func<TMetadata, bool>? predicate = null)
     {
         _ = lazyServices  ?? throw new ArgumentNullException(nameof(lazyServices));
 
-        return lazyServices.SelectServices(l => predicate(l.Metadata)).LastOrDefault();
+        lazyServices = predicate == null ? lazyServices : lazyServices.Where(l => predicate(l.Metadata));
+        using var enumerator = lazyServices.GetEnumerator();
+        if (!enumerator.MoveNext())
+        {
+            return default;
+        }
+        
+        var lazyService = enumerator.Current;
+        var priority = (lazyService.Metadata as IHasPriority)?.Priority ?? 0;
+        while (enumerator.MoveNext() && ((lazyService.Metadata as IHasPriority)?.Priority ?? 0) == priority)
+        {
+            lazyService = enumerator.Current;
+        }
+
+        return lazyService.Value;
     }
 
     /// <summary>
     /// Gets the service based on the provided predicate.
     /// </summary>
+    /// <remarks>
+    /// If multiple are found with the same criteria, the last one with the highest priority is chosen,
+    /// as the services are assumed to be ordered by their priority.
+    /// </remarks>
     /// <param name="lazyServices">The lazy services.</param>
     /// <param name="predicate">the predicate function.</param>
     /// <returns>If found, the requested service, otherwise an exception occurs.</returns>
-    public static TService GetService<TService, TMetadata>(this IEnumerable<Lazy<TService, TMetadata>> lazyServices, Func<TMetadata, bool> predicate)
+    public static TService GetRequiredService<TService, TMetadata>(this IEnumerable<Lazy<TService, TMetadata>> lazyServices, Func<TMetadata, bool> predicate)
     {
         _ = lazyServices  ?? throw new ArgumentNullException(nameof(lazyServices));
 
-        var service = lazyServices.TryGetService(predicate);
+        var service = lazyServices.GetService(predicate);
         return service ?? throw new InvalidOperationException(ServicesAbstractionsStrings.OrderedServiceFactoryCollection_service_with_requested_criteria_not_found);
     }
 
@@ -76,27 +99,49 @@ public static class EnumerableServiceExtensions
     /// <summary>
     /// Tries to get the service based on the provided predicate.
     /// </summary>
+    /// <remarks>
+    /// If multiple are found with the same criteria, the last one with the highest priority is chosen,
+    /// as the services are assumed to be ordered by their priority.
+    /// </remarks>
     /// <param name="factoryServices">The factory services.</param>
     /// <param name="predicate">The predicate function.</param>
     /// <returns>The requested service or <c>null</c>.</returns>
-    public static TService? TryGetService<TService, TMetadata>(this IEnumerable<IFactory<TService, TMetadata>> factoryServices, Func<TMetadata, bool> predicate)
+    public static TService? GetService<TService, TMetadata>(this IEnumerable<IFactory<TService, TMetadata>> factoryServices, Func<TMetadata, bool>? predicate = null)
     {
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
 
-        return factoryServices.SelectServices(l => predicate(l.Metadata)).LastOrDefault();
+        factoryServices = predicate == null ? factoryServices : factoryServices.Where(l => predicate(l.Metadata));
+        using var enumerator = factoryServices.GetEnumerator();
+        if (!enumerator.MoveNext())
+        {
+            return default;
+        }
+        
+        var factoryService = enumerator.Current;
+        var priority = (factoryService.Metadata as IHasPriority)?.Priority ?? 0;
+        while (enumerator.MoveNext() && ((factoryService.Metadata as IHasPriority)?.Priority ?? 0) == priority)
+        {
+            factoryService = enumerator.Current;
+        }
+
+        return factoryService.Create();
     }
 
     /// <summary>
     /// Gets the service based on the provided predicate.
     /// </summary>
+    /// <remarks>
+    /// If multiple are found with the same criteria, the last one with the highest priority is chosen,
+    /// as the services are assumed to be ordered by their priority.
+    /// </remarks>
     /// <param name="factoryServices">The factory services.</param>
     /// <param name="predicate">the predicate function.</param>
     /// <returns>If found, the requested service, otherwise an exception occurs.</returns>
-    public static TService GetService<TService, TMetadata>(this IEnumerable<IFactory<TService, TMetadata>> factoryServices, Func<TMetadata, bool> predicate)
+    public static TService GetRequiredService<TService, TMetadata>(this IEnumerable<IFactory<TService, TMetadata>> factoryServices, Func<TMetadata, bool> predicate)
     {
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
 
-        var service = factoryServices.TryGetService(predicate);
+        var service = factoryServices.GetService(predicate);
         return service ?? throw new InvalidOperationException(ServicesAbstractionsStrings.OrderedServiceFactoryCollection_service_with_requested_criteria_not_found);
     }
 }
