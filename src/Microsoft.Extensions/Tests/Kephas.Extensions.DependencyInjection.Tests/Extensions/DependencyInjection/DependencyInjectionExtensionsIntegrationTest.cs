@@ -7,13 +7,13 @@
 
 using System.Reflection;
 using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Builder;
+using Kephas.DependencyInjection.Configuration;
 using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
 using Kephas.Extensions.DependencyInjection;
 using Kephas.Services;
-using Kephas.Services.Builder;
-using Kephas.Services.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -178,7 +178,7 @@ public class DependencyInjectionExtensionsIntegrationTest
         var appServices = new AppServiceCollection();
         var builder = CreateServicesBuilderWithStringLogger(
             appServices,
-            settings: new AppServicesSettings { GetServiceAssemblies = Array.Empty<Assembly> });
+            settings: new DependencyInjectionSettings { GetServiceAssemblies = Array.Empty<Assembly> });
         appServices.Add(new ServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)));
 
         var container = builder.BuildServiceProvider();
@@ -195,7 +195,7 @@ public class DependencyInjectionExtensionsIntegrationTest
         var appServices = new AppServiceCollection();
         var builder = CreateServicesBuilderWithStringLogger(
             appServices,
-            settings: new AppServicesSettings { GetServiceAssemblies = Array.Empty<Assembly> });
+            settings: new DependencyInjectionSettings { GetServiceAssemblies = Array.Empty<Assembly> });
         appServices.Add(new ServiceInfo(typeof(ExportedClass), typeof(ExportedClass)));
         appServices.Add(new ServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)));
 
@@ -317,7 +317,7 @@ public class DependencyInjectionExtensionsIntegrationTest
             });
 
         var builder = CreateServicesBuilder(
-            settings: new AppServicesSettings { GetServiceAssemblies = Array.Empty<Assembly> },
+            settings: new DependencyInjectionSettings { GetServiceAssemblies = Array.Empty<Assembly> },
             config: ctx => ctx
                 .AddProviders(registrar)
                 .AddAssemblies(typeof(ILogger).Assembly, typeof(FactoryService<,>).Assembly));
@@ -361,7 +361,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     private IAppServiceCollectionBuilder CreateServicesBuilder(
         IAppServiceCollection? appServices = null,
         Action<IAppServiceCollectionBuilder>? config = null,
-        AppServicesSettings? settings = null)
+        DependencyInjectionSettings? settings = null)
     {
         var mockLoggerManager = Substitute.For<ILogManager>();
         var mockAppRuntime = Substitute.For<IAppRuntime>();
@@ -370,14 +370,14 @@ public class DependencyInjectionExtensionsIntegrationTest
         appServices
             .Add(mockLoggerManager, b => b.Singleton())
             .Add(mockAppRuntime, b => b.Singleton());
-        var builder = new AppServiceCollectionBuilder(appServices, settings);
+        var builder = new ServiceCollectionBuilder(appServices, settings);
         config?.Invoke(builder);
         return builder;
     }
 
     private IAppServiceCollectionBuilder CreateServicesBuilderWithStringLogger(
         IAppServiceCollection? appServices = null,
-        AppServicesSettings? settings = null)
+        DependencyInjectionSettings? settings = null)
     {
         appServices ??= new AppServiceCollection();
         var builder = CreateServicesBuilder(appServices, settings: settings);

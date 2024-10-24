@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Kephas.Services.Resources {
+namespace Kephas.DependencyInjection.Builder.Resources {
     using System;
     
     
@@ -38,7 +38,7 @@ namespace Kephas.Services.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Services.Resources.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.DependencyInjection.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -164,15 +164,6 @@ namespace Kephas.Services.Resources {
         internal static string ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception {
             get {
                 return ResourceManager.GetString("ServiceEnumerableExtensions_ToDictionary_CannotResolveServicePriority_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The service provider is not available, it is now being built..
-        /// </summary>
-        internal static string ServiceProviderIsBeingBuilt {
-            get {
-                return ResourceManager.GetString("ServiceProviderIsBeingBuilt", resourceCulture);
             }
         }
     }

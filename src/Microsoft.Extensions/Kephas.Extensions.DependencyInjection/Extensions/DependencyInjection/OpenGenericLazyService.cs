@@ -5,11 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kephas.Extensions.DependencyInjection;
-
-using Kephas.Services;
 
 /// <summary>
 /// Specialization of <see cref="Lazy{T}"/> retrieving the value from the service provider.

@@ -23,9 +23,6 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
-    <data name="ServiceProviderIsBeingBuilt" xml:space="preserve">
-        <value>The service provider is not available, it is now being built.</value>
-    </data>
     <data name="AppServiceInfoBuilderContractTypeMismatch" xml:space="preserve">
         <value>The contract type {0} must be assignable from the declaration type {1}.</value>
     </data>

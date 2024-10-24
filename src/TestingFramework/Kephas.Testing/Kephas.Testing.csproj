@@ -9,9 +9,9 @@
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 
-        <Version>12.0.0-dev.1</Version>
-        <AssemblyVersion>12.0.0.0</AssemblyVersion>
-        <FileVersion>12.0.0.0</FileVersion>
+        <Version>1.0.0</Version>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
@@ -78,9 +78,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Core\Kephas.Logging.Abstractions\Kephas.Logging.Abstractions.csproj" />
-      <ProjectReference Include="..\..\Core\Kephas.Services.Abstractions\Kephas.Services.Abstractions.csproj" />
-      <ProjectReference Include="..\..\Core\Kephas.Services\Kephas.Services.csproj" />
+      <ProjectReference Include="..\..\Core\Kephas.DependencyInjection.Abstractions\Kephas.DependencyInjection.Abstractions.csproj" />
+      <ProjectReference Include="..\..\Core\Kephas.Extensions\Kephas.Extensions.csproj" />
+      <ProjectReference Include="..\..\Core\Kephas.DependencyInjection.Builder\Kephas.DependencyInjection.Builder.csproj" />
     </ItemGroup>
 
 </Project>

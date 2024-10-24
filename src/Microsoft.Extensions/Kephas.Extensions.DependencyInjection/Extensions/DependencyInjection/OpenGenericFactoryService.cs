@@ -5,18 +5,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kephas.Extensions.DependencyInjection;
-
-using Kephas.Services;
-using Kephas.Services;
 
 /// <summary>
 /// Service returning a <see cref="T"/> service based on the <see cref="TImplementation"/>.
 /// </summary>
 /// <typeparam name="T">The service contract type.</typeparam>
-public class OpenGenericFactoryService<T> : IExportFactory<T>
+public class OpenGenericFactoryService<T> : IFactory<T>
     where T : class
 {
     private readonly Func<T> factory;
@@ -45,7 +43,7 @@ public class OpenGenericFactoryService<T> : IExportFactory<T>
     /// <returns>
     /// The exported value.
     /// </returns>
-    public T CreateExportedValue() => this.factory();
+    public T Create() => this.factory();
 }
 
 /// <summary>
@@ -54,7 +52,7 @@ public class OpenGenericFactoryService<T> : IExportFactory<T>
 /// <typeparam name="T">The service contract type.</typeparam>
 /// <typeparam name="TImplementation">The service implementation type.</typeparam>
 /// <typeparam name="TMetadata">The metadata type.</typeparam>
-public class OpenGenericFactoryService<T, TImplementation, TMetadata> : OpenGenericFactoryService<T>, IExportFactory<T, TMetadata>
+public class OpenGenericFactoryService<T, TImplementation, TMetadata> : OpenGenericFactoryService<T>, IFactory<T, TMetadata>
     where T : class
     where TImplementation : class
 {

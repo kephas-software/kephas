@@ -6,9 +6,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Diagnostics.CodeAnalysis;
-using Kephas.DependencyInjection;
 
-namespace Kephas.Services;
+namespace Kephas.DependencyInjection;
 
 /// <summary>
 /// Factory of injectable instances.

@@ -7,7 +7,6 @@
 
 using FluentAssertions;
 using Kephas.DependencyInjection;
-using Kephas.Services;
 using Kephas.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -38,7 +37,7 @@ public class DependencyInjectionScopedTest
     [Fact]
     public void CreateScopedInjector_Injector_registration_scope()
     {
-        var container = Test.CreateTestServicesBuilder().BuildServiceProvider();
+        var container = Test.CreateTestServiceCollectionBuilder().BuildServiceProvider();
         using var scopedContext = container.CreateScope();
         var selfScopedContext = scopedContext.ServiceProvider.GetRequiredService<IServiceProvider>();
         Assert.Same(selfScopedContext, scopedContext);

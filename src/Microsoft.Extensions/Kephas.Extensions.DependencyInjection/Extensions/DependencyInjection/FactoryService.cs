@@ -5,19 +5,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kephas.Extensions.DependencyInjection;
-
-using Kephas.Services;
-using Kephas.Services;
 
 /// <summary>
 /// Service returning a <see cref="T"/> service based on the <see cref="TImplementation"/>.
 /// </summary>
 /// <typeparam name="T">The service contract type.</typeparam>
 /// <typeparam name="TImplementation">The service implementation type.</typeparam>
-public class FactoryService<T, TImplementation> : IExportFactory<T>
+public class FactoryService<T, TImplementation> : IFactory<T>
     where TImplementation : class, T
 {
     private readonly Func<T> factory;
@@ -46,7 +44,7 @@ public class FactoryService<T, TImplementation> : IExportFactory<T>
     /// <returns>
     /// The exported value.
     /// </returns>
-    public T CreateExportedValue() => this.factory();
+    public T Create() => this.factory();
 }
 
 /// <summary>
@@ -55,7 +53,7 @@ public class FactoryService<T, TImplementation> : IExportFactory<T>
 /// <typeparam name="T">The service contract type.</typeparam>
 /// <typeparam name="TImplementation">The service implementation type.</typeparam>
 /// <typeparam name="TMetadata">The metadata type.</typeparam>
-public class FactoryService<T, TImplementation, TMetadata> : FactoryService<T, TImplementation>, IExportFactory<T, TMetadata>
+public class FactoryService<T, TImplementation, TMetadata> : FactoryService<T, TImplementation>, IFactory<T, TMetadata>
     where TImplementation : class, T
 {
     /// <summary>

@@ -7,29 +7,23 @@
 
 using System.Reflection;
 
-namespace Kephas.Services.Configuration;
+namespace Kephas.DependencyInjection.Configuration;
 
 /// <summary>
 /// Stores application services related settings.
 /// </summary>
-public record AppServicesSettings
+public record DependencyInjectionSettings
 {
     /// <summary>
-    /// Gets or sets the service assembly file name pattern.
+    /// Gets or sets the service assembly name pattern.
     /// </summary>
     /// <value>
-    /// The service assembly file name pattern.
+    /// The service assembly name pattern.
     /// </value>
-    public string? ServiceAssemblyFileNamePattern { get; set; }
+    public string? ServiceAssemblyNamePattern { get; set; }
 
     /// <summary>
     /// Gets or sets a function to retrieve the assemblies containing service registrations.
     /// </summary>
     public Func<IEnumerable<Assembly>>? GetServiceAssemblies { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating the resolution strategy for ambiguous registered services.
-    /// </summary>
-    public AmbiguousServiceResolutionStrategy AmbiguousResolutionStrategy { get; set; } =
-        AmbiguousServiceResolutionStrategy.UseLast;
 }

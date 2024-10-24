@@ -8,6 +8,7 @@
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Metadata;
 using Kephas.Reflection;
 using Kephas.Services.Resources;

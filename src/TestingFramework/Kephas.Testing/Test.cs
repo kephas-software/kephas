@@ -6,74 +6,73 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Text;
-using Kephas.Services;
-using Kephas.Services.Builder;
+using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Builder;
+using Kephas.DependencyInjection.Reflection;
 using Kephas.Testing.Logging;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
-namespace Kephas.Testing
+namespace Kephas.Testing;
+
+/// <summary>
+/// Provides testing primitives.
+/// </summary>
+public static class Test
 {
     /// <summary>
-    /// Provides testing primitives.
+    /// Gets the test <see cref="ILogger{T}"/>.
     /// </summary>
-    public static class Test
+    /// <returns>The test logger.</returns>
+    public static ILogger<T> GetTestLogger<T>(LogLevel? minimumLevel = null) => new TestLogger<T>(minimumLevel: minimumLevel);
+
+    /// <summary>
+    /// Gets the test <see cref="ILogger{T}"/>.
+    /// </summary>
+    /// <returns>The test logger.</returns>
+    public static ILogger<T> GetTestLogger<T>(StringBuilder? stringBuilder, LogLevel? minimumLevel = null) => new TestLogger<T>(stringBuilder, minimumLevel: minimumLevel);
+
+    /// <summary>
+    /// Creates am empty list of <see cref="IServiceInfo"/>.
+    /// </summary>
+    public static IList<IServiceInfo> CreateTestServices()
     {
-        /// <summary>
-        /// Gets the test <see cref="ILogger{T}"/>.
-        /// </summary>
-        /// <returns>The test logger.</returns>
-        public static ILogger<T> GetTestLogger<T>(LogLevel? minimumLevel = null) => new TestLogger<T>(minimumLevel: minimumLevel);
+        return new List<IServiceInfo>();
+    }
 
-        /// <summary>
-        /// Gets the test <see cref="ILogger{T}"/>.
-        /// </summary>
-        /// <returns>The test logger.</returns>
-        public static ILogger<T> GetTestLogger<T>(StringBuilder? stringBuilder, LogLevel? minimumLevel = null) => new TestLogger<T>(stringBuilder, minimumLevel: minimumLevel);
+    /// <summary>
+    /// Creates a test <see cref="ServiceCollectionBuilder"/>.
+    /// </summary>
+    /// <param name="services">Optional. The service collection used to initialize the builder with.</param>
+    /// <returns>The <see cref="ServiceCollectionBuilder"/>.</returns>
+    public static ServiceCollectionBuilder CreateTestServiceCollectionBuilder(IList<IServiceInfo>? services = null)
+    {
+        return new ServiceCollectionBuilder(services ?? CreateTestServices());
+    }
 
-        /// <summary>
-        /// Creates a test instance implementing <see cref="IAppServiceCollection"/>.
-        /// </summary>
-        /// <returns>The <see cref="IAppServiceCollection"/>.</returns>
-        public static IAppServiceCollection CreateTestServices()
-        {
-            return new AppServiceCollection();
-        }
+    /// <summary>
+    /// Gets the test lazy enumerator.
+    /// </summary>
+    /// <param name="services">The services</param>
+    /// <typeparam name="T">The service type.</typeparam>
+    /// <typeparam name="TMetadata">The metadata type.</typeparam>
+    /// <returns>The test <see cref="ILazyEnumerable{TContract,TMetadata}"/>.</returns>
+    public static ILazyEnumerable<T, TMetadata> GetTestLazyEnumerable<T, TMetadata>(params T[] services)
+    {
+        var lazyEnumerable = Substitute.For<ILazyEnumerable<T, TMetadata>>();
 
-        /// <summary>
-        /// Creates a test instance implementing <see cref="IAppServiceCollectionBuilder"/>.
-        /// </summary>
-        /// <param name="services">Optional. The service collection used to initialize the builder with.</param>
-        /// <returns>The <see cref="IAppServiceCollectionBuilder"/>.</returns>
-        public static IAppServiceCollectionBuilder CreateTestServicesBuilder(IAppServiceCollection? services = null)
-        {
-            return new AppServiceCollectionBuilder(services ?? CreateTestServices());
-        }
+        lazyEnumerable.GetEnumerator()
+            .Returns(services
+                .Select(s => new Lazy<T, TMetadata>(() => s, CreateMetadata<TMetadata>(null)))
+                .ToList()
+                .GetEnumerator());
 
-        /// <summary>
-        /// Gets the test lazy enumerator.
-        /// </summary>
-        /// <param name="services">The services</param>
-        /// <typeparam name="T">The service type.</typeparam>
-        /// <typeparam name="TMetadata">The metadata type.</typeparam>
-        /// <returns>The test <see cref="ILazyEnumerable{TContract,TMetadata}"/>.</returns>
-        public static ILazyEnumerable<T, TMetadata> GetTestLazyEnumerable<T, TMetadata>(params T[] services)
-        {
-            var lazyEnumerable = Substitute.For<ILazyEnumerable<T, TMetadata>>();
+        return lazyEnumerable;
+    }
 
-            lazyEnumerable.GetEnumerator()
-                .Returns(services
-                    .Select(s => new Lazy<T, TMetadata>(() => s, CreateMetadata<TMetadata>(null)))
-                    .ToList()
-                    .GetEnumerator());
-
-            return lazyEnumerable;
-        }
-
-        private static TMetadata CreateMetadata<TMetadata>(IDictionary<string, object?>? metadata)
-        {
-            var typedMetadata = Activator.CreateInstance(typeof(TMetadata), metadata);
-            return (TMetadata)typedMetadata!;
-        }
+    private static TMetadata CreateMetadata<TMetadata>(IDictionary<string, object?>? metadata)
+    {
+        var typedMetadata = Activator.CreateInstance(typeof(TMetadata), metadata);
+        return (TMetadata)typedMetadata!;
     }
 }

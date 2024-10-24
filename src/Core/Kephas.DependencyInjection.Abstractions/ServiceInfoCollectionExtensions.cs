@@ -7,36 +7,36 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Kephas.DependencyInjection.Reflection;
-using Kephas.Services.Resources;
+using Kephas.DependencyInjection.Resources;
 
 namespace Kephas;
 
 /// <summary>
-/// Extensions for <see cref="IAppServiceCollection"/>.
+/// Extensions for collections of services.
 /// </summary>
-public static class AppServiceCollectionExtensions
+public static class ServiceInfoCollectionExtensions
 {
     /// <summary>
     /// Registers the provided service instance as transient, if not previously registered.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="serviceInstance">The service instance.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
-        this IAppServiceCollection appServices,
-        TContract serviceInstance,
+    public static IServiceInfoCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        this IServiceInfoCollection services,
+        TService serviceInstance,
         Action<ServiceInfo>? builder = null)
-        where TContract : class
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-        return appServices.TryAddService(
-            typeof(TContract),
+        return services.TryAddService(
+            typeof(TService),
             serviceInstance,
             b =>
             {
@@ -47,24 +47,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service instance as transient.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="serviceInstance">The service instance.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
-        this IAppServiceCollection appServices,
-        TContract serviceInstance,
+    public static IServiceInfoCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        this IServiceInfoCollection services,
+        TService serviceInstance,
         Action<ServiceInfo>? builder = null)
-        where TContract : class
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-        return appServices.AddService(
-            typeof(TContract),
+        return services.AddService(
+            typeof(TService),
             serviceInstance,
             b =>
             {
@@ -75,24 +75,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Replaces the provided service instance, registering it as transient.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="serviceInstance">The service instance.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
-        this IAppServiceCollection appServices,
-        TContract serviceInstance,
+    public static IServiceInfoCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        this IServiceInfoCollection services,
+        TService serviceInstance,
         Action<ServiceInfo>? builder = null)
-        where TContract : class
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-        return appServices.ReplaceService(
-            typeof(TContract),
+        return services.ReplaceService(
+            typeof(TService),
             serviceInstance,
             b =>
             {
@@ -103,25 +103,25 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service with implementation type, by default as transient, if not previously registered.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
+    /// <typeparam name="TService">The service type.</typeparam>
     /// <typeparam name="TService">Type of the service implementation.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="services">The application services.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection TryAdd<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection TryAdd<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TImplementation>(
+        this IServiceInfoCollection services,
         Action<ServiceInfo>? builder = null)
-        where TContract : class
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
 
-        return appServices.TryAddService(
-            typeof(TContract),
+        return services.TryAddService(
             typeof(TService),
+            typeof(TImplementation),
             b =>
             {
                 builder?.Invoke(b);
@@ -131,25 +131,25 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service with implementation type, by default as transient.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <typeparam name="TService">Type of the service implementation.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <typeparam name="TImplementation">Type of the service implementation.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Add<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection Add<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TImplementation>(
+        this IServiceInfoCollection services,
         Action<ServiceInfo>? builder = null)
-        where TContract : class
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
 
-        return appServices.AddService(
-            typeof(TContract),
+        return services.AddService(
             typeof(TService),
+            typeof(TImplementation),
             b =>
             {
                 builder?.Invoke(b);
@@ -159,21 +159,21 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Replaces the provided service with implementation type, registering it by default as transient.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <typeparam name="TService">Type of the service implementation.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <typeparam name="TImplementation">Type of the service implementation.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IAppServiceCollection appServices, Action<ServiceInfo>? builder = null)
-        where TContract : class
+    public static IServiceInfoCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TImplementation>(this IServiceInfoCollection services, Action<ServiceInfo>? builder = null)
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
 
-        return appServices.ReplaceService(
-            typeof(TContract),
+        return services.ReplaceService(
             typeof(TService),
+            typeof(TImplementation),
             b =>
             {
                 builder?.Invoke(b);
@@ -183,21 +183,21 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service with implementation type, by default as transient, if not previously registered.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="serviceType">The service type.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<ServiceInfo>? builder = null)
-        where TContract : class
+    public static IServiceInfoCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IServiceInfoCollection services, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<ServiceInfo>? builder = null)
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
-        return appServices.TryAddService(
-            typeof(TContract),
+        return services.TryAddService(
+            typeof(TService),
             serviceType,
             b =>
             {
@@ -208,21 +208,21 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service with implementation type, by default as transient.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="serviceType">The service type.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<ServiceInfo>? builder = null)
-        where TContract : class
+    public static IServiceInfoCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IServiceInfoCollection services, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<ServiceInfo>? builder = null)
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
-        return appServices.AddService(
-            typeof(TContract),
+        return services.AddService(
+            typeof(TService),
             serviceType,
             b =>
             {
@@ -233,21 +233,21 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Replaces the provided service with implementation type, registering it by default as transient.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="serviceType">The service type.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(this IAppServiceCollection appServices, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<ServiceInfo>? builder = null)
-        where TContract : class
+    public static IServiceInfoCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(this IServiceInfoCollection services, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType, Action<ServiceInfo>? builder = null)
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
-        return appServices.ReplaceService(
-            typeof(TContract),
+        return services.ReplaceService(
+            typeof(TService),
             serviceType,
             b =>
             {
@@ -258,24 +258,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service, by default as transient factory, if not previously registered.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
-        this IAppServiceCollection appServices,
-        Func<TContract> serviceFactory,
+    public static IServiceInfoCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        this IServiceInfoCollection services,
+        Func<TService> serviceFactory,
         Action<ServiceInfo>? builder = null)
-        where TContract : class
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return appServices.TryAddService(
-            typeof(TContract),
+        return services.TryAddService(
+            typeof(TService),
             (Func<IServiceProvider, object>)(_ => serviceFactory()),
             b =>
             {
@@ -286,24 +286,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service, by default as transient factory.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
-        this IAppServiceCollection appServices,
-        Func<TContract> serviceFactory,
+    public static IServiceInfoCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        this IServiceInfoCollection services,
+        Func<TService> serviceFactory,
         Action<ServiceInfo>? builder = null)
-        where TContract : class
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return appServices.AddService(
-            typeof(TContract),
+        return services.AddService(
+            typeof(TService),
             (Func<IServiceProvider, object>)(_ => serviceFactory()),
             b =>
             {
@@ -314,24 +314,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Replaces the provided service, registering it by default as transient factory.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
-        this IAppServiceCollection appServices,
-        Func<TContract> serviceFactory,
+    public static IServiceInfoCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        this IServiceInfoCollection services,
+        Func<TService> serviceFactory,
         Action<ServiceInfo>? builder = null)
-        where TContract : class
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return appServices.ReplaceService(
-            typeof(TContract),
+        return services.ReplaceService(
+            typeof(TService),
             (Func<IServiceProvider, object>)(_ => serviceFactory()),
             b =>
             {
@@ -342,24 +342,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service, by default as transient factory, if not previously registered.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
-        this IAppServiceCollection appServices,
-        Func<IServiceProvider, TContract> serviceFactory,
+    public static IServiceInfoCollection TryAdd<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        this IServiceInfoCollection services,
+        Func<IServiceProvider, TService> serviceFactory,
         Action<ServiceInfo>? builder = null)
-        where TContract : class
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return appServices.TryAddService(
-            typeof(TContract),
+        return services.TryAddService(
+            typeof(TService),
             (Func<IServiceProvider, object>)(injector => serviceFactory(injector)),
             b =>
             {
@@ -370,24 +370,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service, by default as transient factory.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
-        this IAppServiceCollection appServices,
-        Func<IServiceProvider, TContract> serviceFactory,
+    public static IServiceInfoCollection Add<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        this IServiceInfoCollection services,
+        Func<IServiceProvider, TService> serviceFactory,
         Action<ServiceInfo>? builder = null)
-        where TContract : class
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return appServices.AddService(
-            typeof(TContract),
+        return services.AddService(
+            typeof(TService),
             (Func<IServiceProvider, object>)(injector => serviceFactory(injector)),
             b =>
             {
@@ -398,24 +398,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Replaces the provided service, registering it by default as transient factory.
     /// </summary>
-    /// <typeparam name="TContract">Type of the service contract.</typeparam>
-    /// <param name="appServices">The application services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <param name="services">The application services.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract>(
-        this IAppServiceCollection appServices,
-        Func<IServiceProvider, TContract> serviceFactory,
+    public static IServiceInfoCollection Replace<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        this IServiceInfoCollection services,
+        Func<IServiceProvider, TService> serviceFactory,
         Action<ServiceInfo>? builder = null)
-        where TContract : class
+        where TService : class
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return appServices.ReplaceService(
-            typeof(TContract),
+        return services.ReplaceService(
+            typeof(TService),
             (Func<IServiceProvider, object>)(injector => serviceFactory(injector)),
             b =>
             {
@@ -426,24 +426,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service, by default as transient factory, if not previously registered.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="services">The application services.</param>
     /// <param name="contractType">Type of the service contract.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection TryAdd(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection TryAdd(
+        this IServiceInfoCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         Func<object> serviceFactory,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return appServices.TryAddService(
+        return services.TryAddService(
             contractType,
             (Func<IServiceProvider, object>)(_ => serviceFactory()),
             b =>
@@ -455,24 +455,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service, by default as transient factory.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="services">The application services.</param>
     /// <param name="contractType">Type of the service contract.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Add(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection Add(
+        this IServiceInfoCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         Func<object> serviceFactory,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return appServices.AddService(
+        return services.AddService(
             contractType,
             (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
             b =>
@@ -484,24 +484,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Replaces the provided service, registering it by default as transient factory.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="services">The application services.</param>
     /// <param name="contractType">Type of the service contract.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Replace(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection Replace(
+        this IServiceInfoCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         Func<object> serviceFactory,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return appServices.ReplaceService(
+        return services.ReplaceService(
             contractType,
             (Func<IServiceProvider, object>)(_ => (object)serviceFactory()),
             b =>
@@ -513,24 +513,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service, by default as transient factory, if not previously registered.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="services">The application services.</param>
     /// <param name="contractType">Type of the service contract.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection TryAdd(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection TryAdd(
+        this IServiceInfoCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         Func<IServiceProvider, object> serviceFactory,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return appServices.TryAddService(
+        return services.TryAddService(
             contractType,
             (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
             b =>
@@ -542,24 +542,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service, by default as transient factory.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="services">The application services.</param>
     /// <param name="contractType">Type of the service contract.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Add(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection Add(
+        this IServiceInfoCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         Func<IServiceProvider, object> serviceFactory,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return appServices.AddService(
+        return services.AddService(
             contractType,
             (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
             b =>
@@ -571,24 +571,24 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Replaces the provided service, registering it by default as transient factory.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="services">The application services.</param>
     /// <param name="contractType">Type of the service contract.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Replace(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection Replace(
+        this IServiceInfoCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         Func<IServiceProvider, object> serviceFactory,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return appServices.ReplaceService(
+        return services.ReplaceService(
             contractType,
             (Func<IServiceProvider, object>)(injector => (object)serviceFactory(injector)),
             b =>
@@ -600,54 +600,54 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Registers the provided service, by default as transient, if not previously registered.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="services">The application services.</param>
     /// <param name="contractType">Type of the service contract.</param>
     /// <param name="serviceType">The service implementation type.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection TryAdd(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection TryAdd(
+        this IServiceInfoCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
-        appServices.TryAddService(
+        services.TryAddService(
             contractType,
             serviceType,
             b =>
             {
                 builder?.Invoke(b);
             });
-        return appServices;
+        return services;
     }
 
     /// <summary>
     /// Registers the provided service, by default as transient.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="services">The application services.</param>
     /// <param name="contractType">Type of the service contract.</param>
     /// <param name="serviceType">The service implementation type.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Add(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection Add(
+        this IServiceInfoCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
-        return appServices.AddService(
+        return services.AddService(
             contractType,
             serviceType,
             b =>
@@ -659,84 +659,84 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Replaces the provided service, registering it by default as transient.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="services">The application services.</param>
     /// <param name="contractType">Type of the service contract.</param>
     /// <param name="serviceType">The service implementation type.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Replace(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection Replace(
+        this IServiceInfoCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
-        appServices.ReplaceService(
+        services.ReplaceService(
             contractType,
             serviceType,
             b =>
             {
                 builder?.Invoke(b);
             });
-        return appServices;
+        return services;
     }
 
     /// <summary>
     /// Registers the provided service instance, by default as transient, if not previously registered.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="services">The application services.</param>
     /// <param name="contractType">Type of the service contract.</param>
     /// <param name="serviceInstance">The service instance.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection TryAdd(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection TryAdd(
+        this IServiceInfoCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         object serviceInstance,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-        appServices.TryAddService(
+        services.TryAddService(
             contractType,
             serviceInstance,
             b =>
             {
                 builder?.Invoke(b);
             });
-        return appServices;
+        return services;
     }
 
     /// <summary>
     /// Registers the provided service instance, by default as transient.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="services">The application services.</param>
     /// <param name="contractType">Type of the service contract.</param>
     /// <param name="serviceInstance">The service instance.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Add(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection Add(
+        this IServiceInfoCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         object serviceInstance,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-        return appServices.AddService(
+        return services.AddService(
             contractType,
             serviceInstance,
             b =>
@@ -748,163 +748,164 @@ public static class AppServiceCollectionExtensions
     /// <summary>
     /// Replaces the provided service instance, registering it by default as transient.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="services">The application services.</param>
     /// <param name="contractType">Type of the service contract.</param>
     /// <param name="serviceInstance">The service instance.</param>
     /// <param name="builder">Optional. The registration builder.</param>
     /// <returns>
-    /// This <paramref name="appServices"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    public static IAppServiceCollection Replace(
-        this IAppServiceCollection appServices,
+    public static IServiceInfoCollection Replace(
+        this IServiceInfoCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         object serviceInstance,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceInstance = serviceInstance ?? throw new ArgumentNullException(nameof(serviceInstance));
 
-        appServices.ReplaceService(
+        services.ReplaceService(
             contractType,
             serviceInstance,
             b =>
             {
                 builder?.Invoke(b);
             });
-        return appServices;
+        return services;
     }
 
     /// <summary>
     /// Tries to get the service instance from the registered services,
     /// in case the service was registered using an instance.
     /// </summary>
-    /// <param name="appServices">The service collection.</param>
+    /// <param name="services">The service collection.</param>
     /// <param name="contractType">The contract type.</param>
     /// <returns>The service instance or <c>null</c>.</returns>
-    public static object? TryGetServiceInstance(this IAppServiceCollection appServices, Type contractType)
+    public static object? TryGetServiceInstance(this IServiceInfoCollection services, Type contractType)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
         contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
 
-        return appServices.LastOrDefault(i => i.ServiceType == contractType && i.Instance is not null)?.Instance;
+        return services.LastOrDefault(i => i.ServiceType == contractType && i.Instance is not null)?.Instance;
     }
 
     /// <summary>
     /// Tries to get the service instance from the registered services
     /// </summary>
     /// <typeparam name="T">The contract type.</typeparam>
-    /// <param name="appServices">The service collection.</param>
+    /// <param name="services">The service collection.</param>
     /// <returns>The service instance or <c>null</c>.</returns>
-    public static T? TryGetServiceInstance<T>(this IAppServiceCollection appServices)
+    public static T? TryGetServiceInstance<T>(this IServiceInfoCollection services)
         where T : class
-        => appServices.TryGetServiceInstance(typeof(T)) as T;
+        => services.TryGetServiceInstance(typeof(T)) as T;
 
     /// <summary>
     /// Tries to get the service instance from the registered services,
     /// in case the service was registered using an instance.
     /// </summary>
-    /// <param name="appServices">The service collection.</param>
+    /// <param name="services">The service collection.</param>
     /// <param name="contractType">The contract type.</param>
     /// <returns>The service instance or <c>null</c>.</returns>
-    public static object GetServiceInstance(this IAppServiceCollection appServices, Type contractType)
-        => appServices.TryGetServiceInstance(contractType)
+    public static object GetServiceInstance(this IServiceInfoCollection services, Type contractType)
+        => services.TryGetServiceInstance(contractType)
            ?? throw new ArgumentException(string.Format(ServicesAbstractionsStrings.ServiceInstanceNotRegistered, contractType), nameof(contractType));
 
     /// <summary>
     /// Gets the service instance from the registered services
     /// </summary>
     /// <typeparam name="T">The contract type.</typeparam>
-    /// <param name="appServices">The service collection.</param>
+    /// <param name="services">The service collection.</param>
     /// <returns>The service instance or <c>null</c>.</returns>
     [return: NotNull]
-    public static T GetServiceInstance<T>(this IAppServiceCollection appServices)
+    public static T GetServiceInstance<T>(this IServiceInfoCollection services)
         where T : class
-        => (T)appServices.GetServiceInstance(typeof(T));
+        => (T)services.GetServiceInstance(typeof(T));
 
     /// <summary>
     /// Registers the provided service using a registration builder, if not previously registered.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
-    /// <param name="contractDeclarationType">The contract declaration type.</param>
+    /// <param name="services">The application services.</param>
+    /// <param name="serviceType">The service type.</param>
     /// <param name="instancingStrategy">The instancing strategy.</param>
     /// <param name="builder">The builder.</param>
     /// <returns>
-    /// This <see cref="IAppServiceCollection"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    internal static IAppServiceCollection TryAddService(
-        this IAppServiceCollection appServices,
-        Type contractDeclarationType,
+    internal static IServiceInfoCollection TryAddService(
+        this IServiceInfoCollection services,
+        Type serviceType,
         object instancingStrategy,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
-        contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
+        serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
 
-        var serviceBuilder = new ServiceInfo(contractDeclarationType, instancingStrategy);
-        builder?.Invoke(serviceBuilder);
-        var appServiceInfo = serviceBuilder;
+        var serviceInfo = new ServiceInfo(serviceType, instancingStrategy);
+        builder?.Invoke(serviceInfo);
 
-        if (appServiceInfo.ServiceType is not null && !appServices.Contains(appServiceInfo.ServiceType))
+        if (serviceInfo.ServiceType is not null && services.All(s => s.ServiceType != serviceInfo.ServiceType))
         {
-            appServices.Add(appServiceInfo);
+            services.Add(serviceInfo);
         }
 
-        return appServices;
+        return services;
     }
 
     /// <summary>
     /// Registers the provided service using a registration builder.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
-    /// <param name="contractDeclarationType">The contract declaration type.</param>
+    /// <param name="services">The application services.</param>
+    /// <param name="serviceType">The service type.</param>
     /// <param name="instancingStrategy">The instancing strategy.</param>
     /// <param name="builder">The builder.</param>
     /// <returns>
-    /// This <see cref="IAppServiceCollection"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    internal static IAppServiceCollection AddService(
-        this IAppServiceCollection appServices,
-        Type contractDeclarationType,
+    internal static IServiceInfoCollection AddService(
+        this IServiceInfoCollection services,
+        Type serviceType,
         object instancingStrategy,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
-        contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
+        serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
 
-        var serviceBuilder = new ServiceInfo(contractDeclarationType, instancingStrategy);
-        builder?.Invoke(serviceBuilder);
-        appServices.Add(serviceBuilder);
+        var serviceInfo = new ServiceInfo(serviceType, instancingStrategy);
+        builder?.Invoke(serviceInfo);
+        services.Add(serviceInfo);
 
-        return appServices;
+        return services;
     }
 
     /// <summary>
     /// Replaces the service with the same contract type, adding the provided service.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
-    /// <param name="contractDeclarationType">The contract declaration type.</param>
+    /// <param name="services">The application services.</param>
+    /// <param name="serviceType">The service type.</param>
     /// <param name="instancingStrategy">The instancing strategy.</param>
     /// <param name="builder">The registration builder.</param>
     /// <returns>
-    /// This <see cref="IAppServiceCollection"/>.
+    /// The provided <paramref name="services"/>.
     /// </returns>
-    internal static IAppServiceCollection ReplaceService(
-        this IAppServiceCollection appServices,
-        Type contractDeclarationType,
+    internal static IServiceInfoCollection ReplaceService(
+        this IServiceInfoCollection services,
+        Type serviceType,
         object instancingStrategy,
         Action<ServiceInfo>? builder = null)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
-        contractDeclarationType = contractDeclarationType ?? throw new ArgumentNullException(nameof(contractDeclarationType));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
+        serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         instancingStrategy = instancingStrategy ?? throw new ArgumentNullException(nameof(instancingStrategy));
 
-        var serviceBuilder = new ServiceInfo(contractDeclarationType, instancingStrategy);
-        builder?.Invoke(serviceBuilder);
-        appServices.Replace(serviceBuilder);
+        var serviceInfo = new ServiceInfo(serviceType, instancingStrategy);
+        builder?.Invoke(serviceInfo);
+        var toRemoveItems = services.Where(s => s.ServiceType == serviceInfo.ServiceType).ToList();
+        toRemoveItems.ForEach(item => services.Remove(item));
+        services.Add(serviceInfo);
 
-        return appServices;
+        return services;
     }
 }

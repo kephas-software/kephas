@@ -6,13 +6,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.Metadata;
-using Kephas.Services.Configuration;
 
 namespace Kephas.Tests.Extensions.DependencyInjection;
 
-using Kephas.Services;
-using Kephas.Services.Builder;
 using Kephas.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -23,7 +21,7 @@ public class DependencyInjectionExtensionsTest
     public void BuildWithDependencyInjection_defaults()
     {
         var appServices = Test.CreateTestServices();
-        var builder = new AppServiceCollectionBuilder(appServices);
+        var builder = new ServiceCollectionBuilder(appServices);
         var injector = builder.BuildServiceProvider();
 
         Assert.IsType<ServiceProvider>(injector);
@@ -33,7 +31,7 @@ public class DependencyInjectionExtensionsTest
     public void BuildWithDependencyInjection_with_open_generic_override()
     {
         var appServices = Test.CreateTestServices();
-        var builder = new AppServiceCollectionBuilder(appServices)
+        var builder = new ServiceCollectionBuilder(appServices)
             .AddTypes(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) });
         var injector = builder.BuildServiceProvider();
 
@@ -45,7 +43,7 @@ public class DependencyInjectionExtensionsTest
     public void BuildWithDependencyInjection_with_open_generic_override_and_dependency()
     {
         var appServices = Test.CreateTestServices();
-        var builder = new AppServiceCollectionBuilder(appServices)
+        var builder = new ServiceCollectionBuilder(appServices)
             .AddTypes(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) });
         var injector = builder.BuildServiceProvider();
 

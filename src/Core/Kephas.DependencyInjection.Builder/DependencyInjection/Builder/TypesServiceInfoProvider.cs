@@ -6,10 +6,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
-using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.ServiceProviders;
 
-namespace Kephas.Services.Builder;
+namespace Kephas.DependencyInjection.Builder;
 
 /// <summary>
 /// Implementation of <see cref="IServiceInfoProvider"/> for an enumeration of types.

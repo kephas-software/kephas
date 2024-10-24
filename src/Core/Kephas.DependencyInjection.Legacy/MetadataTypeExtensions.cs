@@ -8,10 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services;
-
-using System;
 using System.Reflection;
+
+namespace Kephas.DependencyInjection;
 
 /// <summary>
 /// Helper extension methods for metadata.

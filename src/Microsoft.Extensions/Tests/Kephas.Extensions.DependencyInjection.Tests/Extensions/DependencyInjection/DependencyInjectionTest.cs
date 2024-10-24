@@ -8,8 +8,6 @@
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.ServiceProviders;
-using Kephas.Services;
-using Kephas.Services.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Xunit;
@@ -37,7 +35,7 @@ public class DependencyInjectionTest
     public void Resolve_from_ambient_services_self()
     {
         var appServices = new AppServiceCollection();
-        var container = Test.CreateTestServicesBuilder(appServices).BuildServiceProvider();
+        var container = Test.CreateTestServiceCollectionBuilder(appServices).BuildServiceProvider();
         var containerExport = container.GetRequiredService(typeof(IAppServiceCollection));
         var ambientExport = container.GetRequiredService(typeof(IAppServiceCollection));
 
@@ -50,7 +48,7 @@ public class DependencyInjectionTest
     public void Resolve_from_ambient_services_instance()
     {
         var appServices = new AppServiceCollection();
-        var container = Test.CreateTestServicesBuilder(appServices).BuildServiceProvider();
+        var container = Test.CreateTestServiceCollectionBuilder(appServices).BuildServiceProvider();
         var containerExport = container.GetRequiredService(typeof(DependencyInjectionExtensionsIntegrationTest.ILogManager));
         var ambientExport = container.GetRequiredService(typeof(DependencyInjectionExtensionsIntegrationTest.ILogManager));
 
@@ -63,7 +61,7 @@ public class DependencyInjectionTest
     {
         var appServices = new AppServiceCollection()
             .Add<ITestTypeLoader, TestTypeLoader>(b => b.Singleton());
-        var container = Test.CreateTestServicesBuilder(appServices).BuildServiceProvider();
+        var container = Test.CreateTestServiceCollectionBuilder(appServices).BuildServiceProvider();
         var containerExport = container.GetRequiredService(typeof(ITestTypeLoader));
         var ambientExport = container.GetRequiredService(typeof(ITestTypeLoader));
 
@@ -162,7 +160,7 @@ public class DependencyInjectionTest
     [Fact]
     public void ResolveMany_various_same_contract_registrations()
     {
-        var builder = Test.CreateTestServicesBuilder()
+        var builder = Test.CreateTestServiceCollectionBuilder()
             .AddProviders(new MultiFilterServiceInfoProvider());
         var container = builder.BuildServiceProvider();
 
@@ -176,7 +174,7 @@ public class DependencyInjectionTest
     [Fact]
     public void GetService_various_same_contract_registrations()
     {
-        var container = Test.CreateTestServicesBuilder()
+        var container = Test.CreateTestServiceCollectionBuilder()
             .AddProviders(new MultiFilterServiceInfoProvider())
             .BuildServiceProvider();
 
@@ -211,7 +209,7 @@ public class DependencyInjectionTest
             typeof(ScopeExportedClass),
             typeof(ScopeExportedClass),
             AppServiceLifetime.Scoped));
-        var builder = Test.CreateTestServicesBuilder(appServices);
+        var builder = Test.CreateTestServiceCollectionBuilder(appServices);
         var container = builder.BuildServiceProvider();
 
         using var scopedContext = container.CreateScope();
@@ -232,7 +230,7 @@ public class DependencyInjectionTest
         var service = Substitute.For<IAsyncInitializable>();
         appServices.Add(typeof(IAsyncInitializable), service);
 
-        var container = Test.CreateTestServicesBuilder(appServices).BuildServiceProvider();
+        var container = Test.CreateTestServiceCollectionBuilder(appServices).BuildServiceProvider();
 
         var actualService = container.GetRequiredService<IAsyncInitializable>();
         Assert.Same(service, actualService);
@@ -244,7 +242,7 @@ public class DependencyInjectionTest
         var appServices = new AppServiceCollection();
         appServices.Add(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>(), b => b.Transient());
 
-        var container = Test.CreateTestServicesBuilder(appServices).BuildServiceProvider();
+        var container = Test.CreateTestServiceCollectionBuilder(appServices).BuildServiceProvider();
 
         var service1 = container.GetRequiredService<IAsyncInitializable>();
         var service2 = container.GetRequiredService<IAsyncInitializable>();
@@ -255,7 +253,7 @@ public class DependencyInjectionTest
     public void Resolve_ambient_services_not_available_after_first_failed_request()
     {
         var appServices = new AppServiceCollection();
-        var container = Test.CreateTestServicesBuilder(appServices).BuildServiceProvider();
+        var container = Test.CreateTestServiceCollectionBuilder(appServices).BuildServiceProvider();
 
         var service = container.GetService<IAsyncInitializable>();
         Assert.Null(service);

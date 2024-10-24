@@ -9,9 +9,9 @@
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
 
-        <Version>12.0.0-dev.1</Version>
-        <AssemblyVersion>12.0.0.0</AssemblyVersion>
-        <FileVersion>12.0.0.0</FileVersion>
+        <Version>1.0.0</Version>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
@@ -29,7 +29,7 @@
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageTags>kephas injection extensions dependencyinjection di</PackageTags>
+        <PackageTags>kephas services extensions dependencyinjection di</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -97,8 +97,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj"/>
         <ProjectReference Include="..\..\Core\Kephas.Reflection.Abstractions\Kephas.Reflection.Abstractions.csproj" />
-        <ProjectReference Include="..\..\Core\Kephas.Services.Abstractions\Kephas.Services.Abstractions.csproj" />
-        <ProjectReference Include="..\..\Core\Kephas.Services\Kephas.Services.csproj" />
+        <ProjectReference Include="..\..\Core\Kephas.DependencyInjection.Abstractions\Kephas.DependencyInjection.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>

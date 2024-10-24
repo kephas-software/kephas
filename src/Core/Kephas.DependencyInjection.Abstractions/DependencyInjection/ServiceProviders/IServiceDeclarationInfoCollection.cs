@@ -1,15 +1,15 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.Manifest.cs" company="Kephas Software SRL">
+// <copyright file="IContractDeclarationCollection.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
+namespace Kephas.DependencyInjection.ServiceProviders;
 
-[assembly: AssemblyMetadata("IsTrimmable", "False")]
-
-[assembly: InternalsVisibleTo("Kephas.Analyzers.Tests")]
-[assembly: InternalsVisibleTo("Kephas.Services.Tests")]
-[assembly: InternalsVisibleTo("Kephas.Testing")]
+/// <summary>
+/// Enumerates the contract declarations.
+/// </summary>
+public interface IServiceDeclarationInfoCollection : IEnumerable<ServiceDeclarationInfo>
+{
+}

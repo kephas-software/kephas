@@ -5,7 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services.Builder;
+using Kephas.DependencyInjection.Builder;
+using Kephas.DependencyInjection.ServiceProviders;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,11 +18,11 @@ public class AppServiceCollectionTest
     public void AppServiceCollection_singleton()
     {
         var services = new ServiceCollection();
-        var appServices = new AppServiceCollection();
+        var builder = new ServiceCollectionBuilder();
         var provider = services
-            .AddAppServices(new AppServiceCollectionBuilder(appServices))
+            .AddApplicationServices(builder.Build())
             .BuildServiceProvider();
-        var otherAppServices =  provider.GetRequiredService<IAppServiceCollection>();
+        var otherAppServices = provider.GetRequiredService<IServiceDeclarationInfoCollection>();
 
         Assert.Same(appServices, otherAppServices);
     }

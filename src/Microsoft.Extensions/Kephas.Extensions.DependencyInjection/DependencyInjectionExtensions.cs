@@ -11,18 +11,15 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Metadata;
+using Kephas.DependencyInjection.Reflection;
+using Kephas.DependencyInjection.Resources;
 using Kephas.Extensions.DependencyInjection;
 using Kephas.Extensions.DependencyInjection.Resources;
-using Kephas.Services;
-using Kephas.Services.Builder;
 using Kephas.Reflection;
-using Kephas.Services.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Kephas.Services.Configuration;
-using Kephas.Services.Metadata;
-using Kephas.Services.Resources;
-using Microsoft.Extensions.Logging;
 
 namespace Kephas;
 
@@ -39,59 +36,25 @@ public static class DependencyInjectionExtensions
     /// Includes the service collection in the composition.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="servicesConfig">Optional. The services configuration.</param>
-    /// <param name="settings">Optional. The settings.</param>
-    /// <param name="logger">Optional. The logger.</param>
+    /// <param name="serviceInfos">The enumeration of <see cref="IServiceInfo"/>.</param>
     /// <returns>
     /// The <paramref name="services"></paramref>.
     /// </returns>
-    public static IServiceCollection AddAppServices(
+    public static IServiceCollection AddApplicationServices(
         this IServiceCollection services,
-        Action<IAppServiceCollectionBuilder>? servicesConfig = null,
-        AppServicesSettings? settings = null,
-        ILogger? logger = null)
+        IEnumerable<IServiceInfo> serviceInfos)
     {
-        services = services ?? throw new ArgumentNullException(nameof(services));
+        _ = services ?? throw new ArgumentNullException(nameof(services));
 
-        services.AddGenericCollections();
-
-        settings ??= new AppServicesSettings();
-
-        var servicesBuilder = new AppServiceCollectionBuilder(settings, logger);
-        servicesConfig?.Invoke(servicesBuilder);
-
-        var appServices = servicesBuilder.Build();
-
-        foreach (var appServiceInfo in appServices)
+        if (serviceInfos is null)
         {
-            services.AddAppServiceInfo(appServiceInfo);
+            return services;
         }
 
-        return services;
-    }
-
-    /// <summary>
-    /// Includes the service collection in the composition.
-    /// </summary>
-    /// <param name="services">The service collection.</param>
-    /// <param name="servicesBuilder">The services builder.</param>
-    /// <returns>
-    /// The <paramref name="services"></paramref>.
-    /// </returns>
-    public static IServiceCollection AddAppServices(
-        this IServiceCollection services,
-        IAppServiceCollectionBuilder servicesBuilder)
-    {
-        services = services ?? throw new ArgumentNullException(nameof(services));
-        servicesBuilder = servicesBuilder ?? throw new ArgumentNullException(nameof(servicesBuilder));
-
         services.AddGenericCollections();
-
-        var appServices = servicesBuilder.Build();
-
-        foreach (var appServiceInfo in appServices)
+        foreach (var serviceInfo in serviceInfos)
         {
-            services.AddAppServiceInfo(appServiceInfo);
+            services.AddServiceInfo(serviceInfo);
         }
 
         return services;
@@ -117,41 +80,41 @@ public static class DependencyInjectionExtensions
     /// Adds the application service to the <see cref="IServiceCollection"/>.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="appServiceInfo">The <see cref="IAppServiceInfo"/>.</param>
+    /// <param name="serviceInfo">The <see cref="IServiceInfo"/>.</param>
     /// <returns>The provided service collection.</returns>
-    public static IServiceCollection AddAppServiceInfo(
+    public static IServiceCollection AddServiceInfo(
         this IServiceCollection services,
-        IAppServiceInfo appServiceInfo)
+        IServiceInfo serviceInfo)
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
 
-        var metadataType = appServiceInfo.MetadataType ?? typeof(AppServiceMetadata);
-        var contractType = appServiceInfo.ContractType ?? appServiceInfo.InstanceType ?? throw new InvalidOperationException(string.Format(DependencyInjectionStrings.InjectionServiceCollectionExtensions_AddAppServiceInfo_ContractTypeNotSet, appServiceInfo));
-        var instanceType = appServiceInfo.InstanceType;
-        if (appServiceInfo.AsOpenGeneric && instanceType is null)
+        var metadataType = serviceInfo.MetadataType ?? typeof(ServiceMetadata);
+        var serviceType = serviceInfo.ServiceType ?? serviceInfo.ImplementationType ?? throw new InvalidOperationException(string.Format(DependencyInjectionStrings.InjectionServiceCollectionExtensions_AddAppServiceInfo_ContractTypeNotSet, serviceInfo));
+        var implementationType = serviceInfo.ImplementationType;
+        if (serviceInfo.AsOpenGeneric && implementationType is null)
         {
-            throw new InvalidOperationException(string.Format(DependencyInjectionStrings.InjectionServiceCollectionExtensions_AddAppServiceInfo_MustProvideServiceTypeForOpenGenerics, appServiceInfo));
+            throw new InvalidOperationException(string.Format(DependencyInjectionStrings.InjectionServiceCollectionExtensions_AddAppServiceInfo_MustProvideServiceTypeForOpenGenerics, serviceInfo));
         }
 
-        return appServiceInfo switch
+        return serviceInfo switch
         {
             // InstanceType, including open generics
-            { InstanceType: not null, Lifetime: AppServiceLifetime.Singleton } =>
-                services.AddSingleton(contractType, instanceType!, metadataType, appServiceInfo.Metadata),
-            { InstanceType: not null, Lifetime: AppServiceLifetime.Scoped } =>
-                services.AddScoped(contractType, instanceType!, metadataType, appServiceInfo.Metadata),
-            { InstanceType: not null } =>
-                services.AddTransient(contractType, instanceType!, metadataType, appServiceInfo.Metadata),
+            { ImplementationType: not null, Lifetime: AppServiceLifetime.Singleton } =>
+                services.AddSingleton(serviceType, implementationType!, metadataType, serviceInfo.Metadata),
+            { ImplementationType: not null, Lifetime: AppServiceLifetime.Scoped } =>
+                services.AddScoped(serviceType, implementationType!, metadataType, serviceInfo.Metadata),
+            { ImplementationType: not null } =>
+                services.AddTransient(serviceType, implementationType!, metadataType, serviceInfo.Metadata),
             // InstanceFactory
-            { InstanceFactory: not null, Lifetime: AppServiceLifetime.Singleton } =>
-                services.AddSingleton(contractType, appServiceInfo.InstanceFactory, metadataType, appServiceInfo.Metadata),
-            { InstanceFactory: not null, Lifetime: AppServiceLifetime.Scoped } =>
-                services.AddScoped(contractType, appServiceInfo.InstanceFactory, metadataType, appServiceInfo.Metadata),
-            { InstanceFactory: not null } =>
-                services.AddTransient(contractType, appServiceInfo.InstanceFactory, metadataType, appServiceInfo.Metadata),
+            { Factory: not null, Lifetime: AppServiceLifetime.Singleton } =>
+                services.AddSingleton(serviceType, serviceInfo.Factory, metadataType, serviceInfo.Metadata),
+            { Factory: not null, Lifetime: AppServiceLifetime.Scoped } =>
+                services.AddScoped(serviceType, serviceInfo.Factory, metadataType, serviceInfo.Metadata),
+            { Factory: not null } =>
+                services.AddTransient(serviceType, serviceInfo.Factory, metadataType, serviceInfo.Metadata),
             // Instance
             { InstancingStrategy: not null } =>
-                services.AddSingleton(contractType, appServiceInfo.InstancingStrategy, metadataType, appServiceInfo.Metadata),
+                services.AddSingleton(serviceType, serviceInfo.InstancingStrategy, metadataType, serviceInfo.Metadata),
             _ => services
         };
     }
@@ -160,485 +123,485 @@ public static class DependencyInjectionExtensions
     /// Registers a service as singleton.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="contractType">The contract type.</param>
     /// <param name="serviceType">The service type.</param>
-    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="AppServiceMetadata"/>.</param>
-    /// <param name="metadata">The metadata. If not provided, it will be collected from the <paramref name="serviceType"/>.</param>
+    /// <param name="implementationType">The service implementation type.</param>
+    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="ServiceMetadata"/>.</param>
+    /// <param name="metadata">The metadata. If not provided, it will be collected from the <paramref name="implementationType"/>.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddSingleton(
         this IServiceCollection services,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type implementationType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? metadataType = null,
         IDictionary<string, object?>? metadata = null)
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
-        contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
-        metadataType ??= typeof(AppServiceMetadata);
+        implementationType = implementationType ?? throw new ArgumentNullException(nameof(implementationType));
+        metadataType ??= typeof(ServiceMetadata);
 
-        if (contractType.IsGenericTypeDefinition)
+        if (serviceType.IsGenericTypeDefinition)
         {
-            ServiceCollectionServiceExtensions.AddSingleton(services, contractType, serviceType);
+            ServiceCollectionServiceExtensions.AddSingleton(services, serviceType, implementationType);
         }
         else
         {
-            ServiceCollectionServiceExtensions.AddSingleton(services, serviceType);
-            if (contractType != serviceType)
+            ServiceCollectionServiceExtensions.AddSingleton(services, implementationType);
+            if (serviceType != implementationType)
             {
-                ServiceCollectionServiceExtensions.AddSingleton(services, contractType, provider => provider.GetRequiredService(serviceType));
+                ServiceCollectionServiceExtensions.AddSingleton(services, serviceType, provider => provider.GetRequiredService(implementationType));
             }
         }
 
         return metadata is null
-            ? services.AddServiceFactories(contractType, serviceType, metadataType)
-            : services.AddServiceFactories(contractType, serviceType, metadataType, metadata);
+            ? services.AddServiceFactories(serviceType, implementationType, metadataType)
+            : services.AddServiceFactories(serviceType, implementationType, metadataType, metadata);
     }
 
     /// <summary>
     /// Registers a service as singleton.
     /// </summary>
-    /// <typeparam name="TContract">The contract type.</typeparam>
     /// <typeparam name="TService">The service type.</typeparam>
+    /// <typeparam name="TImplementation">The service type.</typeparam>
     /// <param name="services">The service collection.</param>
-    /// <param name="metadata">The metadata. If not provided, it will be collected from the <typeparamref name="TService"/>.</param>
+    /// <param name="metadata">The metadata. If not provided, it will be collected from the <typeparamref name="TImplementation"/>.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddSingleton<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TImplementation>(
         this IServiceCollection services,
         IDictionary<string, object?>? metadata = null)
-        where TContract : class
-        where TService : class, TContract =>
-        AddSingleton<TContract, TService, AppServiceMetadata>(services, metadata);
+        where TService : class
+        where TImplementation : class, TService =>
+        AddSingleton<TService, TImplementation, ServiceMetadata>(services, metadata);
 
     /// <summary>
     /// Registers a service as singleton.
     /// </summary>
-    /// <typeparam name="TContract">The contract type.</typeparam>
     /// <typeparam name="TService">The service type.</typeparam>
+    /// <typeparam name="TImplementation">The service type.</typeparam>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
     /// <param name="services">The service collection.</param>
-    /// <param name="metadata">The metadata. If not provided, it will be collected from the <typeparamref name="TService"/>.</param>
+    /// <param name="metadata">The metadata. If not provided, it will be collected from the <typeparamref name="TImplementation"/>.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddSingleton<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TImplementation,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TMetadata>(
         this IServiceCollection services,
         IDictionary<string, object?>? metadata = null)
-        where TContract : class
-        where TService : class, TContract
+        where TService : class
+        where TImplementation : class, TService
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
 
-        if (typeof(TContract).IsGenericTypeDefinition)
+        if (typeof(TService).IsGenericTypeDefinition)
         {
-            ServiceCollectionServiceExtensions.AddSingleton(services, typeof(TContract), typeof(TService));
+            ServiceCollectionServiceExtensions.AddSingleton(services, typeof(TService), typeof(TImplementation));
         }
         else
         {
-            ServiceCollectionServiceExtensions.AddSingleton(services, typeof(TService));
-            if (typeof(TContract) != typeof(TService))
+            ServiceCollectionServiceExtensions.AddSingleton(services, typeof(TImplementation));
+            if (typeof(TService) != typeof(TImplementation))
             {
-                ServiceCollectionServiceExtensions.AddSingleton(services, typeof(TContract), provider => provider.GetRequiredService(typeof(TService)));
+                ServiceCollectionServiceExtensions.AddSingleton(services, typeof(TService), provider => provider.GetRequiredService(typeof(TImplementation)));
             }
         }
 
         return metadata is null
-            ? services.AddServiceFactories<TContract, TService, TMetadata>()
-            : services.AddServiceFactories<TContract, TService, TMetadata>(metadata);
+            ? services.AddServiceFactories<TService, TImplementation, TMetadata>()
+            : services.AddServiceFactories<TService, TImplementation, TMetadata>(metadata);
     }
 
     /// <summary>
     /// Registers a service as singleton instance.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="contractType">The contract type.</param>
+    /// <param name="serviceType">The service type.</param>
     /// <param name="instance">The service instance.</param>
-    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="AppServiceMetadata"/>.</param>
+    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="ServiceMetadata"/>.</param>
     /// <param name="metadata">The metadata.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddSingleton(
         this IServiceCollection services,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
         object instance,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? metadataType = null,
         IDictionary<string, object?>? metadata = null)
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
-        contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+        serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         instance = instance ?? throw new ArgumentNullException(nameof(instance));
-        metadataType ??= typeof(AppServiceMetadata);
+        metadataType ??= typeof(ServiceMetadata);
 
         return ServiceCollectionServiceExtensions
-            .AddSingleton(services, contractType, instance)
-            .AddServiceFactories(contractType, _ => instance, metadataType, metadata);
+            .AddSingleton(services, serviceType, instance)
+            .AddServiceFactories(serviceType, _ => instance, metadataType, metadata);
     }
 
     /// <summary>
     /// Registers a service as singleton instance.
     /// </summary>
-    /// <typeparam name="TContract">The contract type.</typeparam>
+    /// <typeparam name="TService">The service type.</typeparam>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
     /// <param name="services">The service collection.</param>
     /// <param name="instance">The service instance.</param>
     /// <param name="metadata">The metadata.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddSingleton<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TMetadata>(
         this IServiceCollection services,
-        TContract instance,
+        TService instance,
         IDictionary<string, object?>? metadata = null)
-        where TContract : class
+        where TService : class
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
 
         return ServiceCollectionServiceExtensions
             .AddSingleton(services, instance)
-            .AddServiceFactories<TContract, TMetadata>(_ => instance, metadata);
+            .AddServiceFactories<TService, TMetadata>(_ => instance, metadata);
     }
 
     /// <summary>
     /// Registers a service as transient.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="contractType">The contract type.</param>
     /// <param name="serviceType">The service type.</param>
-    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="AppServiceMetadata"/>.</param>
-    /// <param name="metadata">The metadata. If not provided, it will be collected from the <paramref name="serviceType"/>.</param>
+    /// <param name="implementationType">The service implementation type.</param>
+    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="ServiceMetadata"/>.</param>
+    /// <param name="metadata">The metadata. If not provided, it will be collected from the <paramref name="implementationType"/>.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddTransient(
         this IServiceCollection services,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type implementationType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? metadataType = null,
         IDictionary<string, object?>? metadata = null)
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
-        contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
-        metadataType ??= typeof(AppServiceMetadata);
+        implementationType = implementationType ?? throw new ArgumentNullException(nameof(implementationType));
+        metadataType ??= typeof(ServiceMetadata);
 
-        if (contractType.IsGenericTypeDefinition)
+        if (serviceType.IsGenericTypeDefinition)
         {
-            ServiceCollectionServiceExtensions.AddTransient(services, contractType, serviceType);
+            ServiceCollectionServiceExtensions.AddTransient(services, serviceType, implementationType);
         }
         else
         {
-            ServiceCollectionServiceExtensions.AddTransient(services, serviceType);
-            if (contractType != serviceType)
+            ServiceCollectionServiceExtensions.AddTransient(services, implementationType);
+            if (serviceType != implementationType)
             {
-                ServiceCollectionServiceExtensions.AddTransient(services, contractType, provider => provider.GetRequiredService(serviceType));
+                ServiceCollectionServiceExtensions.AddTransient(services, serviceType, provider => provider.GetRequiredService(implementationType));
             }
         }
 
         return metadata is null
-            ? services.AddServiceFactories(contractType, serviceType, metadataType)
-            : services.AddServiceFactories(contractType, serviceType, metadataType, metadata);
+            ? services.AddServiceFactories(serviceType, implementationType, metadataType)
+            : services.AddServiceFactories(serviceType, implementationType, metadataType, metadata);
     }
 
     /// <summary>
     /// Registers a service as transient.
     /// </summary>
-    /// <typeparam name="TContract">The contract type.</typeparam>
     /// <typeparam name="TService">The service type.</typeparam>
+    /// <typeparam name="TImplementation">The service type.</typeparam>
     /// <param name="services">The service collection.</param>
-    /// <param name="metadata">The metadata. If not provided, it will be collected from the <typeparamref name="TService"/>.</param>
+    /// <param name="metadata">The metadata. If not provided, it will be collected from the <typeparamref name="TImplementation"/>.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddTransient<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TImplementation>(
         this IServiceCollection services,
         IDictionary<string, object?>? metadata = null)
-        where TContract : class
-        where TService : class, TContract =>
-        AddTransient<TContract, TService, AppServiceMetadata>(services, metadata);
+        where TService : class
+        where TImplementation : class, TService =>
+        AddTransient<TService, TImplementation, ServiceMetadata>(services, metadata);
 
     /// <summary>
     /// Registers a service as transient.
     /// </summary>
-    /// <typeparam name="TContract">The contract type.</typeparam>
     /// <typeparam name="TService">The service type.</typeparam>
+    /// <typeparam name="TImplementation">The service type.</typeparam>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
     /// <param name="services">The service collection.</param>
-    /// <param name="metadata">The metadata. If not provided, it will be collected from the <typeparamref name="TService"/>.</param>
+    /// <param name="metadata">The metadata. If not provided, it will be collected from the <typeparamref name="TImplementation"/>.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddTransient<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TImplementation,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TMetadata>(
         this IServiceCollection services,
         IDictionary<string, object?>? metadata = null)
-        where TContract : class
-        where TService : class, TContract
+        where TService : class
+        where TImplementation : class, TService
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
 
-        if (typeof(TContract).IsGenericTypeDefinition)
+        if (typeof(TService).IsGenericTypeDefinition)
         {
-            ServiceCollectionServiceExtensions.AddTransient(services, typeof(TContract), typeof(TService));
+            ServiceCollectionServiceExtensions.AddTransient(services, typeof(TService), typeof(TImplementation));
         }
         else
         {
-            ServiceCollectionServiceExtensions.AddTransient(services, typeof(TService));
-            if (typeof(TContract) != typeof(TService))
+            ServiceCollectionServiceExtensions.AddTransient(services, typeof(TImplementation));
+            if (typeof(TService) != typeof(TImplementation))
             {
-                ServiceCollectionServiceExtensions.AddTransient(services, typeof(TContract), provider => provider.GetRequiredService(typeof(TService)));
+                ServiceCollectionServiceExtensions.AddTransient(services, typeof(TService), provider => provider.GetRequiredService(typeof(TImplementation)));
             }
         }
 
         return metadata is null
-            ? services.AddServiceFactories<TContract, TService, TMetadata>()
-            : services.AddServiceFactories<TContract, TService, TMetadata>(metadata);
+            ? services.AddServiceFactories<TService, TImplementation, TMetadata>()
+            : services.AddServiceFactories<TService, TImplementation, TMetadata>(metadata);
     }
 
     /// <summary>
     /// Registers a service as scoped.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="contractType">The contract type.</param>
     /// <param name="serviceType">The service type.</param>
-    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="AppServiceMetadata"/>.</param>
-    /// <param name="metadata">The metadata. If not provided, it will be collected from the <paramref name="serviceType"/>.</param>
+    /// <param name="implementationType">The service implementation type.</param>
+    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="ServiceMetadata"/>.</param>
+    /// <param name="metadata">The metadata. If not provided, it will be collected from the <paramref name="implementationType"/>.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddScoped(
         this IServiceCollection services,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type implementationType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? metadataType = null,
         IDictionary<string, object?>? metadata = null)
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
-        contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
         serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
-        metadataType ??= typeof(AppServiceMetadata);
+        implementationType = implementationType ?? throw new ArgumentNullException(nameof(implementationType));
+        metadataType ??= typeof(ServiceMetadata);
 
-        if (contractType.IsGenericTypeDefinition)
+        if (serviceType.IsGenericTypeDefinition)
         {
-            ServiceCollectionServiceExtensions.AddScoped(services, contractType, serviceType);
+            ServiceCollectionServiceExtensions.AddScoped(services, serviceType, implementationType);
         }
         else
         {
-            ServiceCollectionServiceExtensions.AddScoped(services, serviceType);
-            if (contractType != serviceType)
+            ServiceCollectionServiceExtensions.AddScoped(services, implementationType);
+            if (serviceType != implementationType)
             {
-                ServiceCollectionServiceExtensions.AddScoped(services, contractType, provider => provider.GetRequiredService(serviceType));
+                ServiceCollectionServiceExtensions.AddScoped(services, serviceType, provider => provider.GetRequiredService(implementationType));
             }
         }
 
         return metadata is null
-            ? services.AddServiceFactories(contractType, serviceType, metadataType)
-            : services.AddServiceFactories(contractType, serviceType, metadataType, metadata);
+            ? services.AddServiceFactories(serviceType, implementationType, metadataType)
+            : services.AddServiceFactories(serviceType, implementationType, metadataType, metadata);
     }
 
     /// <summary>
     /// Registers a service as scoped.
     /// </summary>
-    /// <typeparam name="TContract">The contract type.</typeparam>
     /// <typeparam name="TService">The service type.</typeparam>
+    /// <typeparam name="TImplementation">The service type.</typeparam>
     /// <param name="services">The service collection.</param>
-    /// <param name="metadata">The metadata. If not provided, it will be collected from the <typeparamref name="TService"/>.</param>
+    /// <param name="metadata">The metadata. If not provided, it will be collected from the <typeparamref name="TImplementation"/>.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddScoped<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService>(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TImplementation>(
         this IServiceCollection services,
         IDictionary<string, object?>? metadata = null)
-        where TContract : class
-        where TService : class, TContract =>
-        AddScoped<TContract, TService, AppServiceMetadata>(services, metadata);
+        where TService : class
+        where TImplementation : class, TService =>
+        AddScoped<TService, TImplementation, ServiceMetadata>(services, metadata);
 
     /// <summary>
     /// Registers a service as scoped.
     /// </summary>
-    /// <typeparam name="TContract">The contract type.</typeparam>
     /// <typeparam name="TService">The service type.</typeparam>
+    /// <typeparam name="TImplementation">The service type.</typeparam>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
     /// <param name="services">The service collection.</param>
-    /// <param name="metadata">The metadata. If not provided, it will be collected from the <typeparamref name="TService"/>.</param>
+    /// <param name="metadata">The metadata. If not provided, it will be collected from the <typeparamref name="TImplementation"/>.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddScoped<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TImplementation,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TMetadata>(
         this IServiceCollection services,
         IDictionary<string, object?>? metadata = null)
-        where TContract : class
-        where TService : class, TContract
+        where TService : class
+        where TImplementation : class, TService
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
 
-        if (typeof(TContract).IsGenericTypeDefinition)
+        if (typeof(TService).IsGenericTypeDefinition)
         {
-            ServiceCollectionServiceExtensions.AddScoped(services, typeof(TContract), typeof(TService));
+            ServiceCollectionServiceExtensions.AddScoped(services, typeof(TService), typeof(TImplementation));
         }
         else
         {
-            ServiceCollectionServiceExtensions.AddScoped(services, typeof(TService));
-            if (typeof(TContract) != typeof(TService))
+            ServiceCollectionServiceExtensions.AddScoped(services, typeof(TImplementation));
+            if (typeof(TService) != typeof(TImplementation))
             {
-                ServiceCollectionServiceExtensions.AddScoped(services, typeof(TContract), provider => provider.GetRequiredService(typeof(TService)));
+                ServiceCollectionServiceExtensions.AddScoped(services, typeof(TService), provider => provider.GetRequiredService(typeof(TImplementation)));
             }
         }
 
         return metadata is null
-            ? services.AddServiceFactories<TContract, TService, TMetadata>()
-            : services.AddServiceFactories<TContract, TService, TMetadata>(metadata);
+            ? services.AddServiceFactories<TService, TImplementation, TMetadata>()
+            : services.AddServiceFactories<TService, TImplementation, TMetadata>(metadata);
     }
 
     /// <summary>
     /// Registers a service with factory as singleton.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="contractType">The contract type.</param>
+    /// <param name="serviceType">The service type.</param>
     /// <param name="serviceFactory">The service factory.</param>
-    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="AppServiceMetadata"/>.</param>
+    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="ServiceMetadata"/>.</param>
     /// <param name="metadata">The metadata.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddSingleton(
         this IServiceCollection services,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
         Func<IServiceProvider, object> serviceFactory,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? metadataType = null,
         IDictionary<string, object?>? metadata = null)
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
-        contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+        serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
-        metadataType ??= typeof(AppServiceMetadata);
+        metadataType ??= typeof(ServiceMetadata);
 
         return ServiceCollectionServiceExtensions
-            .AddSingleton(services, contractType, serviceFactory)
-            .AddServiceFactories(contractType, serviceFactory, metadataType, metadata);
+            .AddSingleton(services, serviceType, serviceFactory)
+            .AddServiceFactories(serviceType, serviceFactory, metadataType, metadata);
     }
 
     /// <summary>
     /// Registers a service as singleton.
     /// </summary>
-    /// <typeparam name="TContract">The contract type.</typeparam>
+    /// <typeparam name="TService">The service type.</typeparam>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
     /// <param name="services">The service collection.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="metadata">The metadata.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddSingleton<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TMetadata>(
         this IServiceCollection services,
-        Func<IServiceProvider, TContract> serviceFactory,
+        Func<IServiceProvider, TService> serviceFactory,
         IDictionary<string, object?>? metadata = null)
-        where TContract : class
+        where TService : class
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
         return ServiceCollectionServiceExtensions
             .AddSingleton(services, serviceFactory)
-            .AddServiceFactories<TContract, TMetadata>(serviceFactory, metadata);
+            .AddServiceFactories<TService, TMetadata>(serviceFactory, metadata);
     }
 
     /// <summary>
     /// Registers a service with factory as transient.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="contractType">The contract type.</param>
+    /// <param name="serviceType">The service type.</param>
     /// <param name="serviceFactory">The service factory.</param>
-    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="AppServiceMetadata"/>.</param>
+    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="ServiceMetadata"/>.</param>
     /// <param name="metadata">The metadata.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddTransient(
         this IServiceCollection services,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
         Func<IServiceProvider, object> serviceFactory,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? metadataType = null,
         IDictionary<string, object?>? metadata = null)
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
-        contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+        serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
-        metadataType ??= typeof(AppServiceMetadata);
+        metadataType ??= typeof(ServiceMetadata);
 
         return ServiceCollectionServiceExtensions
-            .AddTransient(services, contractType, serviceFactory)
-            .AddServiceFactories(contractType, serviceFactory, metadataType, metadata);
+            .AddTransient(services, serviceType, serviceFactory)
+            .AddServiceFactories(serviceType, serviceFactory, metadataType, metadata);
     }
 
     /// <summary>
     /// Registers a service as transient.
     /// </summary>
-    /// <typeparam name="TContract">The contract type.</typeparam>
+    /// <typeparam name="TService">The service type.</typeparam>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
     /// <param name="services">The service collection.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="metadata">The metadata.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddTransient<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TMetadata>(
         this IServiceCollection services,
-        Func<IServiceProvider, TContract> serviceFactory,
+        Func<IServiceProvider, TService> serviceFactory,
         IDictionary<string, object?>? metadata = null)
-        where TContract : class
+        where TService : class
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
         return ServiceCollectionServiceExtensions
             .AddTransient(services, serviceFactory)
-            .AddServiceFactories<TContract, TMetadata>(serviceFactory, metadata);
+            .AddServiceFactories<TService, TMetadata>(serviceFactory, metadata);
     }
 
     /// <summary>
     /// Registers a service with factory as scoped.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="contractType">The contract type.</param>
+    /// <param name="serviceType">The service type.</param>
     /// <param name="serviceFactory">The service factory.</param>
-    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="AppServiceMetadata"/>.</param>
+    /// <param name="metadataType">The metadata type. If not provided, it is considered <see cref="ServiceMetadata"/>.</param>
     /// <param name="metadata">The metadata.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddScoped(
         this IServiceCollection services,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceType,
         Func<IServiceProvider, object> serviceFactory,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? metadataType = null,
         IDictionary<string, object?>? metadata = null)
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
-        contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+        serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
-        metadataType ??= typeof(AppServiceMetadata);
+        metadataType ??= typeof(ServiceMetadata);
 
         return ServiceCollectionServiceExtensions
-            .AddScoped(services, contractType, serviceFactory)
-            .AddServiceFactories(contractType, serviceFactory, metadataType, metadata);
+            .AddScoped(services, serviceType, serviceFactory)
+            .AddServiceFactories(serviceType, serviceFactory, metadataType, metadata);
     }
 
     /// <summary>
     /// Registers a service as scoped.
     /// </summary>
-    /// <typeparam name="TContract">The contract type.</typeparam>
+    /// <typeparam name="TService">The service type.</typeparam>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
     /// <param name="services">The service collection.</param>
     /// <param name="serviceFactory">The service factory.</param>
     /// <param name="metadata">The metadata.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddScoped<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TContract,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TService,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TMetadata>(
         this IServiceCollection services,
-        Func<IServiceProvider, TContract> serviceFactory,
+        Func<IServiceProvider, TService> serviceFactory,
         IDictionary<string, object?>? metadata = null)
-        where TContract : class
+        where TService : class
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
         return ServiceCollectionServiceExtensions
             .AddScoped(services, serviceFactory)
-            .AddServiceFactories<TContract, TMetadata>(serviceFactory, metadata);
+            .AddServiceFactories<TService, TMetadata>(serviceFactory, metadata);
     }
 
     /// <summary>
@@ -646,14 +609,14 @@ public static class DependencyInjectionExtensions
     /// in case the service was registered using an instance.
     /// </summary>
     /// <param name="appServices">The service collection.</param>
-    /// <param name="contractType">The contract type.</param>
+    /// <param name="serviceType">The service type.</param>
     /// <returns>The service instance or <c>null</c>.</returns>
-    public static object? TryGetServiceInstance(this IServiceCollection appServices, Type contractType)
+    public static object? TryGetServiceInstance(this IServiceCollection appServices, Type serviceType)
     {
         appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
-        contractType = contractType ?? throw new ArgumentNullException(nameof(contractType));
+        serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
-        return appServices.LastOrDefault(i => i.ServiceType == contractType && i.ImplementationInstance is not null)?.ImplementationInstance;
+        return appServices.LastOrDefault(i => i.ServiceType == serviceType && i.ImplementationInstance is not null)?.ImplementationInstance;
     }
 
     /// <summary>
@@ -671,11 +634,11 @@ public static class DependencyInjectionExtensions
     /// in case the service was registered using an instance.
     /// </summary>
     /// <param name="appServices">The service collection.</param>
-    /// <param name="contractType">The contract type.</param>
+    /// <param name="serviceType">The service type.</param>
     /// <returns>The service instance or <c>null</c>.</returns>
-    public static object GetServiceInstance(this IServiceCollection appServices, Type contractType)
-        => appServices.TryGetServiceInstance(contractType)
-           ?? throw new ArgumentException(string.Format(ServicesAbstractionsStrings.ServiceInstanceNotRegistered, contractType), nameof(contractType));
+    public static object GetServiceInstance(this IServiceCollection appServices, Type serviceType)
+        => appServices.TryGetServiceInstance(serviceType)
+           ?? throw new ArgumentException(string.Format(ServicesAbstractionsStrings.ServiceInstanceNotRegistered, serviceType), nameof(serviceType));
 
     /// <summary>
     /// Gets the service instance from the registered services
@@ -688,55 +651,29 @@ public static class DependencyInjectionExtensions
         where T : class
         => (T)appServices.GetServiceInstance(typeof(T));
 
-    /// <summary>
-    /// Builds the service provider based on the services registered in the <see cref="IAppServiceCollection"/>.
-    /// </summary>
-    /// <param name="services">The application service collection.</param>
-    /// <returns>The <see cref="IServiceProvider"/>.</returns>
-    public static IServiceProvider BuildServiceProvider(this IAppServiceCollection services)
-    {
-        ArgumentNullException.ThrowIfNull(services);
-
-        return BuildServiceProvider(new AppServiceCollectionBuilder(services));
-    }
-
-    /// <summary>
-    /// Builds the service provider based on the services registered by the <see cref="IAppServiceCollectionBuilder"/>.
-    /// </summary>
-    /// <param name="builder">The application service collection builder.</param>
-    /// <returns>The <see cref="IServiceProvider"/>.</returns>
-    public static IServiceProvider BuildServiceProvider(this IAppServiceCollectionBuilder builder)
-    {
-        ArgumentNullException.ThrowIfNull(builder);
-
-        return new ServiceCollection()
-            .AddAppServices(builder)
-            .BuildServiceProvider();
-    }
-
     private static IServiceCollection AddServiceFactories<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]T,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]TService,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]TImplementation,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]TMetadata>(this IServiceCollection services)
         where T : class
-        where TService : class, T
+        where TImplementation : class, T
     {
-        if (typeof(T) != typeof(TService))
+        if (typeof(T) != typeof(TImplementation))
         {
-            services.AddTransientRaw<T>(provider => provider.GetRequiredService<TService>());
+            services.AddTransientRaw<T>(provider => provider.GetRequiredService<TImplementation>());
         }
 
         services
-            .AddTransientRaw<Lazy<T>, LazyService<T, TService>>()
-            .AddTransientRaw<Lazy<T, TMetadata>, LazyService<T, TService, TMetadata>>()
-            .AddTransientRaw<IExportFactory<T>, FactoryService<T, TService>>()
-            .AddTransientRaw<IExportFactory<T, TMetadata>, FactoryService<T, TService, TMetadata>>();
+            .AddTransientRaw<Lazy<T>, LazyService<T, TImplementation>>()
+            .AddTransientRaw<Lazy<T, TMetadata>, LazyService<T, TImplementation, TMetadata>>()
+            .AddTransientRaw<IFactory<T>, FactoryService<T, TImplementation>>()
+            .AddTransientRaw<IFactory<T, TMetadata>, FactoryService<T, TImplementation, TMetadata>>();
 
-        if (typeof(TMetadata) != typeof(AppServiceMetadata))
+        if (typeof(TMetadata) != typeof(ServiceMetadata))
         {
             services
-                .AddTransientRaw<Lazy<T, AppServiceMetadata>, LazyService<T, TService, AppServiceMetadata>>()
-                .AddTransientRaw<IExportFactory<T, AppServiceMetadata>, FactoryService<T, TService, AppServiceMetadata>>();
+                .AddTransientRaw<Lazy<T, ServiceMetadata>, LazyService<T, TImplementation, ServiceMetadata>>()
+                .AddTransientRaw<IFactory<T, ServiceMetadata>, FactoryService<T, TImplementation, ServiceMetadata>>();
         }
 
         return services;
@@ -744,39 +681,39 @@ public static class DependencyInjectionExtensions
 
     private static IServiceCollection AddServiceFactories<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]T,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]TService,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]TImplementation,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]TMetadata>(
         this IServiceCollection services,
         IDictionary<string, object?>? metadata)
         where T : class
-        where TService : class, T
+        where TImplementation : class, T
     {
-        if (typeof(T) != typeof(TService))
+        if (typeof(T) != typeof(TImplementation))
         {
-            services.AddTransientRaw<T>(provider => provider.GetRequiredService<TService>());
+            services.AddTransientRaw<T>(provider => provider.GetRequiredService<TImplementation>());
         }
 
         services
-            .AddTransientRaw<Lazy<T>, LazyService<T, TService>>()
-            .AddTransientRaw<Lazy<T, TMetadata>>(provider => new LazyService<T, TService, TMetadata>(provider, metadata))
-            .AddTransientRaw<IExportFactory<T>, FactoryService<T, TService>>()
-            .AddTransientRaw<IExportFactory<T, TMetadata>>(provider => new FactoryService<T, TService, TMetadata>(provider, metadata));
+            .AddTransientRaw<Lazy<T>, LazyService<T, TImplementation>>()
+            .AddTransientRaw<Lazy<T, TMetadata>>(provider => new LazyService<T, TImplementation, TMetadata>(provider, metadata))
+            .AddTransientRaw<IFactory<T>, FactoryService<T, TImplementation>>()
+            .AddTransientRaw<IFactory<T, TMetadata>>(provider => new FactoryService<T, TImplementation, TMetadata>(provider, metadata));
 
-        if (typeof(TMetadata) != typeof(AppServiceMetadata))
+        if (typeof(TMetadata) != typeof(ServiceMetadata))
         {
             services
-                .AddTransientRaw<Lazy<T, AppServiceMetadata>>(provider => new LazyService<T, TService, AppServiceMetadata>(provider, metadata))
-                .AddTransientRaw<IExportFactory<T, AppServiceMetadata>>(provider => new FactoryService<T, TService, AppServiceMetadata>(provider, metadata));
+                .AddTransientRaw<Lazy<T, ServiceMetadata>>(provider => new LazyService<T, TImplementation, ServiceMetadata>(provider, metadata))
+                .AddTransientRaw<IFactory<T, ServiceMetadata>>(provider => new FactoryService<T, TImplementation, ServiceMetadata>(provider, metadata));
         }
 
         return services;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static IServiceCollection AddTransientRaw<T, TService>(this IServiceCollection services)
-        where TService : class, T
+    private static IServiceCollection AddTransientRaw<T, TImplementation>(this IServiceCollection services)
+        where TImplementation : class, T
         where T : class
-        => ServiceCollectionServiceExtensions.AddTransient<T, TService>(services);
+        => ServiceCollectionServiceExtensions.AddTransient<T, TImplementation>(services);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static IServiceCollection AddTransientRaw<T>(this IServiceCollection services, Func<IServiceProvider, T> factory)
@@ -784,12 +721,12 @@ public static class DependencyInjectionExtensions
         => ServiceCollectionServiceExtensions.AddTransient<T>(services, factory);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static IServiceCollection AddTransientRaw(this IServiceCollection services, Type contractType, Type serviceType)
-        => ServiceCollectionServiceExtensions.AddTransient(services, contractType, serviceType);
+    private static IServiceCollection AddTransientRaw(this IServiceCollection services, Type serviceType, Type implementationType)
+        => ServiceCollectionServiceExtensions.AddTransient(services, serviceType, implementationType);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static IServiceCollection AddTransientRaw(this IServiceCollection services, Type contractType, Func<IServiceProvider, object> factory)
-        => ServiceCollectionServiceExtensions.AddTransient(services, contractType, factory);
+    private static IServiceCollection AddTransientRaw(this IServiceCollection services, Type serviceType, Func<IServiceProvider, object> factory)
+        => ServiceCollectionServiceExtensions.AddTransient(services, serviceType, factory);
 
     private static IServiceCollection AddServiceFactoriesOfObject<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]T,
@@ -811,14 +748,14 @@ public static class DependencyInjectionExtensions
         services
             .AddTransientRaw<Lazy<T>>(provider => new Lazy<T>(() => factory(provider)))
             .AddTransientRaw<Lazy<T, TMetadata>>(provider => new Lazy<T, TMetadata>(() => factory(provider), ServiceHelper.GetServiceMetadata<TMetadata>(metadata)))
-            .AddTransientRaw<IExportFactory<T>>(provider => new ExportFactory<T>(() => factory(provider)))
-            .AddTransientRaw<IExportFactory<T, TMetadata>>(provider => new ExportFactory<T, TMetadata>(() => factory(provider), metadata));
+            .AddTransientRaw<IFactory<T>>(provider => new Factory<T>(() => factory(provider)))
+            .AddTransientRaw<IFactory<T, TMetadata>>(provider => new Factory<T, TMetadata>(() => factory(provider), metadata));
 
-        if (typeof(TMetadata) != typeof(AppServiceMetadata))
+        if (typeof(TMetadata) != typeof(ServiceMetadata))
         {
             services
-                .AddTransientRaw<Lazy<T, AppServiceMetadata>>(provider => new Lazy<T, AppServiceMetadata>(() => factory(provider), new AppServiceMetadata(metadata)))
-                .AddTransientRaw<IExportFactory<T, AppServiceMetadata>>(provider => new ExportFactory<T, AppServiceMetadata>(() => factory(provider), metadata));
+                .AddTransientRaw<Lazy<T, ServiceMetadata>>(provider => new Lazy<T, ServiceMetadata>(() => factory(provider), new ServiceMetadata(metadata)))
+                .AddTransientRaw<IFactory<T, ServiceMetadata>>(provider => new Factory<T, ServiceMetadata>(() => factory(provider), metadata));
         }
 
         return services;
@@ -827,76 +764,76 @@ public static class DependencyInjectionExtensions
     private static IServiceCollection AddServiceFactories(
         this IServiceCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-        Type contractType,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
         Type serviceType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+        Type implementationType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
         Type metadataType)
     {
-        if (contractType.IsGenericTypeDefinition)
+        if (serviceType.IsGenericTypeDefinition)
         {
             services
-                .AddTransientRaw(typeof(Lazy<>).MakeGenericType(contractType), typeof(OpenGenericLazyService<>).MakeGenericType(contractType))
-                .AddTransientRaw(typeof(Lazy<,>).MakeGenericType(contractType, metadataType), typeof(OpenGenericLazyService<,,>).MakeGenericType(contractType, serviceType, metadataType))
-                .AddTransientRaw(typeof(IExportFactory<>).MakeGenericType(contractType), typeof(OpenGenericFactoryService<>).MakeGenericType(contractType))
-                .AddTransientRaw(typeof(IExportFactory<,>).MakeGenericType(contractType, metadataType), typeof(OpenGenericFactoryService<,,>).MakeGenericType(contractType, serviceType, metadataType));
+                .AddTransientRaw(typeof(Lazy<>).MakeGenericType(serviceType), typeof(OpenGenericLazyService<>).MakeGenericType(serviceType))
+                .AddTransientRaw(typeof(Lazy<,>).MakeGenericType(serviceType, metadataType), typeof(OpenGenericLazyService<,,>).MakeGenericType(serviceType, implementationType, metadataType))
+                .AddTransientRaw(typeof(IFactory<>).MakeGenericType(serviceType), typeof(OpenGenericFactoryService<>).MakeGenericType(serviceType))
+                .AddTransientRaw(typeof(IFactory<,>).MakeGenericType(serviceType, metadataType), typeof(OpenGenericFactoryService<,,>).MakeGenericType(serviceType, implementationType, metadataType));
 
-            if (metadataType != typeof(AppServiceMetadata))
+            if (metadataType != typeof(ServiceMetadata))
             {
                 services
-                    .AddTransientRaw(typeof(Lazy<,>).MakeGenericType(contractType, typeof(AppServiceMetadata)), typeof(OpenGenericLazyService<,,>).MakeGenericType(contractType, serviceType, typeof(AppServiceMetadata)))
-                    .AddTransientRaw(typeof(IExportFactory<,>).MakeGenericType(contractType, typeof(AppServiceMetadata)), typeof(OpenGenericFactoryService<,,>).MakeGenericType(contractType, serviceType, typeof(AppServiceMetadata)));
+                    .AddTransientRaw(typeof(Lazy<,>).MakeGenericType(serviceType, typeof(ServiceMetadata)), typeof(OpenGenericLazyService<,,>).MakeGenericType(serviceType, implementationType, typeof(ServiceMetadata)))
+                    .AddTransientRaw(typeof(IFactory<,>).MakeGenericType(serviceType, typeof(ServiceMetadata)), typeof(OpenGenericFactoryService<,,>).MakeGenericType(serviceType, implementationType, typeof(ServiceMetadata)));
             }
 
             return services;
         }
 
-        var addServiceFactories = AddServiceFactoriesWithoutMetadataMethod.MakeGenericMethod(contractType, serviceType, metadataType);
+        var addServiceFactories = AddServiceFactoriesWithoutMetadataMethod.MakeGenericMethod(serviceType, implementationType, metadataType);
         return addServiceFactories.Call<IServiceCollection>(null, services);
     }
 
     private static IServiceCollection AddServiceFactories(
         this IServiceCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-        Type contractType,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
         Type serviceType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+        Type implementationType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
         Type metadataType,
         IDictionary<string, object?> metadata)
     {
-        if (contractType.IsGenericTypeDefinition)
+        if (serviceType.IsGenericTypeDefinition)
         {
             services
-                .AddTransientRaw(typeof(Lazy<>).MakeGenericType(contractType), typeof(OpenGenericLazyService<>).MakeGenericType(contractType))
-                .AddTransientRaw(typeof(Lazy<,>).MakeGenericType(contractType, metadataType), provider => Activator.CreateInstance(typeof(OpenGenericLazyService<,,>).MakeGenericType(contractType, serviceType, metadataType), provider, metadata)!)
-                .AddTransientRaw(typeof(IExportFactory<>).MakeGenericType(contractType), typeof(OpenGenericFactoryService<>).MakeGenericType(contractType))
-                .AddTransientRaw(typeof(IExportFactory<,>).MakeGenericType(contractType, metadataType), provider => Activator.CreateInstance(typeof(OpenGenericFactoryService<,,>).MakeGenericType(contractType, serviceType, metadataType), provider, metadata)!);
+                .AddTransientRaw(typeof(Lazy<>).MakeGenericType(serviceType), typeof(OpenGenericLazyService<>).MakeGenericType(serviceType))
+                .AddTransientRaw(typeof(Lazy<,>).MakeGenericType(serviceType, metadataType), provider => Activator.CreateInstance(typeof(OpenGenericLazyService<,,>).MakeGenericType(serviceType, implementationType, metadataType), provider, metadata)!)
+                .AddTransientRaw(typeof(IFactory<>).MakeGenericType(serviceType), typeof(OpenGenericFactoryService<>).MakeGenericType(serviceType))
+                .AddTransientRaw(typeof(IFactory<,>).MakeGenericType(serviceType, metadataType), provider => Activator.CreateInstance(typeof(OpenGenericFactoryService<,,>).MakeGenericType(serviceType, implementationType, metadataType), provider, metadata)!);
 
-            if (metadataType != typeof(AppServiceMetadata))
+            if (metadataType != typeof(ServiceMetadata))
             {
                 services
-                    .AddTransientRaw(typeof(Lazy<,>).MakeGenericType(contractType, typeof(AppServiceMetadata)), provider => Activator.CreateInstance(typeof(OpenGenericLazyService<,,>).MakeGenericType(contractType, serviceType, typeof(AppServiceMetadata)), provider, metadata)!)
-                    .AddTransientRaw(typeof(IExportFactory<,>).MakeGenericType(contractType, typeof(AppServiceMetadata)), provider => Activator.CreateInstance(typeof(OpenGenericFactoryService<,,>).MakeGenericType(contractType, serviceType, typeof(AppServiceMetadata)), provider, metadata)!);
+                    .AddTransientRaw(typeof(Lazy<,>).MakeGenericType(serviceType, typeof(ServiceMetadata)), provider => Activator.CreateInstance(typeof(OpenGenericLazyService<,,>).MakeGenericType(serviceType, implementationType, typeof(ServiceMetadata)), provider, metadata)!)
+                    .AddTransientRaw(typeof(IFactory<,>).MakeGenericType(serviceType, typeof(ServiceMetadata)), provider => Activator.CreateInstance(typeof(OpenGenericFactoryService<,,>).MakeGenericType(serviceType, implementationType, typeof(ServiceMetadata)), provider, metadata)!);
             }
 
             return services;
         }
 
-        var addServiceFactories = AddServiceFactoriesWithMetadataMethod.MakeGenericMethod(contractType, serviceType, metadataType);
+        var addServiceFactories = AddServiceFactoriesWithMetadataMethod.MakeGenericMethod(serviceType, implementationType, metadataType);
         return addServiceFactories.Call<IServiceCollection>(null, services, metadata);
     }
 
     private static IServiceCollection AddServiceFactories(
         this IServiceCollection services,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-        Type contractType,
+        Type serviceType,
         Func<IServiceProvider, object> serviceFactory,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
         Type metadataType,
         IDictionary<string, object?>? metadata)
     {
-        var addServiceFactories = AddServiceFactoriesWithFactoryMethod.MakeGenericMethod(contractType, metadataType);
+        var addServiceFactories = AddServiceFactoriesWithFactoryMethod.MakeGenericMethod(serviceType, metadataType);
         addServiceFactories.Call(null, services, serviceFactory, metadata);
         return services;
     }
