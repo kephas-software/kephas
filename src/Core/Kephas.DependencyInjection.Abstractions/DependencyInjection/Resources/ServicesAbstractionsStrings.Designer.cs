@@ -43,7 +43,7 @@ namespace Kephas.DependencyInjection.Resources {
         internal static ResourceManager ResourceManager {
             get {
                 if (ReferenceEquals(resourceMan, null)) {
-                    ResourceManager temp = new ResourceManager("Kephas.Services.Resources.ServicesAbstractionsStrings", typeof(ServicesAbstractionsStrings).Assembly);
+                    ResourceManager temp = new ResourceManager("Kephas.DependencyInjection.Resources.ServicesAbstractionsStrings", typeof(ServicesAbstractionsStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

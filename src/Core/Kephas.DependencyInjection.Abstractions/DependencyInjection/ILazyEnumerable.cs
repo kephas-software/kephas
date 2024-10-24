@@ -10,15 +10,15 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace Kephas.Services;
+namespace Kephas.DependencyInjection;
 
 /// <summary>
 /// Interface for ordered lazy service collection.
 /// </summary>
-/// <typeparam name="TContract">Type of the service contract.</typeparam>
+/// <typeparam name="TService">Type of the service.</typeparam>
 /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
-[AppServiceContract(AsOpenGeneric = true)]
-public interface ILazyEnumerable<TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TMetadata>
-    : IEnumerable<Lazy<TContract, TMetadata>>
+[TransientService(AsOpenGeneric = true)]
+public interface ILazyEnumerable<TService, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TMetadata>
+    : IEnumerable<Lazy<TService, TMetadata>>
 {
 }

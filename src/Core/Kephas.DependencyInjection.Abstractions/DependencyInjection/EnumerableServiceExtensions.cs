@@ -5,9 +5,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services.Resources;
+namespace Kephas.DependencyInjection;
 
-namespace Kephas.Services;
+using Kephas.DependencyInjection.Resources;
 
 /// <summary>
 /// Extension methods for enumerable services.
@@ -22,7 +22,7 @@ public static class EnumerableServiceExtensions
     /// <returns>
     /// The ordered services.
     /// </returns>
-    public static IEnumerable<TContract> SelectServices<TContract, TMetadata>(this IEnumerable<Lazy<TContract, TMetadata>> lazyServices, Func<Lazy<TContract, TMetadata>, bool>? predicate = null)
+    public static IEnumerable<TService> SelectServices<TService, TMetadata>(this IEnumerable<Lazy<TService, TMetadata>> lazyServices, Func<Lazy<TService, TMetadata>, bool>? predicate = null)
     {
         _ = lazyServices  ?? throw new ArgumentNullException(nameof(lazyServices));
 
@@ -36,11 +36,11 @@ public static class EnumerableServiceExtensions
     /// <param name="lazyServices">The lazy services.</param>
     /// <param name="predicate">The predicate function.</param>
     /// <returns>The requested service or <c>null</c>.</returns>
-    public static TContract? TryGetService<TContract, TMetadata>(this IEnumerable<Lazy<TContract, TMetadata>> lazyServices, Func<TMetadata, bool> predicate)
+    public static TService? TryGetService<TService, TMetadata>(this IEnumerable<Lazy<TService, TMetadata>> lazyServices, Func<TMetadata, bool> predicate)
     {
         _ = lazyServices  ?? throw new ArgumentNullException(nameof(lazyServices));
 
-        return lazyServices.SelectServices(l => predicate(l.Metadata)).FirstOrDefault();
+        return lazyServices.SelectServices(l => predicate(l.Metadata)).LastOrDefault();
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public static class EnumerableServiceExtensions
     /// <param name="lazyServices">The lazy services.</param>
     /// <param name="predicate">the predicate function.</param>
     /// <returns>If found, the requested service, otherwise an exception occurs.</returns>
-    public static TContract GetService<TContract, TMetadata>(this IEnumerable<Lazy<TContract, TMetadata>> lazyServices, Func<TMetadata, bool> predicate)
+    public static TService GetService<TService, TMetadata>(this IEnumerable<Lazy<TService, TMetadata>> lazyServices, Func<TMetadata, bool> predicate)
     {
         _ = lazyServices  ?? throw new ArgumentNullException(nameof(lazyServices));
 
@@ -65,12 +65,12 @@ public static class EnumerableServiceExtensions
     /// <returns>
     /// The ordered services.
     /// </returns>
-    public static IEnumerable<TContract> SelectServices<TContract, TMetadata>(this IEnumerable<IExportFactory<TContract, TMetadata>> factoryServices, Func<IExportFactory<TContract, TMetadata>, bool>? predicate = null)
+    public static IEnumerable<TService> SelectServices<TService, TMetadata>(this IEnumerable<IFactory<TService, TMetadata>> factoryServices, Func<IFactory<TService, TMetadata>, bool>? predicate = null)
     {
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
 
         return (predicate == null ? factoryServices : factoryServices.Where(predicate))
-            .Select(e => e.CreateExportedValue());
+            .Select(e => e.Create());
     }
 
     /// <summary>
@@ -79,11 +79,11 @@ public static class EnumerableServiceExtensions
     /// <param name="factoryServices">The factory services.</param>
     /// <param name="predicate">The predicate function.</param>
     /// <returns>The requested service or <c>null</c>.</returns>
-    public static TContract? TryGetService<TContract, TMetadata>(this IEnumerable<IExportFactory<TContract, TMetadata>> factoryServices, Func<TMetadata, bool> predicate)
+    public static TService? TryGetService<TService, TMetadata>(this IEnumerable<IFactory<TService, TMetadata>> factoryServices, Func<TMetadata, bool> predicate)
     {
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
 
-        return factoryServices.SelectServices(l => predicate(l.Metadata)).FirstOrDefault();
+        return factoryServices.SelectServices(l => predicate(l.Metadata)).LastOrDefault();
     }
 
     /// <summary>
@@ -92,7 +92,7 @@ public static class EnumerableServiceExtensions
     /// <param name="factoryServices">The factory services.</param>
     /// <param name="predicate">the predicate function.</param>
     /// <returns>If found, the requested service, otherwise an exception occurs.</returns>
-    public static TContract GetService<TContract, TMetadata>(this IEnumerable<IExportFactory<TContract, TMetadata>> factoryServices, Func<TMetadata, bool> predicate)
+    public static TService GetService<TService, TMetadata>(this IEnumerable<IFactory<TService, TMetadata>> factoryServices, Func<TMetadata, bool> predicate)
     {
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
 

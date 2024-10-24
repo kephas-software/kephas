@@ -10,15 +10,15 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace Kephas.Services;
+namespace Kephas.DependencyInjection;
 
 /// <summary>
 /// Interface for ordered service factory collection.
 /// </summary>
 /// <typeparam name="TContract">Type of the service contract.</typeparam>
 /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
-[AppServiceContract(AsOpenGeneric = true)]
+[TransientService(AsOpenGeneric = true)]
 public interface IFactoryEnumerable<out TContract, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] out TMetadata>
-    : IEnumerable<IExportFactory<TContract, TMetadata>>
+    : IEnumerable<IFactory<TContract, TMetadata>>
 {
 }

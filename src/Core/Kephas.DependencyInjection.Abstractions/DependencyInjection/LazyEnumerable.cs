@@ -9,9 +9,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections;
-using Kephas.Services.Metadata;
+using Kephas.DependencyInjection.Metadata;
 
-namespace Kephas.Services;
+namespace Kephas.DependencyInjection;
 
 /// <summary>
 /// Collection of ordered lazy services.
@@ -38,10 +38,7 @@ public class LazyEnumerable<TContract, TMetadata> : ILazyEnumerable<TContract, T
     /// <returns>
     /// The enumerator.
     /// </returns>
-    public IEnumerator<Lazy<TContract, TMetadata>> GetEnumerator()
-    {
-        return serviceFactories.GetEnumerator();
-    }
+    public IEnumerator<Lazy<TContract, TMetadata>> GetEnumerator() => serviceFactories.GetEnumerator();
 
     /// <summary>
     /// Gets the enumerator.
@@ -49,10 +46,7 @@ public class LazyEnumerable<TContract, TMetadata> : ILazyEnumerable<TContract, T
     /// <returns>
     /// The enumerator.
     /// </returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     private ICollection<Lazy<TContract, TMetadata>> ComputeServiceFactories(IEnumerable<Lazy<TContract, TMetadata>>? serviceFactories)
     {
@@ -67,8 +61,8 @@ public class LazyEnumerable<TContract, TMetadata> : ILazyEnumerable<TContract, T
 
         // get the overridden services which should be eliminated
         var overriddenTypes = orderedFactories
-            .Where(f => f.Metadata is IAppServiceMetadata { IsOverride: true, ServiceType.BaseType: { } })
-            .Select(f => (f.Metadata as IAppServiceMetadata)?.ServiceType?.BaseType)
+            .Where(f => f.Metadata is IHasImplementationType { OverrideBaseImplementation: true, ImplementationType.BaseType: { } })
+            .Select(f => (f.Metadata as IHasImplementationType)?.ImplementationType?.BaseType)
             .ToList();
         if (overriddenTypes.Count == 0)
         {
@@ -77,7 +71,7 @@ public class LazyEnumerable<TContract, TMetadata> : ILazyEnumerable<TContract, T
 
         // eliminate the overridden services
         orderedFactories = orderedFactories
-            .Where(f => !overriddenTypes.Contains((f.Metadata as IAppServiceMetadata)?.ServiceType))
+            .Where(f => !overriddenTypes.Contains((f.Metadata as IHasImplementationType)?.ImplementationType))
             .ToList();
 
         return orderedFactories;

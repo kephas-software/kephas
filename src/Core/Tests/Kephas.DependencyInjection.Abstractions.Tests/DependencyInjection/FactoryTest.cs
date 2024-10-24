@@ -8,27 +8,24 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Services
+using Kephas.DependencyInjection;
+using NSubstitute;
+using Xunit;
+
+namespace Kephas.Tests.DependencyInjection;
+
+public class FactoryTest
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Kephas.Services;
-    using NSubstitute;
-    using Xunit;
-
-        public class ExportFactoryTest
+    [Fact]
+    public void Create()
     {
-        [Fact]
-        public void CreateExportedValue()
-        {
-            var service = Substitute.For<ITestService>();
-            var factory = new ExportFactory<ITestService>(() => service);
+        var service = Substitute.For<ITestService>();
+        var factory = new Factory<ITestService>(() => service);
 
-            var exportedValue = factory.CreateExportedValue();
+        var exportedValue = factory.Create();
 
-            Assert.Same(service, exportedValue);
-        }
-
-        public interface ITestService {}
+        Assert.Same(service, exportedValue);
     }
+
+    public interface ITestService {}
 }

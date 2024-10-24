@@ -9,9 +9,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections;
-using Kephas.Services.Metadata;
+using Kephas.DependencyInjection.Metadata;
 
-namespace Kephas.Services;
+namespace Kephas.DependencyInjection;
 
 /// <summary>
 /// Collection of ordered services.
@@ -21,13 +21,13 @@ namespace Kephas.Services;
 [Priority(Priority.Low)]
 public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<TTargetContract, TMetadata>
 {
-    private readonly ICollection<IExportFactory<TTargetContract, TMetadata>> serviceFactories;
+    private readonly ICollection<IFactory<TTargetContract, TMetadata>> serviceFactories;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FactoryEnumerable{TTargetContract,TMetadata}"/> class.
     /// </summary>
     /// <param name="serviceFactories">The service factories.</param>
-    public FactoryEnumerable(IEnumerable<IExportFactory<TTargetContract, TMetadata>>? serviceFactories = null)
+    public FactoryEnumerable(IEnumerable<IFactory<TTargetContract, TMetadata>>? serviceFactories = null)
     {
         this.serviceFactories = ComputeServiceFactories(serviceFactories);
     }
@@ -38,7 +38,7 @@ public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<
     /// <returns>
     /// The enumerator.
     /// </returns>
-    public IEnumerator<IExportFactory<TTargetContract, TMetadata>> GetEnumerator()
+    public IEnumerator<IFactory<TTargetContract, TMetadata>> GetEnumerator()
     {
         return serviceFactories.GetEnumerator();
     }
@@ -54,11 +54,11 @@ public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<
         return GetEnumerator();
     }
 
-    private ICollection<IExportFactory<TTargetContract, TMetadata>> ComputeServiceFactories(IEnumerable<IExportFactory<TTargetContract, TMetadata>>? serviceFactories)
+    private ICollection<IFactory<TTargetContract, TMetadata>> ComputeServiceFactories(IEnumerable<IFactory<TTargetContract, TMetadata>>? serviceFactories)
     {
         if (serviceFactories == null)
         {
-            return Array.Empty<IExportFactory<TTargetContract, TMetadata>>();
+            return Array.Empty<IFactory<TTargetContract, TMetadata>>();
         }
 
         var orderedFactories = serviceFactories
@@ -67,8 +67,8 @@ public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<
 
         // get the overridden services which should be eliminated
         var overriddenTypes = orderedFactories
-            .Where(f => f.Metadata is IAppServiceMetadata { IsOverride: true, ServiceType.BaseType: not null })
-            .Select(f => (f.Metadata as IAppServiceMetadata)?.ServiceType?.BaseType)
+            .Where(f => f.Metadata is IHasImplementationType { OverrideBaseImplementation: true, ImplementationType.BaseType: not null })
+            .Select(f => (f.Metadata as IHasImplementationType)?.ImplementationType?.BaseType)
             .ToList();
         if (overriddenTypes.Count == 0)
         {
@@ -77,7 +77,7 @@ public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<
 
         // eliminate the overridden services
         orderedFactories = orderedFactories
-            .Where(f => !overriddenTypes.Contains((f.Metadata as IAppServiceMetadata)?.ServiceType))
+            .Where(f => !overriddenTypes.Contains((f.Metadata as IHasImplementationType)?.ImplementationType))
             .ToList();
 
         return orderedFactories;

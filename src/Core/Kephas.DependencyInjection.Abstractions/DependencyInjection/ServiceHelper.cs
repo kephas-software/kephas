@@ -11,9 +11,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Kephas.Collections;
-using Kephas.Services.Metadata;
+using Kephas.DependencyInjection.Metadata;
 
-namespace Kephas.Services;
+namespace Kephas.DependencyInjection;
 
 /// <summary>
 /// A service helper.
@@ -65,45 +65,45 @@ public static class ServiceHelper
     /// Collects the metadata from the service type attributes and generic type arguments.
     /// </summary>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
-    /// <param name="serviceType">The service type.</param>
-    /// <param name="contractDeclarationType">The contract declaration type.</param>
+    /// <param name="implementationType">The implementation type.</param>
+    /// <param name="serviceDeclarationType">The service declaration type.</param>
     /// <returns>The typed metadata.</returns>
     public static TMetadata GetServiceMetadata<TMetadata>(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? serviceType,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractDeclarationType) =>
-        GetServiceMetadata<TMetadata>(GetServiceMetadata(serviceType, contractDeclarationType));
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? implementationType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceDeclarationType) =>
+        GetServiceMetadata<TMetadata>(GetServiceMetadata(implementationType, serviceDeclarationType));
 
     /// <summary>
     /// Collects the metadata from the service type attributes and generic type arguments.
     /// </summary>
-    /// <param name="serviceType">The service type.</param>
-    /// <param name="contractDeclarationType">The contract declaration type.</param>
+    /// <param name="implementationType">The implementation type.</param>
+    /// <param name="serviceDeclarationType">The service declaration type.</param>
     /// <returns>The metadata.</returns>
     public static IDictionary<string, object?> GetServiceMetadata(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? serviceType,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contractDeclarationType)
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? implementationType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceDeclarationType)
     {
         var metadata = new Dictionary<string, object?>();
-        serviceType?.GetCustomAttributes()
+        implementationType?.GetCustomAttributes()
             .OfType<IServiceMetadataProvider>()
             .SelectMany(p => p.GetMetadata())
-            .ForEach(m => metadata[m.name] = m.value);
+            .ForEach(m => metadata[m.Key] = m.Value);
 
-        metadata.Add(nameof(AppServiceMetadata.ServiceType), serviceType);
+        metadata.Add(nameof(ServiceMetadata.ImplementationType), implementationType);
 
         // add metadata from generic parameters
-        if (contractDeclarationType.IsGenericType)
+        if (serviceDeclarationType.IsGenericType)
         {
-            var metadataSourceGenericType = contractDeclarationType.IsConstructedGenericType
-                ? contractDeclarationType
-                : serviceType is null || serviceType.IsGenericType
+            var metadataSourceGenericType = serviceDeclarationType.IsConstructedGenericType
+                ? serviceDeclarationType
+                : implementationType is null || implementationType.IsGenericType
                     ? null
-                    : serviceType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == contractDeclarationType);
+                    : implementationType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == serviceDeclarationType);
             if (metadataSourceGenericType != null)
             {
-                IServiceMetadataProvider.GetGenericTypeMetadataProvider(metadataSourceGenericType)
+                ServiceMetadataHelper.GetGenericTypeMetadataProvider(metadataSourceGenericType)
                     .GetMetadata()
-                    .ForEach(m => metadata[m.name] = m.value);
+                    .ForEach(m => metadata[m.Key] = m.Value);
             }
         }
 
