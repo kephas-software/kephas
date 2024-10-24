@@ -8,13 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Reflection
+namespace Kephas.Reflection;
+
+/// <summary>
+/// Marks a type or a member being excluded from the reflection.
+/// </summary>
+[AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
+public sealed class ExcludeFromReflectionAttribute : Attribute
 {
-    /// <summary>
-    /// Marks a type or a member being excluded from the reflection.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
-    public sealed class ExcludeFromReflectionAttribute : Attribute
-    {
-    }
 }
