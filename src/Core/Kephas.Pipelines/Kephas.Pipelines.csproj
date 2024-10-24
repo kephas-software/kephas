@@ -69,7 +69,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.DependencyInjection.Abstractions\Kephas.DependencyInjection.Abstractions.csproj" />
+        <ProjectReference Include="..\Kephas.DependencyInjection\Kephas.DependencyInjection.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -77,10 +77,10 @@ public class Pipeline<TTarget, TOperationArgs, TResult> : IPipeline<TTarget, TOp
     /// <returns></returns>
     protected virtual IReadOnlyList<IPipelineBehavior<TTarget, TOperationArgs, TResult>>? GetPipelineBehaviors() =>
         cachedPipelineBehaviors ??= behaviors?
-            .SelectServices(b =>
-                (b.Metadata.TargetType?.IsAssignableFrom(typeof(TTarget)) ?? true) &&                       // covariant
-                (b.Metadata.OperationArgsType?.IsAssignableFrom(typeof(TOperationArgs)) ?? true) &&         // covariant
-                (b.Metadata.ResultType is null || typeof(TResult).IsAssignableFrom(b.Metadata.ResultType)))   // contravariant
+            .SelectServices(m =>
+                (m.TargetType?.IsAssignableFrom(typeof(TTarget)) ?? true) &&                       // covariant
+                (m.OperationArgsType?.IsAssignableFrom(typeof(TOperationArgs)) ?? true) &&         // covariant
+                (m.ResultType is null || typeof(TResult).IsAssignableFrom(m.ResultType)))   // contravariant
             .Cast<IPipelineBehavior<TTarget, TOperationArgs, TResult>>()
             .ToList();
 

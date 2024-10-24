@@ -77,10 +77,10 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
     /// <returns></returns>
     protected virtual IReadOnlyList<IAsyncPipelineBehavior<TTarget, TOperationArgs, TResult>>? GetPipelineBehaviors() =>
         cachedPipelineBehaviors ??= behaviors?
-            .SelectServices(b =>
-                (b.Metadata.TargetType?.IsAssignableFrom(typeof(TTarget)) ?? true) &&                       // covariant
-                (b.Metadata.OperationArgsType?.IsAssignableFrom(typeof(TOperationArgs)) ?? true) &&         // covariant
-                (b.Metadata.ResultType is null || typeof(TResult).IsAssignableFrom(b.Metadata.ResultType)))   // contravariant
+            .SelectServices(m =>
+                (m.TargetType?.IsAssignableFrom(typeof(TTarget)) ?? true) &&                       // covariant
+                (m.OperationArgsType?.IsAssignableFrom(typeof(TOperationArgs)) ?? true) &&         // covariant
+                (m.ResultType is null || typeof(TResult).IsAssignableFrom(m.ResultType)))   // contravariant
             .Cast<IAsyncPipelineBehavior<TTarget, TOperationArgs, TResult>>()
             .ToList();
 
