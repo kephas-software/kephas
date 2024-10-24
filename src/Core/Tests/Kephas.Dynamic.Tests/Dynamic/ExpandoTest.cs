@@ -8,15 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Dynamic;
-
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
 using Kephas.Dynamic;
 using Xunit;
+using FluentAssertions;
+
+namespace Kephas.Tests.Dynamic;
 
 /// <summary>
 /// Test class for <see cref="Expando"/>
@@ -142,7 +138,7 @@ public class ExpandoTest
     public void HasDynamicMember_Property_non_existing()
     {
         var expando = new Expando();
-        Assert.False(expando.HasKey("Age"));
+        expando.HasKey("Age").Should().BeFalse();
     }
 
     [Theory]
@@ -154,7 +150,7 @@ public class ExpandoTest
         var expando = instance.ToDynamicObject();
 
         var isOld = expando.IsOld();
-        isOld.Should().Be(expectedResult);
+        Assert.Equal(expectedResult, isOld);
     }
 
     [Theory]
@@ -165,7 +161,7 @@ public class ExpandoTest
         dynamic instance = new DerivedExpando { Age = age };
 
         var isOld = instance.IsOld();
-        isOld.Should().Be(expectedResult);
+        Assert.Equal(expectedResult, isOld);
     }
 
     [Fact]

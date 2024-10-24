@@ -53,7 +53,7 @@ namespace Kephas.Dynamic;
 /// </para>
 /// </summary>
 /// <typeparam name="T">The inner dictionary item type.</typeparam>
-public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin
+public abstract class ExpandoBase<T> : DynamicObject, IExpando, IDynamicMixin
 {
     private IDictionary<string, T>? innerDictionary;
     private WeakReference<object>? innerObjectRef;
@@ -91,23 +91,23 @@ public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin
     /// <summary>
     /// Gets the inner dictionary.
     /// </summary>
-    IDictionary<string, object?> IExpandoMixin.InnerDictionary =>
+    IDictionary<string, object?> IDynamicMixin.InnerDictionary =>
         this.innerDictionary as IDictionary<string, object?> ?? new ObjectDictionaryAdapter(this.innerDictionary!);
 
     /// <summary>
     /// Gets a weak reference to the inner object.
     /// </summary>
-    object? IExpandoMixin.InnerObject => this.TryGetInnerObject();
+    object? IDynamicMixin.InnerObject => this.TryGetInnerObject();
 
     /// <summary>
     /// Gets the binders to use when retrieving the expando members.
     /// </summary>
-    ExpandoMemberBinderKind IExpandoMixin.MemberBinders => this.MemberBinders;
+    ExpandoMemberBinderKind IDynamicMixin.MemberBinders => this.MemberBinders;
 
     /// <summary>
     /// Gets a value indicating whether to ignore the case when identifying the members by name.
     /// </summary>
-    bool IExpandoMixin.IgnoreCase => this.ignoreCase;
+    bool IDynamicMixin.IgnoreCase => this.ignoreCase;
 
     /// <summary>
     /// Gets the inner dictionary.
@@ -148,7 +148,7 @@ public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin
     /// A sequence that contains dynamic member names.
     /// </returns>
     public virtual IEnumerable<string> GetKeys() =>
-        IExpandoMixin.GetKeys(this);
+        IDynamicMixin.GetKeys(this);
 
     /// <summary>
     /// Indicates whether the <paramref name="key"/> is defined in the expando.
@@ -158,7 +158,7 @@ public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin
     /// True if defined, false if not.
     /// </returns>
     public virtual bool HasKey(string key) =>
-        IExpandoMixin.HasKey(this, key);
+        IDynamicMixin.HasKey(this, key);
 
     /// <summary>
     /// Try to retrieve a member by name first from instance properties
@@ -298,7 +298,7 @@ public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin
     public virtual IDictionary<string, object?> ToDictionary(
         Func<string, string>? keyGetter = null,
         Func<object?, object?>? valueGetter = null)
-        => IExpandoMixin.ToDictionary(this, keyGetter, valueGetter);
+        => IDynamicMixin.ToDictionary(this, keyGetter, valueGetter);
 
     /// <summary>
     /// Attempts to get the dynamic value with the given key.
@@ -314,7 +314,7 @@ public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin
     /// <c>true</c> if a value is found, <c>false</c> otherwise.
     /// </returns>
     protected virtual bool TryGetValue(string key, out object? value)
-        => IExpandoMixin.TryGetValue(this, key, out value);
+        => IDynamicMixin.TryGetValue(this, key, out value);
 
     /// <summary>
     /// Attempts to set the value with the given key.
@@ -330,7 +330,7 @@ public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin
     /// <c>true</c> if the value could be set, <c>false</c> otherwise.
     /// </returns>
     protected virtual bool TrySetValue(string key, object? value)
-        => IExpandoMixin.TrySetValue(this, key, value);
+        => IDynamicMixin.TrySetValue(this, key, value);
 
     /// <summary>
     /// Tries to get the MethodInfo for the provided type and key.
@@ -384,7 +384,7 @@ public abstract class ExpandoBase<T> : DynamicObject, IExpando, IExpandoMixin
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static BindingFlags GetBindingFlags(bool ignoreCase)
     {
-        return IExpandoMixin.GetBindingFlags(ignoreCase);
+        return IDynamicMixin.GetBindingFlags(ignoreCase);
     }
 
     /// <summary>
