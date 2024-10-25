@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
+      <ProjectReference Include="..\..\..\TestingFramework\Kephas.Testing.Xunit\Kephas.Testing.Xunit.csproj" />
       <ProjectReference Include="..\..\Kephas.Pipelines\Kephas.Pipelines.csproj" />
     </ItemGroup>
 
