@@ -20,7 +20,7 @@ public record AppRuntimeSettings
     /// <remarks>
     /// System assemblies and test assemblies are excluded.
     /// </remarks>
-    public static readonly string DefaultAppAssemblyNamePattern = "^(?!System)(?!Microsoft)(?!mscorlib)(?!netstandard)(?!vshost32)(?!Mono\\.)[A-Za-z0-9\\.]+(?!<Test(s)?)$";
+    public static readonly string DefaultAppAssemblyNamePattern = "^(?!System)(?!Microsoft)(?!mscorlib)(?!netstandard)(?!vshost32)(?!testhost)(?!Mono\\.)[A-Za-z0-9\\.]+(?<!Test(s)?)$";
 
     /// <summary>
     /// Gets or sets the entry assembly.

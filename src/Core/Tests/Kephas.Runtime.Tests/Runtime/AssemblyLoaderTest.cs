@@ -6,8 +6,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using FluentAssertions;
-using Kephas.Collections;
-using Kephas.Logging;
 using Kephas.Runtime;
 using Xunit;
 
@@ -16,10 +14,8 @@ namespace Kephas.Tests.Runtime;
 public class AssemblyLoaderTest
 {
     [Theory]
-    [InlineData(new[] { typeof(IHasLogLevel) }, new[] { "Kephas.Extensions" })]
-    [InlineData(new[] { typeof(IDictionaryConvertible) }, new[] { "Kephas.Collections" })]
-    [InlineData(new[] { typeof(IHasLogLevel), typeof(IDictionaryConvertible) }, new[] { "Kephas.Extensions", "Kephas.Collections" })]
-    [InlineData(new[] { typeof(IAssemblyLoader) }, new[] { "Kephas.Runtime.AssemblyLoader", "Kephas.Collections" })]
+    [InlineData(new[] { typeof(IAssemblyLoader) }, new[] { "Kephas.Runtime" })]
+    [InlineData(new[] { typeof(AssemblyLoaderTest) }, new[] { "Kephas.Runtime.Tests", "Kephas.Runtime" })]
     public void FlattenReferences_assembly_enumeration(IEnumerable<Type> assemblyTypes, IEnumerable<string> expectedNames)
     {
         var loader = new AssemblyLoader();

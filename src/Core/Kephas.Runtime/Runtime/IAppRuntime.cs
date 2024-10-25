@@ -11,7 +11,7 @@
 using System.Net;
 using System.Reflection;
 
-namespace Kephas.Application;
+namespace Kephas.Runtime;
 
 /// <summary>
 /// Interface for abstracting away the runtime for the application.

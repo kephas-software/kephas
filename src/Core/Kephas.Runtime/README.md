@@ -30,6 +30,33 @@ internal static class ModuleInitializer_My_Assembly
 > Caution: do not add to an assembly referencing the [Kephas.Analyzers](https://www.nuget.org/packages/Kephas.Analyzers) package
 > a `[ModuleInitializer]` annotated method, as it will collide with the one generated.
 
+## The application runtime
+### `IAppRuntime`
+
+Service contract providing runtime information:
+* `GetAppAssemblies()`: Gets the application specific assemblies. By default, this excludes system and test assemblies.
+* `GetEntryAssembly()`: Gets the entry assembly.
+* `GetAppName()`: Gets the application name.
+* `GetAppVersion()`: Gets the application version.
+* `GetAppInstanceId()`: Gets the ID of the running application instance.
+* `GetEnvironment()`: Gets the environment name.
+
+### `AppRuntime`
+The default implementation of `IAppRuntime`. When instantiating this, `AppRuntimeSettings` can be also provided with the following information:
+* `EntryAssembly`: the entry assembly used for computing the application assemblies. It is initialized with `Assembly.GetEntryAssembly()`.
+* `AppAssemblyNamePattern`: the regex pattern used to identify the application assemblies. By default, it excludes system assemblies and those ending with `Test` or `Tests`.
+* `AppName`: the application name. If this value is not provided, it is retrieved from the `AssemblyTitle` attribute.
+* `Environment`: the environment name. If this value is not provided, it is retrieved from the `AssemblyInformationalVersion`, `AssemblyFileVersion`, or `AssemblyVersion` attributes, whichever one has a value.
+
+> Note: Typically, you will get this service over dependency injection.
+
+* Example
+
+```csharp
+IAppRuntime appRuntime = new AppRuntime();
+var appAssemblies = appRuntime.GetAppAssemblies(); 
+```
+
 ## Other resources
 
 * [Kephas.DependencyInjection](https://www.nuget.org/packages/Kephas.DependencyInjection)
