@@ -8,17 +8,13 @@
         <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
-        <WarningsAsErrors>nullable</WarningsAsErrors>
 
-        <Version>12.0.0-dev.1</Version>
-        <AssemblyVersion>12.0.0.0</AssemblyVersion>
-        <FileVersion>12.0.0.0</FileVersion>
-        <Authors>Kephas Software SRL</Authors>
+        <Authors>Ioan Crisan</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>Provides support for adapters.</Description>
+        <Description>Provides a dependency injection implementation based on the Microsoft.Extensions.DependecyInjection framework.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -30,7 +26,7 @@
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageTags>kephas adapters</PackageTags>
+        <PackageTags>kephas services extensions dependencyinjection di</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -46,8 +42,8 @@
         <RootNamespace>Kephas</RootNamespace>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-        <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
@@ -61,10 +57,29 @@
         </PackageReference>
     </ItemGroup>
 
+    <Choose>
+        <When Condition="'$(TargetFramework)'=='net6.0'">
+            <ItemGroup>
+                <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0"/>
+            </ItemGroup>
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
+
     <ItemGroup>
         <None Include="..\..\kephas.logo.stone.png" Pack="true" PackagePath="\"/>
         <None Include="README.md" Pack="true" PackagePath="\"/>
         <None Include="release-notes.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+        <ProjectReference Include="..\..\Core\Kephas.Reflection.Abstractions\Kephas.Reflection.Abstractions.csproj" />
+        <ProjectReference Include="..\..\Core\Kephas.DependencyInjection\Kephas.DependencyInjection.csproj" />
     </ItemGroup>
 
 </Project>

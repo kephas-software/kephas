@@ -16,7 +16,6 @@ using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.Resources;
 using Kephas.Extensions.DependencyInjection;
-using Kephas.Extensions.DependencyInjection.Resources;
 using Kephas.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -40,9 +39,7 @@ public static class DependencyInjectionExtensions
     /// <returns>
     /// The <paramref name="services"></paramref>.
     /// </returns>
-    public static IServiceCollection AddApplicationServices(
-        this IServiceCollection services,
-        IEnumerable<IServiceInfo> serviceInfos)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IEnumerable<IServiceInfo> serviceInfos)
     {
         _ = services ?? throw new ArgumentNullException(nameof(services));
 
@@ -89,11 +86,13 @@ public static class DependencyInjectionExtensions
         services = services ?? throw new ArgumentNullException(nameof(services));
 
         var metadataType = serviceInfo.MetadataType ?? typeof(ServiceMetadata);
-        var serviceType = serviceInfo.ServiceType ?? serviceInfo.ImplementationType ?? throw new InvalidOperationException(string.Format(DependencyInjectionStrings.InjectionServiceCollectionExtensions_AddAppServiceInfo_ContractTypeNotSet, serviceInfo));
+        var serviceType = serviceInfo.ServiceType
+                          ?? serviceInfo.ImplementationType
+                          ?? throw new InvalidOperationException($"The service type is not set for: {serviceInfo}.");
         var implementationType = serviceInfo.ImplementationType;
         if (serviceInfo.AsOpenGeneric && implementationType is null)
         {
-            throw new InvalidOperationException(string.Format(DependencyInjectionStrings.InjectionServiceCollectionExtensions_AddAppServiceInfo_MustProvideServiceTypeForOpenGenerics, serviceInfo));
+            throw new InvalidOperationException($"Must provide the implementation type for open generics in: {serviceInfo}.");
         }
 
         return serviceInfo switch
