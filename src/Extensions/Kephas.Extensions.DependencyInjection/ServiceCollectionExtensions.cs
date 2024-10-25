@@ -12,11 +12,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.Resources;
 using Kephas.Extensions.DependencyInjection;
 using Kephas.Reflection;
+using Kephas.Runtime;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -25,14 +27,76 @@ namespace Kephas;
 /// <summary>
 /// Extension methods for <see cref="IServiceCollection"/>.
 /// </summary>
-public static class DependencyInjectionExtensions
+public static class ServiceCollectionExtensions
 {
     private static readonly MethodInfo AddServiceFactoriesWithFactoryMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactoriesOfObject<string, string>(null!, null!, null));
     private static readonly MethodInfo AddServiceFactoriesWithoutMetadataMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactories<string, string, string>(null!));
     private static readonly MethodInfo AddServiceFactoriesWithMetadataMethod = ReflectionHelper.GetGenericMethodOf(_ => AddServiceFactories<string, string, string>(null!, null!));
 
     /// <summary>
-    /// Includes the service collection in the composition.
+    /// Gets the <see cref="IAppRuntime"/> registered in <paramref name="services"/> as singleton instance.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The <see cref="IAppRuntime"/>.</returns>
+    public static IAppRuntime GetAppRuntime(this IServiceCollection services) =>
+        GetSingleton<IAppRuntime>(services, () => new AppRuntime());
+
+    /// <summary>
+    /// Gets the <typeparamref name="TService"/> registered in <paramref name="services"/> as singleton instance.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="defaultFactory">The factory used to create the default value, if service not found.</param>
+    /// <returns>The <paramref name="services"/>.</returns>
+    public static TService GetSingleton<TService>(this IServiceCollection services, Func<TService> defaultFactory)
+        where TService : class
+    {
+        var serviceDescriptor = services.LastOrDefault(d => d.ServiceType == typeof(TService));
+        return serviceDescriptor is null
+            ? defaultFactory()
+            : serviceDescriptor.ImplementationInstance as TService
+              ?? throw new InvalidOperationException($"The {typeof(TService).Name} service is not registered as a singleton instance.");
+    }
+
+    /// <summary>
+    /// Gets the service registered in <paramref name="services"/> as singleton instance.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="serviceType">The service type.</param>
+    /// <param name="defaultFactory">The factory used to create the default value, if service not found.</param>
+    /// <returns>The <paramref name="services"/>.</returns>
+    public static object GetSingleton(this IServiceCollection services, Type serviceType, Func<object> defaultFactory)
+    {
+        var serviceDescriptor = services.LastOrDefault(d => d.ServiceType == serviceType);
+        return serviceDescriptor is null
+            ? defaultFactory()
+            : serviceDescriptor.ImplementationInstance
+              ?? throw new InvalidOperationException($"The {serviceType} service is not registered as a singleton instance.");
+    }
+    
+    /// <summary>
+    /// Adds the services collected from the <paramref name="appRuntime"/> to the <paramref name="services"/>.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="appRuntime">The application runtime.</param>
+    /// <returns>
+    /// The <paramref name="services"></paramref>.
+    /// </returns>
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IAppRuntime? appRuntime = null)
+    {
+        _ = services ?? throw new ArgumentNullException(nameof(services));
+
+        appRuntime ??= new AppRuntime();
+        var serviceInfos = new ServiceInfoCollection
+        {
+            { appRuntime, b => b.Lifetime = AppServiceLifetime.Singleton }
+        };
+
+        var builder = new ServiceInfoCollectionBuilder(serviceInfos, () => appRuntime.GetAppAssemblies());
+        return services.AddApplicationServices(builder.Build());
+    }
+    
+    /// <summary>
+    /// Adds the <paramref name="serviceInfos"/> to the <paramref name="services"/>.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="serviceInfos">The enumeration of <see cref="IServiceInfo"/>.</param>

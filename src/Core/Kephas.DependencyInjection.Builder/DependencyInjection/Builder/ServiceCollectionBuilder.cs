@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServiceCollectionBuilder.cs" company="Kephas Software SRL">
+// <copyright file="ServiceInfoCollectionBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,23 +18,23 @@ namespace Kephas.DependencyInjection.Builder;
 /// <summary>
 /// A context for building a collection of <see cref="IServiceInfo"/>.
 /// </summary>
-public class ServiceCollectionBuilder
+public class ServiceInfoCollectionBuilder
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ServiceCollectionBuilder"/> class.
+    /// Initializes a new instance of the <see cref="ServiceInfoCollectionBuilder"/> class.
     /// </summary>
     /// <param name="getAppAssemblies">The function for retrieving the application assemblies.</param>
-    public ServiceCollectionBuilder(Func<IEnumerable<Assembly>> getAppAssemblies)
+    public ServiceInfoCollectionBuilder(Func<IEnumerable<Assembly>> getAppAssemblies)
         : this(new List<IServiceInfo>(), getAppAssemblies)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ServiceCollectionBuilder"/> class.
+    /// Initializes a new instance of the <see cref="ServiceInfoCollectionBuilder"/> class.
     /// </summary>
     /// <param name="services">The application services.</param>
     /// <param name="getAppAssemblies">The function for retrieving the application assemblies.</param>
-    public ServiceCollectionBuilder(IEnumerable<IServiceInfo> services, Func<IEnumerable<Assembly>> getAppAssemblies)
+    public ServiceInfoCollectionBuilder(IEnumerable<IServiceInfo> services, Func<IEnumerable<Assembly>> getAppAssemblies)
     {
         GetAppAssemblies = getAppAssemblies ?? throw new ArgumentNullException(nameof(getAppAssemblies));
         Services = new List<IServiceInfo>(services);
@@ -73,7 +73,7 @@ public class ServiceCollectionBuilder
     /// </summary>
     /// <param name="providers">An array of providers.</param>
     /// <returns>This builder.</returns>
-    public ServiceCollectionBuilder AddProviders(params IServiceInfoProvider[] providers)
+    public ServiceInfoCollectionBuilder AddProviders(params IServiceInfoProvider[] providers)
     {
         Providers.AddRange(providers);
         return this;
@@ -84,7 +84,7 @@ public class ServiceCollectionBuilder
     /// </summary>
     /// <param name="assemblies">An array of assemblies.</param>
     /// <returns>This builder.</returns>
-    public ServiceCollectionBuilder AddAssemblies(params Assembly[] assemblies)
+    public ServiceInfoCollectionBuilder AddAssemblies(params Assembly[] assemblies)
     {
         Assemblies.AddRange(assemblies);
         return this;
@@ -95,7 +95,7 @@ public class ServiceCollectionBuilder
     /// </summary>
     /// <param name="types">An array of types.</param>
     /// <returns>This builder.</returns>
-    public ServiceCollectionBuilder AddTypes(params Type[] types)
+    public ServiceInfoCollectionBuilder AddTypes(params Type[] types)
     {
         Types.AddRange(types);
         return this;

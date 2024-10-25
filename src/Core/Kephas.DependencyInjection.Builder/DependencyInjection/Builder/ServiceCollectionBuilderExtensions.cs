@@ -13,7 +13,7 @@ using Kephas.DependencyInjection.ServiceProviders;
 
 namespace Kephas.DependencyInjection.Builder;
 
-internal static class ServiceCollectionBuilderExtensions
+internal static class ServiceInfoCollectionBuilderExtensions
 {
     /// <summary>
     /// Adds the application services from the provided <see cref="IServiceInfoProvider"/>s.

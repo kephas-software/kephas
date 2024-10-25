@@ -7,6 +7,7 @@
 
 using FluentAssertions;
 using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Reflection;
 using Kephas.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -28,16 +29,16 @@ public class DependencyInjectionScopedTest
         var scopedInstance1 = scopedContext.ServiceProvider.GetRequiredService<DependencyInjectionTest.ScopeExportedClass>();
 
         using var nestedContext = scopedContext.ServiceProvider.CreateScope();
-        Assert.NotSame(scopedContext, nestedContext);
+        nestedContext.Should().NotBeSameAs(scopedContext);
 
         var scopedInstance2 = nestedContext.ServiceProvider.GetRequiredService<DependencyInjectionTest.ScopeExportedClass>();
-        Assert.NotSame(scopedInstance1, scopedInstance2);
+        scopedInstance1.Should().NotBeSameAs(scopedInstance2);
     }
 
     [Fact]
     public void CreateScopedInjector_Injector_registration_scope()
     {
-        var container = Test.CreateTestServiceCollectionBuilder().BuildServiceProvider();
+        var container = Test.CreateTestServiceInfoCollectionBuilder().BuildServiceProvider();
         using var scopedContext = container.CreateScope();
         var selfScopedContext = scopedContext.ServiceProvider.GetRequiredService<IServiceProvider>();
         Assert.Same(selfScopedContext, scopedContext);

@@ -12,7 +12,7 @@ Typically used areas and classes/interfaces/services:
 ### Create a service provider from merging into the service collection 
 
 ```csharp
-var builder = new AppServiceCollectionBuilder();
+var builder = new AppServiceInfoCollectionBuilder();
 var services = new ServiceCollection();
 var serviceProvider = builder.BuildWithDependencyInjection(services);
 ```
@@ -20,7 +20,7 @@ var serviceProvider = builder.BuildWithDependencyInjection(services);
 ### Add collected services to the service collection
 
 ```csharp
-var builder = new AppServiceCollectionBuilder();
+var builder = new AppServiceInfoCollectionBuilder();
 var services = new ServiceCollection()
     .AddFromServicesBuilder(builder);
 ```

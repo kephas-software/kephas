@@ -9,7 +9,9 @@ using System.Text;
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.Reflection;
+using Kephas.Runtime;
 using Kephas.Testing.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
@@ -35,20 +37,38 @@ public static class Test
     /// <summary>
     /// Creates am empty list of <see cref="IServiceInfo"/>.
     /// </summary>
-    public static IList<IServiceInfo> CreateTestServices()
+    public static IServiceInfoCollection CreateTestServices()
     {
-        return new List<IServiceInfo>();
+        return new ServiceInfoCollection();
     }
 
     /// <summary>
-    /// Creates a test <see cref="ServiceCollectionBuilder"/>.
+    /// Creates a test <see cref="ServiceInfoCollectionBuilder"/>.
     /// </summary>
     /// <param name="services">Optional. The service collection used to initialize the builder with.</param>
-    /// <returns>The <see cref="ServiceCollectionBuilder"/>.</returns>
-    public static ServiceCollectionBuilder CreateTestServiceCollectionBuilder(IList<IServiceInfo>? services = null)
+    /// <returns>The <see cref="ServiceInfoCollectionBuilder"/>.</returns>
+    public static ServiceInfoCollectionBuilder CreateTestServiceInfoCollectionBuilder(IEnumerable<IServiceInfo>? services = null)
     {
-        return new ServiceCollectionBuilder(services ?? CreateTestServices());
+        var appRuntime = new AppRuntime();
+        return new ServiceInfoCollectionBuilder(services ?? CreateTestServices(), () => appRuntime.GetAppAssemblies());
     }
+
+    /// <summary>
+    /// Builds a service provider based on <see cref="builder"/>.
+    /// </summary>
+    /// <param name="builder">The <see cref="ServiceInfoCollectionBuilder"/>.</param>
+    /// <returns>A <see cref="IServiceProvider"/>.</returns>
+    public static IServiceProvider BuildServiceProvider(this ServiceInfoCollectionBuilder builder) =>
+        new ServiceCollection().AddApplicationServices(builder.Build()).BuildServiceProvider();
+
+
+    /// <summary>
+    /// Builds a service provider based on <see cref="services"/>.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceInfoCollection"/>.</param>
+    /// <returns>A <see cref="IServiceProvider"/>.</returns>
+    public static IServiceProvider BuildServiceProvider(this IServiceInfoCollection services) =>
+        new ServiceCollection().AddApplicationServices(services).BuildServiceProvider();
 
     /// <summary>
     /// Gets the test lazy enumerator.

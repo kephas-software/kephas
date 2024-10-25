@@ -3,11 +3,6 @@
 ## Introduction
 This package provides support for application services and dependency injection.
 
-Typically used areas and classes/interfaces/services:
-- Services: `IServiceInfo`, `IServiceInfoProvider`, `SingletonServiceAttribute`, `ScopedServiceAttribute`, `TransientServiceAttribute`, `PriorityAttribute`.
-- Services.Builder: `IAppServiceCollectionBuilder`, `AppServiceCollectionBuilder`. 
-- `IAppServiceCollection`, `AppServiceCollection`.
-
 Packages providing specific dependency injection implementations:
 * [Kephas.Services.Autofac](https://www.nuget.org/packages/Kephas.Services.Autofac)
 * [Kephas.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection)
@@ -34,7 +29,7 @@ after that, the `IServiceProvider` will be built.
 #### Using the `IAppRuntime` service to collect the services
 
 ```csharp
-var builder = new AppServiceCollectionBuilder()
+var builder = new AppServiceInfoCollectionBuilder()
     .WithDynamicAppRuntime();
 var services = builder.Build();
 ```
@@ -42,7 +37,7 @@ var services = builder.Build();
 #### Using a custom function to collect the services
 
 ```csharp
-var builder = new AppServiceCollectionBuilder(
+var builder = new AppServiceInfoCollectionBuilder(
     new AppServicesSettings { GetAppAssemblies = () => typeof(MyTestClass).Assembly.FlattenReferences() });
 var services = builder.Build();
 ```
@@ -76,7 +71,7 @@ Kephas provides support for both [Microsoft.Extensions.DependencyInjection](http
 
 ### Service collection
 
-Services are collected using an `AppServiceCollectionBuilder`. During this process:
+Services are collected using an `AppServiceInfoCollectionBuilder`. During this process:
 * The builder:
   * Tries to use the `AppServicesSettings.GetServicesAssemblies` function.
   * If not set, it tries to identify the `IAppRuntime` service within the `IAppServices` collection, from which it calls `GetAppAssemblies()`.
