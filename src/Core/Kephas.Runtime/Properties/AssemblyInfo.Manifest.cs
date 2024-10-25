@@ -10,4 +10,4 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyMetadata("IsTrimmable", "False")]
 
-[assembly: InternalsVisibleTo("Kephas.Runtime.AssemblyLoader.Tests")]
+[assembly: InternalsVisibleTo("Kephas.Runtime.Tests")]

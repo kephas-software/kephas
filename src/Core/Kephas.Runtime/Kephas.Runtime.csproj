@@ -10,15 +10,12 @@
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
         <WarningsAsErrors>nullable</WarningsAsErrors>
 
-        <Version>12.0.0-dev.1</Version>
-        <AssemblyVersion>12.0.0.0</AssemblyVersion>
-        <FileVersion>12.0.0.0</FileVersion>
-        <Authors>Kephas Software SRL</Authors>
+        <Authors>Ioan Crisan</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>Provides the runtime infrastructure.</Description>
+        <Description>Provides infrastructure for the runtime.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -51,13 +48,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <SupportedPlatform Include="browser" />
+        <SupportedPlatform Include="browser"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
-        <None Include="README.md" Pack="true" PackagePath="\" />
-        <None Include="release-notes.md" Pack="true" PackagePath="\" />
+        <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -68,10 +63,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\Kephas.IO\Kephas.IO.csproj" />
-        <ProjectReference Include="..\Kephas.Runtime.Abstractions\Kephas.Runtime.Abstractions.csproj" />
-        <ProjectReference Include="..\Kephas.Services\Kephas.Services.csproj" />
+        <None Include="..\..\kephas.logo.stone.png" Pack="true" PackagePath="\"/>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+        <None Include="release-notes.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
 </Project>

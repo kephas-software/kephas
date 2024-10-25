@@ -16,9 +16,9 @@ namespace Kephas.Tests.Runtime;
 public class AssemblyLoaderTest
 {
     [Theory]
-    [InlineData(new[] { typeof(IHasLogLevel) }, new[] { "Kephas.Logging.Abstractions" })]
+    [InlineData(new[] { typeof(IHasLogLevel) }, new[] { "Kephas.Extensions" })]
     [InlineData(new[] { typeof(IDictionaryConvertible) }, new[] { "Kephas.Collections" })]
-    [InlineData(new[] { typeof(IHasLogLevel), typeof(IDictionaryConvertible) }, new[] { "Kephas.Logging.Abstractions", "Kephas.Collections" })]
+    [InlineData(new[] { typeof(IHasLogLevel), typeof(IDictionaryConvertible) }, new[] { "Kephas.Extensions", "Kephas.Collections" })]
     [InlineData(new[] { typeof(IAssemblyLoader) }, new[] { "Kephas.Runtime.AssemblyLoader", "Kephas.Collections" })]
     public void FlattenReferences_assembly_enumeration(IEnumerable<Type> assemblyTypes, IEnumerable<string> expectedNames)
     {

@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Application;
+using System.Reflection;
 
 namespace Kephas;
 
@@ -15,17 +15,17 @@ namespace Kephas;
 public static class RuntimeHelper
 {
     /// <summary>
-    /// Gets the application runtime.
+    /// Gets the location directory for the provided assembly.
     /// </summary>
-    /// <param name="appServices">The application services.</param>
+    /// <param name="assembly">The assembly to be checked.</param>
     /// <returns>
-    /// The application runtime.
+    /// The assembly location directory.
     /// </returns>
-    public static IAppRuntime GetAppRuntime(this IAppServiceCollection appServices)
+    public static string GetLocationDirectory(this Assembly assembly)
     {
-        appServices = appServices ?? throw new ArgumentNullException(nameof(appServices));
+        _ = assembly ?? throw new ArgumentNullException(nameof(assembly));
 
-        return appServices.TryGetServiceInstance<IAppRuntime>()
-               ?? throw new InvalidOperationException("The application runtime is not registered.");
+        var location = Path.GetDirectoryName(assembly.Location)!;
+        return location;
     }
 }

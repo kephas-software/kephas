@@ -7,9 +7,6 @@
 
 using System.Reflection;
 using System.Runtime.Loader;
-using Kephas.Collections;
-using Kephas.Resources;
-using Microsoft.Extensions.Logging;
 
 namespace Kephas.Runtime;
 
@@ -18,21 +15,10 @@ namespace Kephas.Runtime;
 /// </summary>
 public class AssemblyLoader : IAssemblyLoader
 {
-    private readonly ILogger? logger;
-
     /// <summary>
     /// Gets the static instance of this <see cref="AssemblyLoader"/>.
     /// </summary>
     public static readonly IAssemblyLoader Instance = new AssemblyLoader();
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AssemblyLoader"/> class.
-    /// </summary>
-    /// <param name="logger">Optional. The logger.</param>
-    public AssemblyLoader(ILogger? logger = null)
-    {
-        this.logger = logger;
-    }
 
     /// <summary>
     /// Loads application assemblies with the provided filter, using the additional bin locations,
@@ -81,8 +67,15 @@ public class AssemblyLoader : IAssemblyLoader
                              .Where(a => (a.Name is null || !loadedAssemblyRefs.Contains(a.Name)) && nameFilter(a))
                              .ToList()))
             {
-                loadedAssemblyRefs.AddRange(referencesToLoad.Select(an => an.Name!).Where(n => n is not null));
-                assemblyRefsToLoad.AddRange(referencesToLoad);
+                foreach (var assemblyRef in referencesToLoad.Select(an => an.Name!).Where(n => n is not null))
+                {
+                    loadedAssemblyRefs.Add(assemblyRef);
+                }
+
+                foreach (var assemblyName in referencesToLoad)
+                {
+                    assemblyRefsToLoad.Add(assemblyName);
+                }
             }
 
             assembliesToCheck = assemblyRefsToLoad
@@ -102,9 +95,8 @@ public class AssemblyLoader : IAssemblyLoader
         {
             return LoadAssemblyFromName(n);
         }
-        catch (Exception ex)
+        catch
         {
-            logger?.LogWarning(ex, AssemblyLoaderStrings.AppRuntimeBase_CannotLoadAssembly_Exception, n);
             return null;
         }
     }

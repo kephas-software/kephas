@@ -1,10 +1,7 @@
-﻿# Runtime (Assembly initialization)
+﻿# Runtime
 
 ## Introduction
-This package provides primitives for assembly initialization.
-
-Typically used areas and classes/interfaces/services:
-* Runtime: `IAssemblyInitializer`.
+This package provides infrastructure for runtime information and operations.
 
 ## Assembly initialization
 
@@ -35,8 +32,7 @@ internal static class ModuleInitializer_My_Assembly
 
 ## Other resources
 
-* [Kephas.Logging.Abstractions](https://www.nuget.org/packages/Kephas.Logging.Abstractions)
-* [Kephas.DependencyInjection.Abstractions](https://www.nuget.org/packages/Kephas.DependencyInjection.Abstractions)
+* [Kephas.DependencyInjection](https://www.nuget.org/packages/Kephas.DependencyInjection)
 
 > Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
 
