@@ -2,8 +2,6 @@
 
 namespace Kephas.Analyzers.TestAssembly;
 
-using Kephas.Services;
-
 public interface INonGenericContract
 {
 } 

@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Core\Kephas.Services.Abstractions\Kephas.Services.Abstractions.csproj"/>
+        <ProjectReference Include="..\..\..\Core\Kephas.DependencyInjection\Kephas.DependencyInjection.csproj" />
         <ProjectReference Include="..\..\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 

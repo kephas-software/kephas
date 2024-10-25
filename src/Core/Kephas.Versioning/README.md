@@ -35,6 +35,5 @@ Assert.Equal(range.MinVersion, SemanticVersion.Parse("2.0.0"));
 
 ## Other resources
 
-* [Kephas.Core](https://www.nuget.org/packages/Kephas.Core)
 
 > Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.

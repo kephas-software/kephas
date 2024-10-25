@@ -12,7 +12,6 @@ namespace Kephas.Reflection;
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -22,19 +21,6 @@ using System.Reflection;
 /// </summary>
 public static class ReflectionHelper
 {
-    private static readonly Func<AssemblyName, bool> IsSystemAssemblyFuncValue = assemblyName =>
-    {
-        var assemblyFullName = assemblyName.FullName;
-        return assemblyFullName.StartsWith("System")
-               || assemblyFullName.StartsWith("mscorlib")
-               || assemblyFullName.StartsWith("Microsoft")
-               || assemblyFullName.StartsWith("netstandard")
-               || assemblyFullName.StartsWith("vshost32")
-               || assemblyFullName.StartsWith("Mono");
-    };
-
-    private static readonly Func<AssemblyName, bool>? IsSystemAssemblyFunc = IsSystemAssemblyFuncValue;
-
     /// <summary>
     /// Invokes the <paramref name="methodInfo"/> with the provided parameters,
     /// ensuring in case of an exception that the original exception is thrown.
@@ -255,45 +241,6 @@ public static class ReflectionHelper
         methodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
 
         return (T)(object)methodInfo.CreateDelegate(typeof(T));
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether the provided assembly is a system assembly.
-    /// </summary>
-    /// <param name="assembly">The assembly to be checked.</param>
-    /// <returns>
-    /// <c>true</c> if the assembly is a system assembly, <c>false</c> if not.
-    /// </returns>
-    public static bool IsSystemAssembly(this Assembly assembly)
-    {
-        return IsSystemAssemblyFunc?.Invoke(assembly.GetName()) ?? false;
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether the provided assembly is a system assembly.
-    /// </summary>
-    /// <param name="assemblyName">The assembly to be checked.</param>
-    /// <returns>
-    /// <c>true</c> if the assembly is a system assembly, <c>false</c> if not.
-    /// </returns>
-    public static bool IsSystemAssembly(this AssemblyName assemblyName)
-    {
-        return IsSystemAssemblyFunc?.Invoke(assemblyName) ?? false;
-    }
-
-    /// <summary>
-    /// Gets the location directory for the provided assembly.
-    /// </summary>
-    /// <param name="assembly">The assembly to be checked.</param>
-    /// <returns>
-    /// The assembly location directory.
-    /// </returns>
-    public static string GetLocationDirectory(this Assembly assembly)
-    {
-        assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
-
-        var location = Path.GetDirectoryName(assembly.Location)!;
-        return location;
     }
 
     /// <summary>

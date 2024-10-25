@@ -11,8 +11,7 @@ Generic application exception implementing `IErrorNotification`.
 
 ## Other resources
 
-* [Kephas.Logging.Abstractions](https://www.nuget.org/packages/Kephas.Logging.Abstractions)
-* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
+* [Kephas.DependencyInjection](https://www.nuget.org/packages/Kephas.DependencyInjection)
 * [Kephas.Reflection](https://www.nuget.org/packages/Kephas.Reflection)
 * [Kephas.Analyzers](https://www.nuget.org/packages/Kephas.Analyzers)
 

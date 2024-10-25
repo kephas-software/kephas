@@ -9,7 +9,6 @@ using System.Reflection;
 using FluentAssertions;
 using Kephas.Analyzers.TestAssembly;
 using Kephas.DependencyInjection.ServiceProviders;
-using Kephas.Services;
 using Xunit;
 
 namespace Kephas.Analyzers.Tests.DependencyInjection;
