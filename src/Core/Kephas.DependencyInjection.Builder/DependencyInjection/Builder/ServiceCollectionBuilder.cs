@@ -7,14 +7,11 @@
 
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using Kephas.Collections;
-using Kephas.DependencyInjection.Configuration;
 using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
 using Kephas.Reflection;
-using Kephas.Runtime;
 
 namespace Kephas.DependencyInjection.Builder;
 
@@ -26,9 +23,9 @@ public class ServiceCollectionBuilder
     /// <summary>
     /// Initializes a new instance of the <see cref="ServiceCollectionBuilder"/> class.
     /// </summary>
-    /// <param name="settings">Optional. The injection settings.</param>
-    public ServiceCollectionBuilder(DependencyInjectionSettings? settings = null)
-        : this(new List<IServiceInfo>(), settings)
+    /// <param name="getAppAssemblies">The function for retrieving the application assemblies.</param>
+    public ServiceCollectionBuilder(Func<IEnumerable<Assembly>> getAppAssemblies)
+        : this(new List<IServiceInfo>(), getAppAssemblies)
     {
     }
 
@@ -36,15 +33,20 @@ public class ServiceCollectionBuilder
     /// Initializes a new instance of the <see cref="ServiceCollectionBuilder"/> class.
     /// </summary>
     /// <param name="services">The application services.</param>
-    /// <param name="settings">Optional. The injection settings.</param>
-    public ServiceCollectionBuilder(IEnumerable<IServiceInfo> services, DependencyInjectionSettings? settings = null)
+    /// <param name="getAppAssemblies">The function for retrieving the application assemblies.</param>
+    public ServiceCollectionBuilder(IEnumerable<IServiceInfo> services, Func<IEnumerable<Assembly>> getAppAssemblies)
     {
+        GetAppAssemblies = getAppAssemblies ?? throw new ArgumentNullException(nameof(getAppAssemblies));
         Services = new List<IServiceInfo>(services);
-        Settings = settings ?? new DependencyInjectionSettings();
     }
 
     /// <summary>
-    /// Gets The application services.
+    /// Gets the function for retrieving the application assemblies.
+    /// </summary>
+    protected internal Func<IEnumerable<Assembly>> GetAppAssemblies { get; }
+
+    /// <summary>
+    /// Gets the application services.
     /// </summary>
     protected internal IEnumerable<IServiceInfo> Services { get; }
 
@@ -65,11 +67,6 @@ public class ServiceCollectionBuilder
     /// Gets the list of types used in injection.
     /// </summary>
     protected internal ICollection<Type> Types { get; } = new List<Type>();
-
-    /// <summary>
-    /// Gets the injection settings.
-    /// </summary>
-    protected internal DependencyInjectionSettings Settings { get; }
 
     /// <summary>
     /// Adds the <see cref="IServiceInfoProvider"/>s.
@@ -189,20 +186,10 @@ public class ServiceCollectionBuilder
 
     private IList<Assembly> GetServiceAssemblies()
     {
-        var searchPattern = Settings.ServiceAssemblyNamePattern;
-        var getAssemblies = Settings.GetServiceAssemblies
-                            ?? (() => AssemblyLoader.Instance.LoadAssemblies());
-
-        var assemblies = getAssemblies()?.ToList() ?? new List<Assembly>();
+        var assemblies = GetAppAssemblies().ToList();
         assemblies.AddRange(Assemblies);
-        var appAssemblies = assemblies.Where(a => !a.IsSystemAssembly());
+        var appAssemblies = assemblies;
 
-        if (string.IsNullOrWhiteSpace(searchPattern))
-        {
-            return appAssemblies.ToList();
-        }
-
-        var regex = new Regex(searchPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        return appAssemblies.Where(a => regex.IsMatch(a.FullName!)).ToList();
+        return appAssemblies.ToList();
     }
 }

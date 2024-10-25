@@ -14,4 +14,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Kephas.DependencyInjection.Tests")]
 [assembly: InternalsVisibleTo("Kephas.Extensions.DependencyInjection")]
 [assembly: InternalsVisibleTo("Kephas.Analyzers.Tests")]
-[assembly: InternalsVisibleTo("Kephas.Testing")]
+[assembly: InternalsVisibleTo("Kephas.Testing.Xunit")]

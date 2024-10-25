@@ -10,10 +10,7 @@
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
         <WarningsAsErrors>nullable</WarningsAsErrors>
 
-        <Version>1.0.0</Version>
-        <AssemblyVersion>1.0.0.0</AssemblyVersion>
-        <FileVersion>1.0.0.0</FileVersion>
-        <Authors>Kephas Software SRL</Authors>
+        <Authors>Ioan Crisan</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
 
@@ -70,8 +67,8 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Kephas.Reflection.Abstractions\Kephas.Reflection.Abstractions.csproj" />
-        <ProjectReference Include="..\Kephas.Runtime.AssemblyLoader\Kephas.Runtime.AssemblyLoader.csproj" />
         <ProjectReference Include="..\Kephas.DependencyInjection\Kephas.DependencyInjection.csproj" />
+        <ProjectReference Include="..\Kephas.Runtime\Kephas.Runtime.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -394,7 +394,9 @@ namespace Kephas.Tests.Services
 
         private ServiceCollectionBuilder CreateAppServiceCollectionBuilder(IList<IServiceInfo>? services = null)
         {
-            var builder = new ServiceCollectionBuilder(services ?? new List<IServiceInfo>());
+            var builder = new ServiceCollectionBuilder(
+                services ?? new List<IServiceInfo>(),
+                () => [ typeof(ServiceCollectionBuilderTest).Assembly, typeof(ServiceCollectionBuilder).Assembly ]);
             return builder;
         }
 
