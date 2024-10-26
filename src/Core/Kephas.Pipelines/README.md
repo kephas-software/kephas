@@ -3,9 +3,6 @@
 ## Introduction
 Provides abstractions for intercepting operations to apply transversal behavior.
 
-Typically used areas and classes/interfaces/services:
-* `IPipeline`, `IPipelineBehavior`.
-
 ## Usage
 
 ```csharp

@@ -5,7 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Collections;
 using Kephas.DependencyInjection.Metadata;
 
 namespace Kephas.Pipelines;
@@ -27,9 +26,9 @@ public class PipelineMetadata : ServiceMetadata
             return;
         }
 
-        TargetType = (Type?)metadata.TryGetValue(nameof(TargetType));
-        OperationArgsType = (Type?)metadata.TryGetValue(nameof(OperationArgsType));
-        ResultType = (Type?)metadata.TryGetValue(nameof(ResultType));
+        TargetType = (Type?)TryGetValue(metadata, nameof(TargetType));
+        OperationArgsType = (Type?)TryGetValue(metadata, nameof(OperationArgsType));
+        ResultType = (Type?)TryGetValue(metadata, nameof(ResultType));
     }
 
     /// <summary>
