@@ -19,12 +19,12 @@ namespace Kephas.Tests.DependencyInjection;
 /// <summary>
 /// An application service contract attribute test.
 /// </summary>
-public class DeclareServiceAttributeBaseTest
+public class DeclareServiceFamilyAttributeBaseTest
 {
     [Fact]
     public void DeclareSingletonServiceAttribute()
     {
-        var attr = new DeclareSingletonServiceAttribute<string>();
+        var attr = new DeclareSingletonServiceFamilyAttribute<string>();
         attr.Lifetime.Should().Be(AppServiceLifetime.Singleton);
         attr.ServiceType.Should().Be(typeof(string));
 
@@ -36,7 +36,7 @@ public class DeclareServiceAttributeBaseTest
     [Fact]
     public void DeclareSingletonServiceAttribute_Implementation()
     {
-        IServiceInfo attr = new DeclareSingletonServiceAttribute<IComparable, string>();
+        IServiceInfo attr = new DeclareSingletonServiceFamilyAttribute<IComparable, string>();
         attr.Lifetime.Should().Be(AppServiceLifetime.Singleton);
         attr.ServiceDeclarationType.Should().Be(typeof(IComparable));
         attr.ServiceType.Should().Be(typeof(IComparable));
@@ -51,7 +51,7 @@ public class DeclareServiceAttributeBaseTest
     [Fact]
     public void DeclareScopedServiceAttribute()
     {
-        var attr = new DeclareScopedServiceAttribute<string>();
+        var attr = new DeclareScopedServiceFamilyAttribute<string>();
         attr.Lifetime.Should().Be(AppServiceLifetime.Scoped);
         attr.ServiceType.Should().Be(typeof(string));
 
@@ -63,7 +63,7 @@ public class DeclareServiceAttributeBaseTest
     [Fact]
     public void DeclareScopedServiceAttribute_Implementation()
     {
-        IServiceInfo attr = new DeclareScopedServiceAttribute<IComparable, string>();
+        IServiceInfo attr = new DeclareScopedServiceFamilyAttribute<IComparable, string>();
         attr.Lifetime.Should().Be(AppServiceLifetime.Scoped);
         attr.ServiceDeclarationType.Should().Be(typeof(IComparable));
         attr.ServiceType.Should().Be(typeof(IComparable));
@@ -78,7 +78,7 @@ public class DeclareServiceAttributeBaseTest
     [Fact]
     public void DeclareTransientServiceAttribute()
     {
-        var attr = new DeclareTransientServiceAttribute<string>();
+        var attr = new DeclareTransientServiceFamilyAttribute<string>();
         attr.Lifetime.Should().Be(AppServiceLifetime.Transient);
         attr.ServiceType.Should().Be(typeof(string));
 
@@ -90,7 +90,7 @@ public class DeclareServiceAttributeBaseTest
     [Fact]
     public void DeclareTransientServiceAttribute_Implementation()
     {
-        IServiceInfo attr = new DeclareTransientServiceAttribute<IComparable, string>();
+        IServiceInfo attr = new DeclareTransientServiceFamilyAttribute<IComparable, string>();
         attr.Lifetime.Should().Be(AppServiceLifetime.Transient);
         attr.ServiceDeclarationType.Should().Be(typeof(IComparable));
         attr.ServiceType.Should().Be(typeof(IComparable));

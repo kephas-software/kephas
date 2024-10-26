@@ -6,8 +6,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using Kephas.Collections;
+using Kephas.DependencyInjection.Builder.Configuration;
 using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
@@ -24,21 +24,34 @@ public class ServiceInfoCollectionBuilder
     /// Initializes a new instance of the <see cref="ServiceInfoCollectionBuilder"/> class.
     /// </summary>
     /// <param name="getAppAssemblies">The function for retrieving the application assemblies.</param>
-    public ServiceInfoCollectionBuilder(Func<IEnumerable<Assembly>> getAppAssemblies)
-        : this(new List<IServiceInfo>(), getAppAssemblies)
-    {
-    }
+    public static ServiceInfoCollectionBuilder Create(Func<IEnumerable<Assembly>> getAppAssemblies) =>
+        new(new ServiceBuilderSettings(getAppAssemblies));
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ServiceInfoCollectionBuilder"/> class.
     /// </summary>
     /// <param name="services">The application services.</param>
     /// <param name="getAppAssemblies">The function for retrieving the application assemblies.</param>
-    public ServiceInfoCollectionBuilder(IEnumerable<IServiceInfo> services, Func<IEnumerable<Assembly>> getAppAssemblies)
+    public static ServiceInfoCollectionBuilder Create(IServiceInfoCollection services, Func<IEnumerable<Assembly>> getAppAssemblies) =>
+        new(new ServiceBuilderSettings(getAppAssemblies, Services: services));
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ServiceInfoCollectionBuilder"/> class.
+    /// </summary>
+    /// <param name="settings">The builder settings.</param>
+    public ServiceInfoCollectionBuilder(ServiceBuilderSettings settings)
     {
-        GetAppAssemblies = getAppAssemblies ?? throw new ArgumentNullException(nameof(getAppAssemblies));
-        Services = new List<IServiceInfo>(services);
+        ArgumentNullException.ThrowIfNull(settings);
+
+        GetAppAssemblies = settings.GetAppAssemblies;
+        Services = settings.Services ?? new ServiceInfoCollection();
+        IncludeInternal = settings.IncludeInternal;
     }
+
+    /// <summary>
+    /// Indicates whether the internal implementations should be considered or not.
+    /// </summary>
+    protected internal bool IncludeInternal { get; }
 
     /// <summary>
     /// Gets the function for retrieving the application assemblies.
@@ -48,7 +61,7 @@ public class ServiceInfoCollectionBuilder
     /// <summary>
     /// Gets the application services.
     /// </summary>
-    protected internal IEnumerable<IServiceInfo> Services { get; }
+    protected internal IServiceInfoCollection Services { get; }
 
     /// <summary>
     /// Gets the application service information providers.
@@ -105,12 +118,14 @@ public class ServiceInfoCollectionBuilder
     /// Adds the application services from the <see cref="IServiceInfoProvider"/>s identified in the assemblies.
     /// </summary>
     /// <returns>The provided app services.</returns>
-    public IServiceInfoCollection Build() => AddServices(new ServiceInfoCollection(Services), GetProviders());
+    public IServiceInfoCollection Build() => AddServices(Services, GetProviders());
 
     private IServiceInfoCollection AddServices(
         IServiceInfoCollection services,
         IEnumerable<IServiceInfoProvider> serviceInfoProviders)
     {
+        var implementationTypes = DependencyInjectionHelper.GetEligibleImplementationTypes(GetServiceAssemblies(), IncludeInternal).ToList();
+
         // get all type infos from the injection assemblies
         var serviceDeclarationInfos = serviceInfoProviders
             .SelectMany(p => p.GetServiceInfos())
@@ -120,28 +135,13 @@ public class ServiceInfoCollectionBuilder
             })
             .ToList();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(IServiceInfoProvider appServiceInfoProvider)
-        {
-            var serviceImplementations = appServiceInfoProvider.GetImplementationDeclarations();
-
-            return serviceImplementations;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        ServiceImplementationDeclaration NormalizeDeclaration(ServiceImplementationDeclaration serviceDeclaration)
-        {
-            var (serviceType, serviceDeclarationType) = serviceDeclaration;
-
-            return new ServiceImplementationDeclaration(serviceType.ToNormalizedType(), serviceDeclarationType.ToNormalizedType());
-        }
-
-        var serviceTypes = serviceInfoProviders
-            .SelectMany(GetImplementationDeclarations)
-            .Select(NormalizeDeclaration)
+        // create and normalize declarations
+        var serviceImplementationDeclarations = serviceInfoProviders
+            .SelectMany(p => p.GetImplementationDeclarations(implementationTypes))
+            .Select(d => new ServiceImplementationDeclaration(d.ImplementationType.ToNormalizedType(), d.ServiceDeclarationType.ToNormalizedType()))
             .ToList();
 
-        return services.AddServices(serviceDeclarationInfos, serviceTypes);
+        return services.AddServices(serviceDeclarationInfos, serviceImplementationDeclarations);
     }
 
     /// <summary>
@@ -170,9 +170,8 @@ public class ServiceInfoCollectionBuilder
     /// </returns>
     private IEnumerable<IServiceInfoProvider> GetProviders()
     {
-        var assemblies = GetServiceAssemblies();
-
-        var providers = GetProviders(assemblies)
+        var serviceAssemblies = GetServiceAssemblies();
+        var providers = GetProviders(serviceAssemblies)
             .Union(Providers)
             .ToList();
 

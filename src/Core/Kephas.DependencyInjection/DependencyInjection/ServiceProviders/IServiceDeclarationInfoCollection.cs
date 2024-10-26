@@ -8,7 +8,7 @@
 namespace Kephas.DependencyInjection.ServiceProviders;
 
 /// <summary>
-/// Enumerates the contract declarations.
+/// Enumerates the service declarations.
 /// </summary>
 public interface IServiceDeclarationInfoCollection : IEnumerable<ServiceDeclarationInfo>
 {

@@ -19,7 +19,7 @@ public class DeclareServicesAttributeTest
         var attr = new DeclareServicesAttribute<NullServiceInfoProvider>();
 
         Assert.Empty(attr.GetServiceInfos());
-        Assert.Empty(attr.GetImplementationDeclarations());
+        Assert.Empty(attr.GetImplementationDeclarations([]));
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class DeclareServicesAttributeTest
 
         var serviceInfos = attr.GetServiceInfos();
         Assert.Equal(new[] { typeof(TestServiceInfoProvider.IService) }, serviceInfos.Select(i => i.ServiceDeclarationType).ToArray());
-        Assert.Empty(attr.GetImplementationDeclarations());
+        Assert.Empty(attr.GetImplementationDeclarations([]));
     }
 
     private class NullServiceInfoProvider : IServiceInfoProvider
@@ -39,10 +39,10 @@ public class DeclareServicesAttributeTest
     private class TestServiceInfoProvider : IServiceInfoProvider
     {
         /// <summary>
-        /// Gets the contract declaration types.
+        /// Gets the service declaration types.
         /// </summary>
         /// <returns>
-        /// The contract declaration types.
+        /// The service declaration types.
         /// </returns>
         IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations()
         {

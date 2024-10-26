@@ -88,12 +88,12 @@ public static class EnumerableServiceExtensions
     /// <returns>
     /// The ordered services.
     /// </returns>
-    public static IEnumerable<TService> SelectServices<TService, TMetadata>(this IEnumerable<IFactory<TService, TMetadata>> factoryServices, Func<IFactory<TService, TMetadata>, bool>? predicate = null)
+    public static IEnumerable<TService> SelectServices<TService, TMetadata>(this IEnumerable<IFactory<TService, TMetadata>> factoryServices, Func<TMetadata, bool>? predicate = null)
     {
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
 
-        return (predicate == null ? factoryServices : factoryServices.Where(predicate))
-            .Select(e => e.Create());
+        return (predicate == null ? factoryServices : factoryServices.Where(f => predicate(f.Metadata)))
+            .Select(e => e.GetService());
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ public static class EnumerableServiceExtensions
             factoryService = enumerator.Current;
         }
 
-        return factoryService.Create();
+        return factoryService.GetService();
     }
 
     /// <summary>

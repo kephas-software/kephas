@@ -10,13 +10,12 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Kephas.Collections;
 using Kephas.DependencyInjection.Metadata;
 
 namespace Kephas.DependencyInjection;
 
 /// <summary>
-/// A service helper.
+/// Provides helper methods for service registration.
 /// </summary>
 public static class ServiceHelper
 {
@@ -29,16 +28,16 @@ public static class ServiceHelper
     public static TMetadata GetServiceMetadata<TMetadata>(IDictionary<string, object?>? metadata)
     {
         var metadataType = typeof(TMetadata);
-        var ctor = metadataType.GetConstructor(new[] { typeof(IDictionary<string, object>) });
+        var ctor = metadataType.GetConstructor([typeof(IDictionary<string, object?>)]);
         if (ctor is not null)
         {
-            return (TMetadata)ctor.Invoke(new object?[] { metadata });
+            return (TMetadata)ctor.Invoke([metadata]);
         }
 
         ctor = metadataType.GetConstructor(Type.EmptyTypes);
         if (ctor is not null)
         {
-            var typedMetadata = ctor.Invoke(Array.Empty<object>());
+            var typedMetadata = ctor.Invoke([]);
             if (metadata is not null)
             {
                 // TODO optimize
@@ -46,13 +45,13 @@ public static class ServiceHelper
                     .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                     .Where(p => p.CanWrite)
                     .ToDictionary(p => p.Name, p => (Action<object?, object?>)(p.SetValue));
-                metadata.ForEach(kv =>
+                foreach (var kv in metadata)
                 {
                     if (setters.TryGetValue(kv.Key, out var setter))
                     {
                         setter(typedMetadata, kv.Value);
                     }
-                });
+                }
             }
 
             return (TMetadata)typedMetadata;
@@ -84,10 +83,16 @@ public static class ServiceHelper
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceDeclarationType)
     {
         var metadata = new Dictionary<string, object?>();
-        implementationType?.GetCustomAttributes()
-            .OfType<IServiceMetadataProvider>()
-            .SelectMany(p => p.GetMetadata())
-            .ForEach(m => metadata[m.Key] = m.Value);
+
+        if (implementationType is not null)
+        {
+            foreach (var m in implementationType.GetCustomAttributes()
+                         .OfType<IServiceMetadataProvider>()
+                         .SelectMany(p => p.GetMetadata()))
+            {
+                metadata[m.Key] = m.Value;
+            }
+        }
 
         metadata.Add(nameof(ServiceMetadata.ImplementationType), implementationType);
 
@@ -101,9 +106,12 @@ public static class ServiceHelper
                     : implementationType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == serviceDeclarationType);
             if (metadataSourceGenericType != null)
             {
-                ServiceMetadataHelper.GetGenericTypeMetadataProvider(metadataSourceGenericType)
-                    .GetMetadata()
-                    .ForEach(m => metadata[m.Key] = m.Value);
+                foreach (var m in ServiceMetadataHelper
+                             .GetGenericTypeMetadataProvider(metadataSourceGenericType)
+                             .GetMetadata())
+                {
+                    metadata[m.Key] = m.Value;
+                }
             }
         }
 

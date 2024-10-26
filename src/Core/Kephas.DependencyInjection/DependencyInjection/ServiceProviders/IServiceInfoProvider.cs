@@ -6,24 +6,25 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Kephas.DependencyInjection.Reflection;
 
 namespace Kephas.DependencyInjection.ServiceProviders;
 
 /// <summary>
-/// Interface providing the <see cref="GetServiceInfos"/> method,
-/// which collects <see cref="IServiceInfo"/> data together with the contract declaration type.
+/// Interface providing the <see cref="GetServiceInfos()"/> method,
+/// which collects <see cref="IServiceInfo"/> data together with the service declaration type.
 /// </summary>
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 public interface IServiceInfoProvider
 {
     /// <summary>
-    /// Gets an enumeration of application service information objects and their contract declaration type.
-    /// The contract declaration type is the type declaring the contract: if the <see cref="ServiceAttributeBase.ServiceType"/>
-    /// is not provided, the contract declaration type is also the contract type.
+    /// Gets an enumeration of <see cref="ServiceDeclarationInfo"/>.
+    /// The service declaration type is the type declaring the service: if the <see cref="ServiceAttributeBase.ServiceType"/>
+    /// is not provided, the service declaration type is also the service type.
     /// </summary>
     /// <returns>
-    /// An enumeration of application service information objects and their contract declaration type.
+    /// An enumeration of <see cref="ServiceDeclarationInfo"/>.
     /// </returns>
     public IEnumerable<ServiceDeclarationInfo> GetServiceInfos()
         => GetServiceInfos(this);
@@ -31,10 +32,11 @@ public interface IServiceInfoProvider
     /// <summary>
     /// Gets an enumeration of <see cref="ServiceImplementationDeclaration"/>.
     /// </summary>
+    /// <param name="eligibleImplementationTypes">The eligible implementation types.</param>
     /// <returns>
     /// An enumeration of <see cref="ServiceImplementationDeclaration"/>.
     /// </returns>
-    public IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations()
+    public IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
         => [];
 
     /// <summary>
@@ -56,13 +58,13 @@ public interface IServiceInfoProvider
     /// </returns>
     protected internal static IEnumerable<ServiceDeclarationInfo> GetServiceInfos(IServiceInfoProvider provider)
     {
-        var serviceDeclarationTypes = provider.GetServiceDeclarations();
-        if (serviceDeclarationTypes == null)
+        var serviceDeclarations = provider.GetServiceDeclarations();
+        if (serviceDeclarations == null)
         {
             yield break;
         }
 
-        foreach (var (serviceDeclarationType, metadataType) in serviceDeclarationTypes)
+        foreach (var (serviceDeclarationType, metadataType) in serviceDeclarations)
         {
             var serviceInfo = provider.TryGetServiceInfo(serviceDeclarationType);
             if (serviceInfo == null)

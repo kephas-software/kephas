@@ -19,22 +19,22 @@ internal static class ServiceInfoCollectionBuilderExtensions
     /// Adds the application services from the provided <see cref="IServiceInfoProvider"/>s.
     /// </summary>
     /// <param name="services">The application services.</param>
-    /// <param name="serviceDeclarations">The contract declarations.</param>
+    /// <param name="serviceDeclarationInfos">The service declarations.</param>
     /// <param name="implementationDeclarations">The service declarations.</param>
     /// <returns>The provided app services.</returns>
     internal static IServiceInfoCollection AddServices(
         this IServiceInfoCollection services,
-        IEnumerable<ServiceDeclarationInfo> serviceDeclarations,
+        IEnumerable<ServiceDeclarationInfo> serviceDeclarationInfos,
         IEnumerable<ServiceImplementationDeclaration> implementationDeclarations)
     {
         var existingDeclarations = services.TryGetServiceInstance<IServiceDeclarationInfoCollection>();
-        serviceDeclarations = existingDeclarations is null
-            ? new ServiceDeclarationInfoCollection(serviceDeclarations.ToList())
-            : new ServiceDeclarationInfoCollection(existingDeclarations.Union(serviceDeclarations).ToList());
-        services.Replace((IServiceDeclarationInfoCollection)serviceDeclarations);
+        serviceDeclarationInfos = existingDeclarations is null
+            ? new ServiceDeclarationInfoCollection(serviceDeclarationInfos.ToList())
+            : new ServiceDeclarationInfoCollection(existingDeclarations.Union(serviceDeclarationInfos).ToList());
+        services.Replace((IServiceDeclarationInfoCollection)serviceDeclarationInfos);
 
         var serviceMap = BuildServiceMap(
-            serviceDeclarations,
+            serviceDeclarationInfos,
             implementationDeclarations);
 
         foreach (var (_, serviceEntry) in serviceMap)
@@ -134,15 +134,15 @@ internal static class ServiceInfoCollectionBuilderExtensions
     {
         var serviceMap = new Dictionary<Type, ServiceEntry>();
 
-        foreach (var (serviceDeclarationType, appServiceInfo) in serviceDeclarationInfos)
+        foreach (var (serviceDeclarationType, serviceInfo) in serviceDeclarationInfos)
         {
             if (!serviceMap.TryGetValue(serviceDeclarationType, out var serviceEntry))
             {
-                serviceMap.Add(serviceDeclarationType, new ServiceEntry(appServiceInfo));
+                serviceMap.Add(serviceDeclarationType, new ServiceEntry(serviceInfo));
             }
             else
             {
-                serviceEntry.ServiceInfo = appServiceInfo;
+                serviceEntry.ServiceInfo = serviceInfo;
             }
         }
 
@@ -159,19 +159,19 @@ internal static class ServiceInfoCollectionBuilderExtensions
     {
         if (!serviceMap.TryGetValue(serviceDeclarationType, out var serviceEntry))
         {
-            // if the contract declaration type is not found in the map,
+            // if the service declaration type is not found in the map,
             // it may be because it is a constructed generic type and the
             // registration contains the generic type definition.
             if (serviceDeclarationType.IsConstructedGenericType)
             {
-                var contractDeclarationTypeGenericDefinition = serviceDeclarationType.GetGenericTypeDefinition();
-                if (serviceMap.TryGetValue(contractDeclarationTypeGenericDefinition, out serviceEntry))
+                var serviceDeclarationTypeGenericDefinition = serviceDeclarationType.GetGenericTypeDefinition();
+                if (serviceMap.TryGetValue(serviceDeclarationTypeGenericDefinition, out serviceEntry))
                 {
-                    // if the contract declaration based on the generic type definition is found,
-                    // build a new contract declaration based on the constructed generic type
+                    // if the service declaration based on the generic type definition is found,
+                    // build a new service declaration based on the constructed generic type
                     // and add a new entry in the map.
-                    var appServiceInfoGenericDefinition = serviceEntry.Registrations.First();
-                    var appServiceInfoDeclaration = new ServiceInfo(appServiceInfoGenericDefinition, serviceDeclarationType, serviceDeclarationType);
+                    var genericServiceInfo = serviceEntry.Registrations[0];
+                    var appServiceInfoDeclaration = new ServiceInfo(genericServiceInfo, serviceDeclarationType, serviceDeclarationType);
                     var appServiceInfo = new ServiceInfo(appServiceInfoDeclaration, serviceDeclarationType, serviceDeclarationType, implementationType);
                     ((IServiceInfo)appServiceInfo).AddMetadata(ServiceHelper.GetServiceMetadata(implementationType, serviceDeclarationType));
 
@@ -182,8 +182,8 @@ internal static class ServiceInfoCollectionBuilderExtensions
         }
         else
         {
-            var appServiceInfoDeclaration = serviceEntry.ServiceInfo;
-            var appServiceInfo = new ServiceInfo(appServiceInfoDeclaration, appServiceInfoDeclaration.ServiceType ?? serviceDeclarationType, serviceDeclarationType, implementationType);
+            var serviceInfo = serviceEntry.ServiceInfo;
+            var appServiceInfo = new ServiceInfo(serviceInfo, serviceInfo.ServiceType ?? serviceDeclarationType, serviceDeclarationType, implementationType);
             ((IServiceInfo)appServiceInfo).AddMetadata(ServiceHelper.GetServiceMetadata(implementationType, serviceDeclarationType));
             serviceEntry.Registrations.Add(appServiceInfo);
         }

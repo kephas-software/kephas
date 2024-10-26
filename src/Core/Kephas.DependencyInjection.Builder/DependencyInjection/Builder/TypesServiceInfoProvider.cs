@@ -21,28 +21,26 @@ internal class TypesServiceInfoProvider : IServiceInfoProvider
     /// Initializes a new instance of the <see cref="TypesServiceInfoProvider"/> class.
     /// </summary>
     /// <param name="types">The types.</param>
-    public TypesServiceInfoProvider(IEnumerable<Type> types)
-    {
-        this.types = types.ToList();
-    }
+    public TypesServiceInfoProvider(IEnumerable<Type> types) => this.types = types.ToList();
 
     /// <summary>
-    /// Gets the contract declaration types.
+    /// Gets the service declaration types.
     /// </summary>
     /// <returns>
-    /// The contract declaration types.
+    /// The service declaration types.
     /// </returns>
     IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations() => types.Select(p => new ServiceDeclaration(p, null));
 
     /// <summary>
-    /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
+    /// Gets an enumeration of tuples containing the service type and the service declaration type which it implements.
     /// </summary>
+    /// <param name="eligibleImplementationTypes"></param>
     /// <returns>
-    /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
+    /// An enumeration of tuples containing the service type and the service declaration type which it implements.
     /// </returns>
-    public IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations() =>
+    public IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes) =>
         from type in types
-        where type.IsClass && !type.IsAbstract && !type.IsNestedPrivate && type.GetCustomAttribute<ExcludeFromDependencyInjectionAttribute>() == null
+        where type.IsEligibleImplementationType(includeInternal: true)
         let serviceDeclarationType = TryGetServiceDeclarationType(type)
         where serviceDeclarationType != null
         select new ServiceImplementationDeclaration(type, serviceDeclarationType!);

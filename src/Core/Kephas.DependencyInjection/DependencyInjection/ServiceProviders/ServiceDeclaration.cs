@@ -7,18 +7,17 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace Kephas.DependencyInjection.ServiceProviders
-{
-    /// <summary>
-    /// Service contract declaration record.
-    /// </summary>
-    /// <param name="ServiceDeclarationType">
-    /// The type declaring the service type.
-    /// This is the type annotated with one of the: [<see cref="TransientServiceAttribute"/>], [<see cref="ScopedServiceAttribute"/>],
-    /// or [<see cref="SingletonServiceAttribute"/>], and which declares the actual service type.
-    /// </param>
-    /// <param name="MetadataType">The metadata type associated to the service type.</param>
-    public record ServiceDeclaration(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type ServiceDeclarationType,
-        Type? MetadataType = null);
-}
+namespace Kephas.DependencyInjection.ServiceProviders;
+
+/// <summary>
+/// Service service declaration record.
+/// </summary>
+/// <param name="ServiceDeclarationType">
+/// The type declaring the service type.
+/// This is the type annotated with one of the: [<see cref="TransientServiceAttribute"/>], [<see cref="ScopedServiceAttribute"/>],
+/// or [<see cref="SingletonServiceAttribute"/>], and which declares the actual service type.
+/// </param>
+/// <param name="MetadataType">The metadata type associated to the service type.</param>
+public record ServiceDeclaration(
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type ServiceDeclarationType,
+    Type? MetadataType = null);

@@ -8,6 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using FluentAssertions;
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Metadata;
 using NSubstitute;
@@ -20,9 +21,8 @@ public class FactoryEnumerableTest
     [Fact]
     public void FactoryEnumerable_null()
     {
-        var ordered = new FactoryEnumerable<IInstance, ServiceMetadata>(null);
-
-        Assert.Equal(0, ordered.Count());
+        var ordered = new FactoryEnumerable<IInstance, ServiceMetadata>();
+        ordered.Should().BeEmpty();
     }
 
     [Fact]
@@ -43,8 +43,8 @@ public class FactoryEnumerableTest
 
 
         Assert.Equal(2, orderedList.Count);
-        Assert.Same(instance2, orderedList[0].Create());
-        Assert.Same(instance1, orderedList[1].Create());
+        Assert.Same(instance2, orderedList[0].GetService());
+        Assert.Same(instance1, orderedList[1].GetService());
     }
 
     [Fact]
@@ -73,10 +73,10 @@ public class FactoryEnumerableTest
 
 
         Assert.Equal(4, orderedList.Count);
-        Assert.Same(instance1, orderedList[0].Create());
-        Assert.Same(instance4, orderedList[1].Create());
-        Assert.Same(instance2, orderedList[2].Create());
-        Assert.Same(instance3, orderedList[3].Create());
+        Assert.Same(instance1, orderedList[0].GetService());
+        Assert.Same(instance4, orderedList[1].GetService());
+        Assert.Same(instance2, orderedList[2].GetService());
+        Assert.Same(instance3, orderedList[3].GetService());
     }
 
     [Fact]
@@ -114,9 +114,9 @@ public class FactoryEnumerableTest
 
 
         Assert.Equal(3, orderedList.Count);
-        Assert.Same(instance4, orderedList[0].Create());
-        Assert.Same(instance2, orderedList[1].Create());
-        Assert.Same(instance3, orderedList[2].Create());
+        Assert.Same(instance4, orderedList[0].GetService());
+        Assert.Same(instance2, orderedList[1].GetService());
+        Assert.Same(instance3, orderedList[2].GetService());
     }
 
     [Fact]
@@ -154,22 +154,8 @@ public class FactoryEnumerableTest
 
 
         Assert.Equal(2, orderedList.Count);
-        Assert.Same(instance4, orderedList[0].Create());
-        Assert.Same(instance3, orderedList[1].Create());
-    }
-
-    [Fact]
-    public void TryGetService_not_found()
-    {
-        var factoryEnumerable = new FactoryEnumerable<IInstance, ServiceMetadata>(
-            new List<Factory<IInstance, ServiceMetadata>>
-            {
-                new (
-                    () => Substitute.For<IInstance>(),
-                    new ServiceMetadata(priority: Priority.High)),
-            });
-
-        Assert.Null(((IFactoryEnumerable<IInstance, ServiceMetadata>)factoryEnumerable).GetService(m => m.Priority == Priority.Normal));
+        Assert.Same(instance4, orderedList[0].GetService());
+        Assert.Same(instance3, orderedList[1].GetService());
     }
 
     [Fact]
@@ -183,11 +169,11 @@ public class FactoryEnumerableTest
                     new ServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.Throws<InvalidOperationException>(() => factoryEnumerable.GetRequiredService(m => m.Priority == Priority.Normal));
+        Assert.Null(factoryEnumerable.GetService(m => m.Priority == Priority.Normal));
     }
 
     [Fact]
-    public void TryGetService_found()
+    public void GetRequiredService_not_found()
     {
         var factoryEnumerable = new FactoryEnumerable<IInstance, ServiceMetadata>(
             new List<Factory<IInstance, ServiceMetadata>>
@@ -197,7 +183,7 @@ public class FactoryEnumerableTest
                     new ServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.NotNull(((IFactoryEnumerable<IInstance, ServiceMetadata>)factoryEnumerable).GetService(m => m.Priority == Priority.High));
+        Assert.Throws<InvalidOperationException>(() => factoryEnumerable.GetRequiredService(m => m.Priority == Priority.Normal));
     }
 
     [Fact]
@@ -211,7 +197,21 @@ public class FactoryEnumerableTest
                     new ServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.NotNull(((IFactoryEnumerable<IInstance, ServiceMetadata>)factoryEnumerable).GetService(m => m.Priority == Priority.High));
+        Assert.NotNull(factoryEnumerable.GetService(m => m.Priority == Priority.High));
+    }
+
+    [Fact]
+    public void GetRequiredService_found()
+    {
+        var factoryEnumerable = new FactoryEnumerable<IInstance, ServiceMetadata>(
+            new List<Factory<IInstance, ServiceMetadata>>
+            {
+                new (
+                    () => Substitute.For<IInstance>(),
+                    new ServiceMetadata(priority: Priority.High)),
+            });
+
+        Assert.NotNull(factoryEnumerable.GetRequiredService(m => m.Priority == Priority.High));
     }
 
     [Fact]
@@ -221,7 +221,7 @@ public class FactoryEnumerableTest
         var instance2 = Substitute.For<IInstance>();
         var instance3 = Substitute.For<IInstance>();
         var instance4 = Substitute.For<IInstance>();
-        var instance = ((IFactoryEnumerable<IInstance, ServiceMetadata>)new FactoryEnumerable<IInstance, ServiceMetadata>(
+        var instance = new FactoryEnumerable<IInstance, ServiceMetadata>(
                 new List<IFactory<IInstance, ServiceMetadata>>
                 {
                     new Factory<IInstance, ServiceMetadata>(
@@ -236,7 +236,7 @@ public class FactoryEnumerableTest
                     new Factory<IInstance, ServiceMetadata>(
                         () => instance4,
                         new ServiceMetadata(priority: (Priority)1)),
-                }))
+                })
             .GetService(m => m.Priority == (Priority)1);
 
         Assert.Same(instance4, instance);
@@ -293,7 +293,7 @@ public class FactoryEnumerableTest
                         () => instance4,
                         new ServiceMetadata(priority: (Priority)1)),
                 })
-            .SelectServices(f => f.Metadata.Priority < (Priority)3)
+            .SelectServices(m => m.Priority < (Priority)3)
             .ToList();
 
 

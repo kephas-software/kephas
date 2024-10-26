@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Reflection;
 using Kephas.DependencyInjection.Metadata;
 
 namespace Kephas.DependencyInjection.ServiceProviders;
@@ -23,12 +24,12 @@ public sealed class DeclareServicesAttribute<T>(Priority priority = Priority.Nor
     public Priority Priority => priority;
 
     /// <summary>
-    /// Gets an enumeration of application service information objects and their contract declaration type.
-    /// The contract declaration type is the type declaring the contract: if the <see cref="ServiceAttributeBase.ServiceType"/>
-    /// is not provided, the contract declaration type is also the contract type.
+    /// Gets an enumeration of <see cref="ServiceDeclarationInfo"/>.
+    /// The service declaration type is the type declaring the service: if the <see cref="ServiceAttributeBase.ServiceType"/>
+    /// is not provided, the service declaration type is also the service type.
     /// </summary>
     /// <returns>
-    /// An enumeration of application service information objects and their contract declaration type.
+    /// An enumeration of <see cref="ServiceDeclarationInfo"/>.
     /// </returns>
     public IEnumerable<ServiceDeclarationInfo> GetServiceInfos()
     {
@@ -45,16 +46,17 @@ public sealed class DeclareServicesAttribute<T>(Priority priority = Priority.Nor
     }
 
     /// <summary>
-    /// Gets an enumeration of tuples containing the service type and the contract declaration type which it implements.
+    /// Gets an enumeration of tuples containing the service type and the service declaration type which it implements.
     /// </summary>
+    /// <param name="eligibleImplementationTypes">The eligible implementation types.</param>
     /// <returns>
-    /// An enumeration of tuples containing the service type and the contract declaration type which it implements.
+    /// An enumeration of tuples containing the service type and the service declaration type which it implements.
     /// </returns>
-    public IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations()
+    public IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
     {
         try
         {
-            var services = new T().GetImplementationDeclarations() ?? [];
+            var services = new T().GetImplementationDeclarations(eligibleImplementationTypes) ?? [];
             return services.ToArray();
         }
         catch (Exception)

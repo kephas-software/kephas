@@ -392,26 +392,26 @@ namespace Kephas.Tests.Services
             Assert.Throws<ServiceException>(() => builder.AddTypes(parts).Build());
         }
 
-        private ServiceInfoCollectionBuilder CreateAppServiceInfoCollectionBuilder(IList<IServiceInfo>? services = null)
+        private ServiceInfoCollectionBuilder CreateAppServiceInfoCollectionBuilder(IServiceInfoCollection? services = null)
         {
-            var builder = new ServiceInfoCollectionBuilder(
-                services ?? new List<IServiceInfo>(),
+            var builder = ServiceInfoCollectionBuilder.Create(
+                services ?? new ServiceInfoCollection(),
                 () => [ typeof(ServiceInfoCollectionBuilderTest).Assembly, typeof(ServiceInfoCollectionBuilder).Assembly ]);
             return builder;
         }
 
-        private IList<IServiceInfo> GetTestAppServices(Action<string>? logAction = null)
+        private IServiceInfoCollection GetTestAppServices(Action<string>? logAction = null)
         {
             var logger = new TestLogger<string>((_, _, message) => logAction?.Invoke(message));
             var logManager = Substitute.For<ILogManager>();
             logManager.GetLogger(Arg.Any<string>()).Returns(logger);
 
-            var appServices = new List<IServiceInfo>
+            var serviceInfos = new ServiceInfoCollection
             {
                 new ServiceInfo(typeof(ILogManager), logManager)
             };
 
-            return appServices;
+            return serviceInfos;
         }
 
         [SingletonService]

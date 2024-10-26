@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using FluentAssertions;
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Metadata;
 using NSubstitute;
@@ -18,8 +19,7 @@ public class LazyEnumerableTest
     public void LazyEnumerable_null()
     {
         var ordered = new LazyEnumerable<IInstance, ServiceMetadata>(null);
-
-        Assert.Equal(0, ordered.Count());
+        ordered.Should().BeEmpty();
     }
 
     [Fact]
@@ -30,10 +30,10 @@ public class LazyEnumerableTest
         var orderedList = new LazyEnumerable<IInstance, ServiceMetadata>(
             new List<Lazy<IInstance, ServiceMetadata>>
             {
-                new Lazy<IInstance, ServiceMetadata>(
+                new(
                     () => instance1,
                     new ServiceMetadata(priority: (Priority)1)),
-                new Lazy<IInstance, ServiceMetadata>(
+                new(
                     () => instance2,
                     new ServiceMetadata(priority: (Priority)(-1))),
             }).ToList();
@@ -147,7 +147,7 @@ public class LazyEnumerableTest
     }
 
     [Fact]
-    public void TryGetService_not_found()
+    public void GetService_not_found()
     {
         var lazyEnumerable = new LazyEnumerable<IInstance, ServiceMetadata>(
             new List<Lazy<IInstance, ServiceMetadata>>
@@ -157,11 +157,11 @@ public class LazyEnumerableTest
                     new ServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.Null(((ILazyEnumerable<IInstance, ServiceMetadata>)lazyEnumerable).GetService(m => m.Priority == Priority.Normal));
+        Assert.Null(lazyEnumerable.GetService(m => m.Priority == Priority.Normal));
     }
 
     [Fact]
-    public void GetService_not_found()
+    public void GetRequiredService_not_found()
     {
         var lazyEnumerable = new LazyEnumerable<IInstance, ServiceMetadata>(
             new List<Lazy<IInstance, ServiceMetadata>>
@@ -175,20 +175,6 @@ public class LazyEnumerableTest
     }
 
     [Fact]
-    public void TryGetService_found()
-    {
-        var lazyEnumerable = new LazyEnumerable<IInstance, ServiceMetadata>(
-            new List<Lazy<IInstance, ServiceMetadata>>
-            {
-                new (
-                    () => Substitute.For<IInstance>(),
-                    new ServiceMetadata(priority: Priority.High)),
-            });
-
-        Assert.NotNull(((ILazyEnumerable<IInstance, ServiceMetadata>)lazyEnumerable).GetService(m => m.Priority == Priority.High));
-    }
-
-    [Fact]
     public void GetService_found()
     {
         var lazyEnumerable = new LazyEnumerable<IInstance, ServiceMetadata>(
@@ -199,7 +185,21 @@ public class LazyEnumerableTest
                     new ServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.NotNull(((ILazyEnumerable<IInstance, ServiceMetadata>)lazyEnumerable).GetRequiredService(m => m.Priority == Priority.High));
+        Assert.NotNull(lazyEnumerable.GetService(m => m.Priority == Priority.High));
+    }
+
+    [Fact]
+    public void GetRequiedService_found()
+    {
+        var lazyEnumerable = new LazyEnumerable<IInstance, ServiceMetadata>(
+            new List<Lazy<IInstance, ServiceMetadata>>
+            {
+                new (
+                    () => Substitute.For<IInstance>(),
+                    new ServiceMetadata(priority: Priority.High)),
+            });
+
+        Assert.NotNull(lazyEnumerable.GetRequiredService(m => m.Priority == Priority.High));
     }
 
     [Fact]

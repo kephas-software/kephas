@@ -10,7 +10,7 @@ using System.Collections;
 namespace Kephas.DependencyInjection.ServiceProviders;
 
 /// <summary>
-/// Enumerates the contract declarations.
+/// Enumerates the service declarations.
 /// </summary>
 internal class ServiceDeclarationInfoCollection(IList<ServiceDeclarationInfo> declarations) : IServiceDeclarationInfoCollection
 {

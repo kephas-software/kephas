@@ -11,32 +11,29 @@
 namespace Kephas.DependencyInjection;
 
 /// <summary>
-/// An export factory.
+/// A service factory.
 /// </summary>
-/// <typeparam name="TContract">Type of the service contract.</typeparam>
-public class Factory<TContract> : IFactory<TContract>
+/// <typeparam name="TService">Type of the service contract.</typeparam>
+public class Factory<TService> : IFactory<TService>
 {
     /// <summary>
     /// The factory.
     /// </summary>
-    private readonly Func<TContract> factory;
+    private readonly Func<TService> factory;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Factory{TContract}"/> class.
     /// </summary>
     /// <param name="factory">The factory.</param>
-    public Factory(Func<TContract> factory)
+    public Factory(Func<TService> factory)
     {
         this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
     }
 
     /// <summary>
-    /// Convenience method that creates the exported value.
+    /// Gets an instance retrieved from the dependency injection container.
     /// </summary>
-    /// <returns>
-    /// The exported value.
-    /// </returns>
-    public TContract Create() => factory();
+    public TService GetService() => factory();
 
     /// <summary>
     /// Returns a string that represents the current object.
@@ -44,25 +41,23 @@ public class Factory<TContract> : IFactory<TContract>
     /// <returns>
     /// A string that represents the current object.
     /// </returns>
-    public override string ToString()
-    {
-        return $"Export factory of {typeof(TContract).Name}.";
-    }
+    public override string ToString() =>
+        $"{GetType().Name} of {typeof(TService).Name}.";
 }
 
 /// <summary>
-/// An export factory with metadata.
+/// A service factory with metadata.
 /// </summary>
-/// <typeparam name="TContract">Type of the service contract.</typeparam>
+/// <typeparam name="TService">Type of the service contract.</typeparam>
 /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
-public class Factory<TContract, TMetadata> : Factory<TContract>, IFactory<TContract, TMetadata>
+public class Factory<TService, TMetadata> : Factory<TService>, IFactory<TService, TMetadata>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="Factory{TContract,TMetadata}"/> class.
     /// </summary>
     /// <param name="factory">The factory.</param>
     /// <param name="metadata">The metadata.</param>
-    public Factory(Func<TContract> factory, IDictionary<string, object?>? metadata)
+    public Factory(Func<TService> factory, IDictionary<string, object?>? metadata)
         : this(factory, ServiceHelper.GetServiceMetadata<TMetadata>(metadata))
     {
     }
@@ -72,7 +67,7 @@ public class Factory<TContract, TMetadata> : Factory<TContract>, IFactory<TContr
     /// </summary>
     /// <param name="factory">The factory.</param>
     /// <param name="metadata">The metadata.</param>
-    public Factory(Func<TContract> factory, TMetadata metadata)
+    public Factory(Func<TService> factory, TMetadata metadata)
         : base(factory)
     {
         Metadata = metadata;
@@ -92,8 +87,6 @@ public class Factory<TContract, TMetadata> : Factory<TContract>, IFactory<TContr
     /// <returns>
     /// A string that represents the current object.
     /// </returns>
-    public override string ToString()
-    {
-        return $"Export factory of {typeof(TContract).Name} with {Metadata}.";
-    }
+    public override string ToString() =>
+        $"{GetType().Name} of {typeof(TService).Name} with {Metadata}.";
 }

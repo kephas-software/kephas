@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Reflection;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
 
@@ -14,11 +15,93 @@ namespace Kephas.DependencyInjection;
 /// Marks an interface or a class to be an application service, declared at assembly level.
 /// This is useful when the service to be annotated is not accessible for modification.
 /// </summary>
+public abstract class DeclareServiceAttributeBase : ServiceAttributeBase, IServiceInfo, IServiceInfoProvider
+{
+    private readonly Type implementationType;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DeclareServiceAttributeBase"/> class.
+    /// </summary>
+    /// <param name="serviceType">The service type.</param>
+    /// <param name="implementationType">The implementation type.</param>
+    /// <param name="lifetime">The lifetime.</param>
+    protected DeclareServiceAttributeBase(Type serviceType, Type implementationType, AppServiceLifetime lifetime)
+        : base(lifetime)
+    {
+        ServiceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
+        this.implementationType = implementationType ?? throw new ArgumentNullException(nameof(implementationType));
+        AsOpenGeneric = ServiceType.IsGenericTypeDefinition;
+
+        if (!ServiceType.IsAssignableFrom(implementationType))
+        {
+            throw new InvalidOperationException($"{ServiceType} must be assignable to {implementationType}.");
+        }
+    }
+
+    /// <summary>
+    /// Gets the instancing strategy: factory, implementation type, or instance.
+    /// </summary>
+    object? IServiceInfo.InstancingStrategy => implementationType;
+
+    /// <summary>
+    /// Gets the type declaring the service type.
+    /// </summary>
+    /// <remarks>
+    /// This is the type annotated with one of the: [<see cref="TransientServiceAttribute"/>], [<see cref="ScopedServiceAttribute"/>],
+    /// or [<see cref="SingletonServiceAttribute"/>], and which declares the actual service type.
+    /// Typically, this is a generic type used for collecting metadata, redirecting to the non-generic service type.
+    /// </remarks>
+    Type? IServiceInfo.ServiceDeclarationType => ServiceType;
+
+    /// <summary>
+    /// Gets an enumeration of <see cref="ServiceDeclaration"/>.
+    /// </summary>
+    /// <returns>
+    /// An enumeration of <see cref="ServiceDeclaration"/>.
+    /// </returns>
+    IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations()
+    {
+        yield return new ServiceDeclaration(ServiceType!, MetadataType);
+    }
+
+    /// <summary>
+    /// Gets an enumeration of <see cref="ServiceDeclarationInfo"/>.
+    /// The service declaration type is the type declaring the service: if the <see cref="ServiceAttributeBase.ServiceType"/>
+    /// is not provided, the service declaration type is also the service type.
+    /// </summary>
+    /// <returns>
+    /// An enumeration of <see cref="ServiceDeclarationInfo"/>.
+    /// </returns>
+    IEnumerable<ServiceDeclarationInfo> IServiceInfoProvider.GetServiceInfos()
+    {
+        yield return new ServiceDeclarationInfo(ServiceType!, this);
+    }
+
+    /// <summary>
+    /// Gets an enumeration of <see cref="ServiceImplementationDeclaration"/>.
+    /// </summary>
+    /// <param name="eligibleImplementationTypes">The eligible implementation types.</param>
+    /// <returns>
+    /// An enumeration of <see cref="ServiceImplementationDeclaration"/>.
+    /// </returns>
+    IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(
+        IEnumerable<Type> eligibleImplementationTypes)
+    {
+        yield return new ServiceImplementationDeclaration(implementationType, ServiceType!);
+    }
+}
+
+/// <summary>
+/// Marks an interface or a class to be an application service, declared at assembly level.
+/// This is useful when the service to be annotated is not accessible for modification.
+/// </summary>
 /// <typeparam name="TService">The service type.</typeparam>
-public abstract class DeclareServiceAttributeBase<TService> : ServiceAttributeBase, IServiceInfo, IServiceInfoProvider
+/// <typeparam name="TImplementation">The implementation type.</typeparam>
+public abstract class DeclareServiceAttributeBase<TService, TImplementation> : ServiceAttributeBase, IServiceInfo, IServiceInfoProvider
+    where TImplementation : TService
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="DeclareServiceAttributeBase{TService}"/> class.
+    /// Initializes a new instance of the <see cref="DeclareServiceAttributeBase{TService,TImplementation}"/> class.
     /// </summary>
     /// <param name="lifetime">The lifetime.</param>
     protected DeclareServiceAttributeBase(AppServiceLifetime lifetime)
@@ -26,6 +109,11 @@ public abstract class DeclareServiceAttributeBase<TService> : ServiceAttributeBa
     {
         ServiceType = typeof(TService);
     }
+
+    /// <summary>
+    /// Gets the instancing strategy: factory, implementation type, or instance.
+    /// </summary>
+    object? IServiceInfo.InstancingStrategy => typeof(TImplementation);
 
     /// <summary>
     /// Gets the type declaring the service type.
@@ -38,50 +126,39 @@ public abstract class DeclareServiceAttributeBase<TService> : ServiceAttributeBa
     Type? IServiceInfo.ServiceDeclarationType => typeof(TService);
 
     /// <summary>
-    /// Gets an enumeration of application service information objects and their contract declaration type.
-    /// The contract declaration type is the type declaring the contract: if the <see cref="ServiceAttributeBase.ServiceType"/>
-    /// is not provided, the contract declaration type is also the contract type.
+    /// Gets an enumeration of <see cref="ServiceDeclaration"/>.
     /// </summary>
     /// <returns>
-    /// An enumeration of application service information objects and their contract declaration type.
+    /// An enumeration of <see cref="ServiceDeclaration"/>.
+    /// </returns>
+    IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations()
+    {
+        yield return new ServiceDeclaration(ServiceType!, MetadataType);
+    }
+
+    /// <summary>
+    /// Gets an enumeration of <see cref="ServiceDeclarationInfo"/>.
+    /// The service declaration type is the type declaring the service: if the <see cref="ServiceAttributeBase.ServiceType"/>
+    /// is not provided, the service declaration type is also the service type.
+    /// </summary>
+    /// <returns>
+    /// An enumeration of <see cref="ServiceDeclarationInfo"/>.
     /// </returns>
     IEnumerable<ServiceDeclarationInfo> IServiceInfoProvider.GetServiceInfos()
     {
         yield return new ServiceDeclarationInfo(typeof(TService), this);
     }
-}
-
-/// <summary>
-/// Marks an interface or a class to be an application service, declared at assembly level.
-/// This is useful when the service to be annotated is not accessible for modification.
-/// </summary>
-/// <typeparam name="TService">The service type.</typeparam>
-/// <typeparam name="TImplementation">The implementation type.</typeparam>
-public abstract class DeclareServiceAttributeBase<TService, TImplementation> : DeclareServiceAttributeBase<TService>, IServiceInfo, IServiceInfoProvider
-{
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DeclareServiceAttributeBase{TService,TMetadata}"/> class.
-    /// </summary>
-    /// <param name="lifetime">The lifetime.</param>
-    protected DeclareServiceAttributeBase(AppServiceLifetime lifetime)
-        : base(lifetime)
-    {
-    }
-
-    /// <summary>
-    /// Gets the instancing strategy: factory, implementation type, or instance.
-    /// </summary>
-    object? IServiceInfo.InstancingStrategy => typeof(TImplementation);
 
     /// <summary>
     /// Gets an enumeration of <see cref="ServiceImplementationDeclaration"/>.
     /// </summary>
+    /// <param name="eligibleImplementationTypes">The eligible implementation types.</param>
     /// <returns>
     /// An enumeration of <see cref="ServiceImplementationDeclaration"/>.
     /// </returns>
-    IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations()
+    IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
     {
-        yield return new ServiceImplementationDeclaration(typeof(TImplementation), ((IServiceInfo)this).ServiceDeclarationType!);
+        yield return new ServiceImplementationDeclaration(typeof(TImplementation), typeof(TService));
     }
 }
 
@@ -92,15 +169,14 @@ public abstract class DeclareServiceAttributeBase<TService, TImplementation> : D
 /// <typeparam name="TService">The service type.</typeparam>
 /// <typeparam name="TImplementation">The implementation type.</typeparam>
 /// <typeparam name="TMetadata">The metadata type.</typeparam>
-public abstract class DeclareServiceAttributeBase<TService, TImplementation, TMetadata> : DeclareServiceAttributeBase<TService, TImplementation>
+public abstract class DeclareServiceAttributeBase<TService, TImplementation, TMetadata>
+    : DeclareServiceAttributeBase<TService, TImplementation>
+    where TImplementation : TService
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="DeclareServiceAttributeBase{TService,TImplementation,TMetadata}"/> class.
     /// </summary>
     /// <param name="lifetime">The lifetime.</param>
-    protected DeclareServiceAttributeBase(AppServiceLifetime lifetime)
-        : base(lifetime)
-    {
+    protected DeclareServiceAttributeBase(AppServiceLifetime lifetime) : base(lifetime) =>
         MetadataType = typeof(TMetadata);
-    }
 }

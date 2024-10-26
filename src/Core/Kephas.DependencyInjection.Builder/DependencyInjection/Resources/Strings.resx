@@ -27,7 +27,7 @@
         <value>The contract type {0} must be assignable from the declaration type {1}.</value>
     </data>
     <data name="AppServiceCollectionMultipleContractDeclarationsWithSameType" xml:space="preserve">
-        <value>Multiple contract declarations for {0}. {1} will be overwritten by {2}.</value>
+        <value>Multiple service declarations for {0}. {1} will be overwritten by {2}.</value>
     </data>
     <data name="MultipleRegistrationsForAppServiceContract" xml:space="preserve">
         <value>Multiple application services registered for the contract '{contractType}'. Strategy is {resolutionStrategy}, registrations: {registrations}.</value>

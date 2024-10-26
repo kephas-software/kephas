@@ -22,7 +22,7 @@ public class FactoryTest
         var service = Substitute.For<ITestService>();
         var factory = new Factory<ITestService>(() => service);
 
-        var exportedValue = factory.Create();
+        var exportedValue = factory.GetService();
 
         Assert.Same(service, exportedValue);
     }

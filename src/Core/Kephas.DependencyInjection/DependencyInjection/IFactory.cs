@@ -13,18 +13,15 @@ using System.Diagnostics.CodeAnalysis;
 namespace Kephas.DependencyInjection;
 
 /// <summary>
-/// Contract used to import parts that wish to dynamically create instances of other parts.
+/// Service used to retrieve service instances on a factory basis.
 /// </summary>
-/// <typeparam name="T">The contract type of the created parts.</typeparam>
+/// <typeparam name="T">The service type of the retrieved instances.</typeparam>
 public interface IFactory<out T>
 {
     /// <summary>
-    /// Creates the exported value.
+    /// Gets an instance retrieved from the dependency injection container.
     /// </summary>
-    /// <returns>
-    /// A new instance of the exported value.
-    /// </returns>
-    public T Create();
+    public T GetService();
 }
 
 /// <summary>

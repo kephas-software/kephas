@@ -114,7 +114,7 @@ public record ServiceInfo : IServiceInfo
     /// Initializes a new instance of the <see cref="ServiceInfo"/> class.
     /// </summary>
     /// <param name="serviceType">The type used to register and retrieve the service. Typically, this is an interface.</param>
-    /// <param name="serviceDeclarationType">The contract declaration type.</param>
+    /// <param name="serviceDeclarationType">The service declaration type.</param>
     /// <param name="instancingStrategy">Type of the service instance.</param>
     /// <param name="lifetime">Optional. The application service lifetime.</param>
     /// <param name="asOpenGeneric">Optional.

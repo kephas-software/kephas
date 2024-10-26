@@ -85,9 +85,9 @@ public class EnumerableServiceExtensionsTest
     public void SelectServices_factory_no_predicate()
     {
         var f1 = Substitute.For<IFactory<string, string>>();
-        f1.Create().Returns("a", "b");
+        f1.GetService().Returns("a", "b");
         var f2 = Substitute.For<IFactory<string, string>>();
-        f2.Create().Returns("1", "2");
+        f2.GetService().Returns("1", "2");
 
         var services = new[] { f1, f2 };
             
@@ -104,13 +104,13 @@ public class EnumerableServiceExtensionsTest
         var services = values.Select(v =>
         {
             var f = Substitute.For<IFactory<string, string>>();
-            f.Create().Returns(v, v + "-2");
+            f.GetService().Returns(v, v + "-2");
             f.Metadata.Returns("m-" + v);
             return f;
         }).ToList();
             
-        Assert.Equal(result, services.SelectServices(s => s.Metadata.StartsWith(start)));
-        Assert.Equal(result.Select(v => v + "-2"), services.SelectServices(s => s.Metadata.StartsWith(start)));
+        Assert.Equal(result, services.SelectServices(m => m.StartsWith(start)));
+        Assert.Equal(result.Select(v => v + "-2"), services.SelectServices(m => m.StartsWith(start)));
     }
 
     [Theory]
@@ -123,7 +123,7 @@ public class EnumerableServiceExtensionsTest
         var services = values.Select(v =>
         {
             var f = Substitute.For<IFactory<string, string>>();
-            f.Create().Returns(v, v + "-2");
+            f.GetService().Returns(v, v + "-2");
             f.Metadata.Returns("m-" + v);
             return f;
         }).ToList();
@@ -141,7 +141,7 @@ public class EnumerableServiceExtensionsTest
         var services = values.Select(v =>
         {
             var f = Substitute.For<IFactory<string, string>>();
-            f.Create().Returns(v, v + "-2");
+            f.GetService().Returns(v, v + "-2");
             f.Metadata.Returns("m-" + v);
             return f;
         }).ToList();

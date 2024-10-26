@@ -183,7 +183,7 @@ In Kephas, the emphasis is set on the service contract and that's why we configu
 
 There are cases when for the same service contract multiple service implementations are required.
 An example is when multiple partial converters can be defined between two types, and all these converters must be applied.
-In such a case, set the `AllowMultiple` option to true in the contract declaration. By default, the services use the single mode.
+In such a case, set the `AllowMultiple` option to true in the service declaration. By default, the services use the single mode.
 
 #### Example:
 

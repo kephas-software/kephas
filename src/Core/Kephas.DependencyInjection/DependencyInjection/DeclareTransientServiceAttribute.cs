@@ -11,10 +11,11 @@ namespace Kephas.DependencyInjection;
 /// Marks an interface or a class to be a transient application service, declared at assembly level.
 /// This is useful when the service to be annotated is not accessible for modification.
 /// </summary>
-/// <typeparam name="TService">The service type.</typeparam>
+/// <param name="serviceType">The service type.</param>
+/// <param name="implementationType">The implementation type.</param>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public sealed class DeclareTransientServiceAttribute<TService>()
-    : DeclareServiceAttributeBase<TService>(AppServiceLifetime.Transient);
+public sealed class DeclareTransientServiceAttribute(Type serviceType, Type implementationType)
+    : DeclareServiceAttributeBase(serviceType, implementationType, AppServiceLifetime.Transient);
 
 /// <summary>
 /// Marks an interface or a class to be a transient application service, declared at assembly level.
@@ -24,7 +25,8 @@ public sealed class DeclareTransientServiceAttribute<TService>()
 /// <typeparam name="TImplementation">The implementation type.</typeparam>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public sealed class DeclareTransientServiceAttribute<TService, TImplementation>()
-    : DeclareServiceAttributeBase<TService, TImplementation>(AppServiceLifetime.Transient);
+    : DeclareServiceAttributeBase<TService, TImplementation>(AppServiceLifetime.Transient)
+    where TImplementation : TService;
 
 /// <summary>
 /// Marks an interface or a class to be a transient application service, declared at assembly level.
@@ -35,4 +37,5 @@ public sealed class DeclareTransientServiceAttribute<TService, TImplementation>(
 /// <typeparam name="TMetadata">The metadata type.</typeparam>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public sealed class DeclareTransientServiceAttribute<TService, TImplementation, TMetadata>()
-    : DeclareServiceAttributeBase<TService, TImplementation, TMetadata>(AppServiceLifetime.Transient);
+    : DeclareServiceAttributeBase<TService, TImplementation, TMetadata>(AppServiceLifetime.Transient)
+    where TImplementation : TService;

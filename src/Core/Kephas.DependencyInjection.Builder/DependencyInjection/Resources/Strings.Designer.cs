@@ -69,7 +69,7 @@ namespace Kephas.DependencyInjection.Builder.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Multiple contract declarations for {0}. {1} will be overwritten by {2}..
+        ///   Looks up a localized string similar to Multiple service declarations for {0}. {1} will be overwritten by {2}..
         /// </summary>
         internal static string AppServiceCollectionMultipleContractDeclarationsWithSameType {
             get {

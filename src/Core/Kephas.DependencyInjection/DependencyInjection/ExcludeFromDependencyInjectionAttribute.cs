@@ -14,6 +14,4 @@ namespace Kephas.DependencyInjection;
 /// Marks an eligible class for an application service implementation to be excluded from dependency injection.
 /// </summary>
 [AttributeUsage(AttributeTargets.All, Inherited = false)]
-public sealed class ExcludeFromDependencyInjectionAttribute : Attribute
-{
-}
+public sealed class ExcludeFromDependencyInjectionAttribute : Attribute;

@@ -10,7 +10,6 @@
 
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
-using Kephas.Collections;
 
 namespace Kephas.DependencyInjection.Metadata;
 
@@ -33,10 +32,10 @@ public class ServiceMetadata : IReadOnlyDictionary<string, object?>, IHasPriorit
             return;
         }
 
-        Priority = (Priority)Convert.ChangeType(metadata.TryGetValue(nameof(Priority), Priority.Normal)!, typeof(int));
-        ServiceKey = (string?)metadata.TryGetValue(nameof(ServiceKey));
-        OverrideBaseImplementation = (bool)metadata.TryGetValue(nameof(OverrideBaseImplementation), false)!;
-        ImplementationType = (Type?)metadata.TryGetValue(nameof(ImplementationType));
+        Priority = (Priority)Convert.ChangeType(TryGetValue(metadata, nameof(Priority), Priority.Normal)!, typeof(int));
+        ServiceKey = (string?)TryGetValue(metadata, nameof(ServiceKey));
+        OverrideBaseImplementation = (bool)TryGetValue(metadata, nameof(OverrideBaseImplementation), false)!;
+        ImplementationType = (Type?)TryGetValue(metadata, nameof(ImplementationType));
     }
 
     /// <summary>
@@ -153,4 +152,21 @@ public class ServiceMetadata : IReadOnlyDictionary<string, object?>, IHasPriorit
     IEnumerable<string> IReadOnlyDictionary<string, object?>.Keys => metadata.Keys;
 
     IEnumerable<object?> IReadOnlyDictionary<string, object?>.Values => metadata.Values;
+
+    /// <summary>
+    /// Tries to get the value for the provided key. If the requested item cannot be found, the default value is returned.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the key.</typeparam>
+    /// <typeparam name="TValue">The type of the value.</typeparam>
+    /// <param name="dictionary">The dictionary.</param>
+    /// <param name="key">The item's key.</param>
+    /// <param name="defaultValue">The default value to return if the item could not be found.</param>
+    /// <returns>The found value, or the default value.</returns>
+    protected static TValue? TryGetValue<TKey, TValue>(IDictionary<TKey, TValue> dictionary, [DisallowNull] TKey key, TValue? defaultValue = default)
+    {
+        dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
+        key = key ?? throw new ArgumentNullException(nameof(key));
+
+        return dictionary.TryGetValue(key, out var value) ? value : defaultValue;
+    }
 }
