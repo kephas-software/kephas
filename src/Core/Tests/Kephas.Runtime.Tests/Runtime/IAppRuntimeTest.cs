@@ -22,6 +22,13 @@ public class IAppRuntimeTest
         appRuntime.GetAppName().Should().Be("Kephas.Runtime");
     }
 
+    [Fact]
+    public void GetAppVersion_from_assembly()
+    {
+        IAppRuntime appRuntime = new TestAppRuntime(typeof(IAppRuntime).Assembly);
+        appRuntime.GetAppVersion().Should().StartWith("1.0.0+");
+    }
+
     public class TestAppRuntime : IAppRuntime
     {
         private readonly Assembly _assembly;

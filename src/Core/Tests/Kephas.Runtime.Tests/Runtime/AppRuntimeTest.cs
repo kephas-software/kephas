@@ -55,20 +55,41 @@ public class AppRuntimeTest
     public void GetAppName_from_assembly()
     {
         IAppRuntime appRuntime = new AppRuntime(new AppRuntimeSettings {EntryAssembly = typeof(IAppRuntime).Assembly});
-        Assert.Equal("Kephas.Runtime", appRuntime.GetAppName());
+        appRuntime.GetAppName().Should().Be("Kephas.Runtime");
     }
 
     [Fact]
     public void GetAppName_from_settings()
     {
         IAppRuntime appRuntime = new AppRuntime(new AppRuntimeSettings {EntryAssembly = typeof(IAppRuntime).Assembly, AppName = "app"});
-        Assert.Equal("app", appRuntime.GetAppName());
+        appRuntime.GetAppName().Should().Be("app");
+    }
+
+    [Fact]
+    public void GetAppVersion_from_assembly()
+    {
+        IAppRuntime appRuntime = new AppRuntime(new AppRuntimeSettings {EntryAssembly = typeof(IAppRuntime).Assembly});
+        appRuntime.GetAppVersion().Should().StartWith("1.0.0+");
+    }
+
+    [Fact]
+    public void GetAppVersion_from_settings()
+    {
+        IAppRuntime appRuntime = new AppRuntime(new AppRuntimeSettings {EntryAssembly = typeof(IAppRuntime).Assembly, AppVersion = "1.2.3.4"});
+        appRuntime.GetAppVersion().Should().Be("1.2.3.4");
     }
 
     [Fact]
     public void GetEnvironment_from_settings()
     {
         IAppRuntime appRuntime = new AppRuntime(new AppRuntimeSettings {EntryAssembly = typeof(IAppRuntime).Assembly, Environment = "env"});
-        Assert.Equal("env", appRuntime.GetEnvironment());
+        appRuntime.GetEnvironment().Should().Be("env");
+    }
+
+    [Fact]
+    public void GetEnvironment_unknown()
+    {
+        IAppRuntime appRuntime = new AppRuntime(new AppRuntimeSettings {EntryAssembly = typeof(IAppRuntime).Assembly});
+        appRuntime.GetEnvironment().Should().Be(IAppRuntime.DefaultEnvironment);
     }
 }
