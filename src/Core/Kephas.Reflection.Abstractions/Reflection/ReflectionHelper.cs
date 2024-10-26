@@ -8,13 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Reflection;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+
+namespace Kephas.Reflection;
 
 /// <summary>
 /// Helper class for reflection.
@@ -184,24 +181,10 @@ public static class ReflectionHelper
     }
 
     /// <summary>
-    /// Gets the assembly qualified name without the version and public key information.
-    /// </summary>
-    /// <param name="type">The type.</param>
-    /// <returns>
-    /// The assembly qualified name without the version and public key information.
-    /// </returns>
-    public static string GetAssemblyQualifiedShortName(this Type type)
-    {
-        type = type ?? throw new ArgumentNullException(nameof(type));
-
-        return string.Concat(type.FullName, ", ", IntrospectionExtensions.GetTypeInfo(type).Assembly.GetName().Name);
-    }
-
-    /// <summary>
-    /// Gets the full name of the non generic type with the same base name as the provided type.
+    /// Gets the full name of the non-generic type with the same base name as the provided type.
     /// </summary>
     /// <param name="typeInfo">The type information.</param>
-    /// <returns>The full name of the non generic type.</returns>
+    /// <returns>The full name of the non-generic type.</returns>
     public static string GetNonGenericFullName(this TypeInfo typeInfo)
     {
         typeInfo = typeInfo ?? throw new ArgumentNullException(nameof(typeInfo));
@@ -217,17 +200,17 @@ public static class ReflectionHelper
     }
 
     /// <summary>
-    /// Gets the full name of the non generic type with the same base name as the provided type.
+    /// Gets the full name of the non-generic type with the same base name as the provided type.
     /// </summary>
     /// <param name="type">The type.</param>
     /// <returns>
-    /// The full name of the non generic type.
+    /// The full name of the non-generic type.
     /// </returns>
     public static string GetNonGenericFullName(this Type type)
     {
         type = type ?? throw new ArgumentNullException(nameof(type));
 
-        return GetNonGenericFullName(IntrospectionExtensions.GetTypeInfo(type));
+        return GetNonGenericFullName(type.GetTypeInfo());
     }
 
     /// <summary>
@@ -244,11 +227,11 @@ public static class ReflectionHelper
     }
 
     /// <summary>
-    /// Gets the type's proper properties: public, non-static, and without parameters.
+    /// Gets the type public instance properties.
     /// </summary>
     /// <param name="type">The type.</param>
-    /// <returns>An enumeration of property infos.</returns>
-    public static IEnumerable<PropertyInfo> GetTypeProperties(Type type)
+    /// <returns>An enumeration of <see cref="PropertyInfo"/>.</returns>
+    public static IEnumerable<PropertyInfo> GetPublicInstanceProperties(Type type)
     {
         return type.GetRuntimeProperties()
             .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic

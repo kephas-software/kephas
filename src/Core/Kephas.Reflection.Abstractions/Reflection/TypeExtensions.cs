@@ -234,7 +234,9 @@ public static class TypeExtensions
     /// <returns>
     /// The enumerable item type.
     /// </returns>
-    public static Type? TryGetEnumerableItemType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type enumerableGenericType)
+    public static Type? TryGetEnumerableItemType(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type enumerableGenericType)
     {
         if (!type.IsEnumerable())
         {
@@ -261,7 +263,9 @@ public static class TypeExtensions
     /// <returns>
     /// <c>true</c> if the type is a constructed generic of the provided open generic type, <c>false</c> otherwise.
     /// </returns>
-    public static bool IsConstructedGenericOf([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type openGenericType)
+    public static bool IsConstructedGenericOf(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type openGenericType)
     {
         type = type ?? throw new ArgumentNullException(nameof(type));
 
@@ -283,7 +287,9 @@ public static class TypeExtensions
     /// Assert.Same(type, typeof(IEnumerable&lt;char&gt;));
     /// </code>
     /// </example>
-    public static Type? GetBaseConstructedGenericOf([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type openGenericType)
+    public static Type? TryGetBaseConstructedGenericOf(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type openGenericType)
     {
         type = type ?? throw new ArgumentNullException(nameof(type));
         openGenericType = openGenericType ?? throw new ArgumentNullException(nameof(openGenericType));
@@ -319,7 +325,9 @@ public static class TypeExtensions
     /// <returns>
     /// The qualified full name.
     /// </returns>
-    public static string? GetQualifiedFullName([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, bool stripVersionInfo = true)
+    public static string? GetQualifiedFullName(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type,
+        bool stripVersionInfo = true)
     {
         type = type ?? throw new ArgumentNullException(nameof(type));
 
