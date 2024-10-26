@@ -37,7 +37,7 @@ public class DeclareServicesSourceGeneratorIntegrationTest
         var serviceProviderType = appServicesAttr.GetType().GenericTypeArguments[0];
         var provider = Activator.CreateInstance(serviceProviderType)!;
         var typesProvider = (IServiceInfoProvider)provider;
-        var services = typesProvider.GetImplementationDeclarations();
+        var services = typesProvider.GetImplementationDeclarations([]);
 
         var expectedServices = new (Type implementationType, Type serviceDeclarationType)[]
         {

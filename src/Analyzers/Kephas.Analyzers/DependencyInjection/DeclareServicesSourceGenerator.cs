@@ -36,6 +36,7 @@ public class DeclareServicesSourceGenerator : IncrementalGeneratorBase<TypeDecla
             using System;
             using System.Collections.Generic;
             using System.Diagnostics.CodeAnalysis;
+            using System.Reflection;
 
             using Kephas.DependencyInjection;
             using Kephas.DependencyInjection.ServiceProviders;

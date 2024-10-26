@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -103,8 +101,8 @@ internal static class DependencyInjectionAnalyzerHelper
         // for generic types, if a contract type is provided
         if (serviceAttr.NamedArguments.Any(a => a.Key == "ServiceType"))
         {
-            var contractType = serviceAttr.NamedArguments.First(a => a.Key == "ServiceType").Value.Value as INamedTypeSymbol;
-            if (!(contractType?.IsGenericType ?? false))
+            var serviceType = serviceAttr.NamedArguments.First(a => a.Key == "ServiceType").Value.Value as INamedTypeSymbol;
+            if (!(serviceType?.IsGenericType ?? false))
             {
                 return namedTypeSymbol.ConstructedFrom ?? namedTypeSymbol;
             }
@@ -211,15 +209,15 @@ internal static class DependencyInjectionAnalyzerHelper
         source.AppendLine($@"       IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations()");
         source.AppendLine($@"       {{");
 
-        var contractTypes = sourceContext.ServiceDeclarationTypes;
+        var serviceDeclarationTypes = sourceContext.ServiceDeclarationTypes;
         var metadataTypes = sourceContext.MetadataTypes;
-        if (contractTypes.Count > 0)
+        if (serviceDeclarationTypes.Count > 0)
         {
             var contractTypesBuilder = new StringBuilder();
-            foreach (var typeSyntax in contractTypes)
+            foreach (var typeSyntax in serviceDeclarationTypes)
             {
                 var typeFullName = typeSyntax.GetTypeFullName(sourceContext);
-                var metadataTypeSyntax = DependencyInjectionAnalyzerHelper.TryGetMetadataType(typeSyntax, metadataTypes);
+                var metadataTypeSyntax = TryGetMetadataType(typeSyntax, metadataTypes);
                 var metadataTypeFullName = metadataTypeSyntax is null ? "null" : $"typeof({metadataTypeSyntax.GetTypeFullName(sourceContext)})";
                 source.AppendLine($"            yield return new ServiceDeclaration(typeof({typeFullName}), {metadataTypeFullName});");
                 contractTypesBuilder.Append($"{typeSyntax.Identifier}, ");
@@ -238,7 +236,7 @@ internal static class DependencyInjectionAnalyzerHelper
 
         source.AppendLine($@"       }}");
         source.AppendLine();
-        source.AppendLine($@"       IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations()");
+        source.AppendLine($@"       IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)");
         source.AppendLine($@"       {{");
 
         if (serviceImplementationDeclarations.Count > 0)
