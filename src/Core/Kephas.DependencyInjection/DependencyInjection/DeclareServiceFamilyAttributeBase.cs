@@ -78,7 +78,7 @@ public abstract class DeclareServiceFamilyAttributeBase : ServiceAttributeBase, 
     /// An enumeration of <see cref="ServiceImplementationDeclaration"/>.
     /// </returns>
     public IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes) =>
-        serviceDeclarationType.GetImplementationDeclarations(eligibleImplementationTypes);
+        serviceDeclarationType.GetImplementationDeclarations(ServiceType!, eligibleImplementationTypes);
 }
 
 /// <summary>
@@ -148,7 +148,7 @@ public abstract class DeclareServiceFamilyAttributeBase<TService> : ServiceAttri
     /// An enumeration of <see cref="ServiceImplementationDeclaration"/>.
     /// </returns>
     public IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes) =>
-        serviceDeclarationType.GetImplementationDeclarations(eligibleImplementationTypes);
+        serviceDeclarationType.GetImplementationDeclarations(ServiceType!, eligibleImplementationTypes);
 }
 
 /// <summary>

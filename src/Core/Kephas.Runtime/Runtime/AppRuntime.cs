@@ -82,6 +82,11 @@ public class AppRuntime : IAppRuntime
     /// </returns>
     public IEnumerable<Assembly> GetAppAssemblies() => appAssemblies ??= ComputeAppAssemblies().ToList();
 
+    /// <summary>Returns a string that represents the current object.</summary>
+    /// <returns>A string that represents the current object.</returns>
+    public override string ToString() =>
+        $"{GetAppName()} v{GetAppVersion()} ({((IAppRuntime)this).GetAppInstanceId()}) in {GetEnvironment()}";
+
     private IEnumerable<Assembly> ComputeAppAssemblies()
     {
         var completed = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);

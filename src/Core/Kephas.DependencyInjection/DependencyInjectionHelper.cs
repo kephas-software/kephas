@@ -31,13 +31,13 @@ internal static class DependencyInjectionHelper
             : type is { IsClass: true, IsAbstract: false, IsPublic: true }) &&
         type.GetCustomAttribute<ExcludeFromDependencyInjectionAttribute>() == null;
     
-    internal static IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(this Type serviceDeclarationType, IEnumerable<Type> eligibleImplementationTypes) =>
+    internal static IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(this Type serviceDeclarationType, Type serviceType, IEnumerable<Type> eligibleImplementationTypes) =>
         serviceDeclarationType.IsGenericTypeDefinition
             ? eligibleImplementationTypes
                 .Select(t => (implementationType: t, closedServiceType: t.TryGetBaseConstructedGenericOf(serviceDeclarationType)))
-                .Where(tuple => tuple.closedServiceType is not null)
+                .Where(tuple => tuple.closedServiceType is not null && (serviceType.IsGenericTypeDefinition || serviceType.IsAssignableFrom(tuple.closedServiceType)))
                 .Select(tuple => new ServiceImplementationDeclaration(tuple.implementationType, serviceDeclarationType))
             : eligibleImplementationTypes
-                .Where(t => !t.IsGenericTypeDefinition && serviceDeclarationType.IsAssignableFrom(t))
+                .Where(t => !t.IsGenericTypeDefinition && serviceDeclarationType.IsAssignableFrom(t) && serviceType.IsAssignableFrom(t))
                 .Select(t => new ServiceImplementationDeclaration(t, serviceDeclarationType));
 }
