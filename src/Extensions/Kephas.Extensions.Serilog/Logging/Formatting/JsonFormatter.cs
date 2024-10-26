@@ -2,7 +2,7 @@
 using Serilog.Expressions;
 using Serilog.Templates;
 
-namespace Kephas.Logging.Formatting;
+namespace Kephas.Extensions.Logging.Formatting;
 
 /// <summary>
 /// This formatter takes care of formatting the Serilog JSON output

@@ -32,7 +32,7 @@ public abstract class DeclareServiceAttributeBase : ServiceAttributeBase, IServi
         this.implementationType = implementationType ?? throw new ArgumentNullException(nameof(implementationType));
         AsOpenGeneric = ServiceType.IsGenericTypeDefinition;
 
-        if (!ServiceType.IsAssignableFrom(implementationType))
+        if (!ServiceType.IsGenericTypeDefinition && !ServiceType.IsAssignableFrom(implementationType))
         {
             throw new InvalidOperationException($"{ServiceType} must be assignable to {implementationType}.");
         }

@@ -1,4 +1,4 @@
-using Kephas.Logging;
+using Kephas.Extensions.Logging;
 using Kephas.Runtime;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,7 +6,7 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Exceptions;
 
-namespace Kephas.Serilog;
+namespace Kephas.Extensions.Serilog;
 
 /// <summary>
 /// Extension methods for logging with Serilog.

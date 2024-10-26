@@ -10,12 +10,12 @@ using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
+using Kephas.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Xunit;
-using Kephas.Testing;
 
-namespace Kephas.Tests.Extensions.DependencyInjection;
+namespace Kephas.Extensions.Tests.DependencyInjection;
 
 /// <summary>
 /// Tests for <see cref="ServiceProvider"/>.
@@ -27,7 +27,7 @@ public class DependencyInjectionTest
         var services = new ServiceCollection();
         foreach (var type in types)
         {
-            services.AddSingleton(type, type);
+            ServiceCollectionExtensions.AddSingleton(services, type, type);
         }
 
         return services.BuildServiceProvider();

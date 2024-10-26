@@ -40,7 +40,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <RootNamespace>Kephas</RootNamespace>
+        <RootNamespace>Kephas.Extensions</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">

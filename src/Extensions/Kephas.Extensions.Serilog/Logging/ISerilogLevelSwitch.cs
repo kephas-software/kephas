@@ -7,7 +7,7 @@
 
 using Serilog.Core;
 
-namespace Kephas.Logging;
+namespace Kephas.Extensions.Logging;
 
 /// <summary>
 /// Provides the switch for the logging level.

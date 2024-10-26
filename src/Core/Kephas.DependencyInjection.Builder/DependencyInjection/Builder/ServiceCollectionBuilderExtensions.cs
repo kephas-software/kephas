@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
 using Kephas.Collections;
 using Kephas.DependencyInjection.Builder.Resources;
 using Kephas.DependencyInjection.Metadata;
@@ -37,6 +38,7 @@ internal static class ServiceInfoCollectionBuilderExtensions
             serviceDeclarationInfos,
             implementationDeclarations);
 
+        var validationResults = new List<ValidationResult>();
         foreach (var (_, serviceEntry) in serviceMap)
         {
             // first: split the contract info and the rest of the registrations.
@@ -51,7 +53,11 @@ internal static class ServiceInfoCollectionBuilderExtensions
             {
                 // register one service, no matter if multiple or single.
                 var appServiceInfo = registrations[0];
-                services.AddAppService(appServiceInfo);
+                var validationResult = services.AddAppService(appServiceInfo);
+                if (validationResult != ValidationResult.Success)
+                {
+                    validationResults.Add(validationResult!);
+                }
                 continue;
             }
 
@@ -63,29 +69,35 @@ internal static class ServiceInfoCollectionBuilderExtensions
                 : sortedRegistrations.Where(i => !overriddenTypes.Contains(((IServiceInfo)i.serviceInfo).ImplementationType!));
             foreach (var appServiceInfo in filteredServiceInfos)
             {
-                services.AddAppService(appServiceInfo.serviceInfo);
+                var validationResult = services.AddAppService(appServiceInfo.serviceInfo);
+                if (validationResult != ValidationResult.Success)
+                {
+                    validationResults.Add(validationResult!);
+                }
             }
         }
 
         return services;
     }
 
-    private static void AddAppService(
+    private static ValidationResult? AddAppService(
         this IServiceInfoCollection appServices,
         IServiceInfo serviceInfo)
     {
-        CheckContractType(serviceInfo);
+        var result = CheckContractType(serviceInfo);
 
         appServices.Add(serviceInfo);
+
+        return result;
     }
 
-    private static void CheckContractType(IServiceInfo serviceInfo)
+    private static ValidationResult? CheckContractType(IServiceInfo serviceInfo)
     {
         var serviceDeclarationType = serviceInfo.ServiceDeclarationType;
         var serviceType = serviceInfo.ServiceType;
         if (serviceDeclarationType is null || serviceType is null)
         {
-            return;
+            return ValidationResult.Success;
         }
 
         if (serviceType.IsGenericTypeDefinition)
@@ -94,12 +106,15 @@ internal static class ServiceInfoCollectionBuilderExtensions
         }
         else if (!serviceType.IsAssignableFrom(serviceDeclarationType))
         {
+            // Warning: the serviceType and the declaration type might not be compatible.
             var serviceValidationMessage = string.Format(
                 Strings.AppServiceContractTypeDoesNotMatchServiceContract,
                 serviceType,
                 serviceDeclarationType);
-            throw new ServiceException(serviceValidationMessage);
+            return new ValidationResult(serviceValidationMessage);
         }
+        
+        return ValidationResult.Success;
     }
 
     private static (IList<(ServiceInfo serviceInfo, Priority overridePriority)> sortedRegistrations, IList<Type> overriddenTypes) SortRegistrations(IEnumerable<ServiceInfo> appServiceInfos)

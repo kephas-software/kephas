@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Kephas.Dynamic;
 
-namespace Kephas.Logging.Formatting;
+namespace Kephas.Extensions.Logging.Formatting;
 
 internal class MessageInterpolationFormatter 
 {

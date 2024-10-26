@@ -4,7 +4,7 @@ using Kephas.Runtime;
 using Serilog.Events;
 using Serilog.Expressions;
 
-namespace Kephas.Logging.Formatting;
+namespace Kephas.Extensions.Logging.Formatting;
 
 internal class FormatMessageResolver : NameResolver
 {

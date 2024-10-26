@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Extensions;
 using Kephas.Runtime;
 using Kephas.Runtime.Configuration;
 using Microsoft.Extensions.Configuration;

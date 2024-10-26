@@ -16,18 +16,18 @@ namespace Kephas.DependencyInjection;
 /// <summary>
 /// Collection of ordered lazy services.
 /// </summary>
-/// <typeparam name="TContract">Type of the service contract.</typeparam>
+/// <typeparam name="TService">Type of the service.</typeparam>
 /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
 [Priority(Priority.Low)]
-public class LazyEnumerable<TContract, TMetadata> : ILazyEnumerable<TContract, TMetadata>
+public class LazyEnumerable<TService, TMetadata> : ILazyEnumerable<TService, TMetadata>
 {
-    private readonly ICollection<Lazy<TContract, TMetadata>> serviceFactories;
+    private readonly ICollection<Lazy<TService, TMetadata>> serviceFactories;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="LazyEnumerable{TContract,TMetadata}"/> class.
+    /// Initializes a new instance of the <see cref="LazyEnumerable{TService,TMetadata}"/> class.
     /// </summary>
     /// <param name="serviceFactories">The service factories.</param>
-    public LazyEnumerable(IEnumerable<Lazy<TContract, TMetadata>>? serviceFactories = null)
+    public LazyEnumerable(IEnumerable<Lazy<TService, TMetadata>>? serviceFactories = null)
     {
         this.serviceFactories = ComputeServiceFactories(serviceFactories);
     }
@@ -38,7 +38,7 @@ public class LazyEnumerable<TContract, TMetadata> : ILazyEnumerable<TContract, T
     /// <returns>
     /// The enumerator.
     /// </returns>
-    public IEnumerator<Lazy<TContract, TMetadata>> GetEnumerator() => serviceFactories.GetEnumerator();
+    public IEnumerator<Lazy<TService, TMetadata>> GetEnumerator() => serviceFactories.GetEnumerator();
 
     /// <summary>
     /// Gets the enumerator.
@@ -48,11 +48,11 @@ public class LazyEnumerable<TContract, TMetadata> : ILazyEnumerable<TContract, T
     /// </returns>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    private ICollection<Lazy<TContract, TMetadata>> ComputeServiceFactories(IEnumerable<Lazy<TContract, TMetadata>>? serviceFactories)
+    private ICollection<Lazy<TService, TMetadata>> ComputeServiceFactories(IEnumerable<Lazy<TService, TMetadata>>? serviceFactories)
     {
         if (serviceFactories == null)
         {
-            return Array.Empty<Lazy<TContract, TMetadata>>();
+            return Array.Empty<Lazy<TService, TMetadata>>();
         }
 
         var orderedFactories = serviceFactories

@@ -7,7 +7,7 @@
 
 using Microsoft.Extensions.Logging;
 
-namespace Kephas.Logging;
+namespace Kephas.Extensions.Logging;
 
 /// <summary>
 /// Service for adjusting the log level.

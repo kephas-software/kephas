@@ -6,7 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Text;
-using Kephas.Logging.Formatting;
+using Kephas.Extensions.Logging.Formatting;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Core;
@@ -14,7 +14,7 @@ using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Sinks.File;
 
-namespace Kephas.Serilog;
+namespace Kephas.Extensions.Serilog;
 
 /// <summary>
 /// Logger configuration extensions using

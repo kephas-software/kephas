@@ -24,7 +24,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Kephas;
+namespace Kephas.Extensions;
 
 /// <summary>
 /// Extension methods for <see cref="IServiceCollection"/>.

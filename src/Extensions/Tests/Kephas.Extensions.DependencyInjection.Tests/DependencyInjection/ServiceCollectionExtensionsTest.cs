@@ -13,7 +13,7 @@ using Kephas.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-namespace Kephas.Tests.Extensions.DependencyInjection;
+namespace Kephas.Extensions.Tests.DependencyInjection;
 
 public class ServiceCollectionExtensionsTest
 {
@@ -66,7 +66,7 @@ public class ServiceCollectionExtensionsTest
         var services = new ServiceCollection();
 
         services.AddSingleton<Dependency>();
-        services.AddSingleton(typeof(IOpen<>), typeof(MoreOpenWithDependency<>));
+        ServiceCollectionExtensions.AddSingleton(services, typeof(IOpen<>), typeof(MoreOpenWithDependency<>));
 
         using (var container = services.BuildServiceProvider())
         {

@@ -1,7 +1,7 @@
-﻿using Kephas.Logging.Formatting;
+﻿using Kephas.Extensions.Logging.Formatting;
 using Kephas.Runtime;
 
-namespace Kephas.Logging;
+namespace Kephas.Extensions.Logging;
 
 /// <summary>
 /// Helper methods for logging.

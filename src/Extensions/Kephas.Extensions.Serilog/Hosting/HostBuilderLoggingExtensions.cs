@@ -5,14 +5,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Logging;
+using Kephas.Extensions.Logging;
+using Kephas.Extensions.Serilog;
 using Kephas.Runtime;
-using Kephas.Serilog;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace Kephas.Hosting;
+namespace Kephas.Extensions.Hosting;
 
 /// <summary>
 /// Logging related extension methods for <see cref="IHostBuilder"/>.
@@ -48,7 +48,7 @@ public static class HostBuilderLoggingExtensions
 
         builder.ConfigureServices((_, services) =>
         {
-            services.AddSingleton<ILogLevelSwitch, SerilogLevelSwitch>();
+            ServiceCollectionExtensions.AddSingleton<ILogLevelSwitch, SerilogLevelSwitch>(services);
         });
 
         builder.UseSerilog((context, services, loggerConfiguration) =>

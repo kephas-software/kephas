@@ -9,7 +9,7 @@ using System.Text;
 using Kephas.Dynamic;
 using Serilog.Events;
 
-namespace Kephas.Logging.Formatting;
+namespace Kephas.Extensions.Logging.Formatting;
 
 internal class DynamicLogEventProperty(StructureValue properties) : IDynamic
 {

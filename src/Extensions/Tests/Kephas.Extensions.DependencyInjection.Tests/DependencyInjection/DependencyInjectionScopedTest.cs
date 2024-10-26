@@ -12,7 +12,7 @@ using Kephas.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-namespace Kephas.Tests.Extensions.DependencyInjection;
+namespace Kephas.Extensions.Tests.DependencyInjection;
 
 public class DependencyInjectionScopedTest
 {

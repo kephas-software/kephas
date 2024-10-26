@@ -5,12 +5,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas;
 using Kephas.DependencyInjection;
+using Kephas.Extensions;
 
 [assembly: DeclareSingletonService<TimeProvider, DefaultTimeProvider>]
 
-namespace Kephas;
+namespace Kephas.Extensions;
 
 /// <summary>
 /// The default time provider.

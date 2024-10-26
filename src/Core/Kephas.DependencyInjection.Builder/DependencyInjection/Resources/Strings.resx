@@ -24,7 +24,7 @@
         </value>
     </resheader>
     <data name="AppServiceInfoBuilderContractTypeMismatch" xml:space="preserve">
-        <value>The contract type {0} must be assignable from the declaration type {1}.</value>
+        <value>The service type {0} must be assignable from the declaration type {1}.</value>
     </data>
     <data name="AppServiceCollectionMultipleContractDeclarationsWithSameType" xml:space="preserve">
         <value>Multiple service declarations for {0}. {1} will be overwritten by {2}.</value>
@@ -36,7 +36,7 @@
         <value>Multiple application services registered for the contract '{0}' and the override priority does not allow a proper service resolution. Registrations: {1}.</value>
     </data>
     <data name="AppServiceContractTypeDoesNotMatchServiceContract" xml:space="preserve">
-        <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
+        <value>The specified service type '{0}' is not assignable from the declaration type '{1}'.</value>
     </data>
     <data name="InjectableFactory_Create_InjectableTypeMustBeInstantiable" xml:space="preserve">
     <value>The injectable type '{0}' must be an instantiable class.</value>
@@ -51,7 +51,7 @@
         <comment>Cannot find a matching constructor for signature {0} in type '{1}'.</comment>
   </data>
     <data name="InjectorBuilder_RegisterService_InvalidContractType" xml:space="preserve">
-        <value>No contract type provided for {0}.</value>
+        <value>No service type provided for {0}.</value>
     </data>
     <data name="DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception" xml:space="preserve">
     <value>No service found for {0}/{1}.</value>

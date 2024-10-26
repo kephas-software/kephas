@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Kephas.Logging;
+namespace Kephas.Extensions.Logging;
 
 /// <summary>
 /// The Serilog implementation of the <see cref="ILogLevelSwitch"/>.

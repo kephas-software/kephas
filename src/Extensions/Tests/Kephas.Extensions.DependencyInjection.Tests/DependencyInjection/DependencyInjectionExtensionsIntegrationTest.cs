@@ -13,14 +13,13 @@ using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
 using Kephas.Extensions.DependencyInjection;
-using Kephas.Runtime;
 using Kephas.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Xunit;
 
-namespace Kephas.Tests.Extensions.DependencyInjection;
+namespace Kephas.Extensions.Tests.DependencyInjection;
 
 public class DependencyInjectionExtensionsIntegrationTest
 {
