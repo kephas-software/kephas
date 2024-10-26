@@ -39,12 +39,18 @@ public class FactoryService<T, TImplementation> : IFactory<T>
     }
 
     /// <summary>
-    /// Creates the exported value.
+    /// Gets an instance retrieved from the dependency injection container.
+    /// </summary>
+    public T GetService() => factory();
+
+    /// <summary>
+    /// Returns a string that represents the current object.
     /// </summary>
     /// <returns>
-    /// The exported value.
+    /// A string that represents the current object.
     /// </returns>
-    public T Create() => this.factory();
+    public override string ToString() =>
+        $"{GetType().Name} of {typeof(T).Name}/{typeof(TImplementation).Name}.";
 }
 
 /// <summary>
@@ -83,7 +89,7 @@ public class FactoryService<T, TImplementation, TMetadata> : FactoryService<T, T
     protected internal FactoryService(Func<T> factory, TMetadata metadata)
         : base(factory)
     {
-        this.Metadata = metadata;
+        Metadata = metadata;
     }
 
     /// <summary>
@@ -93,4 +99,13 @@ public class FactoryService<T, TImplementation, TMetadata> : FactoryService<T, T
     /// The metadata associated with the export.
     /// </value>
     public TMetadata Metadata { get; }
+
+    /// <summary>
+    /// Returns a string that represents the current object.
+    /// </summary>
+    /// <returns>
+    /// A string that represents the current object.
+    /// </returns>
+    public override string ToString() =>
+        $"{GetType().Name} of {typeof(T).Name}/{typeof(TImplementation).Name} with {typeof(TMetadata).Name}.";
 }

@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Kephas.Extensions.DependencyInjection;
 
 /// <summary>
-/// Service returning a <see cref="T"/> service based on the <see cref="TImplementation"/>.
+/// Service returning a <see cref="T"/> service based on an open generic.
 /// </summary>
 /// <typeparam name="T">The service contract type.</typeparam>
 public class OpenGenericFactoryService<T> : IFactory<T>
@@ -38,12 +38,18 @@ public class OpenGenericFactoryService<T> : IFactory<T>
     }
 
     /// <summary>
-    /// Creates the exported value.
+    /// Gets an instance retrieved from the dependency injection container.
+    /// </summary>
+    public T GetService() => factory();
+
+    /// <summary>
+    /// Returns a string that represents the current object.
     /// </summary>
     /// <returns>
-    /// The exported value.
+    /// A string that represents the current object.
     /// </returns>
-    public T Create() => this.factory();
+    public override string ToString() =>
+        $"{GetType().Name} of {typeof(T).Name}.";
 }
 
 /// <summary>
@@ -87,7 +93,7 @@ public class OpenGenericFactoryService<T, TImplementation, TMetadata> : OpenGene
     protected internal OpenGenericFactoryService(Func<T> factory, TMetadata metadata)
         : base(factory)
     {
-        this.Metadata = metadata;
+        Metadata = metadata;
     }
 
     /// <summary>
@@ -97,4 +103,13 @@ public class OpenGenericFactoryService<T, TImplementation, TMetadata> : OpenGene
     /// The metadata associated with the export.
     /// </value>
     public TMetadata Metadata { get; }
+
+    /// <summary>
+    /// Returns a string that represents the current object.
+    /// </summary>
+    /// <returns>
+    /// A string that represents the current object.
+    /// </returns>
+    public override string ToString() =>
+        $"{GetType().Name} of {typeof(T).Name}/{typeof(TImplementation).Name} with {typeof(TMetadata).Name}.";
 }
