@@ -32,11 +32,11 @@ public class JsonFormatter : ExpressionTemplate
     {
         const string separator = ", ";
         var sb = new StringBuilder("{ { ")
-            .Append("time: ToString(UtcDateTime(@t), 'yyyy-MM-dd HH:mm:ss.fff')").Append(separator)
+            .Append("time: ToString(UtcDateTime(@t), 'yyyy-MM-dd HH:mm:ss.fffZ')").Append(separator)
             .Append("appName: GetAppName(AppName)").Append(separator)
             .Append("appVersion: GetAppVersion(AppVersion)").Append(separator)
             .Append("appInstanceId: GetAppInstanceId(AppInstanceId)").Append(separator)
-            .Append("environment: GetEnvironment(Environment)").Append(separator)
+            .Append("env: GetEnv(Environment)").Append(separator)
             .Append("statusCode: StatusCode").Append(separator)
             .Append("clientHostIp: ClientHostIP").Append(separator)
             .Append("userName: UserName").Append(separator)

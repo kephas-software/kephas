@@ -9,12 +9,11 @@ namespace Kephas.Logging.Formatting;
 internal class FormatMessageResolver : NameResolver
 {
     private static readonly MessageInterpolationFormatter MessageFormatter = new ();
-    private static IAppRuntime? _appRuntime;
+    private static IAppRuntime _appRuntime = new AppRuntime();
     private static Lazy<string> _lazyAppInstanceId = new(ResolveAppInstanceId, true);
     private static Lazy<string> _lazyAppName = new(ResolveAppName, true);
     private static Lazy<string> _lazyAppVersion = new(ResolveAppVersion, true);
-    private static Lazy<string> _lazyEnvironment = new(ResolveEnvironment, true);
-    private static Assembly? entryAssembly;
+    private static Lazy<string> _lazyEnv = new(ResolveEnv, true);
 
     public override bool TryResolveFunctionName(string name, [MaybeNullWhen(false)] out MethodInfo implementation)
     {
@@ -60,28 +59,19 @@ internal class FormatMessageResolver : NameResolver
         return application ?? new ScalarValue(_lazyAppInstanceId.Value);
     }
 
-    public static LogEventPropertyValue? GetEnvironment(LogEventPropertyValue? environment)
+    public static LogEventPropertyValue? GetEnv(LogEventPropertyValue? environment)
     {
-        return environment ?? new ScalarValue(_lazyEnvironment.Value);
+        return environment ?? new ScalarValue(_lazyEnv.Value);
     }
 
     internal static void SetAppRuntime(IAppRuntime appRuntime)
     {
-        _appRuntime = appRuntime;
-        var appEntryAssembly = appRuntime.GetEntryAssembly();
-        if (appEntryAssembly is not null)
+        if (_appRuntime == appRuntime)
         {
-            SetEntryAssembly(appEntryAssembly);
+            return;
         }
-        else
-        {
-            ResetResolvers();
-        }
-    }
 
-    internal static void SetEntryAssembly(Assembly? assembly)
-    {
-        entryAssembly = assembly;
+        _appRuntime = appRuntime ?? throw new ArgumentNullException(nameof(appRuntime));
         ResetResolvers();
     }
 
@@ -90,48 +80,14 @@ internal class FormatMessageResolver : NameResolver
         _lazyAppName = new(ResolveAppName, true);
         _lazyAppVersion = new(ResolveAppVersion, true);
         _lazyAppInstanceId = new(ResolveAppInstanceId, true);
-        _lazyEnvironment = new(ResolveEnvironment, true);
+        _lazyEnv = new(ResolveEnv, true);
     }
 
-    internal static string ResolveAppName()
-    {
-        var appName = _appRuntime?.GetAppName();
-        if (appName is not null)
-        {
-            return appName;
-        }
+    internal static string ResolveAppName() => _appRuntime.GetAppName();
 
-        var referenceAssembly = entryAssembly ?? Assembly.GetEntryAssembly();
-        return IAppRuntime.GetAppNameFromAssembly(referenceAssembly) ?? "unknown";
-    }
+    internal static string ResolveAppInstanceId() => _appRuntime.GetAppInstanceId();
 
-    internal static string ResolveAppInstanceId()
-    {
-        var appInstanceId = _appRuntime?.GetAppInstanceId();
-        if (appInstanceId is not null)
-        {
-            return appInstanceId;
-        }
+    internal static string ResolveAppVersion() => _appRuntime.GetAppVersion();
 
-        var referenceAssembly = entryAssembly ?? Assembly.GetEntryAssembly();
-        return IAppRuntime.GetAppInstanceIdFromAssembly(referenceAssembly);
-    }
-
-    internal static string ResolveAppVersion()
-    {
-        var appVersion = _appRuntime?.GetAppVersion();
-        if (appVersion is not null)
-        {
-            return appVersion;
-        }
-
-        var referenceAssembly = entryAssembly ?? Assembly.GetEntryAssembly();
-        return IAppRuntime.GetAppVersionFromAssembly(referenceAssembly) ?? "0.0.0";
-    }
-
-    internal static string ResolveEnvironment()
-    {
-        var environment = _appRuntime?.GetEnvironment();
-        return environment ?? "unknown";
-    }
+    internal static string ResolveEnv() => _appRuntime.GetEnvironment();
 }

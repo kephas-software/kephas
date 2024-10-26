@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Kephas.Logging.Formatting;
+﻿using Kephas.Logging.Formatting;
 using Kephas.Runtime;
 
 namespace Kephas.Logging;
@@ -17,26 +16,11 @@ public static class LoggingHelper
     public static string FallbackLogPath { get; set; } = Path.GetTempPath();
 
     /// <summary>
-    /// Sets the entry assembly of the application.
-    /// </summary>
-    /// <param name="assembly">The entry assembly.</param>
-    public static void SetEntryAssembly(Assembly assembly) =>
-        FormatMessageResolver.SetEntryAssembly(assembly ?? throw new ArgumentNullException(nameof(assembly)));
-
-    /// <summary>
     /// Sets the application runtime.
     /// </summary>
     /// <param name="appRuntime">The application runtime.</param>
-    public static void SetAppRuntime(IAppRuntime appRuntime)
-    {
+    public static void SetAppRuntime(IAppRuntime appRuntime) =>
         FormatMessageResolver.SetAppRuntime(appRuntime ?? throw new ArgumentNullException(nameof(appRuntime)));
-
-        var entryAssembly = appRuntime.GetEntryAssembly();
-        if (entryAssembly is not null)
-        {
-            FormatMessageResolver.SetEntryAssembly(entryAssembly);
-        }
-    }
 
     /// <summary>
     /// Write the fallback log error.
@@ -53,13 +37,13 @@ public static class LoggingHelper
             var localNow = DateTime.Now;
             appRuntime ??= new AppRuntime();
             var filePath = Path.Combine(FallbackLogPath, $"internal-{appRuntime.GetAppInstanceId()}.{localNow:yyyyMMdd}.json");
-            var application = appRuntime.GetAppName() ?? "unknown";
-            var appversion = appRuntime.GetAppVersion() ?? "0.0.0.0";
-            var appinstanceid = appRuntime.GetAppInstanceId();
-            var environment = appRuntime.GetEnvironment() ?? "unknown";
+            var application = appRuntime.GetAppName();
+            var appVersion = appRuntime.GetAppVersion();
+            var appInstanceId = appRuntime.GetAppInstanceId();
+            var environment = appRuntime.GetEnvironment();
             var hostname = appRuntime.GetMachineName();
             var jsonMessage = $$"""
-                                {"time":"{{localNow.ToUniversalTime():s}}","appname":"{{application}}","appversion":"{{appversion}}","appinstanceid":"{{appinstanceid}}","environment":"{{environment}}","hostname":"{{hostname}}","level":"Error","threadId":"{{Environment.CurrentManagedThreadId}}","message":"{{message.Replace("\\", "\\\\").Replace("\"", "\\\"")}}"}
+                                {"time":"{{localNow.ToUniversalTime():s}}","appName":"{{application}}","appVersion":"{{appVersion}}","appInstanceId":"{{appInstanceId}}","env":"{{environment}}","hostname":"{{hostname}}","level":"Error","threadId":"{{Environment.CurrentManagedThreadId}}","message":"{{message.Replace("\\", "\\\\").Replace("\"", "\\\"")}}"}
                                 """;
 
             // see here for the lock requirement
