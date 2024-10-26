@@ -17,13 +17,14 @@ namespace Kephas.Runtime;
 public class AppRuntime : IAppRuntime
 {
     private const string AssemblyExtension = ".dll";
-    private Regex? assemblyNameRegex;
+    private Regex? appAssemblyNameRegex;
 
     private readonly AppRuntimeSettings settings;
     private string? environment;
     private string? appName;
     private string? appLocation;
     private Assembly? entryAssembly;
+    private IEnumerable<Assembly>? appAssemblies;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AppRuntime"/> class
@@ -48,7 +49,7 @@ public class AppRuntime : IAppRuntime
     /// Gets the root path of the application.
     /// </summary>
     /// <returns>The root path of the application.</returns>
-    public string? GetAppLocation() => appLocation ??= GetEntryAssembly()?.GetLocationDirectory();
+    public string GetAppLocation() => appLocation ??= IAppRuntime.GetAppLocationFromAssembly(GetEntryAssembly());
 
     /// <summary>
     /// Gets the name identifying the application.
@@ -56,13 +57,13 @@ public class AppRuntime : IAppRuntime
     /// <returns>
     /// The name of the application.
     /// </returns>
-    public string? GetAppName() => appName ??= settings.AppName ?? IAppRuntime.GetAppNameFromAssembly(GetEntryAssembly());
+    public string GetAppName() => appName ??= settings.AppName ?? IAppRuntime.TryGetAppNameFromAssembly(GetEntryAssembly()) ?? IAppRuntime.DefaultAppName;
 
     /// <summary>
     /// Gets the running environment.
     /// </summary>
     /// <returns>The running environment.</returns>
-    public string? GetEnvironment() => environment ??= (settings.Environment ?? IAppRuntime.GetEnvironmentFromEnvironmentVariable(GetAppName()));
+    public string GetEnvironment() => environment ??= (settings.Environment ?? IAppRuntime.GetEnvironmentFromEnvironmentVariable(GetAppName()));
 
     /// <summary>
     /// Gets the application assemblies.
@@ -70,7 +71,9 @@ public class AppRuntime : IAppRuntime
     /// <returns>
     /// An enumeration of application assemblies.
     /// </returns>
-    public IEnumerable<Assembly> GetAppAssemblies()
+    public IEnumerable<Assembly> GetAppAssemblies() => appAssemblies ??= ComputeAppAssemblies().ToList();
+
+    private IEnumerable<Assembly> ComputeAppAssemblies()
     {
         var completed = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
 
@@ -125,6 +128,6 @@ public class AppRuntime : IAppRuntime
             .Select(fileName => new AssemblyName(fileName![..^AssemblyExtension.Length]));
     }
 
-    private Regex GetAssemblyNameRegex() => assemblyNameRegex ??=
+    private Regex GetAssemblyNameRegex() => appAssemblyNameRegex ??=
         new Regex(settings.AppAssemblyNamePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
 }

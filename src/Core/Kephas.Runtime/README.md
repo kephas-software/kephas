@@ -33,28 +33,42 @@ internal static class ModuleInitializer_My_Assembly
 ## The application runtime
 ### `IAppRuntime`
 
-Service contract providing runtime information:
+This service provides runtime information:
+* `GetEntryAssembly()`: Gets the entry assembly. Typically, it is used to compute the application assemblies.
 * `GetAppAssemblies()`: Gets the application specific assemblies. By default, this excludes system and test assemblies.
-* `GetEntryAssembly()`: Gets the entry assembly.
 * `GetAppName()`: Gets the application name.
-* `GetAppVersion()`: Gets the application version.
+* `GetAppVersion()`: Gets the application version. By default, it is retrieved from the `AssemblyInformationalVersion`, `AssemblyFileVersion`, or `AssemblyVersion` attributes, in this order, whichever one has a value.
 * `GetAppInstanceId()`: Gets the ID of the running application instance.
 * `GetEnvironment()`: Gets the environment name.
 
 ### `AppRuntime`
-The default implementation of `IAppRuntime`. When instantiating this, `AppRuntimeSettings` can be also provided with the following information:
+The default implementation of `IAppRuntime`. When instantiating it, `AppRuntimeSettings` can be also provided with the following information:
 * `EntryAssembly`: the entry assembly used for computing the application assemblies. It is initialized with `Assembly.GetEntryAssembly()`.
-* `AppAssemblyNamePattern`: the regex pattern used to identify the application assemblies. By default, it excludes system assemblies and those ending with `Test` or `Tests`.
-* `AppName`: the application name. If this value is not provided, it is retrieved from the `AssemblyTitle` attribute.
-* `Environment`: the environment name. If this value is not provided, it is retrieved from the `AssemblyInformationalVersion`, `AssemblyFileVersion`, or `AssemblyVersion` attributes, whichever one has a value.
+* `AppAssemblyNamePattern`: the regex pattern used to identify the application specific assemblies. By default, it excludes system and test assemblies (starting with System or Microsoft and ending with `Test` or `Tests`).
+* `AppName`: the application name. If this value is not provided, it is retrieved from the `AssemblyTitle` and `AssemblyProduct` attributes, in this order.
+* `Environment`: the environment name. 
 
 > Note: Typically, you will get this service over dependency injection.
 
-* Example
+#### Example with default settings
 
 ```csharp
 IAppRuntime appRuntime = new AppRuntime();
 var appAssemblies = appRuntime.GetAppAssemblies(); 
+```
+
+#### Example with custom settings
+
+```csharp
+var appRuntimeSettings = new AppRuntimeSettings
+{
+    EntryAssembly = typeof(TTestClass).Assembly,
+    AppAssemblyNamePattern = includeTestAssembly
+        ? AppRuntimeSettings.TestsIncludedAppAssemblyNamePattern
+        : AppRuntimeSettings.DefaultAppAssemblyNamePattern,
+};
+IAppRuntime appRuntime = new AppRuntime(appRuntimeSettings);
+var appAssemblies = appRuntime.GetAppAssemblies();
 ```
 
 ## Other resources

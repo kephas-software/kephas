@@ -10,7 +10,7 @@ namespace Kephas.Testing;
 /// <summary>
 /// Helper class for integration tests.
 /// </summary>
-public static class IntegrationTestHelper
+public static class IntegrationTest
 {
     private static readonly int DefaultMaxDestructuringDepth = 5;
     private static readonly int DefaultMaxCollectionCount = 10;

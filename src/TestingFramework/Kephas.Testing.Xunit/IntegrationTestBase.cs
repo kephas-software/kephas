@@ -19,19 +19,11 @@ namespace Kephas.Testing;
 public abstract class IntegrationTestBase<TTestClass> : IAsyncLifetime
 {
     /// <summary>
-    /// The value for the <see cref="AppRuntimeSettings.AppAssemblyNamePattern"/> which includes tests.
-    /// </summary>
-    /// <remarks>
-    /// System assemblies are excluded.
-    /// </remarks>
-    public static readonly string TestsAppAssemblyNamePattern = "^(?!System)(?!Microsoft)(?!mscorlib)(?!netstandard)(?!vshost32)(?!testhost)(?!Mono\\.)[A-Za-z0-9\\.]+";
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="IntegrationTestBase{TTestClass}"/> class.
     /// Adds the following services:
     /// <list type="bullet">
     ///     <item>
-    ///         <description>Dependency injection with the provided <paramref name="configuration"/>, or <see cref="IntegrationTestHelper.GetIntegrationConfig"/> if none provided, and using the <typeparamref name="TTestClass"/>'s assembly as an entry assembly.</description>
+    ///         <description>Dependency injection with the provided <paramref name="configuration"/>, or <see cref="IntegrationTest.GetIntegrationConfig"/> if none provided, and using the <typeparamref name="TTestClass"/>'s assembly as an entry assembly.</description>
     ///     </item>
     ///     <item>
     ///         <description>Serilog integration logging.</description>
@@ -42,13 +34,14 @@ public abstract class IntegrationTestBase<TTestClass> : IAsyncLifetime
     /// <param name="configuration">The configuration instance. If not provided, the default integration configuration will be used.</param>
     protected IntegrationTestBase(bool includeTestAssembly = false, IConfiguration? configuration = null)
     {
-        Configuration = configuration ?? IntegrationTestHelper.GetIntegrationConfig();
+        Configuration = configuration ?? IntegrationTest.GetIntegrationConfig();
 
         var appRuntimeSettings = new AppRuntimeSettings
         {
+            // the testing infrastructure does not have an entry assembly, that is why we need to set it explicitly.
             EntryAssembly = typeof(TTestClass).Assembly,
             AppAssemblyNamePattern = includeTestAssembly
-                ? TestsAppAssemblyNamePattern
+                ? AppRuntimeSettings.TestsIncludedAppAssemblyNamePattern
                 : AppRuntimeSettings.DefaultAppAssemblyNamePattern,
         };
 

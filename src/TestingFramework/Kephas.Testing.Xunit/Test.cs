@@ -90,6 +90,19 @@ public static class Test
         return lazyEnumerable;
     }
 
+    /// <summary>
+    /// Gets a test <see cref="IAppRuntime"/> service.
+    /// </summary>
+    /// <returns>The test <see cref="IAppRuntime"/> service.</returns>
+    public static IAppRuntime GetTestAppRuntime(string? environment = null, string? appName = null)
+    {
+        var appRuntime = Substitute.For<IAppRuntime>();
+        appRuntime.GetEnvironment().Returns(environment);
+        appRuntime.GetAppName().Returns(appName);
+
+        return appRuntime;
+    }
+
     private static TMetadata CreateMetadata<TMetadata>(IDictionary<string, object?>? metadata)
     {
         var typedMetadata = Activator.CreateInstance(typeof(TMetadata), metadata);
