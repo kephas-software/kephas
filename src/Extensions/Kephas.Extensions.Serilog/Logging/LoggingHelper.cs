@@ -46,21 +46,20 @@ public static class LoggingHelper
     /// </remarks>
     /// <param name="message">The message to be logged.</param>
     /// <param name="appRuntime">Optional. The application runtime used to get application level information.</param>
-    /// <param name="timeProvider">Optional. The time provider service. If not provided, the default one is used.</param>
-    public static void WriteFallbackLogError(string message, IAppRuntime? appRuntime = null, TimeProvider? timeProvider = null)
+    public static void WriteFallbackLogError(string message, IAppRuntime? appRuntime = null)
     {
         try
         {
-            timeProvider ??= TimeProvider.System;
+            var localNow = DateTime.Now;
             appRuntime ??= new AppRuntime();
-            var filePath = Path.Combine(FallbackLogPath, $"internal-{appRuntime.GetAppInstanceId()}.{timeProvider.GetLocalNow():yyyyMMdd}.json");
+            var filePath = Path.Combine(FallbackLogPath, $"internal-{appRuntime.GetAppInstanceId()}.{localNow:yyyyMMdd}.json");
             var application = appRuntime.GetAppName() ?? "unknown";
             var appversion = appRuntime.GetAppVersion() ?? "0.0.0.0";
             var appinstanceid = appRuntime.GetAppInstanceId();
             var environment = appRuntime.GetEnvironment() ?? "unknown";
             var hostname = appRuntime.GetMachineName();
             var jsonMessage = $$"""
-                                {"time":"{{timeProvider.GetUtcNow():s}}","appname":"{{application}}","appversion":"{{appversion}}","appinstanceid":"{{appinstanceid}}","environment":"{{environment}}","hostname":"{{hostname}}","level":"Error","threadId":"{{Environment.CurrentManagedThreadId}}","message":"{{message.Replace("\\", "\\\\").Replace("\"", "\\\"")}}"}
+                                {"time":"{{localNow.ToUniversalTime():s}}","appname":"{{application}}","appversion":"{{appversion}}","appinstanceid":"{{appinstanceid}}","environment":"{{environment}}","hostname":"{{hostname}}","level":"Error","threadId":"{{Environment.CurrentManagedThreadId}}","message":"{{message.Replace("\\", "\\\\").Replace("\"", "\\\"")}}"}
                                 """;
 
             // see here for the lock requirement
