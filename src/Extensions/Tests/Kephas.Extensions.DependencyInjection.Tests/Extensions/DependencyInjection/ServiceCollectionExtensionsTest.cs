@@ -23,7 +23,7 @@ public class ServiceCollectionExtensionsTest
     {
         var services = new ServiceCollection();
         var provider = services
-            .AddApplicationServices()
+            .AddApplicationServices(Test.GetIntegrationConfig())
             .BuildServiceProvider();
         var requiredService = provider.GetRequiredService(serviceType);
         requiredService.Should().BeSameAs(services.GetSingleton(serviceType, () => throw new Exception()));

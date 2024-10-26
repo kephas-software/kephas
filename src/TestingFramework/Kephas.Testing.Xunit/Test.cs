@@ -9,11 +9,16 @@ using System.Text;
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.Reflection;
+using Kephas.Hosting;
+using Kephas.Logging;
 using Kephas.Runtime;
 using Kephas.Testing.Logging;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using Serilog;
+using Serilog.Exceptions;
 
 namespace Kephas.Testing;
 
@@ -22,6 +27,9 @@ namespace Kephas.Testing;
 /// </summary>
 public static class Test
 {
+    private static readonly int DefaultMaxDestructuringDepth = 5;
+    private static readonly int DefaultMaxCollectionCount = 10;
+    
     /// <summary>
     /// Gets the test <see cref="ILogger{T}"/>.
     /// </summary>
@@ -47,28 +55,30 @@ public static class Test
     /// </summary>
     /// <param name="services">Optional. The service collection used to initialize the builder with.</param>
     /// <returns>The <see cref="ServiceInfoCollectionBuilder"/>.</returns>
-    public static ServiceInfoCollectionBuilder CreateTestServiceInfoCollectionBuilder(IEnumerable<IServiceInfo>? services = null)
+    public static ServiceInfoCollectionBuilder CreateTestServiceInfoCollectionBuilder(IServiceInfoCollection? services = null)
     {
         var appRuntime = new AppRuntime();
-        return new ServiceInfoCollectionBuilder(services ?? CreateTestServices(), () => appRuntime.GetAppAssemblies());
+        return ServiceInfoCollectionBuilder.Create(services ?? CreateTestServices(), () => appRuntime.GetAppAssemblies());
     }
 
     /// <summary>
     /// Builds a service provider based on <see cref="builder"/>.
     /// </summary>
     /// <param name="builder">The <see cref="ServiceInfoCollectionBuilder"/>.</param>
+    /// <param name="configuration">The configuration.</param>
     /// <returns>A <see cref="IServiceProvider"/>.</returns>
-    public static IServiceProvider BuildServiceProvider(this ServiceInfoCollectionBuilder builder) =>
-        new ServiceCollection().AddApplicationServices(builder.Build()).BuildServiceProvider();
+    public static IServiceProvider BuildServiceProvider(this ServiceInfoCollectionBuilder builder, IConfiguration? configuration = null) =>
+        new ServiceCollection().AddApplicationServices(configuration ?? GetIntegrationConfig(), builder.Build()).BuildServiceProvider();
 
 
     /// <summary>
     /// Builds a service provider based on <see cref="services"/>.
     /// </summary>
     /// <param name="services">The <see cref="IServiceInfoCollection"/>.</param>
+    /// <param name="configuration">The configuration.</param>
     /// <returns>A <see cref="IServiceProvider"/>.</returns>
-    public static IServiceProvider BuildServiceProvider(this IServiceInfoCollection services) =>
-        new ServiceCollection().AddApplicationServices(services).BuildServiceProvider();
+    public static IServiceProvider BuildServiceProvider(this IServiceInfoCollection services, IConfiguration? configuration = null) =>
+        new ServiceCollection().AddApplicationServices(configuration ?? GetIntegrationConfig(), services).BuildServiceProvider();
 
     /// <summary>
     /// Gets the test lazy enumerator.
@@ -107,5 +117,60 @@ public static class Test
     {
         var typedMetadata = Activator.CreateInstance(typeof(TMetadata), metadata);
         return (TMetadata)typedMetadata!;
+    }
+    
+    /// <summary>
+    /// Adds integration logging using Serilog.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The configuration.</param>
+    /// <returns>The provided service collection.</returns>
+    public static IServiceCollection AddIntegrationLogging(this IServiceCollection services, IConfiguration configuration)
+    {
+        _ = services ?? throw new ArgumentNullException(nameof(services));
+        _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        
+        LoggingHelper.SetAppRuntime(services.GetAppRuntime());
+
+        services
+            .AddLogging(builder =>
+            {
+                var loggerConfiguration = new LoggerConfiguration()
+                    .Destructure.ToMaximumDepth(DefaultMaxDestructuringDepth)
+                    .Destructure.ToMaximumCollectionCount(DefaultMaxCollectionCount)
+                    .ReadFrom.Configuration(configuration)
+                    .Enrich.FromLogContext()
+                    .Enrich.WithThreadId()
+                    .Enrich.WithProcessId()
+                    .Enrich.WithMachineName()
+                    .Enrich.WithExceptionDetails();
+
+                global::Serilog.Debugging.SelfLog.Enable(TextWriter.Synchronized(Console.Error));
+
+                builder.AddSerilog(loggerConfiguration.CreateLogger());
+            });
+
+        return services;
+    }
+
+    /// <summary>
+    /// Gets the configuration based on the provided <paramref name="settingsFile"/> and its 'Development' flavor.
+    /// </summary>
+    /// <param name="settingsFile">The settings file. If not provided, 'appsettings.json' is considered.</param>
+    /// <returns>The configuration.</returns>
+    public static IConfigurationRoot GetIntegrationConfig(string? settingsFile = null)
+    {
+        settingsFile ??= "appsettings.json";
+        var devSettingsFile = $"{settingsFile[0..^4]}Development.json"; 
+        
+        var configurationBuilder = new ConfigurationBuilder();
+        configurationBuilder.AddJsonFile(settingsFile, optional: true);
+        configurationBuilder.AddJsonFile(devSettingsFile, optional: true);
+        configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+        {
+            { "Serilog:Using:0", typeof(HostBuilderLoggingExtensions).Assembly.GetName()!.Name }
+        });
+
+        return configurationBuilder.Build();
     }
 }

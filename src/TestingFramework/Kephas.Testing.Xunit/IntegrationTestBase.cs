@@ -34,7 +34,7 @@ public abstract class IntegrationTestBase<TTestClass> : IAsyncLifetime
     /// <param name="configuration">The configuration instance. If not provided, the default integration configuration will be used.</param>
     protected IntegrationTestBase(bool includeTestAssembly = false, IConfiguration? configuration = null)
     {
-        Configuration = configuration ?? IntegrationTest.GetIntegrationConfig();
+        Configuration = configuration ?? Test.GetIntegrationConfig();
 
         var appRuntimeSettings = new AppRuntimeSettings
         {
@@ -46,7 +46,7 @@ public abstract class IntegrationTestBase<TTestClass> : IAsyncLifetime
         };
 
         Services
-            .AddApplicationServices(new AppRuntime(appRuntimeSettings))
+            .AddApplicationServices(Configuration, new AppRuntime(appRuntimeSettings))
             .AddIntegrationLogging(Configuration)
             .AddSingleton(Configuration);
     }

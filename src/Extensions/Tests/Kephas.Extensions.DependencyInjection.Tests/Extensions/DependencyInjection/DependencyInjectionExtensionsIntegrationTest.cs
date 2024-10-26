@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
+using System.Runtime.Loader;
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.Metadata;
@@ -370,7 +371,7 @@ public class DependencyInjectionExtensionsIntegrationTest
         appServices
             .Add(mockLoggerManager, b => b.Singleton())
             .Add(mockAppRuntime, b => b.Singleton());
-        var builder = new ServiceInfoCollectionBuilder(appServices, getAppAssemblies ?? AssemblyLoader.Instance.GetLoadedAssemblies);
+        var builder = ServiceInfoCollectionBuilder.Create(appServices, getAppAssemblies ?? (() => AssemblyLoadContext.Default.Assemblies));
         config?.Invoke(builder);
         return builder;
     }
