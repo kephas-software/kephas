@@ -46,6 +46,11 @@ public record AppRuntimeSettings
     public string? AppName { get; set; }
 
     /// <summary>
+    /// Gets or sets the application version.
+    /// </summary>
+    public string? AppVersion { get; set; }
+
+    /// <summary>
     /// Gets or sets the environment name.
     /// </summary>
     public string? Environment { get; set; }

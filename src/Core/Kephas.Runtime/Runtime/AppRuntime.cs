@@ -22,6 +22,7 @@ public class AppRuntime : IAppRuntime
     private readonly AppRuntimeSettings settings;
     private string? environment;
     private string? appName;
+    private string? appVersion;
     private string? appLocation;
     private Assembly? entryAssembly;
     private IEnumerable<Assembly>? appAssemblies;
@@ -58,6 +59,14 @@ public class AppRuntime : IAppRuntime
     /// The name of the application.
     /// </returns>
     public string GetAppName() => appName ??= settings.AppName ?? IAppRuntime.TryGetAppNameFromAssembly(GetEntryAssembly()) ?? IAppRuntime.DefaultAppName;
+
+    /// <summary>
+    /// Gets the version of the application.
+    /// </summary>
+    /// <returns>
+    /// The version of the application.
+    /// </returns>
+    public string GetAppVersion() => appVersion ??= settings.AppVersion ?? IAppRuntime.TryGetAppVersionFromAssembly(GetEntryAssembly()) ?? IAppRuntime.DefaultAppVersion;
 
     /// <summary>
     /// Gets the running environment.
