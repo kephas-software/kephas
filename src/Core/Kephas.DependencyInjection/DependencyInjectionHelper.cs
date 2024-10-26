@@ -35,7 +35,7 @@ internal static class DependencyInjectionHelper
         serviceDeclarationType.IsGenericTypeDefinition
             ? eligibleImplementationTypes
                 .Select(t => (implementationType: t, closedServiceType: t.TryGetBaseConstructedGenericOf(serviceDeclarationType)))
-                .Where(tuple => tuple.closedServiceType is not null && (serviceType.IsGenericTypeDefinition || serviceType.IsAssignableFrom(tuple.closedServiceType)))
+                .Where(tuple => tuple.closedServiceType is not null && (serviceType.IsGenericTypeDefinition || serviceType.IsAssignableFrom(tuple.implementationType)))
                 .Select(tuple => new ServiceImplementationDeclaration(tuple.implementationType, serviceDeclarationType))
             : eligibleImplementationTypes
                 .Where(t => !t.IsGenericTypeDefinition && serviceDeclarationType.IsAssignableFrom(t) && serviceType.IsAssignableFrom(t))

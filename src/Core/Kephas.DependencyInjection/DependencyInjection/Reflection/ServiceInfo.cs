@@ -108,6 +108,7 @@ public record ServiceInfo : IServiceInfo
         AsOpenGeneric = serviceInfo.AsOpenGeneric;
         SetLifetime(serviceInfo.Lifetime);
         Metadata = serviceInfo.Metadata;
+        MetadataType = serviceInfo.MetadataType;
     }
 
     /// <summary>
