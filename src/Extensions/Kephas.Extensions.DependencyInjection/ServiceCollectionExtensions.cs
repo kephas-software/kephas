@@ -13,12 +13,14 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Builder;
+using Kephas.DependencyInjection.Builder.Configuration;
 using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.Resources;
 using Kephas.Extensions.DependencyInjection;
 using Kephas.Reflection;
 using Kephas.Runtime;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -72,16 +74,18 @@ public static class ServiceCollectionExtensions
             : serviceDescriptor.ImplementationInstance
               ?? throw new InvalidOperationException($"The {serviceType} service is not registered as a singleton instance.");
     }
-    
+
     /// <summary>
     /// Adds the services collected from the <paramref name="appRuntime"/> to the <paramref name="services"/>.
     /// </summary>
     /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <param name="appRuntime">The application runtime.</param>
+    /// <param name="includeInternal">Indicates whether the internal </param>
     /// <returns>
     /// The <paramref name="services"></paramref>.
     /// </returns>
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IAppRuntime? appRuntime = null)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration, IAppRuntime? appRuntime = null, bool includeInternal = true)
     {
         _ = services ?? throw new ArgumentNullException(nameof(services));
 
@@ -91,19 +95,20 @@ public static class ServiceCollectionExtensions
             { appRuntime, b => b.Lifetime = AppServiceLifetime.Singleton }
         };
 
-        var builder = new ServiceInfoCollectionBuilder(serviceInfos, () => appRuntime.GetAppAssemblies());
-        return services.AddApplicationServices(builder.Build());
+        var builderSettings = new ServiceBuilderSettings(() => appRuntime.GetAppAssemblies(), includeInternal, serviceInfos);
+        return services.AddApplicationServices(configuration, new ServiceInfoCollectionBuilder(builderSettings).Build());
     }
     
     /// <summary>
     /// Adds the <paramref name="serviceInfos"/> to the <paramref name="services"/>.
     /// </summary>
     /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <param name="serviceInfos">The enumeration of <see cref="IServiceInfo"/>.</param>
     /// <returns>
     /// The <paramref name="services"></paramref>.
     /// </returns>
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IEnumerable<IServiceInfo> serviceInfos)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration, IEnumerable<IServiceInfo> serviceInfos)
     {
         _ = services ?? throw new ArgumentNullException(nameof(services));
 
@@ -115,7 +120,7 @@ public static class ServiceCollectionExtensions
         services.AddGenericCollections();
         foreach (var serviceInfo in serviceInfos)
         {
-            services.AddServiceInfo(serviceInfo);
+            services.AddServiceInfo(configuration, serviceInfo);
         }
 
         return services;
@@ -141,10 +146,12 @@ public static class ServiceCollectionExtensions
     /// Adds the application service to the <see cref="IServiceCollection"/>.
     /// </summary>
     /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The application configuration.</param>
     /// <param name="serviceInfo">The <see cref="IServiceInfo"/>.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddServiceInfo(
         this IServiceCollection services,
+        IConfiguration configuration,
         IServiceInfo serviceInfo)
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
@@ -157,6 +164,11 @@ public static class ServiceCollectionExtensions
         if (serviceInfo.AsOpenGeneric && implementationType is null)
         {
             throw new InvalidOperationException($"Must provide the implementation type for open generics in: {serviceInfo}.");
+        }
+
+        if (IsServiceRegistration(serviceType, implementationType))
+        {
+            RegisterServices(implementationType, services, configuration);
         }
 
         return serviceInfo switch
@@ -209,7 +221,7 @@ public static class ServiceCollectionExtensions
         }
         else
         {
-            ServiceCollectionServiceExtensions.AddSingleton(services, implementationType);
+            services.AddSingleton(implementationType);
             if (serviceType != implementationType)
             {
                 ServiceCollectionServiceExtensions.AddSingleton(services, serviceType, provider => provider.GetRequiredService(implementationType));
@@ -264,7 +276,7 @@ public static class ServiceCollectionExtensions
         }
         else
         {
-            ServiceCollectionServiceExtensions.AddSingleton(services, typeof(TImplementation));
+            services.AddSingleton(typeof(TImplementation));
             if (typeof(TService) != typeof(TImplementation))
             {
                 ServiceCollectionServiceExtensions.AddSingleton(services, typeof(TService), provider => provider.GetRequiredService(typeof(TImplementation)));
@@ -321,8 +333,8 @@ public static class ServiceCollectionExtensions
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
 
-        return ServiceCollectionServiceExtensions
-            .AddSingleton(services, instance)
+        return services
+            .AddSingleton(instance)
             .AddServiceFactories<TService, TMetadata>(_ => instance, metadata);
     }
 
@@ -353,7 +365,7 @@ public static class ServiceCollectionExtensions
         }
         else
         {
-            ServiceCollectionServiceExtensions.AddTransient(services, implementationType);
+            services.AddTransient(implementationType);
             if (serviceType != implementationType)
             {
                 ServiceCollectionServiceExtensions.AddTransient(services, serviceType, provider => provider.GetRequiredService(implementationType));
@@ -408,7 +420,7 @@ public static class ServiceCollectionExtensions
         }
         else
         {
-            ServiceCollectionServiceExtensions.AddTransient(services, typeof(TImplementation));
+            services.AddTransient(typeof(TImplementation));
             if (typeof(TService) != typeof(TImplementation))
             {
                 ServiceCollectionServiceExtensions.AddTransient(services, typeof(TService), provider => provider.GetRequiredService(typeof(TImplementation)));
@@ -447,7 +459,7 @@ public static class ServiceCollectionExtensions
         }
         else
         {
-            ServiceCollectionServiceExtensions.AddScoped(services, implementationType);
+            services.AddScoped(implementationType);
             if (serviceType != implementationType)
             {
                 ServiceCollectionServiceExtensions.AddScoped(services, serviceType, provider => provider.GetRequiredService(implementationType));
@@ -502,7 +514,7 @@ public static class ServiceCollectionExtensions
         }
         else
         {
-            ServiceCollectionServiceExtensions.AddScoped(services, typeof(TImplementation));
+            services.AddScoped(typeof(TImplementation));
             if (typeof(TService) != typeof(TImplementation))
             {
                 ServiceCollectionServiceExtensions.AddScoped(services, typeof(TService), provider => provider.GetRequiredService(typeof(TImplementation)));
@@ -560,8 +572,8 @@ public static class ServiceCollectionExtensions
         services = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return ServiceCollectionServiceExtensions
-            .AddSingleton(services, serviceFactory)
+        return services
+            .AddSingleton(serviceFactory)
             .AddServiceFactories<TService, TMetadata>(serviceFactory, metadata);
     }
 
@@ -611,8 +623,8 @@ public static class ServiceCollectionExtensions
         services = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return ServiceCollectionServiceExtensions
-            .AddTransient(services, serviceFactory)
+        return services
+            .AddTransient(serviceFactory)
             .AddServiceFactories<TService, TMetadata>(serviceFactory, metadata);
     }
 
@@ -662,8 +674,8 @@ public static class ServiceCollectionExtensions
         services = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-        return ServiceCollectionServiceExtensions
-            .AddScoped(services, serviceFactory)
+        return services
+            .AddScoped(serviceFactory)
             .AddServiceFactories<TService, TMetadata>(serviceFactory, metadata);
     }
 
@@ -781,7 +793,7 @@ public static class ServiceCollectionExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static IServiceCollection AddTransientRaw<T>(this IServiceCollection services, Func<IServiceProvider, T> factory)
         where T : class
-        => ServiceCollectionServiceExtensions.AddTransient<T>(services, factory);
+        => services.AddTransient(factory);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static IServiceCollection AddTransientRaw(this IServiceCollection services, Type serviceType, Type implementationType)
@@ -899,5 +911,24 @@ public static class ServiceCollectionExtensions
         var addServiceFactories = AddServiceFactoriesWithFactoryMethod.MakeGenericMethod(serviceType, metadataType);
         addServiceFactories.Call(null, services, serviceFactory, metadata);
         return services;
+    }
+    
+    private static bool IsServiceRegistration(Type serviceType, [NotNullWhen(true)] Type? implementationType)
+        => serviceType == typeof(IServiceRegistration) && implementationType?.IsAbstract is false;
+    
+    private static void RegisterServices(Type implementationType, IServiceCollection services, IConfiguration configuration)
+    {
+        IServiceRegistration? registration;
+        try
+        {
+            registration = Activator.CreateInstance(implementationType) as IServiceRegistration
+                           ?? throw new InvalidOperationException($"Cannot create instance of {implementationType}, probably it does not implement {nameof(IServiceRegistration)}.");
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Cannot create instance of {implementationType}, probably a default constructor is missing.", ex);
+        }
+
+        registration.RegisterServices(services, configuration);
     }
 }
