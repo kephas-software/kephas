@@ -86,6 +86,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{46C0A49D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.DependencyInjection.Tests", "Extensions\Tests\Kephas.Extensions.DependencyInjection.Tests\Kephas.Extensions.DependencyInjection.Tests.csproj", "{BF82A4E5-2E85-40B1-8CC0-D7D4BB69251C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FFF24C69-EEC0-4CC0-A1FE-27BE2A33B436}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Testing.Xunit.Tests", "TestingFramework\Tests\Kephas.Testing.Xunit.Tests\Kephas.Testing.Xunit.Tests.csproj", "{8357CAA3-BE51-48ED-8B0C-9140F457172B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.Mediator", "Extensions\Kephas.Extensions.Mediator\Kephas.Extensions.Mediator.csproj", "{0D936851-A760-438B-89E4-ACD3F89C1A9E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +137,9 @@ Global
 		{6B5C1CA0-4580-4380-BB87-9072593000B4} = {60FFBA0A-D3BF-49E7-8F5B-BB27D4C2B3A1}
 		{46C0A49D-1EB8-44A1-BD0D-7190CB697FDF} = {60FFBA0A-D3BF-49E7-8F5B-BB27D4C2B3A1}
 		{BF82A4E5-2E85-40B1-8CC0-D7D4BB69251C} = {46C0A49D-1EB8-44A1-BD0D-7190CB697FDF}
+		{FFF24C69-EEC0-4CC0-A1FE-27BE2A33B436} = {2AFCE6ED-697E-4986-A3B0-F9B7A126089F}
+		{8357CAA3-BE51-48ED-8B0C-9140F457172B} = {FFF24C69-EEC0-4CC0-A1FE-27BE2A33B436}
+		{0D936851-A760-438B-89E4-ACD3F89C1A9E} = {60FFBA0A-D3BF-49E7-8F5B-BB27D4C2B3A1}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5B9C6197-622F-40D0-9E2D-FB5D55CCFF60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -277,5 +286,13 @@ Global
 		{BF82A4E5-2E85-40B1-8CC0-D7D4BB69251C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF82A4E5-2E85-40B1-8CC0-D7D4BB69251C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF82A4E5-2E85-40B1-8CC0-D7D4BB69251C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8357CAA3-BE51-48ED-8B0C-9140F457172B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8357CAA3-BE51-48ED-8B0C-9140F457172B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8357CAA3-BE51-48ED-8B0C-9140F457172B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8357CAA3-BE51-48ED-8B0C-9140F457172B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D936851-A760-438B-89E4-ACD3F89C1A9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D936851-A760-438B-89E4-ACD3F89C1A9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D936851-A760-438B-89E4-ACD3F89C1A9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D936851-A760-438B-89E4-ACD3F89C1A9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
