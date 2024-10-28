@@ -64,39 +64,39 @@ public class MediatorServiceRegistrationIntegrationTest()
     public class RequestOfStringHandler : RequestHandlerBase<IRequest<string>, string>
     {
         public override Task<string> Handle(IRequest<string> request, CancellationToken cancellationToken) =>
-            Task.FromResult(this.GetType().Name);
+            Task.FromResult(GetType().Name);
     }
 
     [Priority(Priority.High)]
     internal class TestInterfaceHandler : RequestHandlerBase<ITestMessage, string>
     {
         public override Task<string> Handle(ITestMessage message, CancellationToken cancellationToken) =>
-            Task.FromResult(this.GetType().Name);
+            Task.FromResult(GetType().Name);
     }
 
     public class TestHandler : RequestHandlerBase<TestMessage, string>
     {
         public override Task<string> Handle(TestMessage request, CancellationToken cancellationToken) =>
-            Task.FromResult(this.GetType().Name);
+            Task.FromResult(GetType().Name);
     }
 
     [Priority(Priority.High)]
     public class TestInterfaceBehavior : PipelineBehaviorBase<ITestMessage, string>
     {
         public override async Task<string> Handle(ITestMessage request, RequestHandlerDelegate<string> next, CancellationToken cancellationToken) =>
-            $"{this.GetType().Name} -> {await next()}";
+            $"{GetType().Name} -> {await next()}";
     }
 
     public class TestBehavior : PipelineBehaviorBase<TestMessage, string>
     {
         public override async Task<string> Handle(TestMessage request, RequestHandlerDelegate<string> next, CancellationToken cancellationToken) =>
-            $"{this.GetType().Name} -> {await next()}";
+            $"{GetType().Name} -> {await next()}";
     }
 
     [Priority(Priority.Lowest)]
     internal class RequestOfStringBehavior : PipelineBehaviorBase<IRequest<string>, string>
     {
         public override async Task<string> Handle(IRequest<string> request, RequestHandlerDelegate<string> next, CancellationToken cancellationToken) =>
-            $"{this.GetType().Name} -> {await next()}";
+            $"{GetType().Name} -> {await next()}";
     }
 }
