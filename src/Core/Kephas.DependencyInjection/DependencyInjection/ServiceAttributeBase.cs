@@ -60,7 +60,7 @@ public abstract class ServiceAttributeBase : Attribute, IServiceInfo
     /// <summary>
     /// Gets the instancing strategy: factory, type, or instance.
     /// </summary>
-    public object? InstancingStrategy => null;
+    public object? InstancingStrategy { get; protected set; } = null;
 
     /// <summary>
     /// Throws an exception indicating that metadata cannot be added to attributes.

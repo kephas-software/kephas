@@ -19,14 +19,28 @@ namespace Kephas.Tests.DependencyInjection;
 /// <summary>
 /// An application service contract attribute test.
 /// </summary>
-public class DeclareServiceFamilyAttributeBaseTest
+public class DeclareServiceAttributeBaseTest
 {
     [Fact]
-    public void DeclareSingletonServiceAttribute()
+    public void DeclareSingletonServiceAttribute_non_generic()
     {
-        var attr = new DeclareSingletonServiceFamilyAttribute<string>();
+        var attr = new DeclareSingletonServiceAttribute(typeof(IComparable), typeof(string));
         attr.Lifetime.Should().Be(AppServiceLifetime.Singleton);
-        attr.ServiceType.Should().Be(typeof(string));
+        attr.ServiceType.Should().Be(typeof(IComparable));
+        attr.InstancingStrategy.Should().Be(typeof(string));
+
+        var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
+        attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
+        attrUsage!.AllowMultiple.Should().BeTrue();
+    }
+
+    [Fact]
+    public void DeclareSingletonServiceAttribute_generic()
+    {
+        var attr = new DeclareSingletonServiceAttribute<IComparable, string>();
+        attr.Lifetime.Should().Be(AppServiceLifetime.Singleton);
+        attr.ServiceType.Should().Be(typeof(IComparable));
+        attr.InstancingStrategy.Should().Be(typeof(string));
 
         var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
         attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
@@ -36,7 +50,7 @@ public class DeclareServiceFamilyAttributeBaseTest
     [Fact]
     public void DeclareSingletonServiceAttribute_Implementation()
     {
-        IServiceInfo attr = new DeclareSingletonServiceFamilyAttribute<IComparable, string>();
+        IServiceInfo attr = new DeclareSingletonServiceAttribute<IComparable, string>();
         attr.Lifetime.Should().Be(AppServiceLifetime.Singleton);
         attr.ServiceDeclarationType.Should().Be(typeof(IComparable));
         attr.ServiceType.Should().Be(typeof(IComparable));
@@ -49,11 +63,25 @@ public class DeclareServiceFamilyAttributeBaseTest
     }
 
     [Fact]
-    public void DeclareScopedServiceAttribute()
+    public void DeclareScopedServiceAttribute_non_generic()
     {
-        var attr = new DeclareScopedServiceFamilyAttribute<string>();
+        var attr = new DeclareScopedServiceAttribute(typeof(IComparable), typeof(string));
         attr.Lifetime.Should().Be(AppServiceLifetime.Scoped);
-        attr.ServiceType.Should().Be(typeof(string));
+        attr.ServiceType.Should().Be(typeof(IComparable));
+        attr.InstancingStrategy.Should().Be(typeof(string));
+
+        var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
+        attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
+        attrUsage!.AllowMultiple.Should().BeTrue();
+    }
+
+    [Fact]
+    public void DeclareScopedServiceAttribute_generic()
+    {
+        var attr = new DeclareScopedServiceAttribute<IComparable, string>();
+        attr.Lifetime.Should().Be(AppServiceLifetime.Scoped);
+        attr.ServiceType.Should().Be(typeof(IComparable));
+        attr.InstancingStrategy.Should().Be(typeof(string));
 
         var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
         attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
@@ -63,7 +91,7 @@ public class DeclareServiceFamilyAttributeBaseTest
     [Fact]
     public void DeclareScopedServiceAttribute_Implementation()
     {
-        IServiceInfo attr = new DeclareScopedServiceFamilyAttribute<IComparable, string>();
+        IServiceInfo attr = new DeclareScopedServiceAttribute<IComparable, string>();
         attr.Lifetime.Should().Be(AppServiceLifetime.Scoped);
         attr.ServiceDeclarationType.Should().Be(typeof(IComparable));
         attr.ServiceType.Should().Be(typeof(IComparable));
@@ -76,11 +104,25 @@ public class DeclareServiceFamilyAttributeBaseTest
     }
 
     [Fact]
-    public void DeclareTransientServiceAttribute()
+    public void DeclareTransientServiceAttribute_non_generic()
     {
-        var attr = new DeclareTransientServiceFamilyAttribute<string>();
+        var attr = new DeclareTransientServiceAttribute(typeof(IComparable), typeof(string));
         attr.Lifetime.Should().Be(AppServiceLifetime.Transient);
-        attr.ServiceType.Should().Be(typeof(string));
+        attr.ServiceType.Should().Be(typeof(IComparable));
+        attr.InstancingStrategy.Should().Be(typeof(string));
+
+        var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
+        attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
+        attrUsage!.AllowMultiple.Should().BeTrue();
+    }
+
+    [Fact]
+    public void DeclareTransientServiceAttribute_generic()
+    {
+        var attr = new DeclareTransientServiceAttribute<IComparable, string>();
+        attr.Lifetime.Should().Be(AppServiceLifetime.Transient);
+        attr.ServiceType.Should().Be(typeof(IComparable));
+        attr.InstancingStrategy.Should().Be(typeof(string));
 
         var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
         attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
@@ -90,7 +132,7 @@ public class DeclareServiceFamilyAttributeBaseTest
     [Fact]
     public void DeclareTransientServiceAttribute_Implementation()
     {
-        IServiceInfo attr = new DeclareTransientServiceFamilyAttribute<IComparable, string>();
+        IServiceInfo attr = new DeclareTransientServiceAttribute<IComparable, string>();
         attr.Lifetime.Should().Be(AppServiceLifetime.Transient);
         attr.ServiceDeclarationType.Should().Be(typeof(IComparable));
         attr.ServiceType.Should().Be(typeof(IComparable));

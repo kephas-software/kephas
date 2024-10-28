@@ -22,7 +22,7 @@ namespace Kephas.Tests.DependencyInjection.Builder
         {
             var parts = new[]
             {
-                typeof(IMultipleTestAppService),
+                typeof(IMultipleTestService),
                 typeof(MultipleTestService),
                 typeof(NewMultipleTestService),
             };
@@ -39,7 +39,7 @@ namespace Kephas.Tests.DependencyInjection.Builder
         {
             var parts = new[]
             {
-                typeof(IMultipleTestAppService),
+                typeof(IMultipleTestService),
                 typeof(MultipleTestService),
                 typeof(NewMultipleTestService),
                 typeof(DerivedMultipleTestService),
@@ -58,7 +58,7 @@ namespace Kephas.Tests.DependencyInjection.Builder
         {
             var parts = new[]
             {
-                typeof(ISingleTestAppService),
+                typeof(ISingleTestService),
                 typeof(SingleTestService),
             };
             var builder = CreateBuilder();
@@ -73,16 +73,20 @@ namespace Kephas.Tests.DependencyInjection.Builder
         {
             var parts = new[]
             {
-                typeof(ISingleTestAppService),
-                typeof(SingleTestService),
-                typeof(SingleOverrideTestService),
+                typeof(ISingleTestService),
                 typeof(ChainSingleOverrideTestService),
+                typeof(SingleTestService),
+                typeof(SingleOverridenTestService),
             };
             var builder = CreateBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            services.Count(s => s.ImplementationType is not null).Should().Be(1);
-            services.Should().ContainSingle(s => s.ImplementationType == typeof(ChainSingleOverrideTestService));
+            var orderedServices = services
+                .Where(s => s.ImplementationType is not null)
+                .ToList();
+            orderedServices.Count.Should().Be(2);
+            orderedServices[0].ImplementationType.Should().Be(typeof(ChainSingleOverrideTestService));
+            orderedServices[1].ImplementationType.Should().Be(typeof(SingleTestService));
         }
 
         [Fact]
@@ -90,7 +94,7 @@ namespace Kephas.Tests.DependencyInjection.Builder
         {
             var parts = new[]
             {
-                typeof(ISingleTestAppService),
+                typeof(ISingleTestService),
                 typeof(SingleTestService),
                 typeof(DerivedOverrideSingleTestService),
             };
@@ -106,47 +110,19 @@ namespace Kephas.Tests.DependencyInjection.Builder
         {
             var parts = new[]
             {
-                typeof(ISingleTestAppService),
+                typeof(ISingleTestService),
                 typeof(SingleTestService),
-                typeof(SingleOverrideTestService),
+                typeof(SingleOverridenTestService),
             };
             var builder = CreateBuilder();
             var services = builder.AddTypes(parts).Build();
 
-            services.Count(s => s.ImplementationType is not null).Should().Be(1);
-            services.Should().ContainSingle(s => s.ImplementationType == typeof(SingleOverrideTestService));
-        }
-
-        [Fact]
-        public void Build_Single_service_multiple_registrations_first()
-        {
-            var parts = new[]
-            {
-                typeof(ISingleTestAppService),
-                typeof(SingleTestService),
-                typeof(SingleSameOverrideTestService),
-            };
-            var builder = CreateBuilder();
-            var services = builder.AddTypes(parts).Build();
-
-            services.Should().ContainSingle(s => s.ImplementationType == typeof(SingleTestService));
-            services.Should().NotContain(s => s.ImplementationType == typeof(SingleSameOverrideTestService));
-        }
-
-        [Fact]
-        public void Build_Single_service_multiple_registrations_last()
-        {
-            var parts = new[]
-            {
-                typeof(ISingleTestAppService),
-                typeof(SingleTestService),
-                typeof(SingleSameOverrideTestService),
-            };
-            var builder = CreateBuilder();
-            var services = builder.AddTypes(parts).Build();
-
-            services.Should().ContainSingle(s => s.ImplementationType == typeof(SingleSameOverrideTestService));
-            services.Should().NotContain(s => s.ImplementationType == typeof(SingleTestService));
+            var orderedServices = services
+                .Where(s => s.ImplementationType is not null)
+                .ToList();
+            orderedServices.Count.Should().Be(2);
+            orderedServices[0].ImplementationType.Should().Be(typeof(SingleOverridenTestService));
+            orderedServices[1].ImplementationType.Should().Be(typeof(SingleTestService));
         }
 
         [Fact]
@@ -372,26 +348,26 @@ namespace Kephas.Tests.DependencyInjection.Builder
         }
 
         [SingletonService]
-        public interface ISingleTestAppService { }
+        public interface ISingleTestService { }
 
         [SingletonService]
-        public interface IMultipleTestAppService { }
+        public interface IMultipleTestService { }
 
-        public class SingleTestService : ISingleTestAppService { }
+        public class SingleTestService : ISingleTestService { }
 
         [Priority(Priority.High)]
-        public class SingleOverrideTestService : ISingleTestAppService { }
+        public class SingleOverridenTestService : ISingleTestService { }
 
-        public class SingleSameOverrideTestService : ISingleTestAppService { }
+        public class SingleSameOverrideTestService : ISingleTestService { }
 
-        public class MultipleTestService : IMultipleTestAppService { }
+        public class MultipleTestService : IMultipleTestService { }
 
-        public class NewMultipleTestService : IMultipleTestAppService { }
+        public class NewMultipleTestService : IMultipleTestService { }
 
         public class DerivedMultipleTestService : MultipleTestService { }
 
         [OverrideBaseImplementation]
-        public class ChainSingleOverrideTestService : SingleOverrideTestService { }
+        public class ChainSingleOverrideTestService : SingleOverridenTestService { }
 
         [OverrideBaseImplementation]
         public class DerivedOverrideSingleTestService : SingleTestService { }

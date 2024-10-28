@@ -29,7 +29,7 @@ public abstract class DeclareServiceAttributeBase : ServiceAttributeBase, IServi
         : base(lifetime)
     {
         ServiceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
-        this.implementationType = implementationType ?? throw new ArgumentNullException(nameof(implementationType));
+        InstancingStrategy = this.implementationType = implementationType ?? throw new ArgumentNullException(nameof(implementationType));
         AsOpenGeneric = ServiceType.IsGenericTypeDefinition;
 
         if (!ServiceType.IsGenericTypeDefinition && !ServiceType.IsAssignableFrom(implementationType))
@@ -37,11 +37,6 @@ public abstract class DeclareServiceAttributeBase : ServiceAttributeBase, IServi
             throw new InvalidOperationException($"{ServiceType} must be assignable to {implementationType}.");
         }
     }
-
-    /// <summary>
-    /// Gets the instancing strategy: factory, implementation type, or instance.
-    /// </summary>
-    object? IServiceInfo.InstancingStrategy => implementationType;
 
     /// <summary>
     /// Gets the type declaring the service type.
@@ -108,12 +103,8 @@ public abstract class DeclareServiceAttributeBase<TService, TImplementation> : S
         : base(lifetime)
     {
         ServiceType = typeof(TService);
+        InstancingStrategy = typeof(TImplementation);
     }
-
-    /// <summary>
-    /// Gets the instancing strategy: factory, implementation type, or instance.
-    /// </summary>
-    object? IServiceInfo.InstancingStrategy => typeof(TImplementation);
 
     /// <summary>
     /// Gets the type declaring the service type.
