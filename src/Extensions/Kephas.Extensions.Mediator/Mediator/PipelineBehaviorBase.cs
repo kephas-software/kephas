@@ -13,7 +13,7 @@ namespace Kephas.Extensions.Mediator;
 /// Marker interface for pipeline behaviors implementing <see cref="IPipelineBehavior{TRequest,TResponse}"/>.
 /// </summary>
 /// <remarks>
-/// Pipeline behaviors implementing this interface benefit from <see cref="RequestHandlerMetadata"/>.
+/// Pipeline behaviors implementing this interface benefit from <see cref="RequestResponseMetadata"/>.
 /// </remarks>
 public interface IPipelineBehaviorBase : IDeclaredHandlerService;
 

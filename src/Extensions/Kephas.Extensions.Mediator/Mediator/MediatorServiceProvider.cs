@@ -78,21 +78,21 @@ public class MediatorServiceProvider(
 
     private TEnumerable? TryGetNotificationHandlers<TEnumerable, TItem>(Type itemType)
         where TEnumerable : class, IEnumerable<TItem> =>
-        TryGet1ArgHandlers<TEnumerable, TItem, INotificationHandlerBase, NotificationHandlerMetadata>(
+        TryGet1ArgHandlers<TEnumerable, TItem, INotificationHandlerBase, NotificationMetadata>(
             itemType,
             (m, notificationType) =>
                 m.NotificationType?.IsAssignableFrom(notificationType) is true);
 
     private TEnumerable? TryGetPipelineBehaviors<TEnumerable, TItem>(Type itemType)
         where TEnumerable : class, IEnumerable<TItem> =>
-        TryGet2ArgsHandlers<TEnumerable, TItem, IPipelineBehaviorBase, RequestHandlerMetadata>(
+        TryGet2ArgsHandlers<TEnumerable, TItem, IPipelineBehaviorBase, RequestResponseMetadata>(
             itemType,
             (m, requestType, responseType) =>
                 m.ResponseType == responseType && m.RequestType?.IsAssignableFrom(requestType) is true);
 
     private TEnumerable? TryGetStreamPipelineBehaviors<TEnumerable, TItem>(Type itemType)
         where TEnumerable : class, IEnumerable<TItem> =>
-        TryGet2ArgsHandlers<TEnumerable, TItem, IStreamPipelineBehaviorBase, RequestHandlerMetadata>(
+        TryGet2ArgsHandlers<TEnumerable, TItem, IStreamPipelineBehaviorBase, RequestResponseMetadata>(
             itemType,
             (m, requestType, responseType) =>
                 m.ResponseType == responseType && m.RequestType?.IsAssignableFrom(requestType) is true);
@@ -199,12 +199,12 @@ public class MediatorServiceProvider(
     }
 
     private object? TryGetRequestHandler<TService, TDeclaredBase>() =>
-        TryGet1ArgHandler<TService, TDeclaredBase, RequestHandlerMetadata>(
+        TryGet1ArgHandler<TService, TDeclaredBase, RequestResponseMetadata>(
             (m, requestType) => m.RequestType == requestType,
             (m, requestType) => m.RequestType?.IsAssignableFrom(requestType) is true);
 
     private object? TryGetRequestResponseHandler<TService, TDeclaredBase>() =>
-        TryGet2ArgsHandler<TService, TDeclaredBase, RequestHandlerMetadata>(
+        TryGet2ArgsHandler<TService, TDeclaredBase, RequestResponseMetadata>(
             (m, requestType, responseType) => m.ResponseType == responseType && m.RequestType == requestType,
             (m, requestType, responseType) => m.ResponseType == responseType && m.RequestType?.IsAssignableFrom(requestType) is true);
 

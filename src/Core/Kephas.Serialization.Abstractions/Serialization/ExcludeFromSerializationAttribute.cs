@@ -5,15 +5,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Serialization
-{
-    using System;
+namespace Kephas.Serialization;
 
-    /// <summary>
-    /// Attribute for marking items ignored during serialization.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.All)]
-    public sealed class ExcludeFromSerializationAttribute : Attribute
-    {
-    }
+using System;
+
+/// <summary>
+/// Attribute for marking items ignored during serialization.
+/// </summary>
+[AttributeUsage(AttributeTargets.All)]
+public sealed class ExcludeFromSerializationAttribute : Attribute
+{
 }

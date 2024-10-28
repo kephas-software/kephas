@@ -13,7 +13,7 @@ namespace Kephas.Extensions.Mediator;
 /// Marker interface for request handlers implementing <see cref="IStreamRequestHandler{TRequest,TResponse}"/>.
 /// </summary>
 /// <remarks>
-/// Handlers implementing this interface benefit from <see cref="RequestHandlerMetadata"/>.
+/// Handlers implementing this interface benefit from <see cref="RequestResponseMetadata"/>.
 /// </remarks>
 public interface IStreamRequestHandlerBase;
 

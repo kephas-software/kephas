@@ -13,7 +13,7 @@ namespace Kephas.Extensions.Mediator;
 /// Marker interface for polymorphic request handlers implementing <see cref="IRequestHandler{TRequest}"/>.
 /// </summary>
 /// <remarks>
-/// Handlers implementing this interface benefit from <see cref="RequestHandlerMetadata"/>.
+/// Handlers implementing this interface benefit from <see cref="RequestResponseMetadata"/>.
 /// </remarks>
 public interface IRequestHandlerBase : IDeclaredHandlerService;
 
@@ -21,7 +21,7 @@ public interface IRequestHandlerBase : IDeclaredHandlerService;
 /// Marker interface for request handlers implementing <see cref="IRequestHandler{TRequest}"/>.
 /// </summary>
 /// <remarks>
-/// Handlers implementing this interface benefit from <see cref="RequestHandlerMetadata"/>.
+/// Handlers implementing this interface benefit from <see cref="RequestResponseMetadata"/>.
 /// </remarks>
 public interface IRequestResponseHandlerBase : IDeclaredHandlerService;
 

@@ -13,7 +13,7 @@ namespace Kephas.Extensions.Mediator;
 /// Marker interface for notification handlers implementing <see cref="INotificationHandler{TNotification}"/>.
 /// </summary>
 /// <remarks>
-/// Handlers implementing this interface benefit from <see cref="NotificationHandlerMetadata"/>.
+/// Handlers implementing this interface benefit from <see cref="NotificationMetadata"/>.
 /// </remarks>
 public interface INotificationHandlerBase : IDeclaredHandlerService;
 

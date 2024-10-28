@@ -9,9 +9,9 @@ using Kephas.DependencyInjection;
 using Kephas.Extensions.Mediator;
 using MediatR;
 
-[assembly: DeclareTransientServiceFamily(typeof(IRequestHandler<>), ServiceType = typeof(IRequestHandlerBase), MetadataType = typeof(RequestHandlerMetadata))]
-[assembly: DeclareTransientServiceFamily(typeof(IRequestHandler<,>), ServiceType = typeof(IRequestResponseHandlerBase), MetadataType = typeof(RequestHandlerMetadata))]
-[assembly: DeclareTransientServiceFamily(typeof(IStreamRequestHandler<,>), ServiceType = typeof(IStreamRequestHandlerBase), MetadataType = typeof(RequestHandlerMetadata))]
-[assembly: DeclareTransientServiceFamily(typeof(INotificationHandler<>), ServiceType = typeof(INotificationHandlerBase), MetadataType = typeof(NotificationHandlerMetadata))]
-[assembly: DeclareTransientServiceFamily(typeof(IPipelineBehavior<,>), ServiceType = typeof(IPipelineBehaviorBase), MetadataType = typeof(RequestHandlerMetadata))]
-[assembly: DeclareTransientServiceFamily(typeof(IStreamPipelineBehavior<,>), ServiceType = typeof(IStreamPipelineBehaviorBase), MetadataType = typeof(RequestHandlerMetadata))]
+[assembly: DeclareTransientServiceFamily(typeof(IRequestHandler<>), ServiceType = typeof(IRequestHandlerBase), MetadataType = typeof(RequestResponseMetadata))]
+[assembly: DeclareTransientServiceFamily(typeof(IRequestHandler<,>), ServiceType = typeof(IRequestResponseHandlerBase), MetadataType = typeof(RequestResponseMetadata))]
+[assembly: DeclareTransientServiceFamily(typeof(IStreamRequestHandler<,>), ServiceType = typeof(IStreamRequestHandlerBase), MetadataType = typeof(RequestResponseMetadata))]
+[assembly: DeclareTransientServiceFamily(typeof(INotificationHandler<>), ServiceType = typeof(INotificationHandlerBase), MetadataType = typeof(NotificationMetadata))]
+[assembly: DeclareTransientServiceFamily(typeof(IPipelineBehavior<,>), ServiceType = typeof(IPipelineBehaviorBase), MetadataType = typeof(RequestResponseMetadata))]
+[assembly: DeclareTransientServiceFamily(typeof(IStreamPipelineBehavior<,>), ServiceType = typeof(IStreamPipelineBehaviorBase), MetadataType = typeof(RequestResponseMetadata))]

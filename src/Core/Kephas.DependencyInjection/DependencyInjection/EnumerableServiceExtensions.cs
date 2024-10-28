@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
 using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Resources;
 
@@ -16,6 +17,20 @@ namespace Kephas.DependencyInjection;
 public static class EnumerableServiceExtensions
 {
     /// <summary>
+    /// Converts the enumeration of lazy services to a <see cref="ILazyEnumerable{TService,TMetadata}"/>.
+    /// </summary>
+    /// <param name="lazyServices">The services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <typeparam name="TMetadata">The metadata type.</typeparam>
+    /// <returns>An instance implementing <see cref="ILazyEnumerable{TService,TMetadata}"/>.</returns>
+    public static ILazyEnumerable<TService, TMetadata> ToLazyEnumerable<TService, TMetadata>(
+        this IEnumerable<Lazy<TService, TMetadata>> lazyServices)
+    {
+        return lazyServices as ILazyEnumerable<TService, TMetadata>
+               ?? new LazyEnumerable<TService, TMetadata>(lazyServices ?? throw new ArgumentNullException(nameof(lazyServices)));
+    }
+
+    /// <summary>
     /// Gets the services in the appropriate order.
     /// </summary>
     /// <param name="lazyServices">The lazy services.</param>
@@ -23,7 +38,9 @@ public static class EnumerableServiceExtensions
     /// <returns>
     /// The ordered services.
     /// </returns>
-    public static IEnumerable<TService> SelectServices<TService, TMetadata>(this IEnumerable<Lazy<TService, TMetadata>> lazyServices, Func<TMetadata, bool>? predicate = null)
+    public static IEnumerable<TService> SelectServices<TService, TMetadata>(
+        this ILazyEnumerable<TService, TMetadata> lazyServices,
+        Func<TMetadata, bool>? predicate = null)
     {
         _ = lazyServices  ?? throw new ArgumentNullException(nameof(lazyServices));
 
@@ -41,20 +58,22 @@ public static class EnumerableServiceExtensions
     /// <param name="lazyServices">The lazy services.</param>
     /// <param name="predicate">The predicate function.</param>
     /// <returns>The requested service or <c>null</c>.</returns>
-    public static TService? GetService<TService, TMetadata>(this IEnumerable<Lazy<TService, TMetadata>> lazyServices, Func<TMetadata, bool>? predicate = null)
+    public static TService? GetService<TService, TMetadata>(
+        this ILazyEnumerable<TService, TMetadata> lazyServices,
+        Func<TMetadata, bool>? predicate = null)
     {
         _ = lazyServices  ?? throw new ArgumentNullException(nameof(lazyServices));
 
-        lazyServices = predicate == null ? lazyServices : lazyServices.Where(l => predicate(l.Metadata));
-        using var enumerator = lazyServices.GetEnumerator();
+        var filteredLazyServices = predicate == null ? lazyServices : lazyServices.Where(l => predicate(l.Metadata));
+        using var enumerator = filteredLazyServices.GetEnumerator();
         if (!enumerator.MoveNext())
         {
             return default;
         }
         
         var lazyService = enumerator.Current;
-        var priority = (lazyService.Metadata as IHasPriority)?.Priority ?? 0;
-        while (enumerator.MoveNext() && ((lazyService.Metadata as IHasPriority)?.Priority ?? 0) == priority)
+        var priority = lazyService.Metadata.GetPriority();
+        while (enumerator.MoveNext() && enumerator.Current.Metadata.GetPriority() == priority)
         {
             lazyService = enumerator.Current;
         }
@@ -72,12 +91,28 @@ public static class EnumerableServiceExtensions
     /// <param name="lazyServices">The lazy services.</param>
     /// <param name="predicate">the predicate function.</param>
     /// <returns>If found, the requested service, otherwise an exception occurs.</returns>
-    public static TService GetRequiredService<TService, TMetadata>(this IEnumerable<Lazy<TService, TMetadata>> lazyServices, Func<TMetadata, bool> predicate)
+    public static TService GetRequiredService<TService, TMetadata>(
+        this ILazyEnumerable<TService, TMetadata> lazyServices,
+        Func<TMetadata, bool> predicate)
     {
         _ = lazyServices  ?? throw new ArgumentNullException(nameof(lazyServices));
 
         var service = lazyServices.GetService(predicate);
         return service ?? throw new InvalidOperationException(ServicesAbstractionsStrings.OrderedServiceFactoryCollection_service_with_requested_criteria_not_found);
+    }
+    
+    /// <summary>
+    /// Converts the enumeration of factory services to a <see cref="IFactoryEnumerable{TService,TMetadata}"/>.
+    /// </summary>
+    /// <param name="factoryServices">The services.</param>
+    /// <typeparam name="TService">The service type.</typeparam>
+    /// <typeparam name="TMetadata">The metadata type.</typeparam>
+    /// <returns>An instance implementing <see cref="IFactoryEnumerable{TService,TMetadata}"/>.</returns>
+    public static IFactoryEnumerable<TService, TMetadata> ToFactoryEnumerable<TService, TMetadata>(
+        this IEnumerable<IFactory<TService, TMetadata>> factoryServices)
+    {
+        return factoryServices as IFactoryEnumerable<TService, TMetadata>
+               ?? new FactoryEnumerable<TService, TMetadata>(factoryServices ?? throw new ArgumentNullException(nameof(factoryServices)));
     }
 
     /// <summary>
@@ -88,7 +123,9 @@ public static class EnumerableServiceExtensions
     /// <returns>
     /// The ordered services.
     /// </returns>
-    public static IEnumerable<TService> SelectServices<TService, TMetadata>(this IEnumerable<IFactory<TService, TMetadata>> factoryServices, Func<TMetadata, bool>? predicate = null)
+    public static IEnumerable<TService> SelectServices<TService, TMetadata>(
+        this IFactoryEnumerable<TService, TMetadata> factoryServices,
+        Func<TMetadata, bool>? predicate = null)
     {
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
 
@@ -106,20 +143,22 @@ public static class EnumerableServiceExtensions
     /// <param name="factoryServices">The factory services.</param>
     /// <param name="predicate">The predicate function.</param>
     /// <returns>The requested service or <c>null</c>.</returns>
-    public static TService? GetService<TService, TMetadata>(this IEnumerable<IFactory<TService, TMetadata>> factoryServices, Func<TMetadata, bool>? predicate = null)
+    public static TService? GetService<TService, TMetadata>(
+        this IFactoryEnumerable<TService, TMetadata> factoryServices,
+        Func<TMetadata, bool>? predicate = null)
     {
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
 
-        factoryServices = predicate == null ? factoryServices : factoryServices.Where(l => predicate(l.Metadata));
-        using var enumerator = factoryServices.GetEnumerator();
+        var filteredFactoryServices = predicate == null ? factoryServices : factoryServices.Where(l => predicate(l.Metadata));
+        using var enumerator = filteredFactoryServices.GetEnumerator();
         if (!enumerator.MoveNext())
         {
             return default;
         }
         
         var factoryService = enumerator.Current;
-        var priority = (factoryService.Metadata as IHasPriority)?.Priority ?? 0;
-        while (enumerator.MoveNext() && ((factoryService.Metadata as IHasPriority)?.Priority ?? 0) == priority)
+        var priority = factoryService.Metadata.GetPriority();
+        while (enumerator.MoveNext() && enumerator.Current.Metadata.GetPriority() == priority)
         {
             factoryService = enumerator.Current;
         }
@@ -137,11 +176,16 @@ public static class EnumerableServiceExtensions
     /// <param name="factoryServices">The factory services.</param>
     /// <param name="predicate">the predicate function.</param>
     /// <returns>If found, the requested service, otherwise an exception occurs.</returns>
-    public static TService GetRequiredService<TService, TMetadata>(this IEnumerable<IFactory<TService, TMetadata>> factoryServices, Func<TMetadata, bool> predicate)
+    public static TService GetRequiredService<TService, TMetadata>(
+        this IFactoryEnumerable<TService, TMetadata> factoryServices,
+        Func<TMetadata, bool> predicate)
     {
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
 
         var service = factoryServices.GetService(predicate);
         return service ?? throw new InvalidOperationException(ServicesAbstractionsStrings.OrderedServiceFactoryCollection_service_with_requested_criteria_not_found);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Priority GetPriority(this object? metadata) => (metadata as IHasPriority)?.Priority ?? 0;
 }

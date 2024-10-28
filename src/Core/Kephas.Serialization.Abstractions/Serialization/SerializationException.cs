@@ -8,32 +8,31 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Serialization
+namespace Kephas.Serialization;
+
+using System;
+
+/// <summary>
+/// Exception for signalling serialization errors.
+/// </summary>
+public class SerializationException : Exception
 {
-    using System;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SerializationException"/> class.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    public SerializationException(string message)
+        : base(message)
+    {
+    }
 
     /// <summary>
-    /// Exception for signalling serialization errors.
+    /// Initializes a new instance of the <see cref="SerializationException"/> class.
     /// </summary>
-    public class SerializationException : Exception
+    /// <param name="message">The message.</param>
+    /// <param name="inner">The inner exception.</param>
+    public SerializationException(string message, Exception inner)
+        : base(message, inner)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SerializationException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        public SerializationException(string message)
-            : base(message)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SerializationException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="inner">The inner exception.</param>
-        public SerializationException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
     }
 }

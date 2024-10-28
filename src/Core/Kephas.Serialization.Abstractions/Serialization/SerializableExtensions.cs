@@ -8,34 +8,33 @@
 using System.Diagnostics.CodeAnalysis;
 using Kephas.ExceptionHandling;
 
-namespace Kephas.Serialization
+namespace Kephas.Serialization;
+
+/// <summary>
+/// Extension methods for data formatting.
+/// </summary>
+public static class SerializableExtensions
 {
     /// <summary>
-    /// Extension methods for data formatting.
+    /// Converts the object to a serialization friendly representation.
     /// </summary>
-    public static class SerializableExtensions
-    {
-        /// <summary>
-        /// Converts the object to a serialization friendly representation.
-        /// </summary>
-        /// <param name="obj">The object to format.</param>
-        /// <returns>A serialization friendly object representing this object.</returns>
-        public static object? GetObjectData(this object? obj) =>
-            obj switch
-            {
-                null => null,
-                ISerializable serializable => serializable.GetObjectData(),
-                Exception ex => GetObjectData(ex),
-                _ => obj.ToString(),
-            };
+    /// <param name="obj">The object to format.</param>
+    /// <returns>A serialization friendly object representing this object.</returns>
+    public static object? GetObjectData(this object? obj) =>
+        obj switch
+        {
+            null => null,
+            ISerializable serializable => serializable.GetObjectData(),
+            Exception ex => GetObjectData(ex),
+            _ => obj.ToString(),
+        };
 
-        /// <summary>
-        /// Converts the object to a serialization friendly representation.
-        /// </summary>
-        /// <param name="exception">The object to format.</param>
-        /// <returns>A serialization friendly object representing this object.</returns>
-        [return: NotNullIfNotNull(nameof(exception))]
-        public static object? GetObjectData(this Exception? exception) =>
-            exception is null ? null : new ExceptionData(exception);
-    }
+    /// <summary>
+    /// Converts the object to a serialization friendly representation.
+    /// </summary>
+    /// <param name="exception">The object to format.</param>
+    /// <returns>A serialization friendly object representing this object.</returns>
+    [return: NotNullIfNotNull(nameof(exception))]
+    public static object? GetObjectData(this Exception? exception) =>
+        exception is null ? null : new ExceptionData(exception);
 }

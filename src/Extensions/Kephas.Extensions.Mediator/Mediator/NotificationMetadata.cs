@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RequestHandlerMetadata.cs" company="Kephas Software SRL">
+// <copyright file="NotificationHandlerMetadata.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,17 +11,12 @@ using MediatR;
 namespace Kephas.Extensions.Mediator;
 
 /// <summary>
-/// Metadata for <see cref="IRequestHandler{TRequest}"/> and <see cref="IRequestHandler{TRequest,TResponse}"/> and <see cref="IStreamRequestHandler{TRequest,TResponse}"/>.
+/// Metadata for <see cref="INotificationHandler{TNotification}"/>.
 /// </summary>
-public class RequestHandlerMetadata : ServiceMetadata
+public class NotificationMetadata : ServiceMetadata
 {
     /// <summary>
-    /// Gets or sets the request type.
+    /// Gets or sets the notification type.
     /// </summary>
-    public Type? RequestType { get; set; }
-
-    /// <summary>
-    /// Gets or sets the response type.
-    /// </summary>
-    public Type? ResponseType { get; set; }
+    public Type? NotificationType { get; set; }
 }
