@@ -5,8 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
+using Kephas.Reflection;
 
 namespace Kephas.DependencyInjection.Builder;
 
@@ -15,13 +15,13 @@ namespace Kephas.DependencyInjection.Builder;
 /// </summary>
 internal class TypesServiceInfoProvider : IServiceInfoProvider
 {
-    private readonly IList<Type> types;
+    private readonly List<Type> types;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TypesServiceInfoProvider"/> class.
     /// </summary>
     /// <param name="types">The types.</param>
-    public TypesServiceInfoProvider(IEnumerable<Type> types) => this.types = types.ToList();
+    public TypesServiceInfoProvider(IEnumerable<Type> types) => this.types = types?.ToList() ?? throw new ArgumentNullException(nameof(types));
 
     /// <summary>
     /// Gets the service declaration types.
@@ -29,7 +29,9 @@ internal class TypesServiceInfoProvider : IServiceInfoProvider
     /// <returns>
     /// The service declaration types.
     /// </returns>
-    IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations() => types.Select(p => new ServiceDeclaration(p, null));
+    IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations() =>
+        types.Where(IsServiceDeclarationType)
+            .Select(p => new ServiceDeclaration(p, null));
 
     /// <summary>
     /// Gets an enumeration of tuples containing the service type and the service declaration type which it implements.
@@ -52,13 +54,15 @@ internal class TypesServiceInfoProvider : IServiceInfoProvider
             return GetOriginalServiceDeclarationType(type);
         }
 
-        var serviceDeclarationType = type.GetInterfaces().FirstOrDefault(IsServiceDeclarationType);
+        var serviceDeclarationType = type.GetInterfaces()
+            .Select(t => t.ToNormalizedType())
+            .FirstOrDefault(IsServiceDeclarationType);
         if (serviceDeclarationType != null)
         {
             return GetOriginalServiceDeclarationType(serviceDeclarationType);
         }
 
-        var baseType = type.BaseType;
+        var baseType = type.BaseType?.ToNormalizedType();
         while (baseType != null)
         {
             if (IsServiceDeclarationType(baseType))
@@ -66,7 +70,7 @@ internal class TypesServiceInfoProvider : IServiceInfoProvider
                 return GetOriginalServiceDeclarationType(baseType);
             }
 
-            baseType = baseType.BaseType;
+            baseType = baseType.BaseType?.ToNormalizedType();
         }
 
         return null;
@@ -79,17 +83,18 @@ internal class TypesServiceInfoProvider : IServiceInfoProvider
             return type;
         }
 
-        var serviceAttr = type.GetCustomAttribute<ServiceAttributeBase>();
-        if (serviceAttr == null)
+        var serviceInfo = ((IServiceInfoProvider)this).TryGetServiceInfo(type);
+        if (serviceInfo == null)
         {
             return type;
         }
 
-        return serviceAttr.ServiceType is { IsGenericType: false }
+        return serviceInfo.ServiceType is { IsGenericType: false }
             ? type.GetGenericTypeDefinition()
             : type;
     }
 
     private bool IsServiceDeclarationType(Type type) =>
+        (type.IsAbstract && types.Contains(type)) ||
         ((IServiceInfoProvider)this).TryGetServiceInfo(type) != null;
 }

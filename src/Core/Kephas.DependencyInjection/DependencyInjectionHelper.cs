@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.ServiceProviders;
 using Kephas.Reflection;
@@ -27,10 +28,19 @@ internal static class DependencyInjectionHelper
 
     internal static bool IsEligibleImplementationType(this Type type, bool includeInternal) =>
         (includeInternal
-            ? type is { IsClass: true, IsAbstract: false } && (type.IsPublic || !type.IsNested || type.IsNestedAssembly || type.IsNestedFamORAssem)
-            : type is { IsClass: true, IsAbstract: false, IsPublic: true }) &&
-        type.GetCustomAttribute<ExcludeFromDependencyInjectionAttribute>() == null;
-    
+            ? type is { IsClass: true, IsAbstract: false } && (type.IsPublic || type.IsNestedPublic || IsInternalNonCompilerGenerated(type))
+            : type is { IsClass: true, IsAbstract: false } && (type.IsPublic || type.IsNestedPublic)) &&
+        !type.IsDefined(typeof(ExcludeFromDependencyInjectionAttribute));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static bool IsInternalNonCompilerGenerated(Type type) =>
+        // Checking for CompilerGeneratedAttribute to exclude anonymous types is not always reliable, as the compiler may generate other types as well.
+        // Therefore, check for language invalid characters like < in the type name. 
+        (!type.IsNested || type.IsNestedAssembly || type.IsNestedFamORAssem) &&
+        type.Name.Length > 0 &&
+        type.Name[0] != '<' &&
+        !type.IsDefined(typeof(CompilerGeneratedAttribute));
+
     internal static IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(this Type serviceDeclarationType, Type serviceType, IEnumerable<Type> eligibleImplementationTypes) =>
         serviceDeclarationType.IsGenericTypeDefinition
             ? eligibleImplementationTypes

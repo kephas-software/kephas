@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyMetadata("IsTrimmable", "False")]
 [assembly: InternalsVisibleTo("Kephas.DependencyInjection")]
 [assembly: InternalsVisibleTo("Kephas.DependencyInjection.Builder")]
+[assembly: InternalsVisibleTo("Kephas.DependencyInjection.Builder.Tests")]
 [assembly: InternalsVisibleTo("Kephas.DependencyInjection.Tests")]
 [assembly: InternalsVisibleTo("Kephas.Extensions.DependencyInjection")]
 [assembly: InternalsVisibleTo("Kephas.Analyzers.Tests")]
