@@ -13,6 +13,7 @@ using Kephas.Extensions;
 using Kephas.Extensions.Hosting;
 using Kephas.Extensions.Logging;
 using Kephas.Runtime;
+using Kephas.Runtime.Configuration;
 using Kephas.Testing.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,7 +47,7 @@ public static class Test
     /// <summary>
     /// Creates am empty list of <see cref="IServiceInfo"/>.
     /// </summary>
-    public static IServiceInfoCollection CreateTestServices()
+    public static IServiceInfoCollection CreateServiceInfos()
     {
         return new ServiceInfoCollection();
     }
@@ -56,10 +57,10 @@ public static class Test
     /// </summary>
     /// <param name="services">Optional. The service collection used to initialize the builder with.</param>
     /// <returns>The <see cref="ServiceInfoCollectionBuilder"/>.</returns>
-    public static ServiceInfoCollectionBuilder CreateTestServiceInfoCollectionBuilder(IServiceInfoCollection? services = null)
+    public static ServiceInfoCollectionBuilder CreateServiceInfosBuilder<TEntryType>(IServiceInfoCollection? services = null)
     {
-        var appRuntime = new AppRuntime();
-        return ServiceInfoCollectionBuilder.Create(services ?? CreateTestServices(), () => appRuntime.GetAppAssemblies());
+        var appRuntime = new AppRuntime(new AppRuntimeSettings { EntryAssembly = typeof(TEntryType).Assembly });
+        return ServiceInfoCollectionBuilder.Create(services ?? CreateServiceInfos(), () => appRuntime.GetAppAssemblies());
     }
 
     /// <summary>
@@ -95,6 +96,26 @@ public static class Test
         lazyEnumerable.GetEnumerator()
             .Returns(services
                 .Select(s => new Lazy<T, TMetadata>(() => s, CreateMetadata<TMetadata>(null)))
+                .ToList()
+                .GetEnumerator());
+
+        return lazyEnumerable;
+    }
+
+    /// <summary>
+    /// Gets the test factory enumerator.
+    /// </summary>
+    /// <param name="services">The services</param>
+    /// <typeparam name="T">The service type.</typeparam>
+    /// <typeparam name="TMetadata">The metadata type.</typeparam>
+    /// <returns>The test <see cref="ILazyEnumerable{TContract,TMetadata}"/>.</returns>
+    public static IFactoryEnumerable<T, TMetadata> GetTestFactoryEnumerable<T, TMetadata>(params T[] services)
+    {
+        var lazyEnumerable = Substitute.For<IFactoryEnumerable<T, TMetadata>>();
+
+        lazyEnumerable.GetEnumerator()
+            .Returns(services
+                .Select(s => (IFactory<T, TMetadata>)new Factory<T, TMetadata>(() => s, CreateMetadata<TMetadata>(null)))
                 .ToList()
                 .GetEnumerator());
 

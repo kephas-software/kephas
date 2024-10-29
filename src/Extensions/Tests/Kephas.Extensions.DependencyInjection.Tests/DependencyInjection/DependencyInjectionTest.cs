@@ -7,9 +7,12 @@
 
 using FluentAssertions;
 using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
+using Kephas.Runtime;
+using Kephas.Runtime.Configuration;
 using Kephas.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
@@ -36,7 +39,7 @@ public class DependencyInjectionTest
     [Fact]
     public void Resolve_from_ambient_services_self()
     {
-        var container = Test.CreateTestServiceInfoCollectionBuilder().BuildServiceProvider();
+        var container = CreateServiceInfosBuilder().BuildServiceProvider();
         var serviceInfoCollection = container.GetRequiredService(typeof(IServiceInfoCollection));
         var sameServiceInfoCollection = container.GetRequiredService(typeof(IServiceInfoCollection));
 
@@ -48,12 +51,11 @@ public class DependencyInjectionTest
     public void Resolve_from_ambient_services_instance()
     {
         var appServices = new ServiceInfoCollection();
-        var container = Test.CreateTestServiceInfoCollectionBuilder(appServices).BuildServiceProvider();
-        var containerExport = container.GetRequiredService(typeof(DependencyInjectionExtensionsIntegrationTest.ILogManager));
-        var ambientExport = container.GetRequiredService(typeof(DependencyInjectionExtensionsIntegrationTest.ILogManager));
+        var container = CreateServiceInfosBuilder(appServices).BuildServiceProvider();
+        var appRuntime = container.GetRequiredService(typeof(IAppRuntime));
+        var sameAppRuntime = container.GetRequiredService(typeof(IAppRuntime));
 
-        Assert.NotNull(containerExport);
-        Assert.Same(ambientExport, containerExport);
+        Assert.Same(appRuntime, sameAppRuntime);
     }
 
     [Fact]
@@ -61,7 +63,7 @@ public class DependencyInjectionTest
     {
         var appServices = new ServiceInfoCollection()
             .Add<ITestTypeLoader, TestTypeLoader>(b => b.Singleton());
-        var container = Test.CreateTestServiceInfoCollectionBuilder(appServices).BuildServiceProvider();
+        var container = CreateServiceInfosBuilder(appServices).BuildServiceProvider();
         var containerExport = container.GetRequiredService(typeof(ITestTypeLoader));
         var ambientExport = container.GetRequiredService(typeof(ITestTypeLoader));
 
@@ -160,7 +162,7 @@ public class DependencyInjectionTest
     [Fact]
     public void ResolveMany_various_same_contract_registrations()
     {
-        var builder = Test.CreateTestServiceInfoCollectionBuilder()
+        var builder = CreateServiceInfosBuilder()
             .AddProviders(new MultiFilterServiceInfoProvider());
         var container = builder.BuildServiceProvider();
 
@@ -174,7 +176,7 @@ public class DependencyInjectionTest
     [Fact]
     public void GetService_various_same_contract_registrations()
     {
-        var container = Test.CreateTestServiceInfoCollectionBuilder()
+        var container = CreateServiceInfosBuilder()
             .AddProviders(new MultiFilterServiceInfoProvider())
             .BuildServiceProvider();
 
@@ -209,7 +211,7 @@ public class DependencyInjectionTest
             typeof(ScopeExportedClass),
             typeof(ScopeExportedClass),
             AppServiceLifetime.Scoped));
-        var builder = Test.CreateTestServiceInfoCollectionBuilder(appServices);
+        var builder = CreateServiceInfosBuilder(appServices);
         var container = builder.BuildServiceProvider();
 
         using var scopedContext = container.CreateScope();
@@ -230,7 +232,7 @@ public class DependencyInjectionTest
         var service = Substitute.For<IAsyncInitializable>();
         appServices.Add(typeof(IAsyncInitializable), service);
 
-        var container = Test.CreateTestServiceInfoCollectionBuilder(appServices).BuildServiceProvider();
+        var container = CreateServiceInfosBuilder(appServices).BuildServiceProvider();
 
         var actualService = container.GetRequiredService<IAsyncInitializable>();
         Assert.Same(service, actualService);
@@ -242,7 +244,7 @@ public class DependencyInjectionTest
         var appServices = new ServiceInfoCollection();
         appServices.Add(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>(), b => b.Transient());
 
-        var container = Test.CreateTestServiceInfoCollectionBuilder(appServices).BuildServiceProvider();
+        var container = CreateServiceInfosBuilder(appServices).BuildServiceProvider();
 
         var service1 = container.GetRequiredService<IAsyncInitializable>();
         var service2 = container.GetRequiredService<IAsyncInitializable>();
@@ -253,7 +255,7 @@ public class DependencyInjectionTest
     public void Resolve_ambient_services_not_available_after_first_failed_request()
     {
         var appServices = new ServiceInfoCollection();
-        var container = Test.CreateTestServiceInfoCollectionBuilder(appServices).BuildServiceProvider();
+        var container = CreateServiceInfosBuilder(appServices).BuildServiceProvider();
 
         var service = container.GetService<IAsyncInitializable>();
         Assert.Null(service);
@@ -265,6 +267,9 @@ public class DependencyInjectionTest
         service = container.GetService<IAsyncInitializable>();
         Assert.Null(service);
     }
+
+    private static ServiceInfoCollectionBuilder CreateServiceInfosBuilder(IServiceInfoCollection? services = null)
+        => Test.CreateServiceInfosBuilder<DependencyInjectionTest>(services);
 
     public class ScopeExportedClass
     {

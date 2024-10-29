@@ -7,6 +7,7 @@
 
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Text.RegularExpressions;
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.Metadata;
@@ -23,18 +24,17 @@ namespace Kephas.Extensions.Tests.DependencyInjection;
 
 public class DependencyInjectionExtensionsIntegrationTest
 {
+    private Regex appAssemblyNameRegex =
+        new("^Kephas\\.", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
     [Fact]
     public void CreateInjector_simple_ambient_services_exported_no_assemblies()
     {
         var services = new ServiceInfoCollection()
-            .Add(() => Substitute.For<ILogManager>(), b => b.Singleton())
             .Add(() => Substitute.For<IAppRuntime>(), b => b.Singleton());
         var container = CreateServicesBuilder(services)
             .AddAssemblies(typeof(ServiceInfoCollection).Assembly)
             .BuildServiceProvider();
-
-        var loggerManager = container.GetRequiredService<ILogManager>();
-        Assert.Equal(services.GetServiceInstance<ILogManager>(), loggerManager);
 
         var appRuntime = container.GetRequiredService<IAppRuntime>();
         Assert.Equal(services.GetServiceInstance<IAppRuntime>(), appRuntime);
@@ -43,7 +43,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void Resolve_AppService_Singleton()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddAssemblies(typeof(IServiceInfoCollection).Assembly)
             .AddTypes(typeof(ITestAppService), typeof(TestAppService))
@@ -58,7 +58,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void Resolve_AppService_Single_Success()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddAssemblies(typeof(IServiceInfoCollection).Assembly)
             .AddTypes(typeof(ITestAppService), typeof(TestAppService))
@@ -72,7 +72,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void Resolve_AppService_Single_Override_Success()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddAssemblies(typeof(IServiceInfoCollection).Assembly)
             .AddTypes(typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService))
@@ -86,7 +86,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void ResolveMany_AppService_Multiple_Singleton()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddAssemblies(typeof(IServiceInfoCollection).Assembly)
             .AddTypes(typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2))
@@ -102,7 +102,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void ResolveMany_AppService_Multiple_Preserve_Order_types()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddTypes(typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2))
             .BuildServiceProvider();
@@ -117,7 +117,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void ResolveMany_AppService_Multiple_Preserve_Order_mixed()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var appServices = builder.Build();
         appServices.Add(typeof(ITestMultiAppService), _ => new TestMultiAppService1(), b => b.Transient());
         appServices.Add(Substitute.For<ITestMultiAppService>());
@@ -135,7 +135,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void ResolveMany_AppService_IExportFactory_Success()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddAssemblies(typeof(IServiceInfoCollection).Assembly)
             .AddTypes(typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer))
@@ -150,7 +150,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void Resolve_AppService_generic_export()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddTypes(typeof(ITestGenericExport<>), typeof(TestGenericExport))
             .BuildServiceProvider();
@@ -162,7 +162,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void Resolve_AppService_generic_export_with_non_generic_contract()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddAssemblies(typeof(IServiceInfoCollection).Assembly)
             .AddTypes(typeof(ITestGenericWithNonGenericExport), typeof(ITestGenericWithNonGenericExport<>), typeof(TestGenericWithNonGenericExport))
@@ -176,7 +176,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     public void Resolve_AppService_with_injection_default_constructor()
     {
         var appServices = new ServiceInfoCollection();
-        var builder = CreateServicesBuilderWithStringLogger(
+        var builder = CreateServicesBuilder(
             appServices,
             getAppAssemblies: Array.Empty<Assembly>);
         appServices.Add(new ServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)));
@@ -193,7 +193,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     public void Resolve_AppService_with_injection_constructor()
     {
         var appServices = new ServiceInfoCollection();
-        var builder = CreateServicesBuilderWithStringLogger(
+        var builder = CreateServicesBuilder(
             appServices,
             getAppAssemblies: Array.Empty<Assembly>);
         appServices.Add(new ServiceInfo(typeof(ExportedClass), typeof(ExportedClass)));
@@ -210,7 +210,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void Resolve_ScopedAppService_no_scope()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddAssemblies(typeof(IServiceInfoCollection).Assembly)
             .AddTypes(typeof(ITestScopedExport), typeof(TestScopedExport))
@@ -222,7 +222,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void Resolve_ScopedAppService_export()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddAssemblies(typeof(IServiceInfoCollection).Assembly)
             .AddTypes(typeof(ITestScopedExport), typeof(TestScopedExport))
@@ -249,7 +249,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void Resolve_AppService_no_constructor()
     {
-        var builder = CreateServicesBuilderWithStringLogger()
+        var builder = CreateServicesBuilder()
             .AddAssemblies(typeof(IServiceInfoCollection).Assembly)
             .AddTypes(typeof(IConstructorAppService), typeof(NoInjectConstructorAppService));
         Assert.Throws<InvalidOperationException>(() => builder.Build());
@@ -258,7 +258,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void Resolve_AppService_ambiguous_constructor()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddAssemblies(typeof(IServiceInfoCollection).Assembly)
             .AddTypes(typeof(IConstructorAppService), typeof(AmbiguousInjectConstructorAppService))
@@ -269,7 +269,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void Resolve_AppService_largest_constructor()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddAssemblies(typeof(IServiceInfoCollection).Assembly)
             .AddTypes(typeof(IConstructorAppService), typeof(LargestInjectConstructorAppService))
@@ -282,7 +282,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void Resolve_AppService_default_constructor()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddAssemblies(typeof(IServiceInfoCollection).Assembly)
             .AddTypes(typeof(IConstructorAppService), typeof(DefaultConstructorAppService))
@@ -296,7 +296,7 @@ public class DependencyInjectionExtensionsIntegrationTest
     [Fact]
     public void Resolve_AppService_single_constructor()
     {
-        var builder = CreateServicesBuilderWithStringLogger();
+        var builder = CreateServicesBuilder();
         var container = builder
             .AddAssemblies(typeof(IServiceInfoCollection).Assembly)
             .AddTypes(typeof(IConstructorAppService), typeof(SingleConstructorAppService))
@@ -363,52 +363,20 @@ public class DependencyInjectionExtensionsIntegrationTest
         Action<ServiceInfoCollectionBuilder>? config = null,
         Func<IEnumerable<Assembly>>? getAppAssemblies = null)
     {
-        var mockLoggerManager = Substitute.For<ILogManager>();
         var mockAppRuntime = Substitute.For<IAppRuntime>();
 
         appServices ??= new ServiceInfoCollection();
         appServices
-            .Add(mockLoggerManager, b => b.Singleton())
             .Add(mockAppRuntime, b => b.Singleton());
-        var builder = ServiceInfoCollectionBuilder.Create(appServices, getAppAssemblies ?? (() => AssemblyLoadContext.Default.Assemblies));
+
+        var builder = ServiceInfoCollectionBuilder.Create(appServices, getAppAssemblies ?? GetDefaultAppAssemblies);
         config?.Invoke(builder);
         return builder;
     }
 
-    private ServiceInfoCollectionBuilder CreateServicesBuilderWithStringLogger(
-        IServiceInfoCollection? appServices = null,
-        Func<IEnumerable<Assembly>>? getAppAssemblies = null)
-    {
-        appServices ??= new ServiceInfoCollection();
-        var builder = CreateServicesBuilder(appServices, getAppAssemblies: getAppAssemblies);
-
-        var mockLoggerManager = appServices.GetServiceInstance<ILogManager>();
-        mockLoggerManager.GetLogger(Arg.Any<string>()).Returns(Substitute.For<ILogger>());
-
-        return builder;
-    }
-
-    // [Export]
-    public class ComposedTestLogConsumer
-    {
-        public ComposedTestLogConsumer(ILogger<ComposedTestLogConsumer> logger)
-        {
-            Logger = logger;
-        }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        public ILogger<ComposedTestLogConsumer> Logger { get; private set; }
-    }
-
-    public class NonComposedTestLogConsumer
-    {
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        public ILogger<NonComposedTestLogConsumer> Logger { get; set; }
-    }
+    private IEnumerable<Assembly> GetDefaultAppAssemblies() =>
+        AssemblyLoadContext.Default.Assemblies
+            .Where(a => appAssemblyNameRegex.IsMatch(a.GetName()?.Name ?? string.Empty));
 
     [SingletonService]
     public interface ITestAppService { }
@@ -479,11 +447,6 @@ public class DependencyInjectionExtensionsIntegrationTest
     public interface IConstructorAppService { }
 
     public interface IAppRuntime {}
-
-    public interface ILogManager
-    {
-        ILogger GetLogger(string name);
-    }
 
     public class DefaultConstructorAppService : IConstructorAppService
     {

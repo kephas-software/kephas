@@ -7,7 +7,9 @@
 
 using FluentAssertions;
 using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.Metadata;
+using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
 using Kephas.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +34,7 @@ public class ServiceCollectionExtensionsTest
     [Fact]
     public void AddApplicationServices_defaults()
     {
-        var builder = Test.CreateTestServiceInfoCollectionBuilder();
+        var builder = CreateServiceInfosBuilder();
         var provider = builder.BuildServiceProvider();
 
         Assert.IsType<ServiceProvider>(provider);
@@ -41,7 +43,7 @@ public class ServiceCollectionExtensionsTest
     [Fact]
     public void AddApplicationServices_with_open_generic_override()
     {
-        var builder = Test.CreateTestServiceInfoCollectionBuilder()
+        var builder = CreateServiceInfosBuilder()
             .AddTypes(typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>));
         var provider = builder.BuildServiceProvider();
 
@@ -52,7 +54,7 @@ public class ServiceCollectionExtensionsTest
     [Fact]
     public void AddApplicationServices_with_open_generic_override_and_dependency()
     {
-        var builder = Test.CreateTestServiceInfoCollectionBuilder()
+        var builder = CreateServiceInfosBuilder()
             .AddTypes(typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency));
         var provider = builder.BuildServiceProvider();
 
@@ -74,6 +76,9 @@ public class ServiceCollectionExtensionsTest
             Assert.IsType<MoreOpenWithDependency<object>>(myService);
         }
     }
+
+    private static ServiceInfoCollectionBuilder CreateServiceInfosBuilder(IServiceInfoCollection? services = null)
+        => Test.CreateServiceInfosBuilder<ServiceCollectionExtensionsTest>(services);
 
     [SingletonService(AsOpenGeneric = true)]
     public interface IOpen<T> { }

@@ -19,7 +19,7 @@ public class DependencyInjectionScopedTest
     [Fact]
     public void CreateScopedInjector_NestedScopes()
     {
-        var appServices = Test.CreateTestServices();
+        var appServices = Test.CreateServiceInfos();
         appServices.Add(new ServiceInfo(
             typeof(DependencyInjectionTest.ScopeExportedClass),
             typeof(DependencyInjectionTest.ScopeExportedClass),
@@ -38,7 +38,7 @@ public class DependencyInjectionScopedTest
     [Fact]
     public void CreateScopedInjector_Injector_registration_scope()
     {
-        var container = Test.CreateTestServiceInfoCollectionBuilder().BuildServiceProvider();
+        var container = Test.CreateServiceInfosBuilder<DependencyInjectionScopedTest>().BuildServiceProvider();
         using var scopedContext = container.CreateScope();
         var selfScopedContext = scopedContext.ServiceProvider.GetRequiredService<IServiceProvider>();
         Assert.Same(selfScopedContext, scopedContext);
@@ -47,7 +47,7 @@ public class DependencyInjectionScopedTest
     [Fact]
     public void CreateScopedInjector_Injector_registration_scope_consumers()
     {
-        var appServices = Test.CreateTestServices();
+        var appServices = Test.CreateServiceInfos();
         appServices.Add(new ServiceInfo(
             typeof(DependencyInjectionTest.ScopeExportedClass),
             typeof(DependencyInjectionTest.ScopeExportedClass),
