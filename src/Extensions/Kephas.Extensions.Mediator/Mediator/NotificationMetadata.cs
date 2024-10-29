@@ -13,10 +13,25 @@ namespace Kephas.Extensions.Mediator;
 /// <summary>
 /// Metadata for <see cref="INotificationHandler{TNotification}"/>.
 /// </summary>
-public class NotificationMetadata : ServiceMetadata
+public record NotificationMetadata : ServiceMetadata
 {
     /// <summary>
-    /// Gets or sets the notification type.
+    /// Initializes a new instance of the <see cref="NotificationMetadata"/> class.
     /// </summary>
-    public Type? NotificationType { get; set; }
+    /// <param name="metadata">The metadata.</param>
+    public NotificationMetadata(IDictionary<string, object?>? metadata)
+        : base(metadata)
+    {
+        if (metadata == null)
+        {
+            return;
+        }
+
+        NotificationType = (Type?)TryGetValue(metadata, nameof(NotificationType));
+    }
+
+    /// <summary>
+    /// Gets the notification type.
+    /// </summary>
+    public Type? NotificationType { get; }
 }

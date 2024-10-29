@@ -11,8 +11,8 @@ namespace Kephas.Operations;
 /// The operation status.
 /// </summary>
 /// <remarks>
-/// We use state when talking about an overall condition of an entity or a result of some operation with the entity
-/// (such as Idle, Running, Disabled, Verified and so on), while status stands for the current condition of an entity
+/// We use state when talking about an overall condition of an entity or a result of some operation
+/// (such as Idle, Running, Disabled, Verified and so on), while status stands for the current condition of the same
 /// with respect to particular circumstances (such as Success, Failed, Warning and so on).
 /// </remarks>
 public enum OperationStatus
@@ -20,12 +20,12 @@ public enum OperationStatus
     /// <summary>
     /// The operation is not yet started.
     /// </summary>
-    NotStarted = 0x0000,
+    None = 0x0000,
 
     /// <summary>
-    /// The operation is initiating.
+    /// The operation is starting.
     /// </summary>
-    Initiating = 0x0010,
+    Starting = 0x0010,
 
     /// <summary>
     /// The operation started and is in progress.
@@ -43,32 +43,32 @@ public enum OperationStatus
     Completing = 0x0080,
 
     /// <summary>
-    /// The operation is completed.
+    /// The operation is completed successfully. This is a final condition.
     /// </summary>
     Completed = 0x0100,
 
     /// <summary>
-    /// The operation failed.
+    /// The operation failed. This is a final condition.
     /// </summary>
     Failed = -0x0100,
 
     /// <summary>
-    /// The operation was canceled by the user.
+    /// The operation was canceled by the user. This is a final condition.
     /// </summary>
     Canceled = -0x0080,
 
     /// <summary>
-    /// The operation was aborted.
+    /// The operation was aborted. This is a final condition.
     /// </summary>
     Aborted = -0x0040,
 
     /// <summary>
-    /// The operation timed out.
+    /// The operation timed out. This is a final condition.
     /// </summary>
     TimedOut = -0x0020,
 
     /// <summary>
-    /// The operation did not complete successfully and was scheduled for retry.
+    /// The operation did not complete successfully in the last try. Typically, a failed try is followed by a retry.
     /// </summary>
-    ScheduledForRetry = -0x0010,
+    FailedTry = -0x0010,
 }

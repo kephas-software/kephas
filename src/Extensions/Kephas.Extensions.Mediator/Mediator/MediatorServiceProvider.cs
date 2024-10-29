@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections;
 using System.Reflection;
 using Kephas.DependencyInjection;
 using Kephas.Reflection;
@@ -52,6 +53,7 @@ public class MediatorServiceProvider(
 
     private TEnumerable? TryGetEnumerableService<TEnumerable, TItem>()
         where TEnumerable : class, IEnumerable<TItem>
+        where TItem : notnull
     {
         var itemType = typeof(TItem);
         if (itemType.IsConstructedGenericType)
@@ -77,21 +79,24 @@ public class MediatorServiceProvider(
     }
 
     private TEnumerable? TryGetNotificationHandlers<TEnumerable, TItem>(Type itemType)
-        where TEnumerable : class, IEnumerable<TItem> =>
+        where TEnumerable : class, IEnumerable<TItem>
+        where TItem : notnull =>
         TryGet1ArgHandlers<TEnumerable, TItem, INotificationHandlerBase, NotificationMetadata>(
             itemType,
             (m, notificationType) =>
                 m.NotificationType?.IsAssignableFrom(notificationType) is true);
 
     private TEnumerable? TryGetPipelineBehaviors<TEnumerable, TItem>(Type itemType)
-        where TEnumerable : class, IEnumerable<TItem> =>
+        where TEnumerable : class, IEnumerable<TItem>
+        where TItem : notnull =>
         TryGet2ArgsHandlers<TEnumerable, TItem, IPipelineBehaviorBase, RequestResponseMetadata>(
             itemType,
             (m, requestType, responseType) =>
                 m.ResponseType == responseType && m.RequestType?.IsAssignableFrom(requestType) is true);
 
     private TEnumerable? TryGetStreamPipelineBehaviors<TEnumerable, TItem>(Type itemType)
-        where TEnumerable : class, IEnumerable<TItem> =>
+        where TEnumerable : class, IEnumerable<TItem>
+        where TItem : notnull =>
         TryGet2ArgsHandlers<TEnumerable, TItem, IStreamPipelineBehaviorBase, RequestResponseMetadata>(
             itemType,
             (m, requestType, responseType) =>
@@ -99,37 +104,59 @@ public class MediatorServiceProvider(
 
     private TEnumerable? TryGet2ArgsHandlers<TEnumerable, TItem, TDeclaredBase, TMetadata>(Type itemType, Func<TMetadata, Type, Type, bool> filter)
         where TEnumerable : class, IEnumerable<TItem>
+        where TDeclaredBase : notnull
+        where TItem : notnull
     {
         var typeArg1 = itemType.GenericTypeArguments[0];
         var typeArg2 = itemType.GenericTypeArguments[1];
-        var factoryEnumeration = serviceProvider.GetRequiredService<IFactoryEnumerable<TDeclaredBase, TMetadata>>();
-        var handlers = factoryEnumeration.SelectServices(m => filter(m, typeArg1, typeArg2))
-            .Cast<TItem>()
-            .ToList();
-        if (handlers.Count == 0)
-        {
-            return null;
-        }
-
-        handlers.AddRange(serviceProvider.GetServices<TItem>());
-        return (TEnumerable)(object)handlers;
+        bool MetadataFilter(IFactoryBase<TMetadata> f) => filter(f.Metadata, typeArg1, typeArg2);
+        return (TEnumerable?)GetHandlers<TItem, TDeclaredBase, TMetadata>(MetadataFilter);
     }
 
     private TEnumerable? TryGet1ArgHandlers<TEnumerable, TItem, TDeclaredBase, TMetadata>(Type itemType, Func<TMetadata, Type, bool> filter)
         where TEnumerable : class, IEnumerable<TItem>
+        where TDeclaredBase : notnull
+        where TItem : notnull
     {
         var typeArg = itemType.GenericTypeArguments[0];
-        var factoryEnumeration = serviceProvider.GetRequiredService<IFactoryEnumerable<TDeclaredBase, TMetadata>>();
-        var handlers = factoryEnumeration.SelectServices(m => filter(m, typeArg))
-            .Cast<TItem>()
-            .ToList();
+        bool MetadataFilter(IFactoryBase<TMetadata> f) => filter(f.Metadata, typeArg);
+
+        return (TEnumerable?)GetHandlers<TItem, TDeclaredBase, TMetadata>(MetadataFilter);
+    }
+
+    private IEnumerable? GetHandlers<TItem, TDeclaredBase, TMetadata>(
+        Func<IFactoryBase<TMetadata>, bool> metadataFilter)
+        where TDeclaredBase : notnull
+        where TItem : notnull
+    {
+        var declaredFactoryEnumeration = serviceProvider
+            .GetRequiredService<IFactoryEnumerable<TDeclaredBase, TMetadata>>()
+            .Where(metadataFilter);
+        List<TItem>? handlers;
+        if (typeof(TDeclaredBase) == typeof(TItem))
+        {
+            handlers = declaredFactoryEnumeration
+                .Select(f => (TItem)f.GetService()!)
+                .ToList();
+        }
+        else
+        {
+            var exactFactoryEnumeration = serviceProvider
+                .GetRequiredService<IFactoryEnumerable<TItem, TMetadata>>()
+                .Where(metadataFilter);
+            handlers = exactFactoryEnumeration
+                .Union(declaredFactoryEnumeration)
+                .OrderBy(f => f.Metadata.GetPriority())
+                .Select(f => (TItem)f.GetService())
+                .ToList();
+        }
         if (handlers.Count == 0)
         {
             return null;
         }
 
         handlers.AddRange(serviceProvider.GetServices<TItem>());
-        return (TEnumerable)(object)handlers;
+        return handlers;
     }
 
     private object GetEnumerableRequiredService(Type enumerableServiceType, Type itemServiceType)
@@ -139,6 +166,7 @@ public class MediatorServiceProvider(
     }
 
     private object? TryGetSingleService<TService>()
+        where TService : notnull
     {
         var serviceType = typeof(TService);
 
@@ -149,17 +177,20 @@ public class MediatorServiceProvider(
             var openServiceType = serviceType.GetGenericTypeDefinition();
             if (openServiceType == typeof(IRequestHandler<,>))
             {
-                return TryGetRequestResponseHandler<TService, IRequestResponseHandlerBase>();
+                return TryGetRequestResponseHandler<TService, IRequestResponseHandlerBase>()
+                       ?? TryGetRequestResponseHandler<TService, TService>();
             }
 
             if (openServiceType == typeof(IStreamRequestHandler<,>))
             {
-                return TryGetRequestResponseHandler<TService, IStreamRequestHandlerBase>();
+                return TryGetRequestResponseHandler<TService, IStreamRequestHandlerBase>()
+                       ?? TryGetRequestResponseHandler<TService, TService>();
             }
             
             if (openServiceType == typeof(IRequestHandler<>))
             {
-                return TryGetRequestHandler<TService, IRequestHandlerBase>();
+                return TryGetRequestHandler<TService, IRequestHandlerBase>()
+                       ?? TryGetRequestHandler<TService, TService>();
             }
         }
 
@@ -198,12 +229,14 @@ public class MediatorServiceProvider(
         return fallbackService;
     }
 
-    private object? TryGetRequestHandler<TService, TDeclaredBase>() =>
+    private object? TryGetRequestHandler<TService, TDeclaredBase>()
+        where TDeclaredBase : notnull =>
         TryGet1ArgHandler<TService, TDeclaredBase, RequestResponseMetadata>(
             (m, requestType) => m.RequestType == requestType,
             (m, requestType) => m.RequestType?.IsAssignableFrom(requestType) is true);
 
-    private object? TryGetRequestResponseHandler<TService, TDeclaredBase>() =>
+    private object? TryGetRequestResponseHandler<TService, TDeclaredBase>()
+        where TDeclaredBase : notnull =>
         TryGet2ArgsHandler<TService, TDeclaredBase, RequestResponseMetadata>(
             (m, requestType, responseType) => m.ResponseType == responseType && m.RequestType == requestType,
             (m, requestType, responseType) => m.ResponseType == responseType && m.RequestType?.IsAssignableFrom(requestType) is true);
@@ -211,6 +244,7 @@ public class MediatorServiceProvider(
     private object? TryGet2ArgsHandler<TService, TDeclaredBase, TMetadata>(
         Func<TMetadata, Type, Type, bool> exactMatch,
         Func<TMetadata, Type, Type, bool> polymorphicMatch)
+        where TDeclaredBase : notnull
     {
         // identify a handler implementing the TService
         // first, use an exact match, and if none is found, use the polymorphic match
@@ -228,6 +262,7 @@ public class MediatorServiceProvider(
     private object? TryGet1ArgHandler<TService, TDeclaredBase, TMetadata>(
         Func<TMetadata, Type, bool> exactMatch,
         Func<TMetadata, Type, bool> polymorphicMatch)
+        where TDeclaredBase : notnull
     {
         // identify a handler implementing the TService
         // first, use an exact match, and if none is found, use the polymorphic match

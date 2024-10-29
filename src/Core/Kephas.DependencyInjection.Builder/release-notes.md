@@ -42,7 +42,7 @@ var logManager = AppServiceCollection.TryGetServiceInstance<ILogManager>();
 ```
 
 ## Export factory
-* Breaking change: Removed `ExportFactory(Func<Tuple<TContract, Action>> factory)` constructor.
+* Breaking change: Removed `ExportFactory(Func<Tuple<T, Action>> factory)` constructor.
 * Breaking change: Removed `IExportFactory.CreateExport`. Replace with `IExportFactory.CreateExportedValue`.
 * Breaking change: Removed `IExport` and `Export`. No replacement. Reason: obsolete artifact to support `System.Composition`.
 

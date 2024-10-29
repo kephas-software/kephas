@@ -15,6 +15,7 @@ namespace Kephas.DependencyInjection;
 /// </summary>
 /// <typeparam name="TService">Type of the service contract.</typeparam>
 public class Factory<TService> : IFactory<TService>
+    where TService : notnull
 {
     /// <summary>
     /// The factory.
@@ -22,7 +23,7 @@ public class Factory<TService> : IFactory<TService>
     private readonly Func<TService> factory;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Factory{TContract}"/> class.
+    /// Initializes a new instance of the <see cref="Factory{T}"/> class.
     /// </summary>
     /// <param name="factory">The factory.</param>
     public Factory(Func<TService> factory)
@@ -51,9 +52,10 @@ public class Factory<TService> : IFactory<TService>
 /// <typeparam name="TService">Type of the service contract.</typeparam>
 /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
 public class Factory<TService, TMetadata> : Factory<TService>, IFactory<TService, TMetadata>
+    where TService : notnull
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="Factory{TContract,TMetadata}"/> class.
+    /// Initializes a new instance of the <see cref="Factory{T,TMetadata}"/> class.
     /// </summary>
     /// <param name="factory">The factory.</param>
     /// <param name="metadata">The metadata.</param>
@@ -63,7 +65,7 @@ public class Factory<TService, TMetadata> : Factory<TService>, IFactory<TService
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Factory{TContract,TMetadata}"/> class.
+    /// Initializes a new instance of the <see cref="Factory{T,TMetadata}"/> class.
     /// </summary>
     /// <param name="factory">The factory.</param>
     /// <param name="metadata">The metadata.</param>

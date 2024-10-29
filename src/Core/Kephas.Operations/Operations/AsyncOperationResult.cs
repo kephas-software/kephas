@@ -86,7 +86,7 @@ public record AsyncOperationResult<T> : OperationResult<T>, IAsyncOperationResul
                     ? OperationStatus.Completed
                     : t.Status == TaskStatus.Running
                         ? OperationStatus.InProgress
-                        : OperationStatus.NotStarted;
+                        : OperationStatus.None;
 
         OperationStatus = opState;
         var value = default(T);
@@ -118,7 +118,7 @@ public record AsyncOperationResult<T> : OperationResult<T>, IAsyncOperationResul
     private void Reset()
     {
         PercentCompleted = 0f;
-        OperationStatus = OperationStatus.NotStarted;
+        OperationStatus = OperationStatus.None;
         EndedAt = null;
         StartedAt = DateTimeOffset.Now;
         Messages.Clear();

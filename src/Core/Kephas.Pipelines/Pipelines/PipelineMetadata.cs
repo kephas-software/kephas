@@ -12,7 +12,7 @@ namespace Kephas.Pipelines;
 /// <summary>
 /// Metadata class for <see cref="IAsyncPipeline{TTarget,TOperationArgs,TResult}"/>.
 /// </summary>
-public class PipelineMetadata : ServiceMetadata
+public record PipelineMetadata : ServiceMetadata
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PipelineMetadata"/> class.

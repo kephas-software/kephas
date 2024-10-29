@@ -471,7 +471,7 @@ public static class OperationResultExtensions
                     : aggregatedResult.Elapsed == TimeSpan.Zero
                         ? nestedResult.Elapsed
                         : aggregatedResult.Elapsed,
-                nestedResult.OperationStatus == Operations.OperationStatus.NotStarted
+                nestedResult.OperationStatus == Operations.OperationStatus.None
                     ? aggregatedResult.OperationStatus
                     : nestedResult.OperationStatus);
     }

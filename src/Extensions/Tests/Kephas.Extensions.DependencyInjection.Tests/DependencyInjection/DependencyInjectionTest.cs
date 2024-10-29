@@ -303,7 +303,7 @@ public class DependencyInjectionTest
         public IFactory<ExportedClass>[] ExportedClassFactoryArray { get; set; }
     }
 
-    public class TestMetadata : ServiceMetadata
+    public record TestMetadata : ServiceMetadata
     {
         public TestMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)

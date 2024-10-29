@@ -88,7 +88,7 @@ public static class Test
     /// <param name="services">The services</param>
     /// <typeparam name="T">The service type.</typeparam>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
-    /// <returns>The test <see cref="ILazyEnumerable{TContract,TMetadata}"/>.</returns>
+    /// <returns>The test <see cref="ILazyEnumerable{T,TMetadata}"/>.</returns>
     public static ILazyEnumerable<T, TMetadata> GetTestLazyEnumerable<T, TMetadata>(params T[] services)
     {
         var lazyEnumerable = Substitute.For<ILazyEnumerable<T, TMetadata>>();
@@ -108,8 +108,9 @@ public static class Test
     /// <param name="services">The services</param>
     /// <typeparam name="T">The service type.</typeparam>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
-    /// <returns>The test <see cref="ILazyEnumerable{TContract,TMetadata}"/>.</returns>
+    /// <returns>The test <see cref="ILazyEnumerable{T,TMetadata}"/>.</returns>
     public static IFactoryEnumerable<T, TMetadata> GetTestFactoryEnumerable<T, TMetadata>(params T[] services)
+        where T : notnull
     {
         var lazyEnumerable = Substitute.For<IFactoryEnumerable<T, TMetadata>>();
 

@@ -17,6 +17,7 @@ namespace Kephas.Extensions.DependencyInjection;
 /// <typeparam name="TImplementation">The service implementation type.</typeparam>
 public class FactoryService<T, TImplementation> : IFactory<T>
     where TImplementation : class, T
+    where T : notnull
 {
     private readonly Func<T> factory;
 
@@ -61,13 +62,14 @@ public class FactoryService<T, TImplementation> : IFactory<T>
 /// <typeparam name="TMetadata">The metadata type.</typeparam>
 public class FactoryService<T, TImplementation, TMetadata> : FactoryService<T, TImplementation>, IFactory<T, TMetadata>
     where TImplementation : class, T
+    where T : notnull
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="FactoryService{T, TImplementation, TMetadata}"/> class.
     /// </summary>
     /// <param name="serviceProvider">The service provider.</param>
     public FactoryService(IServiceProvider serviceProvider)
-        : this(() => serviceProvider.GetRequiredService<TImplementation>(), ServiceHelper.GetServiceMetadata<TMetadata>(typeof(TImplementation), typeof(T)))
+        : this(serviceProvider.GetRequiredService<TImplementation>, ServiceHelper.GetServiceMetadata<TMetadata>(typeof(TImplementation), typeof(T)))
     {
     }
 
@@ -77,7 +79,7 @@ public class FactoryService<T, TImplementation, TMetadata> : FactoryService<T, T
     /// <param name="serviceProvider">The service provider.</param>
     /// <param name="metadata">The metadata.</param>
     internal FactoryService(IServiceProvider serviceProvider, IDictionary<string, object?>? metadata)
-        : this(() => serviceProvider.GetRequiredService<TImplementation>(), ServiceHelper.GetServiceMetadata<TMetadata>(metadata))
+        : this(serviceProvider.GetRequiredService<TImplementation>, ServiceHelper.GetServiceMetadata<TMetadata>(metadata))
     {
     }
 

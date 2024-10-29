@@ -24,7 +24,38 @@ public abstract class IntegrationTestBase<TTestClass> : IAsyncLifetime
     /// Adds the following services:
     /// <list type="bullet">
     ///     <item>
-    ///         <description>Dependency injection with the provided <paramref name="configuration"/>, or <see cref="IntegrationTest.GetIntegrationConfig"/> if none provided, and using the <typeparamref name="TTestClass"/>'s assembly as an entry assembly.</description>
+    ///         <description>Dependency injection with the provided <paramref name="configuration"/>, or <see cref="Test.GetIntegrationConfig"/> if none provided, and using the <typeparamref name="TTestClass"/>'s assembly as an entry assembly.</description>
+    ///     </item>
+    ///     <item>
+    ///         <description>Serilog integration logging.</description>
+    ///     </item>
+    /// </list>
+    /// </summary>
+    /// <param name="assemblyNamePattern">The assembly name pattern.</param>
+    /// <param name="configuration">The configuration instance. If not provided, the default integration configuration will be used.</param>
+    protected IntegrationTestBase(string assemblyNamePattern, IConfiguration? configuration = null)
+    {
+        Configuration = configuration ?? Test.GetIntegrationConfig();
+
+        var appRuntimeSettings = new AppRuntimeSettings
+        {
+            // the testing infrastructure does not have an entry assembly, that is why we need to set it explicitly.
+            EntryAssembly = typeof(TTestClass).Assembly,
+            AppAssemblyNamePattern = assemblyNamePattern,
+        };
+
+        Services
+            .AddApplicationServices(Configuration, new AppRuntime(appRuntimeSettings))
+            .AddIntegrationLogging(Configuration)
+            .AddSingleton(Configuration);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IntegrationTestBase{TTestClass}"/> class.
+    /// Adds the following services:
+    /// <list type="bullet">
+    ///     <item>
+    ///         <description>Dependency injection with the provided <paramref name="configuration"/>, or <see cref="Test.GetIntegrationConfig"/> if none provided, and using the <typeparamref name="TTestClass"/>'s assembly as an entry assembly.</description>
     ///     </item>
     ///     <item>
     ///         <description>Serilog integration logging.</description>
@@ -34,22 +65,12 @@ public abstract class IntegrationTestBase<TTestClass> : IAsyncLifetime
     /// <param name="includeTestAssembly">If <c>true</c>, includes in the DI container also services from the test assembly, otherwise not.</param>
     /// <param name="configuration">The configuration instance. If not provided, the default integration configuration will be used.</param>
     protected IntegrationTestBase(bool includeTestAssembly = false, IConfiguration? configuration = null)
-    {
-        Configuration = configuration ?? Test.GetIntegrationConfig();
-
-        var appRuntimeSettings = new AppRuntimeSettings
-        {
-            // the testing infrastructure does not have an entry assembly, that is why we need to set it explicitly.
-            EntryAssembly = typeof(TTestClass).Assembly,
-            AppAssemblyNamePattern = includeTestAssembly
+        : this(
+            includeTestAssembly
                 ? AppRuntimeSettings.TestsIncludedAppAssemblyNamePattern
                 : AppRuntimeSettings.DefaultAppAssemblyNamePattern,
-        };
-
-        Services
-            .AddApplicationServices(Configuration, new AppRuntime(appRuntimeSettings))
-            .AddIntegrationLogging(Configuration)
-            .AddSingleton(Configuration);
+            configuration)
+    {
     }
 
     /// <summary>

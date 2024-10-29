@@ -22,10 +22,15 @@ using Xunit;
 
 namespace Kephas.Extensions.Tests.DependencyInjection;
 
-public class DependencyInjectionExtensionsIntegrationTest
+public partial class DependencyInjectionExtensionsIntegrationTest
 {
-    private Regex appAssemblyNameRegex =
-        new("^Kephas\\.", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+#if NET6_0
+    private static readonly Regex AppAssemblyNameRegex = new("^Kephas\\.", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static Regex GetAppAssemblyNameRegex() => AppAssemblyNameRegex;
+#else
+    [GeneratedRegex("^Kephas\\.", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+    private static partial Regex GetAppAssemblyNameRegex();
+#endif
 
     [Fact]
     public void CreateInjector_simple_ambient_services_exported_no_assemblies()
@@ -374,9 +379,9 @@ public class DependencyInjectionExtensionsIntegrationTest
         return builder;
     }
 
-    private IEnumerable<Assembly> GetDefaultAppAssemblies() =>
+    private static IEnumerable<Assembly> GetDefaultAppAssemblies() =>
         AssemblyLoadContext.Default.Assemblies
-            .Where(a => appAssemblyNameRegex.IsMatch(a.GetName()?.Name ?? string.Empty));
+            .Where(a => GetAppAssemblyNameRegex().IsMatch(a.GetName()?.Name ?? string.Empty));
 
     [SingletonService]
     public interface ITestAppService { }

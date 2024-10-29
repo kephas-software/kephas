@@ -95,6 +95,13 @@ public static class ServiceHelper
         }
 
         metadata.Add(nameof(ServiceMetadata.ImplementationType), implementationType);
+        if (implementationType is not null && !metadata.ContainsKey(nameof(ServiceMetadata.ServiceKey)))
+        {
+            var implementationName = implementationType.Name;
+            metadata[nameof(ServiceMetadata.ServiceKey)] =
+                TryGetServiceKey(implementationName, serviceDeclarationType)
+                ?? implementationName;
+        }
 
         // add metadata from generic parameters
         if (serviceDeclarationType.IsGenericType)
@@ -116,5 +123,23 @@ public static class ServiceHelper
         }
 
         return metadata;
+    }
+
+    private static string? TryGetServiceKey(string implementationName, Type? serviceType)
+    {
+        if (serviceType is null)
+        {
+            return null;
+        }
+        
+        var suffix = serviceType.Name;
+        if (suffix.StartsWith('I') && serviceType.IsInterface)
+        {
+            suffix = suffix[1..];
+        }
+
+        return implementationName.EndsWith(suffix) && implementationName.Length > suffix.Length
+            ? implementationName[..^(suffix.Length)]
+            : null;
     }
 }

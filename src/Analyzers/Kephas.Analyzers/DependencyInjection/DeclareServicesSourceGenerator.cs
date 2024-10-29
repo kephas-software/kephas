@@ -14,7 +14,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Kephas.Analyzers.DependencyInjection;
 
 /// <summary>
-/// Source generator for collecting application service contracts and types and declaring them at assembly level.
+/// Source generator for collecting service types and implementation types, and declaring them at assembly level.
 /// </summary>
 [Generator]
 public class DeclareServicesSourceGenerator : IncrementalGeneratorBase<TypeDeclarationSyntax>

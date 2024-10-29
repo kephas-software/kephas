@@ -13,29 +13,56 @@ using System.Diagnostics.CodeAnalysis;
 namespace Kephas.DependencyInjection;
 
 /// <summary>
-/// Service used to retrieve service instances on a factory basis.
+/// Base service used to retrieve service instances on a factory basis.
 /// </summary>
-/// <typeparam name="T">The service type of the retrieved instances.</typeparam>
-public interface IFactory<out T>
+public interface IFactoryBase
 {
     /// <summary>
     /// Gets an instance retrieved from the dependency injection container.
     /// </summary>
-    public T GetService();
+    public object GetService();
 }
 
 /// <summary>
-/// A contract for an export factory that provides metadata describing the created exports.
+/// Service used to retrieve service instances on a factory basis, including metadata.
 /// </summary>
 /// <typeparam name="T">The contract type being created.</typeparam>
 /// <typeparam name="TMetadata">The metadata required from the export.</typeparam>
-public interface IFactory<out T, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] out TMetadata> : IFactory<T>
+public interface IFactoryBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] out TMetadata> : IFactoryBase
 {
     /// <summary>
-    /// Gets the metadata associated with the export.
+    /// Gets the metadata associated with the service.
     /// </summary>
     /// <value>
-    /// The metadata associated with the export.
+    /// The metadata associated with the service.
     /// </value>
     TMetadata Metadata { get; }
+}
+
+/// <summary>
+/// Service used to retrieve service instances on a factory basis.
+/// </summary>
+/// <typeparam name="T">The service type of the retrieved instances.</typeparam>
+public interface IFactory<out T> : IFactoryBase
+    where T : notnull
+{
+    /// <summary>
+    /// Gets an instance retrieved from the dependency injection container.
+    /// </summary>
+    public new T GetService();
+
+    /// <summary>
+    /// Gets an instance retrieved from the dependency injection container.
+    /// </summary>
+    object IFactoryBase.GetService() => GetService();
+}
+
+/// <summary>
+/// Service used to retrieve service instances on a factory basis, including metadata.
+/// </summary>
+/// <typeparam name="T">The contract type being created.</typeparam>
+/// <typeparam name="TMetadata">The metadata required from the export.</typeparam>
+public interface IFactory<out T, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] out TMetadata> : IFactory<T>, IFactoryBase<TMetadata>
+    where T : notnull
+{
 }

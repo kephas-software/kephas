@@ -17,7 +17,7 @@ namespace Kephas.Tests;
 public class ServiceInfoCollectionExtensionsTest
 {
     [Fact]
-    public void TryAdd_TContract_existing_instance()
+    public void TryAdd_TService_existing_instance()
     {
         var appServices = new ServiceInfoCollection();
         var service = new Service();
@@ -30,7 +30,7 @@ public class ServiceInfoCollectionExtensionsTest
     }
 
     [Fact]
-    public void TryAdd_TContract_non_existing_instance()
+    public void TryAdd_TService_non_existing_instance()
     {
         var appServices = new ServiceInfoCollection();
         var service = new Service();
@@ -69,7 +69,7 @@ public class ServiceInfoCollectionExtensionsTest
     }
 
     [Fact]
-    public void TryAdd_TContract_TService_existing_type()
+    public void TryAdd_TService_TService_existing_type()
     {
         var appServices = new ServiceInfoCollection();
         appServices.TryAdd<IService, Service>();
@@ -81,7 +81,7 @@ public class ServiceInfoCollectionExtensionsTest
     }
 
     [Fact]
-    public void TryAdd_TContract_TService_non_existing_type()
+    public void TryAdd_TService_TService_non_existing_type()
     {
         var appServices = new ServiceInfoCollection();
         appServices.TryAdd<IService, Service>(b => b.AddMetadata("test", "value"));
@@ -93,7 +93,7 @@ public class ServiceInfoCollectionExtensionsTest
     }
 
     [Fact]
-    public void TryAdd_TContract_existing_type()
+    public void TryAdd_TService_existing_type()
     {
         var appServices = new ServiceInfoCollection();
         appServices.TryAdd<IService>(typeof(Service));
@@ -105,7 +105,7 @@ public class ServiceInfoCollectionExtensionsTest
     }
 
     [Fact]
-    public void TryAdd_TContract_non_existing_type()
+    public void TryAdd_TService_non_existing_type()
     {
         var appServices = new ServiceInfoCollection();
         appServices.TryAdd<IService, Service>(b => b.AddMetadata("test", "value"));

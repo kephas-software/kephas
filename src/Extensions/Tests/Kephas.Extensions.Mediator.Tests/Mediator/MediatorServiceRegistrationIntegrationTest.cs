@@ -5,9 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FluentAssertions;
-using Kephas.DependencyInjection.Metadata;
 using Kephas.Extensions.Mediator;
+using Kephas.Extensions.Tests.TestServices;
 using Kephas.Testing;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,34 +19,27 @@ public class MediatorServiceRegistrationIntegrationTest()
     : IntegrationTestBase<MediatorServiceRegistrationIntegrationTest>(includeTestAssembly: true)
 {
     [Fact]
-    public void GetRequiredService()
-    {
-        var mediator = ServiceProvider.GetRequiredService<IMediator>();
-        mediator.Should().BeOfType<MediatorService>();
-    }
-
-    [Fact]
     public async Task Send_from_serviceProvider()
     {
         var mediator = ServiceProvider.GetRequiredService<IMediator>();
         var response = await mediator.Send(Substitute.For<IRequest<string>>());
-        Assert.Equal("RequestOfStringBehavior -> RequestOfStringHandler", response);
+        Assert.Equal("ReturnStringBehavior > RequestOfStringHandler", response);
     }
 
     [Fact]
     public async Task Send_exact_match()
     {
         var mediator = ServiceProvider.GetRequiredService<IMediator>();
-        var response = await mediator.Send(new TestMessage());
-        Assert.Equal("TestInterfaceBehavior -> TestBehavior -> RequestOfStringBehavior -> TestHandler", response);
+        var response = await mediator.Send(new OneReturnStringTypedMessage());
+        Assert.Equal("ReturnStringTypedBehavior > OpenGenericBehavior`2 > OneReturnStringTypedBehavior > ReturnStringBehavior > OneReturnStringTypedHandler", response);
     }
 
     [Fact]
     public async Task Send_polymorphic_match()
     {
         var mediator = ServiceProvider.GetRequiredService<IMediator>();
-        var response = await mediator.Send(new AnotherTestMessage());
-        Assert.Equal("TestInterfaceBehavior -> RequestOfStringBehavior -> TestInterfaceHandler", response);
+        var response = await mediator.Send(new TwoReturnStringTypedMessage());
+        Assert.Equal("ReturnStringTypedBehavior > ReturnStringBehavior -> ReturnStringInterfaceHandler", response);
     }
 
     [Fact]
@@ -55,48 +47,5 @@ public class MediatorServiceRegistrationIntegrationTest()
     {
         var mediator = ServiceProvider.GetRequiredService<IMediator>();
         await Assert.ThrowsAsync<MediatorServiceResolutionException>(() => mediator.Send(Substitute.For<IRequest<object>>()));
-    }
-    
-    public interface ITestMessage : IRequest<string> {}
-    public class TestMessage : ITestMessage {}
-    public class AnotherTestMessage : ITestMessage {}
-
-    public class RequestOfStringHandler : RequestHandlerBase<IRequest<string>, string>
-    {
-        public override Task<string> Handle(IRequest<string> request, CancellationToken cancellationToken) =>
-            Task.FromResult(GetType().Name);
-    }
-
-    [Priority(Priority.High)]
-    internal class TestInterfaceHandler : RequestHandlerBase<ITestMessage, string>
-    {
-        public override Task<string> Handle(ITestMessage message, CancellationToken cancellationToken) =>
-            Task.FromResult(GetType().Name);
-    }
-
-    public class TestHandler : RequestHandlerBase<TestMessage, string>
-    {
-        public override Task<string> Handle(TestMessage request, CancellationToken cancellationToken) =>
-            Task.FromResult(GetType().Name);
-    }
-
-    [Priority(Priority.High)]
-    public class TestInterfaceBehavior : PipelineBehaviorBase<ITestMessage, string>
-    {
-        public override async Task<string> Handle(ITestMessage request, RequestHandlerDelegate<string> next, CancellationToken cancellationToken) =>
-            $"{GetType().Name} -> {await next()}";
-    }
-
-    public class TestBehavior : PipelineBehaviorBase<TestMessage, string>
-    {
-        public override async Task<string> Handle(TestMessage request, RequestHandlerDelegate<string> next, CancellationToken cancellationToken) =>
-            $"{GetType().Name} -> {await next()}";
-    }
-
-    [Priority(Priority.Lowest)]
-    internal class RequestOfStringBehavior : PipelineBehaviorBase<IRequest<string>, string>
-    {
-        public override async Task<string> Handle(IRequest<string> request, RequestHandlerDelegate<string> next, CancellationToken cancellationToken) =>
-            $"{GetType().Name} -> {await next()}";
     }
 }

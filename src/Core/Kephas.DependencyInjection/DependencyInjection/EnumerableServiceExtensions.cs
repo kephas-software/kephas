@@ -110,6 +110,7 @@ public static class EnumerableServiceExtensions
     /// <returns>An instance implementing <see cref="IFactoryEnumerable{TService,TMetadata}"/>.</returns>
     public static IFactoryEnumerable<TService, TMetadata> ToFactoryEnumerable<TService, TMetadata>(
         this IEnumerable<IFactory<TService, TMetadata>> factoryServices)
+        where TService : notnull
     {
         return factoryServices as IFactoryEnumerable<TService, TMetadata>
                ?? new FactoryEnumerable<TService, TMetadata>(factoryServices ?? throw new ArgumentNullException(nameof(factoryServices)));
@@ -126,6 +127,7 @@ public static class EnumerableServiceExtensions
     public static IEnumerable<TService> SelectServices<TService, TMetadata>(
         this IFactoryEnumerable<TService, TMetadata> factoryServices,
         Func<TMetadata, bool>? predicate = null)
+        where TService : notnull
     {
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
 
@@ -146,6 +148,7 @@ public static class EnumerableServiceExtensions
     public static TService? GetService<TService, TMetadata>(
         this IFactoryEnumerable<TService, TMetadata> factoryServices,
         Func<TMetadata, bool>? predicate = null)
+        where TService : notnull
     {
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
 
@@ -179,6 +182,7 @@ public static class EnumerableServiceExtensions
     public static TService GetRequiredService<TService, TMetadata>(
         this IFactoryEnumerable<TService, TMetadata> factoryServices,
         Func<TMetadata, bool> predicate)
+        where TService : notnull
     {
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
 
@@ -186,6 +190,11 @@ public static class EnumerableServiceExtensions
         return service ?? throw new InvalidOperationException(ServicesAbstractionsStrings.OrderedServiceFactoryCollection_service_with_requested_criteria_not_found);
     }
 
+    /// <summary>
+    /// Gets the priority from the provided metadata.
+    /// </summary>
+    /// <param name="metadata">The metadata.</param>
+    /// <returns>The priority value.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Priority GetPriority(this object? metadata) => (metadata as IHasPriority)?.Priority ?? 0;
+    public static Priority GetPriority(this object? metadata) => (metadata as IHasPriority)?.Priority ?? Priority.Normal;
 }

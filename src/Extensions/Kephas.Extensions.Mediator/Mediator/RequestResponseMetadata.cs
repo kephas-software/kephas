@@ -13,15 +13,31 @@ namespace Kephas.Extensions.Mediator;
 /// <summary>
 /// Metadata for <see cref="IRequestHandler{TRequest}"/> and <see cref="IRequestHandler{TRequest,TResponse}"/> and <see cref="IStreamRequestHandler{TRequest,TResponse}"/>.
 /// </summary>
-public class RequestResponseMetadata : ServiceMetadata
+public record RequestResponseMetadata : ServiceMetadata
 {
     /// <summary>
-    /// Gets or sets the request type.
+    /// Initializes a new instance of the <see cref="RequestResponseMetadata"/> class.
     /// </summary>
-    public Type? RequestType { get; set; }
+    /// <param name="metadata">The metadata.</param>
+    public RequestResponseMetadata(IDictionary<string, object?>? metadata)
+        : base(metadata)
+    {
+        if (metadata == null)
+        {
+            return;
+        }
+
+        RequestType = (Type?)TryGetValue(metadata, nameof(RequestType));
+        ResponseType = (Type?)TryGetValue(metadata, nameof(ResponseType));
+    }
 
     /// <summary>
-    /// Gets or sets the response type.
+    /// Gets the request type.
     /// </summary>
-    public Type? ResponseType { get; set; }
+    public Type? RequestType { get; }
+
+    /// <summary>
+    /// Gets the response type.
+    /// </summary>
+    public Type? ResponseType { get; }
 }

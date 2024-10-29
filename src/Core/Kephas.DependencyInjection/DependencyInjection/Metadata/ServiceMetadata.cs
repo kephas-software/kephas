@@ -16,7 +16,7 @@ namespace Kephas.DependencyInjection.Metadata;
 /// <summary>
 /// Metadata for application services.
 /// </summary>
-public class ServiceMetadata : IReadOnlyDictionary<string, object?>, IHasPriority, IHasImplementationType, IHasServiceKey, IHasServiceType
+public record ServiceMetadata : IReadOnlyDictionary<string, object?>, IHasPriority, IHasImplementationType, IHasServiceKey, IHasServiceType
 {
     private readonly IDictionary<string, object?> metadata;
 
@@ -45,7 +45,7 @@ public class ServiceMetadata : IReadOnlyDictionary<string, object?>, IHasPriorit
     /// <param name="serviceKey">Optional. The service key.</param>
     /// <param name="overrideBaseImplementation">Optional. Indicates whether the service overrides its base.</param>
     public ServiceMetadata(Priority priority = 0, string? serviceKey = null, bool overrideBaseImplementation = false)
-        : this(null)
+        : this((IDictionary<string, object?>?)null)
     {
         Priority = priority;
         ServiceKey = serviceKey;
@@ -102,18 +102,6 @@ public class ServiceMetadata : IReadOnlyDictionary<string, object?>, IHasPriorit
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
     IEnumerator<KeyValuePair<string, object?>> IEnumerable<KeyValuePair<string, object?>>.GetEnumerator()
         => metadata.GetEnumerator();
-
-    /// <summary>
-    /// Returns a string that represents the current object.
-    /// </summary>
-    /// <returns>
-    /// A string that represents the current object.
-    /// </returns>
-    public override string ToString()
-    {
-        var serviceName = string.IsNullOrEmpty(ServiceKey) ? string.Empty : $"Key: {ServiceKey}, ";
-        return $"Priority: {Priority}, {serviceName}Impl: {ImplementationType}";
-    }
 
     /// <summary>Returns an enumerator that iterates through a collection.</summary>
     /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
