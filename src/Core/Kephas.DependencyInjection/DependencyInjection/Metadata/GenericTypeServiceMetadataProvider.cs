@@ -24,7 +24,6 @@ internal class GenericTypeServiceMetadataProvider : IServiceMetadataProvider
     /// </summary>
     private const string TypeSuffix = "Type";
 
-    private static readonly IDictionary<Type, IServiceMetadataProvider> Providers = new Dictionary<Type, IServiceMetadataProvider>();
     private readonly Type genericType;
 
     private GenericTypeServiceMetadataProvider(Type genericType)
@@ -44,14 +43,7 @@ internal class GenericTypeServiceMetadataProvider : IServiceMetadataProvider
             return NullServiceMetadataProvider.Instance;
         }
 
-        if (Providers.TryGetValue(genericType, out var provider))
-        {
-            return provider;
-        }
-
-        provider = new GenericTypeServiceMetadataProvider(genericType);
-        Providers[genericType] = provider;
-        return provider;
+        return new GenericTypeServiceMetadataProvider(genericType);
     }
 
     /// <summary>

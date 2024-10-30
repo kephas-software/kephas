@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using FluentAssertions;
 using Kephas.Extensions.Mediator;
 using Kephas.Extensions.Tests.TestServices;
 using Kephas.Testing;
@@ -23,7 +24,7 @@ public class MediatorServiceRegistrationIntegrationTest()
     {
         var mediator = ServiceProvider.GetRequiredService<IMediator>();
         var response = await mediator.Send(Substitute.For<IRequest<string>>());
-        Assert.Equal("ReturnStringBehavior > RequestOfStringHandler", response);
+        response.Should().Be("OpenGenericBehavior`2 > ReturnStringBehavior > ReturnStringHandler");
     }
 
     [Fact]
@@ -31,7 +32,7 @@ public class MediatorServiceRegistrationIntegrationTest()
     {
         var mediator = ServiceProvider.GetRequiredService<IMediator>();
         var response = await mediator.Send(new OneReturnStringTypedMessage());
-        Assert.Equal("ReturnStringTypedBehavior > OpenGenericBehavior`2 > OneReturnStringTypedBehavior > ReturnStringBehavior > OneReturnStringTypedHandler", response);
+        response.Should().Be("ReturnStringTypedBehavior > OpenGenericBehavior`2 > OneReturnStringTypedBehavior > ReturnStringBehavior > OneReturnStringTypedHandler");
     }
 
     [Fact]
@@ -39,13 +40,14 @@ public class MediatorServiceRegistrationIntegrationTest()
     {
         var mediator = ServiceProvider.GetRequiredService<IMediator>();
         var response = await mediator.Send(new TwoReturnStringTypedMessage());
-        Assert.Equal("ReturnStringTypedBehavior > ReturnStringBehavior -> ReturnStringInterfaceHandler", response);
+        response.Should().Be("ReturnStringTypedBehavior > OpenGenericBehavior`2 > ReturnStringBehavior > ReturnStringInterfaceHandler");
     }
 
     [Fact]
     public async Task Send_no_match()
     {
         var mediator = ServiceProvider.GetRequiredService<IMediator>();
-        await Assert.ThrowsAsync<MediatorServiceResolutionException>(() => mediator.Send(Substitute.For<IRequest<object>>()));
+        await FluentActions.Awaiting(() => mediator.Send(Substitute.For<IRequest<object>>()))
+            .Should().ThrowAsync<MediatorServiceResolutionException>();
     }
 }

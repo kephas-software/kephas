@@ -9,8 +9,20 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Diagnostics.CodeAnalysis;
+using Kephas.DependencyInjection.Metadata;
 
 namespace Kephas.DependencyInjection;
+
+/// <summary>
+/// Interface for ordered service factory collection.
+/// </summary>
+/// <typeparam name="TService">The service type.</typeparam>
+[TransientService(AsOpenGeneric = true)]
+public interface IFactoryEnumerable<out TService>
+    : IEnumerable<IFactory<TService, ServiceMetadata>>
+    where TService : notnull
+{
+}
 
 /// <summary>
 /// Interface for ordered service factory collection.

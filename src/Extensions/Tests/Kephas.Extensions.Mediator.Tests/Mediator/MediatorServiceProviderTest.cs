@@ -96,7 +96,7 @@ public class MediatorServiceProviderTest() : IntegrationTestBase<MediatorService
                 true
             },
             {
-                typeof(IEnumerable<IPipelineBehavior<NonDeclaredMessage, string>>),
+                typeof(IEnumerable<IPipelineBehavior<NonDeclaredMessage, int>>),
                 [typeof(OpenGenericBehavior<NonDeclaredMessage, int>), typeof(NonDeclaredBehavior)],
                 true
             },

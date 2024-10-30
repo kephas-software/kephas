@@ -11,6 +11,7 @@ using Kephas.DependencyInjection.Builder.Resources;
 using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
+using Kephas.Reflection;
 
 namespace Kephas.DependencyInjection.Builder;
 
@@ -129,7 +130,7 @@ internal static class ServiceInfoCollectionBuilderExtensions
         // get the overridden services which should be eliminated
         var overriddenTypes = overrideChain
             .Where(kv => (bool)(kv.serviceInfo.Metadata?.TryGetValue(nameof(ServiceMetadata.OverrideBaseImplementation)) ?? false) && ((IServiceInfo)kv.serviceInfo).ImplementationType?.BaseType != null)
-            .Select(kv => ((IServiceInfo)kv.serviceInfo).ImplementationType?.BaseType)
+            .Select(kv => ((IServiceInfo)kv.serviceInfo).ImplementationType?.BaseType?.ToNormalizedType())
             .ToList();
 
         if (overriddenTypes.Count > 0)

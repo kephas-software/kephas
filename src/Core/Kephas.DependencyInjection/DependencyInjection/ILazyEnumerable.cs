@@ -9,8 +9,19 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Diagnostics.CodeAnalysis;
+using Kephas.DependencyInjection.Metadata;
 
 namespace Kephas.DependencyInjection;
+
+/// <summary>
+/// Interface for ordered lazy service collection.
+/// </summary>
+/// <typeparam name="TService">Type of the service.</typeparam>
+[TransientService(AsOpenGeneric = true)]
+public interface ILazyEnumerable<TService>
+    : IEnumerable<Lazy<TService, ServiceMetadata>>
+{
+}
 
 /// <summary>
 /// Interface for ordered lazy service collection.

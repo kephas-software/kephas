@@ -104,6 +104,24 @@ public static class ServiceHelper
         }
 
         // add metadata from generic parameters
+        return AddGenericServiceMetadata(metadata, implementationType, serviceDeclarationType);
+    }
+
+    /// <summary>
+    /// Collects the metadata from the service type attributes and generic type arguments.
+    /// </summary>
+    /// <param name="metadata">The service metadata.</param>
+    /// <param name="implementationType">The implementation type.</param>
+    /// <param name="serviceDeclarationType">The service declaration type.</param>
+    /// <returns>The metadata.</returns>
+    public static IDictionary<string, object?> AddGenericServiceMetadata(
+        IDictionary<string, object?> metadata,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type? implementationType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type serviceDeclarationType)
+    {
+        ArgumentNullException.ThrowIfNull(nameof(metadata));
+
+        // add metadata from generic parameters
         if (serviceDeclarationType.IsGenericType)
         {
             var metadataSourceGenericType = serviceDeclarationType.IsConstructedGenericType

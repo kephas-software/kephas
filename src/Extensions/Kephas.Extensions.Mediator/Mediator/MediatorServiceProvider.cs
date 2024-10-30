@@ -155,7 +155,8 @@ public class MediatorServiceProvider(
             return null;
         }
 
-        handlers.AddRange(serviceProvider.GetServices<TItem>());
+        handlers.AddRange(serviceProvider.GetServices<TItem>().Where(s => s is not TDeclaredBase));
+
         return handlers;
     }
 

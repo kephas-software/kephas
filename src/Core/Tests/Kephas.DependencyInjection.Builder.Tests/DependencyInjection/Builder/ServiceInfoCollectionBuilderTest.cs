@@ -155,7 +155,7 @@ namespace Kephas.Tests.DependencyInjection.Builder
             var testBuilder = services.Single(s => s.ImplementationType == typeof(DefaultMetadataAppService));
             var metadata = testBuilder.Metadata!;
 
-            metadata.Count.Should().Be(1);
+            metadata.Count.Should().Be(2);
             metadata.Should().ContainKey(nameof(ServiceMetadata.ImplementationType));
             metadata[nameof(ServiceMetadata.ImplementationType)].Should().Be(typeof(DefaultMetadataAppService));
         }
@@ -190,7 +190,7 @@ namespace Kephas.Tests.DependencyInjection.Builder
             var testBuilder = services.First(s => s.ImplementationType is not null);
             var metadata = testBuilder.Metadata;
 
-            metadata.Count.Should().Be(2);
+            metadata.Count.Should().Be(3);
             metadata.Should().ContainKey("TType");
             metadata["TType"].Should().Be(typeof(string));
         }
@@ -209,7 +209,7 @@ namespace Kephas.Tests.DependencyInjection.Builder
             var testBuilder = services.First(s => s.ImplementationType is not null);
             var metadata = testBuilder.Metadata;
 
-            metadata.Count.Should().Be(3);
+            metadata.Count.Should().Be(4);
             metadata.Should().ContainKey("FromType");
             metadata.Should().ContainKey("ToType");
 
@@ -232,7 +232,8 @@ namespace Kephas.Tests.DependencyInjection.Builder
             var metadata = serviceInfo.Metadata;
 
             metadata.Should().Satisfy(
-                kv => kv.Key == nameof(ServiceMetadata.ImplementationType) && kv.Value == typeof(TypedLogger<>));
+                kv => kv.Key == nameof(ServiceMetadata.ImplementationType) && kv.Value == typeof(TypedLogger<>),
+                kv => kv.Key == nameof(ServiceMetadata.ServiceKey) && kv.Value == typeof(TypedLogger<>).Name);
         }
 
         [Fact]
@@ -254,10 +255,10 @@ namespace Kephas.Tests.DependencyInjection.Builder
             var nullMetadata = nullBuilderEntry.Metadata!;
             var explicitMetadata = explicitBuilderEntry.Metadata!;
 
-            nullMetadata.Count.Should().Be(1);
+            nullMetadata.Count.Should().Be(2);
             nullMetadata.Should().NotContainKey(nameof(ServiceMetadata.Priority));
 
-            explicitMetadata.Count.Should().Be(2);
+            explicitMetadata.Count.Should().Be(3);
             explicitMetadata.Should().ContainKey(nameof(ServiceMetadata.Priority));
             explicitMetadata[nameof(ServiceMetadata.Priority)].Should().Be((Priority)100);
         }
@@ -280,7 +281,7 @@ namespace Kephas.Tests.DependencyInjection.Builder
 
             var customMetadata = customEntry.Metadata!;
 
-            customMetadata.Count.Should().Be(2);
+            customMetadata.Count.Should().Be(3);
             customMetadata["CustomValueMetadata"].Should().Be("hi there");
 
             nullEntry.Metadata!.Should().NotContainKey("CustomValueMetadata");
@@ -302,7 +303,7 @@ namespace Kephas.Tests.DependencyInjection.Builder
 
             var customBuilderEntry = services.First(s => s.ImplementationType == typeof(CustomValueMetadataAppService));
             var customMetadata = customBuilderEntry.Metadata!;
-            customMetadata.Count.Should().Be(2);
+            customMetadata.Count.Should().Be(3);
             customMetadata["CustomValueMetadata"].Should().Be("hi there");
 
             var nullBuilderEntry = services.First(s => s.ImplementationType == typeof(CustomValueNullMetadataAppService));
@@ -330,7 +331,7 @@ namespace Kephas.Tests.DependencyInjection.Builder
             var customMetadata = customBuilderEntry.Metadata!;
             var nullMetadata = nullBuilderEntry.Metadata!;
 
-            customMetadata.Count.Should().Be(3);
+            customMetadata.Count.Should().Be(4);
             customMetadata["Name"].Should().Be("hi there");
             customMetadata["IconName"].Should().Be("ICXP");
             customMetadata.Should().NotContainKey("Description");

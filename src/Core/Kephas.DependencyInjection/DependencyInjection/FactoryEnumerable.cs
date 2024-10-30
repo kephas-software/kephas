@@ -16,19 +16,37 @@ namespace Kephas.DependencyInjection;
 /// <summary>
 /// Collection of ordered services.
 /// </summary>
-/// <typeparam name="TTargetContract">Type of the target service contract.</typeparam>
-/// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
+/// <typeparam name="TService">The service type.</typeparam>
 [Priority(Priority.Low)]
-public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<TTargetContract, TMetadata>
-    where TTargetContract : notnull
+public class FactoryEnumerable<TService> : FactoryEnumerable<TService, ServiceMetadata>, IFactoryEnumerable<TService>
+    where TService : notnull
 {
-    private readonly ICollection<IFactory<TTargetContract, TMetadata>> serviceFactories;
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="FactoryEnumerable{TTargetContract,TMetadata}"/> class.
+    /// Initializes a new instance of the <see cref="FactoryEnumerable{TService}"/> class.
     /// </summary>
     /// <param name="serviceFactories">The service factories.</param>
-    public FactoryEnumerable(IEnumerable<IFactory<TTargetContract, TMetadata>>? serviceFactories = null) =>
+    public FactoryEnumerable(IEnumerable<IFactory<TService, ServiceMetadata>>? serviceFactories = null)
+        : base(serviceFactories)
+    {
+    }
+}
+    
+/// <summary>
+/// Collection of ordered services.
+/// </summary>
+/// <typeparam name="TService">The service type.</typeparam>
+/// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
+[Priority(Priority.Low)]
+public class FactoryEnumerable<TService, TMetadata> : IFactoryEnumerable<TService, TMetadata>
+    where TService : notnull
+{
+    private readonly ICollection<IFactory<TService, TMetadata>> serviceFactories;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FactoryEnumerable{TService,TMetadata}"/> class.
+    /// </summary>
+    /// <param name="serviceFactories">The service factories.</param>
+    public FactoryEnumerable(IEnumerable<IFactory<TService, TMetadata>>? serviceFactories = null) =>
         this.serviceFactories = ComputeServiceFactories(serviceFactories);
 
     /// <summary>
@@ -37,7 +55,7 @@ public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<
     /// <returns>
     /// The enumerator.
     /// </returns>
-    public IEnumerator<IFactory<TTargetContract, TMetadata>> GetEnumerator() =>
+    public IEnumerator<IFactory<TService, TMetadata>> GetEnumerator() =>
         serviceFactories.GetEnumerator();
 
     /// <summary>
@@ -48,11 +66,11 @@ public class FactoryEnumerable<TTargetContract, TMetadata> : IFactoryEnumerable<
     /// </returns>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    private ICollection<IFactory<TTargetContract, TMetadata>> ComputeServiceFactories(IEnumerable<IFactory<TTargetContract, TMetadata>>? serviceFactories)
+    private ICollection<IFactory<TService, TMetadata>> ComputeServiceFactories(IEnumerable<IFactory<TService, TMetadata>>? serviceFactories)
     {
         if (serviceFactories == null)
         {
-            return Array.Empty<IFactory<TTargetContract, TMetadata>>();
+            return Array.Empty<IFactory<TService, TMetadata>>();
         }
 
         var orderedFactories = serviceFactories
