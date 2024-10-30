@@ -14,7 +14,7 @@ using Xunit;
 
 namespace Kephas.Extensions.Tests.DependencyInjection;
 
-public class DependencyInjectionScopedTest
+public class DependencyInjectionScopedTest() : IntegrationTestBase<DependencyInjectionScopedTest>("^Kephas\\.")
 {
     [Fact]
     public void CreateScopedInjector_NestedScopes()

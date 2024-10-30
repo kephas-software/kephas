@@ -70,8 +70,7 @@ public static class Test
     /// <param name="configuration">The configuration.</param>
     /// <returns>A <see cref="IServiceProvider"/>.</returns>
     public static IServiceProvider BuildServiceProvider(this ServiceInfoCollectionBuilder builder, IConfiguration? configuration = null) =>
-        new ServiceCollection().AddApplicationServices(configuration ?? GetIntegrationConfig(), builder.Build()).BuildServiceProvider();
-
+        new ServiceCollection().AddApplicationServicesCore(configuration ?? GetIntegrationConfig(), builder.Build()).BuildServiceProvider();
 
     /// <summary>
     /// Builds a service provider based on <see cref="services"/>.
@@ -80,7 +79,7 @@ public static class Test
     /// <param name="configuration">The configuration.</param>
     /// <returns>A <see cref="IServiceProvider"/>.</returns>
     public static IServiceProvider BuildServiceProvider(this IServiceInfoCollection services, IConfiguration? configuration = null) =>
-        new ServiceCollection().AddApplicationServices(configuration ?? GetIntegrationConfig(), services).BuildServiceProvider();
+        new ServiceCollection().AddApplicationServicesCore(configuration ?? GetIntegrationConfig(), services).BuildServiceProvider();
 
     /// <summary>
     /// Gets the test lazy enumerator.

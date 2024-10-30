@@ -82,10 +82,16 @@ public static class ServiceCollectionExtensions
     /// <param name="configuration">The application configuration.</param>
     /// <param name="appRuntime">The application runtime.</param>
     /// <param name="includeInternal">Indicates whether the internal </param>
+    /// <param name="configureBuilder">Optional service builder configurator.</param>
     /// <returns>
     /// The <paramref name="services"></paramref>.
     /// </returns>
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration, IAppRuntime? appRuntime = null, bool includeInternal = true)
+    public static IServiceCollection AddApplicationServices(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IAppRuntime? appRuntime = null,
+        bool includeInternal = true,
+        Action<ServiceInfoCollectionBuilder>? configureBuilder = null)
     {
         _ = services ?? throw new ArgumentNullException(nameof(services));
 
@@ -96,7 +102,9 @@ public static class ServiceCollectionExtensions
         };
 
         var builderSettings = new ServiceBuilderSettings(() => appRuntime.GetAppAssemblies(), includeInternal, serviceInfos);
-        return services.AddApplicationServices(configuration, new ServiceInfoCollectionBuilder(builderSettings).Build());
+        var builder = new ServiceInfoCollectionBuilder(builderSettings);
+        configureBuilder?.Invoke(builder);
+        return services.AddApplicationServicesCore(configuration, builder.Build());
     }
     
     /// <summary>
@@ -108,7 +116,7 @@ public static class ServiceCollectionExtensions
     /// <returns>
     /// The <paramref name="services"></paramref>.
     /// </returns>
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration, IEnumerable<IServiceInfo> serviceInfos)
+    internal static IServiceCollection AddApplicationServicesCore(this IServiceCollection services, IConfiguration configuration, IEnumerable<IServiceInfo> serviceInfos)
     {
         _ = services ?? throw new ArgumentNullException(nameof(services));
 

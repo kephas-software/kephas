@@ -6,5 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 [assembly: AssemblyMetadata("IsTrimmable", "False")]
+[assembly: InternalsVisibleTo("Kephas.Testing.Xunit")]

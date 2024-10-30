@@ -33,7 +33,7 @@ public partial class DependencyInjectionExtensionsIntegrationTest
 #endif
 
     [Fact]
-    public void CreateInjector_simple_ambient_services_exported_no_assemblies()
+    public void BuildServiceProvider_simple_ambient_services_exported_no_assemblies()
     {
         var services = new ServiceInfoCollection()
             .Add(() => Substitute.For<IAppRuntime>(), b => b.Singleton());
@@ -313,7 +313,7 @@ public partial class DependencyInjectionExtensionsIntegrationTest
     }
 
     [Fact]
-    public void CreateInjector_instance_registration()
+    public void BuildServiceProvider_instance_registration()
     {
         var registrar = new TestServiceInfoProvider(
             new List<(Type contractDeclarationType, IServiceInfo appServiceInfo)>
@@ -325,7 +325,7 @@ public partial class DependencyInjectionExtensionsIntegrationTest
             getAppAssemblies: Array.Empty<Assembly>,
             config: ctx => ctx
                 .AddProviders(registrar)
-                .AddAssemblies(typeof(ILogger).Assembly, typeof(FactoryService<,>).Assembly));
+                .AddAssemblies(typeof(FactoryService<,>).Assembly));
 
         var container = builder.BuildServiceProvider();
 
@@ -334,7 +334,7 @@ public partial class DependencyInjectionExtensionsIntegrationTest
     }
 
     [Fact]
-    public async Task CreateInjector_instance_factory_registration()
+    public async Task BuildServiceProvider_instance_factory_registration()
     {
         var registrar = new TestServiceInfoProvider(
             new List<(Type contractDeclarationType, IServiceInfo appServiceInfo)>
@@ -342,7 +342,7 @@ public partial class DependencyInjectionExtensionsIntegrationTest
                 (typeof(string), new ServiceInfo(typeof(string), _ => "123")),
             });
 
-        var builder = CreateServicesBuilder(config: ctx => ctx
+        var builder = CreateServicesBuilder(config: b => b
             .AddProviders(registrar));
 
         var container = builder.BuildServiceProvider();
