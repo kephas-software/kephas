@@ -44,7 +44,7 @@ public class LazyService<T, TImplementation, TMetadata> : Lazy<T, TMetadata>
     /// <param name="metadata">The metadata.</param>
     internal LazyService(IServiceProvider serviceProvider, IDictionary<string, object?>? metadata)
         : base(
-            () => serviceProvider.GetRequiredService<TImplementation>(),
+            serviceProvider.GetRequiredService<TImplementation>,
             ServiceHelper.GetServiceMetadata<TMetadata>(metadata))
     {
     }
@@ -55,7 +55,7 @@ public class LazyService<T, TImplementation, TMetadata> : Lazy<T, TMetadata>
     /// <param name="serviceProvider">The service provider.</param>
     public LazyService(IServiceProvider serviceProvider)
         : base(
-            () => serviceProvider.GetRequiredService<TImplementation>(),
+            serviceProvider.GetRequiredService<TImplementation>,
             ServiceHelper.GetServiceMetadata<TMetadata>(typeof(TImplementation), typeof(T)))
     {
     }
