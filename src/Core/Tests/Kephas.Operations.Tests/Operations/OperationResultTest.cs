@@ -31,7 +31,7 @@ public class OperationResultTest
     {
         var opResult = new ArgumentException("arg").ToOperationResult<object?>();
         Assert.Equal(OperationStatus.Failed, opResult.OperationStatus);
-        Assert.Equal(0f, opResult.PercentCompleted);
+        opResult.PercentCompleted.Should().BeNull();
         opResult.Value.Should().BeNull();
     }
 

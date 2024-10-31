@@ -28,7 +28,7 @@ public class OperationResultOfTValueTest
     {
         var opResult = new ArgumentException("arg").ToOperationResult<int>();
         Assert.Equal(OperationStatus.Failed, opResult.OperationStatus);
-        Assert.Equal(0f, opResult.PercentCompleted);
+        opResult.PercentCompleted.Should().BeNull();
         opResult.Value.Should().Be(0);
     }
 
