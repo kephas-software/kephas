@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using Kephas.Collections;
 using Kephas.DependencyInjection.Builder.Resources;
 using Kephas.DependencyInjection.Metadata;
@@ -64,11 +65,8 @@ internal static class ServiceInfoCollectionBuilderExtensions
 
             // order the services by override and processing priority, resolve overrides
             // and with the rest of the services register them in the computed order.
-            var (sortedRegistrations, overriddenTypes) = SortRegistrations(registrations);
-            var filteredServiceInfos = overriddenTypes.Count == 0
-                ? sortedRegistrations
-                : sortedRegistrations.Where(i => !overriddenTypes.Contains(((IServiceInfo)i.serviceInfo).ImplementationType!));
-            foreach (var appServiceInfo in filteredServiceInfos)
+            var sortedRegistrations = SortRegistrationsDescending(registrations);
+            foreach (var appServiceInfo in sortedRegistrations)
             {
                 var validationResult = services.AddAppService(appServiceInfo.serviceInfo);
                 if (validationResult != ValidationResult.Success)
@@ -118,31 +116,46 @@ internal static class ServiceInfoCollectionBuilderExtensions
         return ValidationResult.Success;
     }
 
-    private static (IList<(ServiceInfo serviceInfo, Priority overridePriority)> sortedRegistrations, IList<Type> overriddenTypes) SortRegistrations(IEnumerable<ServiceInfo> appServiceInfos)
+    private static IList<(ServiceInfo serviceInfo, Priority priority, Type? implementationTypeBase, bool overrideBaseImplementation)>
+        SortRegistrationsDescending(IEnumerable<ServiceInfo> appServiceInfos)
     {
         // leave the implementation with the runtime type info
         // so that it may be possible to use runtime added attributes
+        // the registrations should be sorted in descending order,
+        // so that the ones with higher priority are registered last,
+        // to override the ones with a lower priority
         var overrideChain = appServiceInfos
-            .Select(si => (serviceInfo: si, overridePriority: (Priority)(si.Metadata?.TryGetValue(nameof(ServiceMetadata.Priority)) ?? Priority.Normal)))
-            .OrderBy(item => item.overridePriority)
+            .Select(si => (serviceInfo: si, priority: si.GetPriority(), implementationTypeBase: si.GetImplementationTypeBase(), overrideBaseImplementation: si.GetOverrideBaseImplementation()))
+            .OrderByDescending(item => item.priority)
             .ToList();
 
         // get the overridden services which should be eliminated
         var overriddenTypes = overrideChain
-            .Where(kv => (bool)(kv.serviceInfo.Metadata?.TryGetValue(nameof(ServiceMetadata.OverrideBaseImplementation)) ?? false) && ((IServiceInfo)kv.serviceInfo).ImplementationType?.BaseType != null)
-            .Select(kv => ((IServiceInfo)kv.serviceInfo).ImplementationType?.BaseType?.ToNormalizedType())
+            .Where(kv => kv is { overrideBaseImplementation: true, implementationTypeBase: not null })
+            .Select(kv => kv.implementationTypeBase!.ToNormalizedType())
             .ToList();
 
         if (overriddenTypes.Count > 0)
         {
             // eliminate the overridden services
             overrideChain = overrideChain
-                .Where(kv => !overriddenTypes.Contains(((IServiceInfo)kv.serviceInfo).ImplementationType))
+                .Where(kv => !overriddenTypes.Contains(((IServiceInfo)kv.serviceInfo).ImplementationType!))
                 .ToList();
         }
 
-        return (overrideChain, overriddenTypes!);
+        return overrideChain;
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Priority GetPriority(this IServiceInfo serviceInfo) =>
+        (Priority)(serviceInfo.Metadata?.TryGetValue(nameof(ServiceMetadata.Priority)) ?? Priority.Normal);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Type? GetImplementationTypeBase(this IServiceInfo serviceInfo) =>
+        serviceInfo.ImplementationType?.BaseType;
+    
+    private static bool GetOverrideBaseImplementation(this IServiceInfo serviceInfo) =>
+        (bool)(serviceInfo.Metadata?.TryGetValue(nameof(ServiceMetadata.OverrideBaseImplementation)) ?? false);
 
     private static IDictionary<Type, ServiceEntry> BuildServiceMap(
         IEnumerable<ServiceDeclarationInfo> serviceDeclarationInfos,

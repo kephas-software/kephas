@@ -10,3 +10,4 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyMetadata("IsTrimmable", "False")]
 [assembly: InternalsVisibleTo("Kephas.Testing.Xunit")]
+[assembly: InternalsVisibleTo("Kephas.Extensions.DependencyInjection.Tests")]

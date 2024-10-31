@@ -118,34 +118,17 @@ public static class ServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(nameof(configuration));
         ArgumentNullException.ThrowIfNull(nameof(appRuntime));
 
-        IOpenGenericMetadataProvider openGenericMetadataProvider = new OpenGenericMetadataProvider(); 
-        var serviceInfos = new ServiceInfoCollection
-        {
-            { appRuntime, b => b.Lifetime = AppServiceLifetime.Singleton },
-            { openGenericMetadataProvider, b => b.Lifetime = AppServiceLifetime.Singleton },
-        };
+        services.AddInitialServices(appRuntime);
 
         var builderSettings = new ServiceInfosBuilderSettings
         {
             GetAppAssemblies = appRuntime.GetAppAssemblies,
-            Services = serviceInfos,
+            Services = new ServiceInfoCollection(),
         };
         builderConfig?.Invoke(builderSettings);
         var builder = new ServiceInfoCollectionBuilder(builderSettings);
-        return services.AddApplicationServicesCore(configuration, builder.Build());
-    }
-    
-    private static IServiceCollection AddApplicationServicesCore(this IServiceCollection services, IConfiguration configuration, IEnumerable<IServiceInfo> serviceInfos)
-    {
-        _ = services ?? throw new ArgumentNullException(nameof(services));
 
-        if (serviceInfos is null)
-        {
-            return services;
-        }
-
-        services.AddGenericCollections();
-        foreach (var serviceInfo in serviceInfos)
+        foreach (var serviceInfo in builder.Build())
         {
             services.AddServiceInfo(configuration, serviceInfo);
         }
@@ -153,18 +136,14 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    /// <summary>
-    /// Adds the <see cref="ICollection{T}"/>, <see cref="IList{T}"/>, <see cref="IReadOnlyCollection{T}"/>, and
-    /// <see cref="IReadOnlyList{T}"/> as open generic registrations.
-    /// </summary>
-    /// <param name="services">The service collection.</param>
-    /// <returns>The provided service collection.</returns>
-    public static IServiceCollection AddGenericCollections(this IServiceCollection services)
+    internal static IServiceCollection AddInitialServices(this IServiceCollection services, IAppRuntime appRuntime)
     {
         services.TryAddTransient(typeof(ICollection<>), typeof(List<>));
         services.TryAddTransient(typeof(IReadOnlyCollection<>), typeof(List<>));
         services.TryAddTransient(typeof(IList<>), typeof(List<>));
         services.TryAddTransient(typeof(IReadOnlyList<>), typeof(List<>));
+        services.AddSingleton<IOpenGenericMetadataProvider>(new OpenGenericMetadataProvider());
+        services.AddSingleton<IAppRuntime>(appRuntime);
 
         return services;
     }
