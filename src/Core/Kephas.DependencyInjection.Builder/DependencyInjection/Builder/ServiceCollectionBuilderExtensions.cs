@@ -149,24 +149,47 @@ internal static class ServiceInfoCollectionBuilderExtensions
         IEnumerable<ServiceImplementationDeclaration> serviceImplementationDeclarations)
     {
         var serviceMap = new Dictionary<Type, ServiceEntry>();
+        var serviceImplementationDeclarationsList = serviceImplementationDeclarations.ToList();
 
         foreach (var (serviceDeclarationType, serviceInfo) in serviceDeclarationInfos)
         {
-            if (!serviceMap.TryGetValue(serviceDeclarationType, out var serviceEntry))
+            var serviceEntry = GetOrAddServiceEntry(serviceMap, serviceDeclarationType, serviceInfo);
+            // if the declaration of the service info contains an implementation type,
+            // add it to the declarations list for further processing.
+            if (serviceInfo.ImplementationType is not null)
             {
-                serviceMap.Add(serviceDeclarationType, new ServiceEntry(serviceInfo));
+                var serviceType = serviceInfo.ServiceType ?? serviceInfo.ServiceDeclarationType;
+                if (serviceType is not null)
+                {
+                    serviceImplementationDeclarationsList.Add(new ServiceImplementationDeclaration(serviceInfo.ImplementationType, serviceType));
+                }
             }
-            else
+            // otherwise, if the instancing strategy is instance or factory,
+            // add the service info to the registrations list.
+            else if (serviceInfo.InstancingStrategy is not null)
             {
-                serviceEntry.ServiceInfo = serviceInfo;
+                serviceEntry.Registrations.Add(new ServiceInfo(serviceInfo, serviceInfo.ServiceType, serviceInfo.ServiceDeclarationType, serviceInfo.InstancingStrategy));
             }
         }
 
-        serviceImplementationDeclarations.ForEach(si => AddService(serviceMap, si.ServiceDeclarationType, si.ImplementationType));
+        serviceImplementationDeclarationsList.ForEach(si => AddService(serviceMap, si.ServiceDeclarationType, si.ImplementationType));
 
         return serviceMap;
     }
 
+    private static ServiceEntry GetOrAddServiceEntry(Dictionary<Type, ServiceEntry> serviceMap, Type serviceDeclarationType, IServiceInfo serviceInfo)
+    {
+        if (!serviceMap.TryGetValue(serviceDeclarationType, out var serviceEntry))
+        {
+            serviceMap.Add(serviceDeclarationType, serviceEntry = new ServiceEntry(serviceInfo));
+        }
+        else
+        {
+            serviceEntry.ServiceInfo = serviceInfo;
+        }
+
+        return serviceEntry;
+    }
 
     private static void AddService(
         IDictionary<Type, ServiceEntry> serviceMap,
@@ -186,7 +209,7 @@ internal static class ServiceInfoCollectionBuilderExtensions
                     // if the service declaration based on the generic type definition is found,
                     // build a new service declaration based on the constructed generic type
                     // and add a new entry in the map.
-                    var genericServiceInfo = serviceEntry.Registrations[0];
+                    var genericServiceInfo = serviceEntry.Registrations.Count > 0 ? serviceEntry.Registrations[0] : serviceEntry.ServiceInfo;
                     var appServiceInfoDeclaration = new ServiceInfo(genericServiceInfo, serviceDeclarationType, serviceDeclarationType);
                     var appServiceInfo = new ServiceInfo(appServiceInfoDeclaration, serviceDeclarationType, serviceDeclarationType, implementationType);
                     ((IServiceInfo)appServiceInfo).AddMetadata(ServiceHelper.GetServiceMetadata(implementationType, serviceDeclarationType));

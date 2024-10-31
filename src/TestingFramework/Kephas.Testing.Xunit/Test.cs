@@ -50,16 +50,18 @@ public static class Test
     /// <summary>
     /// Builds a service provider based on the provided parameters.
     /// </summary>
+    /// <param name="services">The service collection.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="appRuntimeConfig">Optional application runtime configurator.</param>
     /// <param name="builderConfig">Optional service builder configurator.</param>
     /// <returns>A <see cref="IServiceProvider"/>.</returns>
     public static IServiceProvider BuildEmptyTestServiceProvider(
+        this IServiceCollection services,
         IConfiguration? configuration = null,
         Action<AppRuntimeSettings>? appRuntimeConfig = null,
         Action<ServiceInfoCollectionBuilder>? builderConfig = null) =>
         BuildTestServiceProvider(
-            new ServiceCollection(),
+            services,
             configuration,
             settings =>
             {
@@ -71,6 +73,23 @@ public static class Test
                 settings.GetAppAssemblies = () => [];
                 settings.ConfigureBuilder = builderConfig;
             });
+
+    /// <summary>
+    /// Builds a service provider based on the provided parameters.
+    /// </summary>
+    /// <param name="configuration">The application configuration.</param>
+    /// <param name="appRuntimeConfig">Optional application runtime configurator.</param>
+    /// <param name="builderConfig">Optional service builder configurator.</param>
+    /// <returns>A <see cref="IServiceProvider"/>.</returns>
+    public static IServiceProvider BuildEmptyTestServiceProvider(
+        IConfiguration? configuration = null,
+        Action<AppRuntimeSettings>? appRuntimeConfig = null,
+        Action<ServiceInfoCollectionBuilder>? builderConfig = null) =>
+        BuildEmptyTestServiceProvider(
+            new ServiceCollection(),
+            configuration,
+            appRuntimeConfig,
+            builderConfig);
 
     /// <summary>
     /// Builds a service provider based on the provided parameters.

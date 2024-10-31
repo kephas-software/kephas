@@ -246,21 +246,18 @@ public static class ServiceCollectionExtensions
         metadataType ??= typeof(ServiceMetadata);
         serviceDeclarationType ??= serviceType;
 
-        var serviceRegistrationType = implementationType.IsGenericTypeDefinition
-            ? GetGenericServiceType(serviceType, serviceDeclarationType, implementationType)
-            : serviceType;
         services.AddSingleton(implementationType);
-        if (serviceRegistrationType != implementationType)
-        {
-            // TODO this is probably not correct for open generics, as it will generate different instances for the registration type and for the implementation tyoe.  
-            _ = implementationType.IsGenericTypeDefinition
-                ? ServiceCollectionServiceExtensions.AddSingleton(services, serviceRegistrationType, implementationType)
-                : ServiceCollectionServiceExtensions.AddSingleton(services, serviceType, provider => provider.GetRequiredService(implementationType));
-        }
 
-        return metadata is null
-            ? services.AddServiceFactories(serviceType, serviceDeclarationType, implementationType, metadataType)
-            : services.AddServiceFactories(serviceType, serviceDeclarationType, implementationType, metadataType, metadata);
+        return implementationType.IsGenericTypeDefinition
+            // TODO this is probably not correct for open generics, as it will generate different instances
+            // for the registration type and for the implementation type.
+            // However, there is no good solution for this right now.
+            ? AddOpenGenericServiceFactories(
+                services, serviceType, serviceDeclarationType, implementationType,
+                openGenericServiceType => services.AddSingletonRaw(openGenericServiceType, implementationType))
+            : metadata is null
+                ? services.AddServiceFactories(serviceType, serviceDeclarationType, implementationType, metadataType)
+                : services.AddServiceFactories(serviceType, serviceDeclarationType, implementationType, metadataType, metadata);
     }
 
     /// <summary>
@@ -392,20 +389,15 @@ public static class ServiceCollectionExtensions
         metadataType ??= typeof(ServiceMetadata);
         serviceDeclarationType ??= serviceType;
 
-        var serviceRegistrationType = implementationType.IsGenericTypeDefinition
-            ? GetGenericServiceType(serviceType, serviceDeclarationType, implementationType)
-            : serviceType;
         services.AddTransient(implementationType);
-        if (serviceRegistrationType != implementationType)
-        {
-            _ = implementationType.IsGenericTypeDefinition
-                ? services.AddTransientRaw(serviceRegistrationType, implementationType)
-                : services.AddTransientRaw(serviceType, provider => provider.GetRequiredService(implementationType));
-        }
 
-        return metadata is null
-            ? services.AddServiceFactories(serviceType, serviceDeclarationType, implementationType, metadataType)
-            : services.AddServiceFactories(serviceType, serviceDeclarationType, implementationType, metadataType, metadata);
+        return implementationType.IsGenericTypeDefinition
+            ? AddOpenGenericServiceFactories(
+                services, serviceType, serviceDeclarationType, implementationType,
+                openGenericServiceType => services.AddTransientRaw(openGenericServiceType, implementationType))
+            : metadata is null
+                ? services.AddServiceFactories(serviceType, serviceDeclarationType, implementationType, metadataType)
+                : services.AddServiceFactories(serviceType, serviceDeclarationType, implementationType, metadataType, metadata);
     }
 
     /// <summary>
@@ -487,21 +479,18 @@ public static class ServiceCollectionExtensions
         metadataType ??= typeof(ServiceMetadata);
         serviceDeclarationType ??= serviceType;
 
-        var serviceRegistrationType = implementationType.IsGenericTypeDefinition
-            ? GetGenericServiceType(serviceType, serviceDeclarationType, implementationType)
-            : serviceType;
         services.AddScoped(implementationType);
-        if (serviceRegistrationType != implementationType)
-        {
-            // TODO this is probably not correct for open generics, as it will generate different instances for the registration type and for the implementation tyoe.  
-            _ = implementationType.IsGenericTypeDefinition
-                ? ServiceCollectionServiceExtensions.AddScoped(services, serviceRegistrationType, implementationType)
-                : ServiceCollectionServiceExtensions.AddScoped(services, serviceType, provider => provider.GetRequiredService(implementationType));
-        }
 
-        return metadata is null
-            ? services.AddServiceFactories(serviceType, serviceDeclarationType, implementationType, metadataType)
-            : services.AddServiceFactories(serviceType, serviceDeclarationType, implementationType, metadataType, metadata);
+        return implementationType.IsGenericTypeDefinition
+            // TODO this is probably not correct for open generics, as it will generate different instances
+            // for the registration type and for the implementation type.  
+            // However, there is no good solution for this right now.
+            ? AddOpenGenericServiceFactories(
+                services, serviceType, serviceDeclarationType, implementationType,
+                openGenericServiceType => services.AddScopedRaw(openGenericServiceType, implementationType))
+            : metadata is null
+                ? services.AddServiceFactories(serviceType, serviceDeclarationType, implementationType, metadataType)
+                : services.AddServiceFactories(serviceType, serviceDeclarationType, implementationType, metadataType, metadata);
     }
 
     /// <summary>
@@ -836,6 +825,14 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddTransientRaw(this IServiceCollection services, Type serviceType, Func<IServiceProvider, object> factory)
         => ServiceCollectionServiceExtensions.AddTransient(services, serviceType, factory);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static IServiceCollection AddSingletonRaw(this IServiceCollection services, Type serviceType, Type implementationType)
+        => ServiceCollectionServiceExtensions.AddSingleton(services, serviceType, implementationType);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static IServiceCollection AddScopedRaw(this IServiceCollection services, Type serviceType, Type implementationType)
+        => ServiceCollectionServiceExtensions.AddScoped(services, serviceType, implementationType);
+
     private static IServiceCollection AddServiceFactoriesOfObject<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]T,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]TMetadata>(
@@ -978,5 +975,24 @@ public static class ServiceCollectionExtensions
         }
 
         return genericServiceType;
+    }
+
+    private static IServiceCollection AddOpenGenericServiceFactories(
+        this IServiceCollection services,
+        Type serviceType, Type serviceDeclarationType, Type implementationType,
+        Func<Type, IServiceCollection> addService)
+    {
+        var openGenericServiceType = GetGenericServiceType(serviceType, serviceDeclarationType, implementationType);
+        if (openGenericServiceType != implementationType)
+        {
+            // if the open generic service type is the same with the implementation type,
+            // do not register again, as it was already registered.
+            addService(openGenericServiceType);
+        }
+
+        // do not do anything anymore, as the open generics for lazy and factory have already been added.
+        // do not do here anything except for registering the metadata, as the open generics for lazy and factory have already been added.
+        AddOpenGenericServiceMetadata(services, serviceType, serviceDeclarationType, implementationType);
+        return services;
     }
 }

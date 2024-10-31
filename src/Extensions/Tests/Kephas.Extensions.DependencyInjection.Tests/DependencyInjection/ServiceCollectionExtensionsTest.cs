@@ -89,10 +89,10 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
     [Fact]
     public void AddSingleton_open_generic_with_dependency()
     {
-        using var sp = new ServiceCollection()
+        var sp = new ServiceCollection()
             .AddSingleton<Dependency>()
             .AddSingleton(typeof(IOpen<>), typeof(MoreOpenWithDependency<>))
-            .BuildServiceProvider();
+            .BuildEmptyTestServiceProvider();
 
         var myService = sp.GetRequiredService(typeof(IOpen<object>));
         Assert.IsType<MoreOpenWithDependency<object>>(myService);
@@ -101,10 +101,10 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
     [Fact]
     public void AddScoped_open_generic_with_dependency()
     {
-        using var sp = new ServiceCollection()
+        var sp = new ServiceCollection()
             .AddScoped<Dependency>()
             .AddScoped(typeof(IOpen<>), typeof(MoreOpenWithDependency<>))
-            .BuildServiceProvider();
+            .BuildEmptyTestServiceProvider();
 
         using var scope = sp.CreateScope();
         var myService = scope.ServiceProvider.GetRequiredService(typeof(IOpen<object>));
@@ -114,10 +114,10 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
     [Fact]
     public void AddTransient_open_generic_with_dependency()
     {
-        using var sp = new ServiceCollection()
+        var sp = new ServiceCollection()
             .AddTransient<Dependency>()
             .AddTransient(typeof(IOpen<>), typeof(MoreOpenWithDependency<>))
-            .BuildServiceProvider();
+            .BuildEmptyTestServiceProvider();
 
         var myService = sp.GetRequiredService(typeof(IOpen<object>));
         Assert.IsType<MoreOpenWithDependency<object>>(myService);
