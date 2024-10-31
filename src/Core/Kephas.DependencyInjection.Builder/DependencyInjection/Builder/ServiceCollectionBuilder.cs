@@ -23,30 +23,21 @@ public class ServiceInfoCollectionBuilder
     /// <summary>
     /// Initializes a new instance of the <see cref="ServiceInfoCollectionBuilder"/> class.
     /// </summary>
-    /// <param name="getAppAssemblies">The function for retrieving the application assemblies.</param>
-    public static ServiceInfoCollectionBuilder Create(Func<IEnumerable<Assembly>> getAppAssemblies) =>
-        new(new ServiceBuilderSettings(getAppAssemblies));
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ServiceInfoCollectionBuilder"/> class.
-    /// </summary>
-    /// <param name="services">The application services.</param>
-    /// <param name="getAppAssemblies">The function for retrieving the application assemblies.</param>
-    public static ServiceInfoCollectionBuilder Create(IServiceInfoCollection services, Func<IEnumerable<Assembly>> getAppAssemblies) =>
-        new(new ServiceBuilderSettings(getAppAssemblies, Services: services));
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ServiceInfoCollectionBuilder"/> class.
-    /// </summary>
     /// <param name="settings">The builder settings.</param>
-    public ServiceInfoCollectionBuilder(ServiceBuilderSettings settings)
+    public ServiceInfoCollectionBuilder(ServiceInfosBuilderSettings settings)
     {
         ArgumentNullException.ThrowIfNull(settings);
 
         GetAppAssemblies = settings.GetAppAssemblies;
         Services = settings.Services ?? new ServiceInfoCollection();
         IncludeInternal = settings.IncludeInternal;
+        ConfigureBuilder = settings.ConfigureBuilder;
     }
+
+    /// <summary>
+    /// Builder to configure the service information collection.
+    /// </summary>
+    protected internal Action<ServiceInfoCollectionBuilder>? ConfigureBuilder { get; }
 
     /// <summary>
     /// Indicates whether the internal implementations should be considered or not.
@@ -82,7 +73,18 @@ public class ServiceInfoCollectionBuilder
     protected internal ICollection<Type> Types { get; } = new List<Type>();
 
     /// <summary>
-    /// Adds the <see cref="IServiceInfoProvider"/>s.
+    /// Adds a range of <see cref="IServiceInfo"/>s.
+    /// </summary>
+    /// <param name="serviceInfos">An array of <see cref="IServiceInfo"/>.</param>
+    /// <returns>This builder.</returns>
+    public ServiceInfoCollectionBuilder AddServiceInfos(params IServiceInfo[] serviceInfos)
+    {
+        Services.AddRange(serviceInfos);
+        return this;
+    }
+
+    /// <summary>
+    /// Adds a range of <see cref="IServiceInfoProvider"/>s.
     /// </summary>
     /// <param name="providers">An array of providers.</param>
     /// <returns>This builder.</returns>
@@ -93,7 +95,7 @@ public class ServiceInfoCollectionBuilder
     }
 
     /// <summary>
-    /// Adds the <see cref="Assembly"/>s.
+    /// Adds a range of <see cref="Assembly"/>s.
     /// </summary>
     /// <param name="assemblies">An array of assemblies.</param>
     /// <returns>This builder.</returns>
@@ -104,7 +106,7 @@ public class ServiceInfoCollectionBuilder
     }
 
     /// <summary>
-    /// Adds the <see cref="Type"/>s.
+    /// Adds a range of <see cref="Type"/>s.
     /// </summary>
     /// <param name="types">An array of types.</param>
     /// <returns>This builder.</returns>
@@ -118,7 +120,11 @@ public class ServiceInfoCollectionBuilder
     /// Adds the application services from the <see cref="IServiceInfoProvider"/>s identified in the assemblies.
     /// </summary>
     /// <returns>The provided app services.</returns>
-    public IServiceInfoCollection Build() => AddServices(Services, GetProviders());
+    public IServiceInfoCollection Build()
+    {
+        ConfigureBuilder?.Invoke(this);
+        return AddServices(Services, GetProviders());
+    }
 
     private IServiceInfoCollection AddServices(
         IServiceInfoCollection services,

@@ -5,10 +5,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Reflection;
+using System.Runtime.Loader;
 using System.Text;
+using System.Text.RegularExpressions;
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Builder;
-using Kephas.DependencyInjection.Reflection;
+using Kephas.DependencyInjection.Builder.Configuration;
 using Kephas.Extensions;
 using Kephas.Extensions.Hosting;
 using Kephas.Extensions.Logging;
@@ -45,41 +48,101 @@ public static class Test
     public static ILogger<T> GetTestLogger<T>(StringBuilder? stringBuilder, LogLevel? minimumLevel = null) => new TestLogger<T>(stringBuilder, minimumLevel: minimumLevel);
 
     /// <summary>
-    /// Creates am empty list of <see cref="IServiceInfo"/>.
+    /// Builds a service provider based on the provided parameters.
     /// </summary>
-    public static IServiceInfoCollection CreateServiceInfos()
+    /// <param name="configuration">The application configuration.</param>
+    /// <param name="appRuntimeConfig">Optional application runtime configurator.</param>
+    /// <param name="builderConfig">Optional service builder configurator.</param>
+    /// <returns>A <see cref="IServiceProvider"/>.</returns>
+    public static IServiceProvider BuildEmptyTestServiceProvider(
+        IConfiguration? configuration = null,
+        Action<AppRuntimeSettings>? appRuntimeConfig = null,
+        Action<ServiceInfoCollectionBuilder>? builderConfig = null) =>
+        BuildTestServiceProvider(
+            new ServiceCollection(),
+            configuration,
+            settings =>
+            {
+                settings.AppAssemblyNamePattern = "^1$"; // invalid name, should not return any assemblies
+                appRuntimeConfig?.Invoke(settings);
+            },
+            settings =>
+            {
+                settings.GetAppAssemblies = () => [];
+                settings.ConfigureBuilder = builderConfig;
+            });
+
+    /// <summary>
+    /// Builds a service provider based on the provided parameters.
+    /// </summary>
+    /// <param name="configuration">The application configuration.</param>
+    /// <param name="appRuntimeConfig">Optional application runtime configurator.</param>
+    /// <param name="builderConfig">Optional service builder configurator.</param>
+    /// <returns>A <see cref="IServiceProvider"/>.</returns>
+    public static IServiceProvider BuildTestServiceProvider(
+        IConfiguration? configuration = null,
+        Action<AppRuntimeSettings>? appRuntimeConfig = null,
+        Action<ServiceInfosBuilderSettings>? builderConfig = null) =>
+        BuildTestServiceProvider(new ServiceCollection(), configuration, appRuntimeConfig, builderConfig);
+
+    /// <summary>
+    /// Builds a service provider based on the provided parameters.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The application configuration.</param>
+    /// <param name="appRuntimeConfig">Optional application runtime configurator.</param>
+    /// <param name="builderConfig">Optional service builder configurator.</param>
+    /// <returns>A <see cref="IServiceProvider"/>.</returns>
+    public static IServiceProvider BuildTestServiceProvider(
+        this IServiceCollection services,
+        IConfiguration? configuration = null,
+        Action<AppRuntimeSettings>? appRuntimeConfig = null,
+        Action<ServiceInfosBuilderSettings>? builderConfig = null)
     {
-        return new ServiceInfoCollection();
+        configuration ??= GetIntegrationConfig();
+        return services
+            .AddApplicationServices(configuration, appRuntimeConfig, builderConfig)
+            .BuildServiceProvider();
     }
 
+
     /// <summary>
-    /// Creates a test <see cref="ServiceInfoCollectionBuilder"/>.
+    /// Builds a service provider based on the provided parameters.
     /// </summary>
-    /// <param name="services">Optional. The service collection used to initialize the builder with.</param>
-    /// <returns>The <see cref="ServiceInfoCollectionBuilder"/>.</returns>
-    public static ServiceInfoCollectionBuilder CreateServiceInfosBuilder<TEntryType>(IServiceInfoCollection? services = null)
+    /// <typeparam name="T">The entry class. This type will provide the entry assembly.</typeparam>
+    /// <param name="configuration">The application configuration.</param>
+    /// <param name="appRuntimeConfig">Optional application runtime configurator.</param>
+    /// <param name="builderConfig">Optional service builder configurator.</param>
+    /// <returns>A <see cref="IServiceProvider"/>.</returns>
+    public static IServiceProvider BuildTestServiceProvider<T>(
+        IConfiguration? configuration = null,
+        Action<AppRuntimeSettings>? appRuntimeConfig = null,
+        Action<ServiceInfosBuilderSettings>? builderConfig = null) =>
+        BuildTestServiceProvider<T>(new ServiceCollection(), configuration, appRuntimeConfig, builderConfig);
+
+    /// <summary>
+    /// Builds a service provider based on the provided parameters.
+    /// </summary>
+    /// <typeparam name="T">The entry class. This type will provide the entry assembly.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The application configuration.</param>
+    /// <param name="appRuntimeConfig">Optional application runtime configurator.</param>
+    /// <param name="builderConfig">Optional service builder configurator.</param>
+    /// <returns>A <see cref="IServiceProvider"/>.</returns>
+    public static IServiceProvider BuildTestServiceProvider<T>(
+        this IServiceCollection services,
+        IConfiguration? configuration = null,
+        Action<AppRuntimeSettings>? appRuntimeConfig = null,
+        Action<ServiceInfosBuilderSettings>? builderConfig = null)
     {
-        var appRuntime = new AppRuntime(new AppRuntimeSettings { EntryAssembly = typeof(TEntryType).Assembly });
-        return ServiceInfoCollectionBuilder.Create(services ?? CreateServiceInfos(), () => appRuntime.GetAppAssemblies());
+        configuration ??= GetIntegrationConfig();
+        return services
+            .AddApplicationServices(
+                configuration,
+                settings => settings.ConfigureAppRuntimeSettings<T>(appRuntimeConfig),
+                builderConfig)
+            .BuildServiceProvider();
     }
-
-    /// <summary>
-    /// Builds a service provider based on <see cref="builder"/>.
-    /// </summary>
-    /// <param name="builder">The <see cref="ServiceInfoCollectionBuilder"/>.</param>
-    /// <param name="configuration">The configuration.</param>
-    /// <returns>A <see cref="IServiceProvider"/>.</returns>
-    public static IServiceProvider BuildServiceProvider(this ServiceInfoCollectionBuilder builder, IConfiguration? configuration = null) =>
-        new ServiceCollection().AddApplicationServicesCore(configuration ?? GetIntegrationConfig(), builder.Build()).BuildServiceProvider();
-
-    /// <summary>
-    /// Builds a service provider based on <see cref="services"/>.
-    /// </summary>
-    /// <param name="services">The <see cref="IServiceInfoCollection"/>.</param>
-    /// <param name="configuration">The configuration.</param>
-    /// <returns>A <see cref="IServiceProvider"/>.</returns>
-    public static IServiceProvider BuildServiceProvider(this IServiceInfoCollection services, IConfiguration? configuration = null) =>
-        new ServiceCollection().AddApplicationServicesCore(configuration ?? GetIntegrationConfig(), services).BuildServiceProvider();
 
     /// <summary>
     /// Gets the test lazy enumerator.
@@ -88,18 +151,10 @@ public static class Test
     /// <typeparam name="T">The service type.</typeparam>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
     /// <returns>The test <see cref="ILazyEnumerable{T,TMetadata}"/>.</returns>
-    public static ILazyEnumerable<T, TMetadata> GetTestLazyEnumerable<T, TMetadata>(params T[] services)
-    {
-        var lazyEnumerable = Substitute.For<ILazyEnumerable<T, TMetadata>>();
-
-        lazyEnumerable.GetEnumerator()
-            .Returns(services
-                .Select(s => new Lazy<T, TMetadata>(() => s, CreateMetadata<TMetadata>(null)))
-                .ToList()
-                .GetEnumerator());
-
-        return lazyEnumerable;
-    }
+    public static ILazyEnumerable<T, TMetadata> GetTestLazyEnumerable<T, TMetadata>(params T[] services) =>
+        new LazyEnumerable<T, TMetadata>(
+            services
+                .Select(s => new Lazy<T, TMetadata>(() => s, ServiceHelper.GetServiceMetadata<TMetadata>(null, typeof(T)))));
 
     /// <summary>
     /// Gets the test factory enumerator.
@@ -107,38 +162,53 @@ public static class Test
     /// <param name="services">The services</param>
     /// <typeparam name="T">The service type.</typeparam>
     /// <typeparam name="TMetadata">The metadata type.</typeparam>
-    /// <returns>The test <see cref="ILazyEnumerable{T,TMetadata}"/>.</returns>
+    /// <returns>The test <see cref="IFactoryEnumerable{T,TMetadata}"/>.</returns>
     public static IFactoryEnumerable<T, TMetadata> GetTestFactoryEnumerable<T, TMetadata>(params T[] services)
-        where T : notnull
+        where T : notnull =>
+        new FactoryEnumerable<T, TMetadata>(
+            services
+                .Select(s => new Factory<T, TMetadata>(() => s, ServiceHelper.GetServiceMetadata<TMetadata>(null, typeof(T)))));
+
+    /// <summary>
+    /// Gets a test <see cref="IAppRuntime"/> service.
+    /// </summary>
+    /// <remarks>The <see cref="IAppRuntime"/> it returns is a mock providing the specified assemblies.</remarks>
+    /// <typeparam name="T">The entry class. This type will provide the entry assembly.</typeparam>
+    /// <returns>The test <see cref="IAppRuntime"/> service.</returns>
+    public static IAppRuntime GetTestAppRuntime<T>(IEnumerable<Assembly> assemblies)
     {
-        var lazyEnumerable = Substitute.For<IFactoryEnumerable<T, TMetadata>>();
+        var appRuntime = GetTestAppRuntime(assemblies);
+        appRuntime.GetEntryAssembly().Returns(typeof(T).Assembly);
 
-        lazyEnumerable.GetEnumerator()
-            .Returns(services
-                .Select(s => (IFactory<T, TMetadata>)new Factory<T, TMetadata>(() => s, CreateMetadata<TMetadata>(null)))
-                .ToList()
-                .GetEnumerator());
-
-        return lazyEnumerable;
+        return appRuntime;
     }
 
     /// <summary>
     /// Gets a test <see cref="IAppRuntime"/> service.
     /// </summary>
+    /// <remarks>The <see cref="IAppRuntime"/> it returns is a mock providing the specified assemblies.</remarks>
     /// <returns>The test <see cref="IAppRuntime"/> service.</returns>
-    public static IAppRuntime GetTestAppRuntime(string? environment = null, string? appName = null)
+    public static IAppRuntime GetTestAppRuntime(IEnumerable<Assembly> assemblies)
     {
         var appRuntime = Substitute.For<IAppRuntime>();
-        appRuntime.GetEnvironment().Returns(environment);
-        appRuntime.GetAppName().Returns(appName);
+        appRuntime.GetAppName().Returns("TestApp");
+        appRuntime.GetAppAssemblies().Returns(assemblies ?? []);
+        appRuntime.GetEnvironment().Returns("TEST");
 
         return appRuntime;
     }
 
-    private static TMetadata CreateMetadata<TMetadata>(IDictionary<string, object?>? metadata)
+    /// <summary>
+    /// Gets a test <see cref="IAppRuntime"/> service.
+    /// </summary>
+    /// <typeparam name="T">The entry class. This type will provide the entry assembly.</typeparam>
+    /// <returns>The test <see cref="IAppRuntime"/> service.</returns>
+    public static IAppRuntime GetTestAppRuntime<T>(Action<AppRuntimeSettings>? appRuntimeConfig = null)
     {
-        var typedMetadata = Activator.CreateInstance(typeof(TMetadata), metadata);
-        return (TMetadata)typedMetadata!;
+        var appRuntimeSettings = new AppRuntimeSettings();
+        appRuntimeSettings.ConfigureAppRuntimeSettings<T>(appRuntimeConfig);
+        var appRuntime = new AppRuntime(appRuntimeSettings);
+        return appRuntime;
     }
     
     /// <summary>
@@ -194,5 +264,26 @@ public static class Test
         });
 
         return configurationBuilder.Build();
+    }
+
+    /// <summary>
+    /// Gets the loaded assemblies matching the provided <paramref name="namePattern"/>.
+    /// </summary>
+    /// <param name="namePattern">The name pattern.</param>
+    /// <returns>An enumeration of <see cref="Assembly"/>.</returns>
+    public static IEnumerable<Assembly> GetLoadedAssemblies(string namePattern)
+    {
+        var regex = new Regex(namePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        return AssemblyLoadContext.Default.Assemblies.Where(a => regex.IsMatch(a.GetName().Name ?? string.Empty));
+    }
+
+    private static void ConfigureAppRuntimeSettings<T>(this AppRuntimeSettings settings, Action<AppRuntimeSettings>? appRuntimeConfig = null)
+    {
+        settings.EntryAssembly = typeof(T).Assembly;
+        var assemblyName = typeof(T).Assembly.GetName().Name ?? string.Empty;
+        settings.AppAssemblyNamePattern = assemblyName.EndsWith("Test") || assemblyName.EndsWith("Tests")
+            ? AppRuntimeSettings.TestsIncludedAppAssemblyNamePattern
+            : AppRuntimeSettings.DefaultAppAssemblyNamePattern;
+        appRuntimeConfig?.Invoke(settings);
     }
 }

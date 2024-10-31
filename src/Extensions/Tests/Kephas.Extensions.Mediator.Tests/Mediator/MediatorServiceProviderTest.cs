@@ -55,9 +55,8 @@ public class MediatorServiceProviderTest() : IntegrationTestBase<MediatorService
         }
     }
     
-    public static TheoryData<Type, Type, bool> GetSingleServiceData()
-    {
-        return new TheoryData<Type, Type, bool>
+    public static TheoryData<Type, Type, bool> GetSingleServiceData() =>
+        new()
         {
             { typeof(IRequestHandler<OneReturnStringTypedMessage, string>), typeof(OneReturnStringTypedHandler), true },
             { typeof(IRequestHandler<TwoReturnStringTypedMessage, string>), typeof(ReturnStringInterfaceHandler), true },
@@ -74,11 +73,9 @@ public class MediatorServiceProviderTest() : IntegrationTestBase<MediatorService
             { typeof(IStreamRequestHandler<StreamReturnStringMessage, string>), typeof(StreamReturnStringHandler), true },
             { typeof(IStreamRequestHandler<StreamNonDeclaredMessage, int>), typeof(StreamNonDeclaredHandler), false },
         };
-    }
-    
-    public static TheoryData<Type, IEnumerable<Type>, bool> GetMultipleServiceData()
-    {
-        return new TheoryData<Type, IEnumerable<Type>, bool>
+
+    public static TheoryData<Type, IEnumerable<Type>, bool> GetMultipleServiceData() =>
+        new()
         {
             {
                 typeof(IEnumerable<IPipelineBehavior<OneReturnStringTypedMessage, string>>),
@@ -111,5 +108,4 @@ public class MediatorServiceProviderTest() : IntegrationTestBase<MediatorService
             // { typeof(IStreamRequestHandler<StreamReturnStringMessage, string>), typeof(StreamReturnStringHandler), true },
             // { typeof(IStreamRequestHandler<StreamNonDeclaredMessage, int>), typeof(StreamNonDeclaredHandler), false },
         };
-    }
 }

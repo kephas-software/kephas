@@ -28,7 +28,7 @@ public record AppRuntimeSettings
     /// <remarks>
     /// System assemblies and test assemblies are excluded.
     /// </remarks>
-    public static readonly string TestsIncludedAppAssemblyNamePattern = "^(?!System)(?!Microsoft)(?!mscorlib)(?!netstandard)(?!vshost32)(?!testhost)(?!Mono\\.)[A-Za-z0-9\\.]+";
+    public static readonly string TestsIncludedAppAssemblyNamePattern = "^(?!System)(?!Microsoft)(?!mscorlib)(?!netstandard)(?!vshost32)(?!testhost)(?!ReSharper)(?!Mono\\.)[A-Za-z0-9\\.]+";
 
     /// <summary>
     /// Gets or sets the entry assembly.

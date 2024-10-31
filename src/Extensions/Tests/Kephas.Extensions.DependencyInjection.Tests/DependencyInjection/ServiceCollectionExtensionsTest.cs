@@ -6,96 +6,120 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using FluentAssertions;
-using Kephas.DependencyInjection;
-using Kephas.DependencyInjection.Builder;
-using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
+using Kephas.Extensions.DependencyInjection;
+using Kephas.Extensions.Tests.TestServices;
+using Kephas.Runtime;
 using Kephas.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace Kephas.Extensions.Tests.DependencyInjection;
 
-public class ServiceCollectionExtensionsTest
+public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
 {
     [Theory]
     [InlineData(typeof(IServiceDeclarationInfoCollection))]
+    [InlineData(typeof(IServiceInfoCollection))]
+    [InlineData(typeof(IOpenGenericMetadataProvider))]
+    [InlineData(typeof(IAppRuntime))]
     public void AddApplicationServices_default_services(Type serviceType)
     {
         var services = new ServiceCollection();
         var provider = services
-            .AddApplicationServices(Test.GetIntegrationConfig())
+            .AddApplicationServices(
+                Test.GetIntegrationConfig(),
+                Test.GetTestAppRuntime([]))
             .BuildServiceProvider();
         var requiredService = provider.GetRequiredService(serviceType);
         requiredService.Should().BeSameAs(services.GetSingleton(serviceType, () => throw new Exception()));
     }
     
+    [Theory]
+    [InlineData(typeof(IEnumerable<IAppRuntime>))]
+    [InlineData(typeof(IReadOnlyCollection<IAppRuntime>))]
+    [InlineData(typeof(ICollection<IAppRuntime>))]
+    [InlineData(typeof(IReadOnlyList<IAppRuntime>))]
+    [InlineData(typeof(IList<IAppRuntime>))]
+    public void AddApplicationServices_collections(Type collectionType)
+    {
+        var provider = Test.BuildEmptyTestServiceProvider();
+        provider.GetService(collectionType).Should().BeAssignableTo<IEnumerable<IAppRuntime>>();
+    }
+    
     [Fact]
     public void AddApplicationServices_defaults()
     {
-        var builder = CreateServiceInfosBuilder();
-        var provider = builder.BuildServiceProvider();
-
-        Assert.IsType<ServiceProvider>(provider);
+        Test.BuildEmptyTestServiceProvider()
+            .Should().BeOfType<ServiceProvider>();
     }
 
-    [Fact]
-    public void AddApplicationServices_with_open_generic_override()
+    [Theory]
+    [MemberData(nameof(GetAddApplicationServicesAssertions))]
+    public void AddApplicationServices_success(IEnumerable<Type> serviceInfoTypes, Type serviceType, Type expectedImplementationType)
     {
-        var builder = CreateServiceInfosBuilder()
-            .AddTypes(typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>));
-        var provider = builder.BuildServiceProvider();
+        var sp = Test.BuildEmptyTestServiceProvider(
+            builderConfig: b => b.AddTypes(serviceInfoTypes.ToArray()));
 
-        var moreOpen = provider.GetRequiredService<IOpen<int>>();
-        Assert.IsType<MoreOpen<int>>(moreOpen);
+        sp.GetRequiredService(serviceType).Should().BeOfType(expectedImplementationType);
     }
 
-    [Fact]
-    public void AddApplicationServices_with_open_generic_override_and_dependency()
-    {
-        var builder = CreateServiceInfosBuilder()
-            .AddTypes(typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency));
-        var provider = builder.BuildServiceProvider();
-
-        var moreOpen = provider.GetRequiredService<IOpen<int>>();
-        Assert.IsType<MoreOpenWithDependency<int>>(moreOpen);
-    }
-
-    [Fact]
-    public void AddApplicationServices_generic_export_with_ctor_dependency()
-    {
-        var services = new ServiceCollection();
-
-        services.AddSingleton<Dependency>();
-        ServiceCollectionExtensions.AddSingleton(services, typeof(IOpen<>), typeof(MoreOpenWithDependency<>));
-
-        using (var container = services.BuildServiceProvider())
+    public static TheoryData<IEnumerable<Type>, Type, Type> GetAddApplicationServicesAssertions() =>
+        new()
         {
-            var myService = container.GetRequiredService(typeof(IOpen<object>));
-            Assert.IsType<MoreOpenWithDependency<object>>(myService);
-        }
-    }
+            {
+                [typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>)],
+                typeof(IOpen<int>),
+                typeof(MoreOpen<int>)
+            },
+            {
+                [typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency)],
+                typeof(IOpen<int>),
+                typeof(MoreOpenWithDependency<int>)
+            },
+            {
+                // Registration order matters
+                [typeof(IOpen<>), typeof(MoreOpenWithDependency<>), typeof(MoreOpen<>), typeof(DefaultOpen<>), typeof(Dependency)],
+                typeof(IOpen<string>),
+                typeof(MoreOpen<string>)
+            },
+        };
 
-    private static ServiceInfoCollectionBuilder CreateServiceInfosBuilder(IServiceInfoCollection? services = null)
-        => Test.CreateServiceInfosBuilder<ServiceCollectionExtensionsTest>(services);
-
-    [SingletonService(AsOpenGeneric = true)]
-    public interface IOpen<T> { }
-
-    public class DefaultOpen<T> : IOpen<T> { }
-
-    [Priority(Priority.High)]
-    public class MoreOpen<T> : IOpen<T> { }
-
-    [Priority(Priority.High)]
-    public class MoreOpenWithDependency<T> : IOpen<T>
+    [Fact]
+    public void AddSingleton_open_generic_with_dependency()
     {
-        public MoreOpenWithDependency(Dependency dep)
-        {
-        }
+        using var sp = new ServiceCollection()
+            .AddSingleton<Dependency>()
+            .AddSingleton(typeof(IOpen<>), typeof(MoreOpenWithDependency<>))
+            .BuildServiceProvider();
+
+        var myService = sp.GetRequiredService(typeof(IOpen<object>));
+        Assert.IsType<MoreOpenWithDependency<object>>(myService);
     }
 
-    [TransientService]
-    public class Dependency { }
+    [Fact]
+    public void AddScoped_open_generic_with_dependency()
+    {
+        using var sp = new ServiceCollection()
+            .AddScoped<Dependency>()
+            .AddScoped(typeof(IOpen<>), typeof(MoreOpenWithDependency<>))
+            .BuildServiceProvider();
+
+        using var scope = sp.CreateScope();
+        var myService = scope.ServiceProvider.GetRequiredService(typeof(IOpen<object>));
+        Assert.IsType<MoreOpenWithDependency<object>>(myService);
+    }
+
+    [Fact]
+    public void AddTransient_open_generic_with_dependency()
+    {
+        using var sp = new ServiceCollection()
+            .AddTransient<Dependency>()
+            .AddTransient(typeof(IOpen<>), typeof(MoreOpenWithDependency<>))
+            .BuildServiceProvider();
+
+        var myService = sp.GetRequiredService(typeof(IOpen<object>));
+        Assert.IsType<MoreOpenWithDependency<object>>(myService);
+    }
 }

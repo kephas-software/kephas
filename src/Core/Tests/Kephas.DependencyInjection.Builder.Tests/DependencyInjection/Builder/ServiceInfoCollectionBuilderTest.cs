@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Builder;
+using Kephas.DependencyInjection.Builder.Configuration;
 using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.Testing.Logging;
@@ -340,13 +341,13 @@ namespace Kephas.Tests.DependencyInjection.Builder
             nullMetadata.Should().NotContainKey("IconName");
         }
 
-        private ServiceInfoCollectionBuilder CreateBuilder(IServiceInfoCollection? services = null)
-        {
-            var builder = ServiceInfoCollectionBuilder.Create(
-                services ?? new ServiceInfoCollection(),
-                () => [typeof(ServiceInfoCollectionBuilder).Assembly]);
-            return builder;
-        }
+        private ServiceInfoCollectionBuilder CreateBuilder(IServiceInfoCollection? services = null) =>
+            new(
+                new ServiceInfosBuilderSettings
+                {
+                    Services = services ?? new ServiceInfoCollection(),
+                    GetAppAssemblies = () => [typeof(ServiceInfoCollectionBuilder).Assembly],
+                });
 
         [SingletonService]
         public interface ISingleTestService { }

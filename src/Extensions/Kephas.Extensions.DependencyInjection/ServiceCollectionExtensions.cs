@@ -20,6 +20,7 @@ using Kephas.DependencyInjection.Resources;
 using Kephas.Extensions.DependencyInjection;
 using Kephas.Reflection;
 using Kephas.Runtime;
+using Kephas.Runtime.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -76,26 +77,47 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Adds the services collected from the <paramref name="appRuntime"/> to the <paramref name="services"/>.
+    /// Adds the collected application services to the <paramref name="services"/>.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="configuration">The application configuration.</param>
-    /// <param name="appRuntime">The application runtime.</param>
-    /// <param name="includeInternal">Indicates whether the internal </param>
-    /// <param name="configureBuilder">Optional service builder configurator.</param>
+    /// <param name="appRuntimeConfig">Optional application runtime configurator.</param>
+    /// <param name="builderConfig">Optional service builder configurator.</param>
     /// <returns>
     /// The <paramref name="services"></paramref>.
     /// </returns>
     public static IServiceCollection AddApplicationServices(
         this IServiceCollection services,
         IConfiguration configuration,
-        IAppRuntime? appRuntime = null,
-        bool includeInternal = true,
-        Action<ServiceInfoCollectionBuilder>? configureBuilder = null)
+        Action<AppRuntimeSettings>? appRuntimeConfig = null,
+        Action<ServiceInfosBuilderSettings>? builderConfig = null)
     {
-        _ = services ?? throw new ArgumentNullException(nameof(services));
+        var appRuntimeSettings = new AppRuntimeSettings();
+        appRuntimeConfig?.Invoke(appRuntimeSettings);
+        var appRuntime = new AppRuntime(appRuntimeSettings);
+        return services.AddApplicationServices(configuration, appRuntime, builderConfig);
+    }
 
-        appRuntime ??= new AppRuntime();
+    /// <summary>
+    /// Adds the collected application services to the <paramref name="services"/>.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The application configuration.</param>
+    /// <param name="appRuntime">The application runtime.</param>
+    /// <param name="builderConfig">Optional service builder configurator.</param>
+    /// <returns>
+    /// The <paramref name="services"></paramref>.
+    /// </returns>
+    public static IServiceCollection AddApplicationServices(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IAppRuntime appRuntime,
+        Action<ServiceInfosBuilderSettings>? builderConfig = null)
+    {
+        ArgumentNullException.ThrowIfNull(nameof(services));
+        ArgumentNullException.ThrowIfNull(nameof(configuration));
+        ArgumentNullException.ThrowIfNull(nameof(appRuntime));
+
         IOpenGenericMetadataProvider openGenericMetadataProvider = new OpenGenericMetadataProvider(); 
         var serviceInfos = new ServiceInfoCollection
         {
@@ -103,22 +125,17 @@ public static class ServiceCollectionExtensions
             { openGenericMetadataProvider, b => b.Lifetime = AppServiceLifetime.Singleton },
         };
 
-        var builderSettings = new ServiceBuilderSettings(() => appRuntime.GetAppAssemblies(), includeInternal, serviceInfos);
+        var builderSettings = new ServiceInfosBuilderSettings
+        {
+            GetAppAssemblies = appRuntime.GetAppAssemblies,
+            Services = serviceInfos,
+        };
+        builderConfig?.Invoke(builderSettings);
         var builder = new ServiceInfoCollectionBuilder(builderSettings);
-        configureBuilder?.Invoke(builder);
         return services.AddApplicationServicesCore(configuration, builder.Build());
     }
     
-    /// <summary>
-    /// Adds the <paramref name="serviceInfos"/> to the <paramref name="services"/>.
-    /// </summary>
-    /// <param name="services">The service collection.</param>
-    /// <param name="configuration">The application configuration.</param>
-    /// <param name="serviceInfos">The enumeration of <see cref="IServiceInfo"/>.</param>
-    /// <returns>
-    /// The <paramref name="services"></paramref>.
-    /// </returns>
-    internal static IServiceCollection AddApplicationServicesCore(this IServiceCollection services, IConfiguration configuration, IEnumerable<IServiceInfo> serviceInfos)
+    private static IServiceCollection AddApplicationServicesCore(this IServiceCollection services, IConfiguration configuration, IEnumerable<IServiceInfo> serviceInfos)
     {
         _ = services ?? throw new ArgumentNullException(nameof(services));
 
@@ -382,8 +399,8 @@ public static class ServiceCollectionExtensions
         if (serviceRegistrationType != implementationType)
         {
             _ = implementationType.IsGenericTypeDefinition
-                ? ServiceCollectionServiceExtensions.AddTransient(services, serviceRegistrationType, implementationType)
-                : ServiceCollectionServiceExtensions.AddTransient(services, serviceType, provider => provider.GetRequiredService(implementationType));
+                ? services.AddTransientRaw(serviceRegistrationType, implementationType)
+                : services.AddTransientRaw(serviceType, provider => provider.GetRequiredService(implementationType));
         }
 
         return metadata is null
