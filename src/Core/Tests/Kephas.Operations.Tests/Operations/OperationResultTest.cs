@@ -49,9 +49,9 @@ public class OperationResultTest
     public void Deconstruct()
     {
         IOperationResult result = new OperationResult("hello").Complete();
-        var (value, state) = result;
+        var (value, status) = result;
 
         Assert.Equal("hello", value);
-        Assert.Equal(OperationStatus.Completed, state);
+        Assert.Equal(OperationStatus.Completed, status);
     }
 }

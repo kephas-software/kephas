@@ -17,8 +17,6 @@ namespace Kephas.Operations;
 /// </summary>
 public record OperationMessage() : IOperationMessage
 {
-    private readonly Exception? exception;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="OperationMessage"/> class.
     /// </summary>
@@ -30,35 +28,9 @@ public record OperationMessage() : IOperationMessage
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="OperationMessage"/> class.
-    /// </summary>
-    /// <param name="exception">The exception.</param>
-    public OperationMessage(Exception exception)
-        : this((exception ?? throw new ArgumentNullException(nameof(exception))).Message)
-    {
-        Exception = exception;
-    }
-
-    /// <summary>
     /// Gets the message.
     /// </summary>
     public string? Message { get; init; }
-
-    /// <summary>
-    /// Gets the exception, if any.
-    /// </summary>
-    public Exception? Exception
-    {
-        get => exception;
-        init
-        {
-            exception = value;
-            if (exception is IHasSeverityLevel logLevelException)
-            {
-                SeverityLevel = logLevelException.SeverityLevel;
-            }
-        }
-    }
 
     /// <summary>
     /// Gets the timestamp.
@@ -74,8 +46,7 @@ public record OperationMessage() : IOperationMessage
     /// <returns>A string that represents the current object.</returns>
     public override string ToString()
     {
-        var exceptionMessage = Exception is null ? null : $" ({Exception.GetType().Name})";
         var time = Timestamp is null ? null : $"{new DateTimeOffset(new DateTime(Timestamp.Value, DateTimeKind.Utc)):s} ";
-        return $"[{time}{SeverityLevel}] {Message}{exceptionMessage}";
+        return $"[{time}{SeverityLevel}] {Message}";
     }
 }

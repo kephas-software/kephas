@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using Kephas.Collections;
-using Kephas.ExceptionHandling;
-using Kephas.Resources;
+using Collections;
+using ExceptionHandling;
+using Resources;
 
 /// <summary>
 /// Extensions for <see cref="IOperationResult"/>.
@@ -63,12 +63,12 @@ public static class OperationResultExtensions
     }
 
     /// <summary>
-    /// Marks the operation as completed setting the elapsed time and, optionally, the state.
+    /// Marks the operation as completed setting the elapsed time and, optionally, the status.
     /// </summary>
     /// <typeparam name="TResult">Type of the result.</typeparam>
     /// <param name="result">The result.</param>
     /// <param name="elapsed">Optional. The elapsed time.</param>
-    /// <param name="operationState">Optional. State of the operation.</param>
+    /// <param name="operationStatus">Optional. State of the operation.</param>
     /// <returns>
     /// The provided result.
     /// </returns>
@@ -76,13 +76,13 @@ public static class OperationResultExtensions
     public static TResult Complete<TResult>(
         [DisallowNull] this TResult result,
         TimeSpan? elapsed = null,
-        OperationStatus? operationState = null)
+        OperationStatus? operationStatus = null)
         where TResult : class, IOperationResult
     {
         result = result ?? throw new ArgumentNullException(nameof(result));
 
         result.Elapsed = result.ComputeElapsed(elapsed);
-        result.OperationStatus = operationState ?? Operations.OperationStatus.Completed;
+        result.OperationStatus = operationStatus ?? Operations.OperationStatus.Completed;
         if (result.OperationStatus == Operations.OperationStatus.Completed)
         {
             result.PercentCompleted = 1;
@@ -98,36 +98,36 @@ public static class OperationResultExtensions
     /// <param name="result">The result.</param>
     /// <param name="exception">The exception generating the failure.</param>
     /// <param name="elapsed">The elapsed time.</param>
-    /// <param name="operationState">Optional. State of the operation.</param>
+    /// <param name="operationStatus">Optional. State of the operation.</param>
     /// <returns>
     /// The provided result.
     /// </returns>
     [return: NotNull]
     public static TResult Fail<TResult>([DisallowNull] this TResult result, Exception exception,
-        TimeSpan? elapsed = null, OperationStatus? operationState = null)
+        TimeSpan? elapsed = null, OperationStatus? operationStatus = null)
         where TResult : class, IOperationResult
     {
         result = result ?? throw new ArgumentNullException(nameof(result));
         exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
         result.Elapsed = result.ComputeElapsed(elapsed);
-        result.OperationStatus = operationState ?? GetOperationState(exception);
+        result.OperationStatus = operationStatus ?? GetOperationStatus(exception);
         result.MergeException(exception);
 
         return result;
     }
 
     /// <summary>
-    /// Sets the operation state to the provided one.
+    /// Sets the operation status to the provided one.
     /// </summary>
     /// <typeparam name="TResult">Type of the result.</typeparam>
     /// <param name="result">The result.</param>
-    /// <param name="status">The operation state.</param>
+    /// <param name="status">The operation status.</param>
     /// <returns>
     /// The provided result.
     /// </returns>
     [return: NotNull]
-    public static TResult OperationState<TResult>([DisallowNull] this TResult result, OperationStatus status)
+    public static TResult OperationStatus<TResult>([DisallowNull] this TResult result, OperationStatus status)
         where TResult : class, IOperationResult
     {
         result = result ?? throw new ArgumentNullException(nameof(result));
@@ -153,7 +153,7 @@ public static class OperationResultExtensions
         result = result ?? throw new ArgumentNullException(nameof(result));
         ex = ex ?? throw new ArgumentNullException(nameof(ex));
 
-        result.Messages.Add(new OperationMessage(ex));
+        result.Messages.Add(new ExceptionMessage(ex));
 
         return result;
     }
@@ -415,10 +415,10 @@ public static class OperationResultExtensions
     {
         exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
-        var state = GetOperationState(exception);
+        var status = GetOperationStatus(exception);
         return new OperationResult<TValue>()
             .MergeException(exception)
-            .Complete(elapsed ?? TimeSpan.Zero, state);
+            .Complete(elapsed ?? TimeSpan.Zero, status);
     }
 
     /// <summary>
@@ -434,10 +434,10 @@ public static class OperationResultExtensions
     {
         exception = exception ?? throw new ArgumentNullException(nameof(exception));
 
-        var state = GetOperationState(exception);
+        var status = GetOperationStatus(exception);
         return new AsyncOperationResult<TValue>(Task.FromException<TValue>(exception))
             .MergeException(exception)
-            .Complete(elapsed ?? TimeSpan.Zero, state);
+            .Complete(elapsed ?? TimeSpan.Zero, status);
     }
 
     /// <summary>
@@ -476,16 +476,16 @@ public static class OperationResultExtensions
                     : nestedResult.OperationStatus);
     }
 
-    private static OperationStatus GetOperationState(Exception exception)
+    private static OperationStatus GetOperationStatus(Exception exception)
     {
-        var state = exception switch
+        var status = exception switch
         {
             OperationCanceledException _ => Operations.OperationStatus.Canceled,
             TimeoutException _ => Operations.OperationStatus.TimedOut,
             OperationAbortedException _ => Operations.OperationStatus.Aborted,
             _ => Operations.OperationStatus.Failed
         };
-        return state;
+        return status;
     }
 
     private static TimeSpan ComputeElapsed<TOperationResult>(this TOperationResult result, TimeSpan? elapsed)
@@ -501,5 +501,5 @@ public static class OperationResultExtensions
     }
 
     private static Exception ToException(this IOperationMessage m)
-        => m.Exception is not null ? m.Exception! : new OperationException(m.Message ?? "");
+        => (m as ExceptionMessage)?.Exception ?? new OperationException(m.Message ?? "");
 }

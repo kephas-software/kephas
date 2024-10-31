@@ -51,7 +51,7 @@ public record OperationResult() : IOperationResult
     /// <value>
     /// The percent completed.
     /// </value>
-    public virtual float PercentCompleted { get; set; }
+    public float? PercentCompleted { get; set; }
 
     /// <summary>
     /// Gets or sets the time when the operation started.
@@ -69,7 +69,7 @@ public record OperationResult() : IOperationResult
     /// <value>
     /// The elapsed time.
     /// </value>
-    public virtual TimeSpan Elapsed
+    public virtual TimeSpan? Elapsed
     {
         get => elapsed ??
                (StartedAt.HasValue ? DateTimeOffset.Now - StartedAt.Value : TimeSpan.Zero);

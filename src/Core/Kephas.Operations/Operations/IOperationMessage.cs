@@ -26,28 +26,7 @@ public interface IOperationMessage : IHasSeverityLevel
     string? Message { get; }
 
     /// <summary>
-    /// Gets the exception, if any.
-    /// </summary>
-    Exception? Exception { get; }
-
-    /// <summary>
     /// Gets the timestamp.
     /// </summary>
     long? Timestamp { get; }
-
-    /// <summary>
-    /// Gets a value indicating whether this message is an error.
-    /// </summary>
-    /// <returns><c>true</c> if this message is an error, <c>false</c> otherwise.</returns>
-    bool IsError()
-        => this is IErrorNotification { Severity: SeverityLevel.Error or SeverityLevel.Critical }
-           || Exception is IErrorNotification { Severity: SeverityLevel.Error or SeverityLevel.Critical } or { } and not IErrorNotification;
-
-    /// <summary>
-    /// Gets a value indicating whether this message is a warning.
-    /// </summary>
-    /// <returns><c>true</c> if this message is a warning, <c>false</c> otherwise.</returns>
-    bool IsWarning() =>
-        this is IErrorNotification { Severity: SeverityLevel.Warning }
-        || Exception is IErrorNotification { Severity: SeverityLevel.Warning };
 }
