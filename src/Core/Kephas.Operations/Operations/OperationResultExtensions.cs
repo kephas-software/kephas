@@ -275,7 +275,10 @@ public static class OperationResultExtensions
 
         result.Messages.AddRange(resultToMerge.Messages);
         result.Value = resultToMerge.Value;
-        result.Elapsed += resultToMerge.Elapsed;
+        if (resultToMerge.Elapsed is not null)
+        {
+            result.Elapsed = (result.Elapsed ?? TimeSpan.Zero) + resultToMerge.Elapsed.Value;
+        }
 
         return result;
     }
