@@ -85,7 +85,7 @@ public record AsyncOperationResult<T> : OperationResult<T>, IAsyncOperationResul
                 : t.Status == TaskStatus.RanToCompletion
                     ? OperationStatus.Completed
                     : t.Status == TaskStatus.Running
-                        ? OperationStatus.InProgress
+                        ? OperationStatus.Executing
                         : OperationStatus.None;
 
         OperationStatus = opState;
