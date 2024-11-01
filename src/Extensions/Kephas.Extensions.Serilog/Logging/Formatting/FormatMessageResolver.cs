@@ -49,14 +49,14 @@ internal class FormatMessageResolver : NameResolver
         return appVersion ?? new ScalarValue(_lazyAppVersion.Value);
     }
 
-    public static LogEventPropertyValue? GetAppName(LogEventPropertyValue? application)
+    public static LogEventPropertyValue? GetAppName(LogEventPropertyValue? appName)
     {
-        return application ?? new ScalarValue(_lazyAppName.Value);
+        return appName ?? new ScalarValue(_lazyAppName.Value);
     }
 
-    public static LogEventPropertyValue? GetAppInstanceId(LogEventPropertyValue? application)
+    public static LogEventPropertyValue? GetAppInstanceId(LogEventPropertyValue? appInstanceId)
     {
-        return application ?? new ScalarValue(_lazyAppInstanceId.Value);
+        return appInstanceId ?? new ScalarValue(_lazyAppInstanceId.Value);
     }
 
     public static LogEventPropertyValue? GetEnv(LogEventPropertyValue? environment)

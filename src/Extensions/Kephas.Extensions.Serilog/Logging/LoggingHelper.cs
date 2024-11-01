@@ -30,20 +30,20 @@ public static class LoggingHelper
     /// </remarks>
     /// <param name="message">The message to be logged.</param>
     /// <param name="appRuntime">Optional. The application runtime used to get application level information.</param>
-    public static void WriteFallbackLogError(string message, IAppRuntime? appRuntime = null)
+    public static void WriteFallbackLogError(string message, IAppRuntime? appRuntime = null, DateTime? localNow = null)
     {
         try
         {
-            var localNow = DateTime.Now;
+            localNow ??= DateTime.Now;
             appRuntime ??= new AppRuntime();
             var filePath = Path.Combine(FallbackLogPath, $"internal-{appRuntime.GetAppInstanceId()}.{localNow:yyyyMMdd}.json");
             var application = appRuntime.GetAppName();
             var appVersion = appRuntime.GetAppVersion();
             var appInstanceId = appRuntime.GetAppInstanceId();
             var environment = appRuntime.GetEnvironment();
-            var hostname = appRuntime.GetMachineName();
+            var machineName = appRuntime.GetMachineName();
             var jsonMessage = $$"""
-                                {"time":"{{localNow.ToUniversalTime():s}}","appName":"{{application}}","appVersion":"{{appVersion}}","appInstanceId":"{{appInstanceId}}","env":"{{environment}}","hostname":"{{hostname}}","level":"Error","threadId":"{{Environment.CurrentManagedThreadId}}","message":"{{message.Replace("\\", "\\\\").Replace("\"", "\\\"")}}"}
+                                {"Time":"{{localNow!.Value.ToUniversalTime():s}}","Level":"Error","Message":"{{message.Replace("\\", "\\\\").Replace("\"", "\\\"")}}","AppName":"{{application}}","AppVersion":"{{appVersion}}","AppInstanceId":"{{appInstanceId}}","Env":"{{environment}}","MachineName":"{{machineName}}","ThreadId":"{{Environment.CurrentManagedThreadId}}"}
                                 """;
 
             // see here for the lock requirement
