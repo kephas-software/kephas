@@ -28,7 +28,8 @@ public interface IFactoryBase
 /// </summary>
 /// <typeparam name="T">The contract type being created.</typeparam>
 /// <typeparam name="TMetadata">The metadata required from the export.</typeparam>
-public interface IFactoryBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] out TMetadata> : IFactoryBase
+public interface IFactoryBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] out TMetadata>
+    : IFactoryBase, IHasServiceMetadata
 {
     /// <summary>
     /// Gets the metadata associated with the service.
@@ -37,6 +38,12 @@ public interface IFactoryBase<[DynamicallyAccessedMembers(DynamicallyAccessedMem
     /// The metadata associated with the service.
     /// </value>
     TMetadata Metadata { get; }
+
+    /// <summary>
+    /// Gets the service metadata.
+    /// </summary>
+    /// <returns>The service metadata.</returns>
+    object? IHasServiceMetadata.GetMetadata() => Metadata;
 }
 
 /// <summary>

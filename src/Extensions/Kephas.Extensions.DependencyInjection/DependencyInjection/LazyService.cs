@@ -34,7 +34,7 @@ public class LazyService<T, TImplementation> : Lazy<T>
 /// <typeparam name="T">The contract type.</typeparam>
 /// <typeparam name="TImplementation">The service implementation type.</typeparam>
 /// <typeparam name="TMetadata">The metadata type.</typeparam>
-public class LazyService<T, TImplementation, TMetadata> : Lazy<T, TMetadata>
+public class LazyService<T, TImplementation, TMetadata> : Lazy<T, TMetadata>, IHasServiceMetadata
     where TImplementation : class, T
 {
     /// <summary>
@@ -59,4 +59,10 @@ public class LazyService<T, TImplementation, TMetadata> : Lazy<T, TMetadata>
             ServiceHelper.GetServiceMetadata<TMetadata>(typeof(TImplementation), typeof(T)))
     {
     }
+
+    /// <summary>
+    /// Gets the service metadata.
+    /// </summary>
+    /// <returns>The service metadata.</returns>
+    object? IHasServiceMetadata.GetMetadata() => Metadata;
 }
