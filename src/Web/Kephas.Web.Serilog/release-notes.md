@@ -5,4 +5,4 @@
 
 # 12.0.0
 
-* NEW: Created ```Kephas.Web.Serilog``` package.
+* NEW: Created `Kephas.Web.Serilog` package.
