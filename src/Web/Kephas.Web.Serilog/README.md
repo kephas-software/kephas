@@ -13,21 +13,11 @@ Provides unified logging functionalities to ASP.NET Core projects using the ```S
 Ensure that you have:
 * The ```Serilog``` section from the ```appsettings.json``` configuration file.
     * The ```MinimumLevel``` and the ```path``` must be build variable references.
-    * The formatter set to the compatible Nagios JSON formatter (```"Hays.Infrastructure.Logging.Formatting.JsonFormatter, Hays.Infrastructure.Logging"``).
-* The ```appSettings``` section with the ```environment``` setting set to the proper build variable.
 
 ```json
 {
-  "appSettings": {
-    "environment": "#{appSettings.environment}#"
-  },
   "Serilog": {
-    "MinimumLevel": {
-      "Default": "Information",
-      "Override": {
-        "Microsoft": "Information"
-      }
-    },
+    "MinimumLevel": "Information",
     "WriteTo": [
       {
         "Name": "JsonFormattedFile",
