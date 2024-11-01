@@ -41,8 +41,6 @@ public class DeclareServicesSourceGenerator : IncrementalGeneratorBase<TypeDecla
             using Kephas.DependencyInjection;
             using Kephas.DependencyInjection.ServiceProviders;
 
-            [assembly: DeclareServices<{serviceTypeProvider.typeNamespace}.{serviceTypeProvider.typeName}>()]
-
             """);
         var isProviderGenerated = DependencyInjectionAnalyzerHelper.AppendServicesInfoProviderClass(
             serviceTypeProvider,

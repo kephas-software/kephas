@@ -65,7 +65,6 @@
     </ItemGroup>
 
     <ItemGroup>
-<!--        <ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj"/>-->
         <ProjectReference Include="..\Kephas.Reflection.Abstractions\Kephas.Reflection.Abstractions.csproj" />
         <ProjectReference Include="..\Kephas.Runtime\Kephas.Runtime.csproj"/>
     </ItemGroup>

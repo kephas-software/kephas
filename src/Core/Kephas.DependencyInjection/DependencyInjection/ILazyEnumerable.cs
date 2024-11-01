@@ -17,7 +17,6 @@ namespace Kephas.DependencyInjection;
 /// Interface for ordered lazy service collection.
 /// </summary>
 /// <typeparam name="TService">Type of the service.</typeparam>
-[TransientService(AsOpenGeneric = true)]
 public interface ILazyEnumerable<TService>
     : IEnumerable<Lazy<TService, ServiceMetadata>>
 {
@@ -28,7 +27,6 @@ public interface ILazyEnumerable<TService>
 /// </summary>
 /// <typeparam name="TService">Type of the service.</typeparam>
 /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
-[TransientService(AsOpenGeneric = true)]
 public interface ILazyEnumerable<TService, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TMetadata>
     : IEnumerable<Lazy<TService, TMetadata>>
 {

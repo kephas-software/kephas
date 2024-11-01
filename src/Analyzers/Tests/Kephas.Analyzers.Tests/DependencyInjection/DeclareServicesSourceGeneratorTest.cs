@@ -18,6 +18,7 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
     {
         var sourceCode =
             """
+            using System;
             using Kephas.DependencyInjection;
             
             namespace Kephas.Sample;
@@ -28,10 +29,18 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
             public interface IScopedMetaService;
             [SingletonService]
             public interface ISingletonMetaService;
+
+            [TransientService]
+            public interface IMetaService<T>;
+            [TransientService]
+            public interface IMetaService<T,V>;
             
             public class MetaService : IMetaService {}
             public class ScopedMetaService : IScopedMetaService {}
             public class SingletonMetaService : ISingletonMetaService {}
+            
+            public class MetaService<T> : IComparable, IMetaService<T> {}
+            public class MetaService<T,V> : IComparable, IMetaService<T,V> {}
             """;
 
         var result = GetRunResult(sourceCode);
@@ -55,8 +64,6 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.ServiceProviders;
                     
-                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
-                    
                     namespace Kephas.DependencyInjection.ServiceProviders.Generated
                     {
                        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
@@ -67,6 +74,8 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                                 yield return new ServiceDeclaration(typeof(IMetaService), null);
                                 yield return new ServiceDeclaration(typeof(IScopedMetaService), null);
                                 yield return new ServiceDeclaration(typeof(ISingletonMetaService), null);
+                                yield return new ServiceDeclaration(typeof(IMetaService<>), null);
+                                yield return new ServiceDeclaration(typeof(IMetaService<,>), null);
                            }
                     
                            IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
@@ -74,6 +83,8 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                                 yield return new ServiceImplementationDeclaration(typeof(MetaService), typeof(Kephas.Sample.IMetaService));
                                 yield return new ServiceImplementationDeclaration(typeof(ScopedMetaService), typeof(Kephas.Sample.IScopedMetaService));
                                 yield return new ServiceImplementationDeclaration(typeof(SingletonMetaService), typeof(Kephas.Sample.ISingletonMetaService));
+                                yield return new ServiceImplementationDeclaration(typeof(MetaService<>), typeof(Kephas.Sample.IMetaService<>));
+                                yield return new ServiceImplementationDeclaration(typeof(MetaService<,>), typeof(Kephas.Sample.IMetaService<, >));
                            }
                        }
                     }

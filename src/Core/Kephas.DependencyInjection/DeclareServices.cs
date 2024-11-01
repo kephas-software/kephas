@@ -7,5 +7,7 @@
 
 using Kephas.DependencyInjection;
 
+[assembly: DeclareTransientService(typeof(ILazyEnumerable<>), typeof(LazyEnumerable<>))]
 [assembly: DeclareTransientService(typeof(ILazyEnumerable<,>), typeof(LazyEnumerable<,>))]
+[assembly: DeclareTransientService(typeof(IFactoryEnumerable<>), typeof(FactoryEnumerable<>))]
 [assembly: DeclareTransientService(typeof(IFactoryEnumerable<,>), typeof(FactoryEnumerable<,>))]
