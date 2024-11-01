@@ -15,7 +15,7 @@
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>Provides abstractions for serialization.</Description>
+        <Description>Provides common infrastructure for JSON serialization.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -27,7 +27,7 @@
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageTags>kephas serialization abstractions</PackageTags>
+        <PackageTags>kephas serialization json</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -64,8 +64,22 @@
         <None Include="release-notes.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
+    <Choose>
+        <When Condition="'$(TargetFramework)'=='net6.0'">
+            <ItemGroup>
+                <PackageReference Include="System.Text.Json" Version="7.0.4"/>
+            </ItemGroup>
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="System.Text.Json" Version="8.0.5"/>
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
+
     <ItemGroup>
-      <ProjectReference Include="..\Kephas.Exceptions\Kephas.Exceptions.csproj" />
+        <ProjectReference Include="..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Kephas.DependencyInjection\Kephas.DependencyInjection.csproj"/>
     </ItemGroup>
 
 </Project>

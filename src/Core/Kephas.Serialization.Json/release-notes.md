@@ -4,4 +4,5 @@
 * Documentation and samples: https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
 
 # 12.0.0
-* Initial branch from `Kephas.Serialization`.
+
+* Added `README.md` and `release-notes.md`.
