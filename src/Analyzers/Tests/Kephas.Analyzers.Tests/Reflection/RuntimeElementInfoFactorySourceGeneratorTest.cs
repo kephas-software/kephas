@@ -53,11 +53,11 @@ public class RuntimeElementInfoFactorySourceGeneratorTest : SourceGeneratorTestB
                     using Kephas.Runtime;
                     using Kephas.Runtime.Factories;
                     
-                    [assembly: AssemblyInitializer<Kephas.Reflection.Generated.ReflectionInitializer_TestProject>]
+                    [assembly: AssemblyInitializer<Kephas.Reflection.Generated.ReflectionInitializer_RuntimeElementInfoFactorySourceGeneratorTest>]
                     
                     namespace Kephas.Reflection.Generated
                     {
-                        public class ReflectionInitializer_TestProject : IAssemblyInitializer
+                        public class ReflectionInitializer_RuntimeElementInfoFactorySourceGeneratorTest : IAssemblyInitializer
                         {
                             public void Initialize()
                             {

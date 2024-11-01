@@ -43,7 +43,7 @@ public class ModuleInitializerSourceGeneratorTest : SourceGeneratorTestBase<Modu
                 source.HintName.Should().Be("ModuleInitializer.g.cs");
                 var stringSource = source.SourceText.ToString();
                 stringSource.Should().Contain("[ModuleInitializer]");
-                stringSource.Should().Contain("internal static class ModuleInitializer_TestProject");
+                stringSource.Should().Contain("ModuleInitializer_ModuleInitializerSourceGeneratorTest");
                 stringSource.Should().Contain("initializer = (IAssemblyInitializer)new MyAssemblyInitializer();");
                 stringSource.Should().Contain("initializer.InitializeAssembly();");
             });

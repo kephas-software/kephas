@@ -29,6 +29,9 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
             [SingletonService]
             public interface ISingletonMetaService;
             
+            public class MetaService : IMetaService {}
+            public class ScopedMetaService : IScopedMetaService {}
+            public class SingletonMetaService : ISingletonMetaService {}
             """;
 
         var result = GetRunResult(sourceCode);
@@ -68,6 +71,9 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     
                            IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
                            {
+                                yield return new ServiceImplementationDeclaration(typeof(MetaService), typeof(Kephas.Sample.IMetaService));
+                                yield return new ServiceImplementationDeclaration(typeof(ScopedMetaService), typeof(Kephas.Sample.IScopedMetaService));
+                                yield return new ServiceImplementationDeclaration(typeof(SingletonMetaService), typeof(Kephas.Sample.ISingletonMetaService));
                            }
                        }
                     }
