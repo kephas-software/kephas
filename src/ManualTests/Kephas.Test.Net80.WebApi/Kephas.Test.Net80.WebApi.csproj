@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Extensions\Kephas.Extensions.Mediator\Kephas.Extensions.Mediator.csproj" />
       <ProjectReference Include="..\..\Web\Kephas.Web.Mvc\Kephas.Web.Mvc.csproj" />
       <ProjectReference Include="..\..\Web\Kephas.Web.Serilog\Kephas.Web.Serilog.csproj" />
     </ItemGroup>

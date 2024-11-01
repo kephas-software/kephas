@@ -32,7 +32,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
         options =>
         {
             options.Providers.Add<GzipCompressionProvider>();
-            options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "image/svg+xml" });
+            options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(["image/svg+xml"]);
         });
 
     services.Configure<GzipCompressionProviderOptions>(options => { options.Level = CompressionLevel.Fastest; });
