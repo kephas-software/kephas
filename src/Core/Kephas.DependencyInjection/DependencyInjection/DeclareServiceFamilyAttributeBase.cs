@@ -65,9 +65,9 @@ public abstract class DeclareServiceFamilyAttributeBase : ServiceAttributeBase, 
     /// <returns>
     /// An enumeration of <see cref="ServiceDeclarationInfo"/>.
     /// </returns>
-    IEnumerable<ServiceDeclarationInfo> IServiceInfoProvider.GetServiceInfos()
+    IEnumerable<ServiceDeclarationInfo> IServiceInfoProvider.GetServiceDeclarationInfos()
     {
-        yield return new ServiceDeclarationInfo(serviceDeclarationType, this);
+        yield return new ServiceDeclarationInfo(serviceDeclarationType, new ServiceInfo(ServiceType!, Lifetime, AsOpenGeneric) { MetadataType = MetadataType });
     }
 
     /// <summary>
@@ -124,9 +124,9 @@ public abstract class DeclareServiceFamilyAttributeBase<TService> : ServiceAttri
     /// <returns>
     /// An enumeration of <see cref="ServiceDeclarationInfo"/>.
     /// </returns>
-    IEnumerable<ServiceDeclarationInfo> IServiceInfoProvider.GetServiceInfos()
+    IEnumerable<ServiceDeclarationInfo> IServiceInfoProvider.GetServiceDeclarationInfos()
     {
-        yield return new ServiceDeclarationInfo(serviceDeclarationType, this);
+        yield return new ServiceDeclarationInfo(serviceDeclarationType, new ServiceInfo(ServiceType!, Lifetime, AsOpenGeneric) { MetadataType = MetadataType });
     }
 
     /// <summary>

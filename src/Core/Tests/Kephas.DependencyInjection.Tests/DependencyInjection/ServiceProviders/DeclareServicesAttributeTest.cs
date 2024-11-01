@@ -18,7 +18,7 @@ public class DeclareServicesAttributeTest
     {
         var attr = new DeclareServicesAttribute<NullServiceInfoProvider>();
 
-        Assert.Empty(attr.GetServiceInfos());
+        Assert.Empty(attr.GetServiceDeclarationInfos());
         Assert.Empty(attr.GetImplementationDeclarations([]));
     }
 
@@ -27,7 +27,7 @@ public class DeclareServicesAttributeTest
     {
         var attr = new DeclareServicesAttribute<TestServiceInfoProvider>();
 
-        var serviceInfos = attr.GetServiceInfos();
+        var serviceInfos = attr.GetServiceDeclarationInfos();
         Assert.Equal(new[] { typeof(TestServiceInfoProvider.IService) }, serviceInfos.Select(i => i.ServiceDeclarationType).ToArray());
         Assert.Empty(attr.GetImplementationDeclarations([]));
     }

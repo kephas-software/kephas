@@ -135,7 +135,7 @@ public class ServiceInfoCollectionBuilder
     {
         // get all type infos from the injection assemblies
         var serviceDeclarationInfos = serviceInfoProviders
-            .SelectMany(p => p.GetServiceInfos())
+            .SelectMany(p => p.GetServiceDeclarationInfos())
             .Select(t => t with
             {
                 ServiceDeclarationType = t.ServiceDeclarationType.ToNormalizedType(),

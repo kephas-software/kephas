@@ -84,7 +84,7 @@ internal class TypesServiceInfoProvider : IServiceInfoProvider
             return type;
         }
 
-        var serviceInfo = ((IServiceInfoProvider)this).TryGetServiceInfo(type);
+        var serviceInfo = ((IServiceInfoProvider)this).TryGetServiceDeclarationInfo(type);
         if (serviceInfo == null)
         {
             return type;
@@ -97,5 +97,5 @@ internal class TypesServiceInfoProvider : IServiceInfoProvider
 
     private bool IsServiceDeclarationType(Type type) =>
         (type.IsAbstract && types.Contains(type)) ||
-        ((IServiceInfoProvider)this).TryGetServiceInfo(type) != null;
+        ((IServiceInfoProvider)this).TryGetServiceDeclarationInfo(type) != null;
 }

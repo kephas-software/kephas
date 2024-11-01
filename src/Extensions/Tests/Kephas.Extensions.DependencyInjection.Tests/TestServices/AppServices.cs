@@ -32,37 +32,26 @@ public record TestMetadata : ServiceMetadata
 
 public class MultiFilterServiceInfoProvider : IServiceInfoProvider
 {
-    public IEnumerable<ServiceDeclarationInfo> GetServiceInfos()
+    public IEnumerable<ServiceDeclaration>? GetServiceDeclarations()
     {
-        yield return new ServiceDeclarationInfo(typeof(IFilter),
-            new ServiceInfo(typeof(IFilter), typeof(OneFilter), AppServiceLifetime.Singleton));
-        yield return new ServiceDeclarationInfo(typeof(IFilter),
-            new ServiceInfo(typeof(IFilter), typeof(TwoFilter), AppServiceLifetime.Transient));
-        yield return new ServiceDeclarationInfo(typeof(IFilter),
-            new ServiceInfo(typeof(IFilter), Substitute.For<IFilter>()));
+        yield return new(typeof(IFilter), null);
+    }
+
+    public IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
+    {
+        yield return new ServiceImplementationDeclaration(typeof(OneFilter), typeof(IFilter));
+        yield return new ServiceImplementationDeclaration(typeof(TwoFilter), typeof(IFilter));
     }
 }
 
-public interface IFilter
-{
-}
+public interface IFilter;
 
-public class OneFilter : IFilter
-{
-}
+public class OneFilter : IFilter;
 
-public class TwoFilter : IFilter
-{
-}
+public class TwoFilter : IFilter;
 
-public interface IAsyncInitializable
-{
-}
+public interface IAsyncInitializable;
 
-public interface ITestTypeLoader
-{
-}
+public interface ITestTypeLoader;
 
-public class TestTypeLoader : ITestTypeLoader
-{
-}
+public class TestTypeLoader : ITestTypeLoader;

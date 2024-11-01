@@ -5,7 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
 
@@ -67,9 +66,9 @@ public abstract class DeclareServiceAttributeBase : ServiceAttributeBase, IServi
     /// <returns>
     /// An enumeration of <see cref="ServiceDeclarationInfo"/>.
     /// </returns>
-    IEnumerable<ServiceDeclarationInfo> IServiceInfoProvider.GetServiceInfos()
+    IEnumerable<ServiceDeclarationInfo> IServiceInfoProvider.GetServiceDeclarationInfos()
     {
-        yield return new ServiceDeclarationInfo(ServiceType!, this);
+        yield return new ServiceDeclarationInfo(ServiceType!, new ServiceInfo(ServiceType!, Lifetime, implementationType.IsGenericTypeDefinition) { MetadataType = MetadataType });
     }
 
     /// <summary>
@@ -135,9 +134,9 @@ public abstract class DeclareServiceAttributeBase<TService, TImplementation> : S
     /// <returns>
     /// An enumeration of <see cref="ServiceDeclarationInfo"/>.
     /// </returns>
-    IEnumerable<ServiceDeclarationInfo> IServiceInfoProvider.GetServiceInfos()
+    IEnumerable<ServiceDeclarationInfo> IServiceInfoProvider.GetServiceDeclarationInfos()
     {
-        yield return new ServiceDeclarationInfo(typeof(TService), this);
+        yield return new ServiceDeclarationInfo(ServiceType!, new ServiceInfo(ServiceType!, Lifetime, typeof(TImplementation).IsGenericTypeDefinition) { MetadataType = MetadataType });
     }
 
     /// <summary>

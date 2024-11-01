@@ -136,13 +136,17 @@ public class ServiceCollectionExtensionsIntegrationTest : TestDependencyInjectio
     [Fact]
     public void ServiceInfoCollectionBuilder_AddProvider()
     {
+        var thirdFilter = Substitute.For<IFilter>();
         var sp = Test.BuildEmptyTestServiceProvider(
-            builderConfig: b => b.AddProviders(new MultiFilterServiceInfoProvider()));
+            builderConfig: b => b
+                .AddProviders(new MultiFilterServiceInfoProvider())
+                .AddServiceInfos(new ServiceInfo(typeof(IFilter), thirdFilter)));
 
         var filters = sp.GetRequiredService<IEnumerable<IFilter>>();
 
         filters.Should().Contain(f => f is OneFilter);
         filters.Should().Contain(f => f is TwoFilter);
+        filters.Should().Contain(thirdFilter);
         filters.Should().HaveCount(3);
     }
 

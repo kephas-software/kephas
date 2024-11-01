@@ -12,7 +12,7 @@ using Kephas.DependencyInjection.Reflection;
 namespace Kephas.DependencyInjection.ServiceProviders;
 
 /// <summary>
-/// Interface providing the <see cref="GetServiceInfos()"/> method,
+/// Interface providing the <see cref="GetServiceDeclarationInfos"/> method,
 /// which collects <see cref="IServiceInfo"/> data together with the service declaration type.
 /// </summary>
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
@@ -26,8 +26,8 @@ public interface IServiceInfoProvider
     /// <returns>
     /// An enumeration of <see cref="ServiceDeclarationInfo"/>.
     /// </returns>
-    public IEnumerable<ServiceDeclarationInfo> GetServiceInfos()
-        => GetServiceInfos(this);
+    public IEnumerable<ServiceDeclarationInfo> GetServiceDeclarationInfos()
+        => GetServiceDeclarationInfos(this);
 
     /// <summary>
     /// Gets an enumeration of <see cref="ServiceImplementationDeclaration"/>.
@@ -44,7 +44,7 @@ public interface IServiceInfoProvider
     /// </summary>
     /// <param name="serviceDeclarationType">The service declaration type.</param>
     /// <returns>The <see cref="IServiceInfo"/> instance or <c>null</c>.</returns>
-    protected internal IServiceInfo? TryGetServiceInfo(Type serviceDeclarationType) => 
+    protected internal IServiceInfo? TryGetServiceDeclarationInfo(Type serviceDeclarationType) => 
         serviceDeclarationType.GetCustomAttributes(inherit: false).OfType<IServiceInfo>().FirstOrDefault();
 
     /// <summary>
@@ -56,7 +56,7 @@ public interface IServiceInfoProvider
     /// <returns>
     /// An enumeration of <see cref="ServiceDeclarationInfo"/>.
     /// </returns>
-    protected internal static IEnumerable<ServiceDeclarationInfo> GetServiceInfos(IServiceInfoProvider provider)
+    protected internal static IEnumerable<ServiceDeclarationInfo> GetServiceDeclarationInfos(IServiceInfoProvider provider)
     {
         var serviceDeclarations = provider.GetServiceDeclarations();
         if (serviceDeclarations == null)
@@ -66,22 +66,24 @@ public interface IServiceInfoProvider
 
         foreach (var (serviceDeclarationType, metadataType) in serviceDeclarations)
         {
-            var serviceInfo = provider.TryGetServiceInfo(serviceDeclarationType);
+            var serviceInfo = provider.TryGetServiceDeclarationInfo(serviceDeclarationType);
             if (serviceInfo == null)
             {
-                continue;
+                yield return new ServiceDeclarationInfo(serviceDeclarationType, new ServiceInfo(serviceDeclarationType, AppServiceLifetime.Transient) { MetadataType = metadataType });
             }
-
-            if (serviceInfo.MetadataType is null)
+            else
             {
-                serviceInfo.MetadataType = metadataType;
-            }
-            else if (serviceInfo.MetadataType != metadataType)
-            {
-                // TODO notify about the metadata type difference
-            }
+                if (serviceInfo.MetadataType is null)
+                {
+                    serviceInfo.MetadataType = metadataType;
+                }
+                else if (serviceInfo.MetadataType != metadataType)
+                {
+                    // TODO notify about the metadata type difference
+                }
 
-            yield return new ServiceDeclarationInfo(serviceDeclarationType, serviceInfo);
+                yield return new ServiceDeclarationInfo(serviceDeclarationType, serviceInfo);
+            }
         }
     }
 

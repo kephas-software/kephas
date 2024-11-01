@@ -171,17 +171,12 @@ internal static class ServiceInfoCollectionBuilderExtensions
             // add it to the declarations list for further processing.
             if (serviceInfo.ImplementationType is not null)
             {
-                var serviceType = serviceInfo.ServiceType ?? serviceInfo.ServiceDeclarationType;
-                if (serviceType is not null)
-                {
-                    serviceImplementationDeclarationsList.Add(new ServiceImplementationDeclaration(serviceInfo.ImplementationType, serviceType));
-                }
             }
             // otherwise, if the instancing strategy is instance or factory,
             // add the service info to the registrations list.
             else if (serviceInfo.InstancingStrategy is not null)
             {
-                serviceEntry.Registrations.Add(new ServiceInfo(serviceInfo, serviceInfo.ServiceType, serviceInfo.ServiceDeclarationType, serviceInfo.InstancingStrategy));
+                // serviceEntry.Registrations.Add(new ServiceInfo(serviceInfo, serviceInfo.ServiceType, serviceInfo.ServiceDeclarationType, serviceInfo.InstancingStrategy));
             }
         }
 

@@ -31,12 +31,12 @@ public sealed class DeclareServicesAttribute<T>(Priority priority = Priority.Nor
     /// <returns>
     /// An enumeration of <see cref="ServiceDeclarationInfo"/>.
     /// </returns>
-    public IEnumerable<ServiceDeclarationInfo> GetServiceInfos()
+    public IEnumerable<ServiceDeclarationInfo> GetServiceDeclarationInfos()
     {
         try
         {
             var provider = new T();
-            var contracts = provider.GetServiceInfos() ?? [];
+            var contracts = provider.GetServiceDeclarationInfos() ?? [];
             return contracts.ToArray();
         }
         catch (Exception)

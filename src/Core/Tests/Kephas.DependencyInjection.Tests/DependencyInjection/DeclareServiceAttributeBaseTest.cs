@@ -12,6 +12,7 @@ using System.Reflection;
 using FluentAssertions;
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Reflection;
+using Kephas.DependencyInjection.ServiceProviders;
 using Xunit;
 
 namespace Kephas.Tests.DependencyInjection;
@@ -32,6 +33,8 @@ public class DeclareServiceAttributeBaseTest
         var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
         attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
         attrUsage!.AllowMultiple.Should().BeTrue();
+
+        CheckIServiceInfoProviderInterface((IServiceInfoProvider)attr);
     }
 
     [Fact]
@@ -45,6 +48,8 @@ public class DeclareServiceAttributeBaseTest
         var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
         attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
         attrUsage!.AllowMultiple.Should().BeTrue();
+
+        CheckIServiceInfoProviderInterface((IServiceInfoProvider)attr);
     }
 
     [Fact]
@@ -60,6 +65,8 @@ public class DeclareServiceAttributeBaseTest
         var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
         attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
         attrUsage!.AllowMultiple.Should().BeTrue();
+
+        CheckIServiceInfoProviderInterface((IServiceInfoProvider)attr);
     }
 
     [Fact]
@@ -73,6 +80,8 @@ public class DeclareServiceAttributeBaseTest
         var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
         attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
         attrUsage!.AllowMultiple.Should().BeTrue();
+
+        CheckIServiceInfoProviderInterface((IServiceInfoProvider)attr);
     }
 
     [Fact]
@@ -86,6 +95,8 @@ public class DeclareServiceAttributeBaseTest
         var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
         attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
         attrUsage!.AllowMultiple.Should().BeTrue();
+
+        CheckIServiceInfoProviderInterface((IServiceInfoProvider)attr);
     }
 
     [Fact]
@@ -101,6 +112,8 @@ public class DeclareServiceAttributeBaseTest
         var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
         attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
         attrUsage!.AllowMultiple.Should().BeTrue();
+
+        CheckIServiceInfoProviderInterface((IServiceInfoProvider)attr);
     }
 
     [Fact]
@@ -114,6 +127,8 @@ public class DeclareServiceAttributeBaseTest
         var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
         attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
         attrUsage!.AllowMultiple.Should().BeTrue();
+
+        CheckIServiceInfoProviderInterface((IServiceInfoProvider)attr);
     }
 
     [Fact]
@@ -127,6 +142,8 @@ public class DeclareServiceAttributeBaseTest
         var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
         attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
         attrUsage!.AllowMultiple.Should().BeTrue();
+
+        CheckIServiceInfoProviderInterface((IServiceInfoProvider)attr);
     }
 
     [Fact]
@@ -142,5 +159,14 @@ public class DeclareServiceAttributeBaseTest
         var attrUsage = attr.GetType().GetCustomAttribute<AttributeUsageAttribute>();
         attrUsage!.ValidOn.Should().Be(AttributeTargets.Assembly);
         attrUsage!.AllowMultiple.Should().BeTrue();
+
+        CheckIServiceInfoProviderInterface((IServiceInfoProvider)attr);
+    }
+
+    private void CheckIServiceInfoProviderInterface(IServiceInfoProvider attr)
+    {
+        attr.GetServiceDeclarationInfos().Should().HaveCount(1);
+        attr.GetServiceDeclarationInfos().Should().Satisfy(
+            e => e.ServiceInfo.InstancingStrategy == null && e.ServiceInfo.ServiceType == e.ServiceDeclarationType);
     }
 }
