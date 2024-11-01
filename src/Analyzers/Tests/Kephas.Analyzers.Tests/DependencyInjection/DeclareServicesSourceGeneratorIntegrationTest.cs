@@ -7,13 +7,14 @@
 
 using System.Reflection;
 using FluentAssertions;
+using Kephas.Analyzers.DependencyInjection;
 using Kephas.Analyzers.TestAssembly;
 using Kephas.DependencyInjection.ServiceProviders;
 using Xunit;
 
 namespace Kephas.Analyzers.Tests.DependencyInjection;
 
-public class DeclareServicesSourceGeneratorIntegrationTest
+public class DeclareServicesSourceGeneratorIntegrationTest : SourceGeneratorTestBase<DeclareServicesSourceGenerator>
 {
     [Fact]
     public void Execute_generated_DeclareServicesAttribute()

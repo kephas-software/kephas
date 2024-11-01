@@ -2,11 +2,7 @@
 
 namespace Kephas.Analyzers.TestAssembly;
 
-public class MetaServiceMetadata
-{
-}
+public class MetaServiceMetadata;
 
 [TransientService]
-public interface IMetaService
-{
-}
+public interface IMetaService;

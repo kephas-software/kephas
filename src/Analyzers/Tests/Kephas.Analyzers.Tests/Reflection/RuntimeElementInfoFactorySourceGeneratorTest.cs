@@ -6,7 +6,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using FluentAssertions;
-using Kephas.Analyzers.AssemblyInitialization;
 using Kephas.Analyzers.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -14,45 +13,27 @@ using Xunit;
 
 namespace Kephas.Analyzers.Tests.Reflection;
 
-public class RuntimeElementInfoFactorySourceGeneratorTest
+public class RuntimeElementInfoFactorySourceGeneratorTest : SourceGeneratorTestBase<RuntimeElementInfoFactorySourceGenerator>
 {
     [Fact]
     public void Generate_ReflectionInitializer()
     {
-        var compilation = CSharpCompilation.Create(
-            "TestProject",
-            new[]
+        var sourceCode =
+            """
+
+            using System;
+            using Kephas.Runtime;
+
+            namespace Kephas.Sample;
+
+            public class MyRuntimeTypeInfoFactory : IRuntimeTypeInfoFactory
             {
-                CSharpSyntaxTree.ParseText(
-                    """
+            }
 
-                    using System;
-                    using Kephas.Runtime;
-
-                    namespace Kephas.Sample;
-
-                    public class MyRuntimeTypeInfoFactory : IRuntimeTypeInfoFactory
-                    {
-                    }
-
-                    """)
-            },
-            Basic.Reference.Assemblies.Net80.References.All,
-            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-
-        var generator = new RuntimeElementInfoFactorySourceGenerator();
-        var sourceGenerator = generator.AsSourceGenerator();
-
-        // trackIncrementalGeneratorSteps allows to report info about each step of the generator
-        GeneratorDriver driver = CSharpGeneratorDriver.Create(
-            generators: new[] { sourceGenerator },
-            driverOptions: new GeneratorDriverOptions(default, trackIncrementalGeneratorSteps: true));
-
-        // Run the generator
-        driver = driver.RunGenerators(compilation);
+            """;
 
         // Assert the driver doesn't recompute the output
-        var result = driver.GetRunResult().Results.Single();
+        var result = GetRunResult(sourceCode);
 
         // Assert the driver use the cached result from AssemblyName and Syntax
         Assert.Collection(
