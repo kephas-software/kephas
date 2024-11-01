@@ -9,4 +9,4 @@ using Kephas.DependencyInjection;
 using Kephas.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-[assembly: DeclareTransientServiceFamily(typeof(IHealthCheck), MetadataType = typeof(HealthCheckMetadata))]
+[assembly: DeclareTransientServiceFamily<IHealthCheck, HealthCheckMetadata>]
