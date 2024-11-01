@@ -294,24 +294,27 @@ public static class TypeExtensions
         type = type ?? throw new ArgumentNullException(nameof(type));
         openGenericType = openGenericType ?? throw new ArgumentNullException(nameof(openGenericType));
 
-        if (openGenericType.IsClass)
-        {
-            while (type != ObjectType)
-            {
-                if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == openGenericType)
-                {
-                    return type;
-                }
-
-                type = type.BaseType!;
-            }
-        }
-        else if (openGenericType.IsInterface)
+        if (openGenericType.IsInterface)
         {
             var implementedInterfaces = type.GetInterfaces();
             var constructedInterface = implementedInterfaces.FirstOrDefault(
                 t => t.IsConstructedGenericType && t.GetGenericTypeDefinition() == openGenericType);
             return constructedInterface;
+        }
+
+        if (!openGenericType.IsClass)
+        {
+            return null;
+        }
+
+        while (type != ObjectType)
+        {
+            if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == openGenericType)
+            {
+                return type;
+            }
+
+            type = type.BaseType!;
         }
 
         return null;

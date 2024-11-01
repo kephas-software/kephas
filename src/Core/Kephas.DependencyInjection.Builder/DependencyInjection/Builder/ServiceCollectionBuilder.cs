@@ -123,15 +123,16 @@ public class ServiceInfoCollectionBuilder
     public IServiceInfoCollection Build()
     {
         ConfigureBuilder?.Invoke(this);
-        return AddServices(Services, GetProviders());
+        var serviceAssemblies = GetServiceAssemblies();
+        var implementationTypes = DependencyInjectionHelper.GetEligibleImplementationTypes(serviceAssemblies, IncludeInternal).ToList();
+        return AddServices(Services, implementationTypes, GetProviders(serviceAssemblies, implementationTypes));
     }
 
     private IServiceInfoCollection AddServices(
         IServiceInfoCollection services,
+        IList<Type> implementationTypes,
         IEnumerable<IServiceInfoProvider> serviceInfoProviders)
     {
-        var implementationTypes = DependencyInjectionHelper.GetEligibleImplementationTypes(GetServiceAssemblies(), IncludeInternal).ToList();
-
         // get all type infos from the injection assemblies
         var serviceDeclarationInfos = serviceInfoProviders
             .SelectMany(p => p.GetServiceInfos())
@@ -150,43 +151,28 @@ public class ServiceInfoCollectionBuilder
         return services.AddServices(serviceDeclarationInfos, serviceImplementationDeclarations);
     }
 
-    /// <summary>
-    /// Gets the application service information providers.
-    /// </summary>
-    /// <param name="appAssemblies">The application assemblies.</param>
-    /// <returns>
-    /// An enumeration of <see cref="IServiceInfoProvider"/> objects.
-    /// </returns>
-    private static IEnumerable<IServiceInfoProvider> GetProviders(IEnumerable<Assembly> appAssemblies)
+    private IEnumerable<IServiceInfoProvider> GetProviders(IList<Assembly> serviceAssemblies, IList<Type> implementationTypes)
     {
-        appAssemblies = appAssemblies ?? throw new ArgumentNullException(nameof(appAssemblies));
+        var assemblyProviders = serviceAssemblies
+            .SelectMany(a =>
+                a.GetCustomAttributes().OfType<IServiceInfoProvider>()
+                    .Select(p => (provider: p, priority: p.GetPriority())));
+        
+        var userDefinedProviders = implementationTypes
+            .Where(t => typeof(IServiceInfoProvider).IsAssignableFrom(t))
+            .Select(t => (provider: (IServiceInfoProvider)Activator.CreateInstance(t)!, priority: t.GetCustomAttribute<PriorityAttribute>()?.Value ?? Priority.Normal));
 
-        var providers = appAssemblies
-            .SelectMany(a => a.GetCustomAttributes().OfType<IServiceInfoProvider>())
-            .OrderBy(a => a is IHasPriority hasPriority ? hasPriority.Priority : Priority.Normal);
+        var builderProviders = Providers
+            .Select(p => (provider: p, priority: Priority.Normal));
+        
+        var providers = builderProviders
+            .Union([(provider: new TypesServiceInfoProvider(Types), priority: Priority.Normal)])
+            .Union(userDefinedProviders)
+            .Union(assemblyProviders);
 
-        return providers;
-    }
-
-    /// <summary>
-    /// Gets the application service information providers.
-    /// </summary>
-    /// <returns>
-    /// An enumeration of <see cref="IServiceInfoProvider"/> objects.
-    /// </returns>
-    private IEnumerable<IServiceInfoProvider> GetProviders()
-    {
-        var serviceAssemblies = GetServiceAssemblies();
-        var providers = GetProviders(serviceAssemblies)
-            .Union(Providers)
-            .ToList();
-
-        if (Types.Count > 0)
-        {
-            providers.Add(new TypesServiceInfoProvider(Types));
-        }
-
-        return providers;
+        return providers
+            .OrderBy(kv => kv.priority)
+            .Select(kv => kv.provider);
     }
 
     private IList<Assembly> GetServiceAssemblies()

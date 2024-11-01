@@ -13,6 +13,7 @@ namespace Kephas.DependencyInjection.Builder;
 /// <summary>
 /// Implementation of <see cref="IServiceInfoProvider"/> for an enumeration of types.
 /// </summary>
+[ExcludeFromDependencyInjection]
 internal class TypesServiceInfoProvider : IServiceInfoProvider
 {
     private readonly List<Type> types;

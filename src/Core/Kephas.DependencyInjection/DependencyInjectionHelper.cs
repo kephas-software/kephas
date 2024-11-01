@@ -30,6 +30,7 @@ internal static class DependencyInjectionHelper
         (includeInternal
             ? type is { IsClass: true, IsAbstract: false } && (type.IsPublic || type.IsNestedPublic || IsInternalNonCompilerGenerated(type))
             : type is { IsClass: true, IsAbstract: false } && (type.IsPublic || type.IsNestedPublic)) &&
+        !typeof(Attribute).IsAssignableFrom(type) &&
         !type.IsDefined(typeof(ExcludeFromDependencyInjectionAttribute));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

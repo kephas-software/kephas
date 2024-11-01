@@ -222,22 +222,22 @@ internal static class ServiceInfoCollectionBuilderExtensions
                     // if the service declaration based on the generic type definition is found,
                     // build a new service declaration based on the constructed generic type
                     // and add a new entry in the map.
-                    var genericServiceInfo = serviceEntry.Registrations.Count > 0 ? serviceEntry.Registrations[0] : serviceEntry.ServiceInfo;
-                    var appServiceInfoDeclaration = new ServiceInfo(genericServiceInfo, serviceDeclarationType, serviceDeclarationType);
-                    var appServiceInfo = new ServiceInfo(appServiceInfoDeclaration, serviceDeclarationType, serviceDeclarationType, implementationType);
-                    ((IServiceInfo)appServiceInfo).AddMetadata(ServiceHelper.GetServiceMetadata(implementationType, serviceDeclarationType));
+                    var openGenericServiceInfo = serviceEntry.ServiceInfo;
+                    var closedGenericServiceInfo = new ServiceInfo(openGenericServiceInfo, serviceDeclarationType, serviceDeclarationType);
+                    var implementationServiceInfo = new ServiceInfo(closedGenericServiceInfo, serviceDeclarationType, serviceDeclarationType, implementationType);
+                    ((IServiceInfo)implementationServiceInfo).AddMetadata(ServiceHelper.GetServiceMetadata(implementationType, serviceDeclarationType));
 
                     // add to the list of service infos on the first place the declaration.
-                    serviceMap[serviceDeclarationType] = new ServiceEntry(appServiceInfoDeclaration) { Registrations = { appServiceInfo } };
+                    serviceMap[serviceDeclarationType] = new ServiceEntry(closedGenericServiceInfo) { Registrations = { implementationServiceInfo } };
                 }
             }
         }
         else
         {
-            var serviceInfo = serviceEntry.ServiceInfo;
-            var appServiceInfo = new ServiceInfo(serviceInfo, serviceInfo.ServiceType ?? serviceDeclarationType, serviceDeclarationType, implementationType);
-            ((IServiceInfo)appServiceInfo).AddMetadata(ServiceHelper.GetServiceMetadata(implementationType, serviceDeclarationType));
-            serviceEntry.Registrations.Add(appServiceInfo);
+            var declarationServiceInfo = serviceEntry.ServiceInfo;
+            var implementationServiceInfo = new ServiceInfo(declarationServiceInfo, declarationServiceInfo.ServiceType ?? serviceDeclarationType, serviceDeclarationType, implementationType);
+            ((IServiceInfo)implementationServiceInfo).AddMetadata(ServiceHelper.GetServiceMetadata(implementationType, serviceDeclarationType));
+            serviceEntry.Registrations.Add(implementationServiceInfo);
         }
     }
 
