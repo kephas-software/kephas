@@ -34,8 +34,8 @@ public class ProcessHealthCheck(IAppRuntime appRuntime) : IHealthCheck
             var processInfo = GetCurrentProcessInfo();
             var data = new Dictionary<string, object>
             {
-                { "Application", appRuntime.GetAppName() },
-                { "Version", appRuntime.GetAppVersion() },
+                { "AppName", appRuntime.GetAppName() },
+                { "AppVersion", appRuntime.GetAppVersion() },
                 { "AppInstanceId", appRuntime.GetAppInstanceId() },
                 { "Environment", appRuntime.GetEnvironment() },
                 { "MachineName", appRuntime.GetMachineName() },

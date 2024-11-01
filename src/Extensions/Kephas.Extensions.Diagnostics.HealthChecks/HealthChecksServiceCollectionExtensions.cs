@@ -13,7 +13,7 @@ namespace Kephas.Extensions;
 /// <summary>
 /// Extension methods for the health check.
 /// </summary>
-public static class HealthCheckServiceCollectionExtensions
+public static class HealthChecksServiceCollectionExtensions
 {
     /// <summary>
     /// The section name for the health check.

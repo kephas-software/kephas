@@ -110,6 +110,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.Diagnosti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.Diagnostics.HealthChecks.Tests", "Extensions\Tests\Kephas.Extensions.Diagnostics.HealthChecks.Tests\Kephas.Extensions.Diagnostics.HealthChecks.Tests.csproj", "{DE5A3545-A6A9-4C53-A899-AA9E95178A94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.Serilog.Tests", "Extensions\Tests\Kephas.Extensions.Serilog.Tests\Kephas.Extensions.Serilog.Tests.csproj", "{3C85B469-75FD-4D71-82BC-402B86E553ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -165,6 +167,7 @@ Global
 		{044756B8-6489-427B-8EFB-2A7A613AE488} = {09F5009F-4B61-402B-80B9-B3E7671909EE}
 		{14F603FE-CDE5-4F3B-A35E-A3D308D02A1D} = {60FFBA0A-D3BF-49E7-8F5B-BB27D4C2B3A1}
 		{DE5A3545-A6A9-4C53-A899-AA9E95178A94} = {46C0A49D-1EB8-44A1-BD0D-7190CB697FDF}
+		{3C85B469-75FD-4D71-82BC-402B86E553ED} = {46C0A49D-1EB8-44A1-BD0D-7190CB697FDF}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5B9C6197-622F-40D0-9E2D-FB5D55CCFF60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -343,5 +346,9 @@ Global
 		{DE5A3545-A6A9-4C53-A899-AA9E95178A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE5A3545-A6A9-4C53-A899-AA9E95178A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE5A3545-A6A9-4C53-A899-AA9E95178A94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C85B469-75FD-4D71-82BC-402B86E553ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C85B469-75FD-4D71-82BC-402B86E553ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C85B469-75FD-4D71-82BC-402B86E553ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C85B469-75FD-4D71-82BC-402B86E553ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

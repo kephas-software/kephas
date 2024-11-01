@@ -44,8 +44,8 @@ public class ProcessHealthCheckTest
         var result = await healthCheck.CheckHealthAsync(context);
 
         result.Status.Should().Be(HealthStatus.Healthy);
-        result.Data["Application"].Should().Be("TestApp");
-        result.Data["Version"].Should().Be("1.0.0");
+        result.Data["AppName"].Should().Be("TestApp");
+        result.Data["AppVersion"].Should().Be("1.0.0");
         result.Data["AppInstanceId"].Should().Be("Instance1");
         result.Data["Environment"].Should().Be("Development");
         result.Data["MachineName"].Should().Be("TestMachine");

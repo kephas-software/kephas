@@ -17,7 +17,7 @@ public record MemoryCheckSettings
     private const long DefaultThreshold = 1024L;
 
     /// <summary>
-    /// Gets or sets failure threshold (in megabytes). By default it is 1 GB.
+    /// Gets or sets failure threshold (in megabytes). Default is 1024 MB.
     /// </summary>
     public long Threshold { get; set; } = DefaultThreshold;
 
@@ -25,5 +25,5 @@ public record MemoryCheckSettings
     /// Gets or sets the health status when the threshold is exceeded.
     /// By default it is <see cref="HealthStatus.Healthy"/>, meaning this health check is only informative.
     /// </summary>
-    public HealthStatus ThresholdExceededStatus { get; set; } = HealthStatus.Healthy;
+    public HealthStatus ThresholdExceededStatus { get; set; } = HealthStatus.Degraded;
 }
