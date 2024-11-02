@@ -14,6 +14,10 @@ namespace Kephas.Web.Serialization.Json;
 /// <summary>
 /// Configurator for <see cref="JsonSerializerOptions"/>.
 /// </summary>
+/// <remarks>
+/// This configurator configures the default <see cref="JsonSerializerOptions"/> instance. For advanced scenarios, consider
+/// reading more here: https://thomaslevesque.com/2022/09/19/using-multiple-json-serialization-settings-in-aspnet-core/.
+/// </remarks>
 public class JsonSerializerOptionsConfigurator(IJsonSerializerOptionsProvider optionsProvider) : IConfigureOptions<JsonSerializerOptions>
 {
     /// <summary>
