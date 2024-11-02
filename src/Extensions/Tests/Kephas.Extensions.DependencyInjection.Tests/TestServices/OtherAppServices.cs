@@ -11,36 +11,22 @@ using Kephas.DependencyInjection.Metadata;
 namespace Kephas.Extensions.Tests.TestServices;
 
 [SingletonService]
-public interface ITestAppService
-{
-}
+public interface ITestAppService;
 
 [SingletonService]
-public interface ITestMultiAppService
-{
-}
+public interface ITestMultiAppService;
 
 [SingletonService]
-public interface ITestMultiAppServiceConsumer
-{
-}
+public interface ITestMultiAppServiceConsumer;
 
-public class TestAppService : ITestAppService
-{
-}
+public class TestAppService : ITestAppService;
 
 [Priority(Priority.High)]
-public class TestOverrideAppService : ITestAppService
-{
-}
+public class TestOverrideAppService : ITestAppService;
 
-public class TestMultiAppService1 : ITestMultiAppService
-{
-}
+public class TestMultiAppService1 : ITestMultiAppService;
 
-public class TestMultiAppService2 : ITestMultiAppService
-{
-}
+public class TestMultiAppService2 : ITestMultiAppService;
 
 public class TestMultiAppServiceConsumer : ITestMultiAppServiceConsumer
 {
@@ -57,60 +43,34 @@ public class TestMultiAppServiceConsumer : ITestMultiAppServiceConsumer
     public IEnumerable<IFactory<ITestMultiAppService, ServiceMetadata>> MetadataFactories { get; set; }
 }
 
-public interface IConverter
-{
-}
+public interface IConverter;
 
 [SingletonService(ServiceType = typeof(IConverter))]
-public interface IConverter<TSource, TTarget> : IConverter
-{
-}
+public interface IConverter<TSource, TTarget> : IConverter;
 
 [Priority(100)]
-public class StringToIntConverter : IConverter<string, int>
-{
-}
+public class StringToIntConverter : IConverter<string, int>;
 
-public class SecondStringToIntConverter : IConverter<string, int>
-{
-}
+public class SecondStringToIntConverter : IConverter<string, int>;
 
 [ScopedService]
-public interface ITestMyScopedExport
-{
-}
+public interface ITestMyScopedExport;
 
-public class TestMyScopedExport : ITestMyScopedExport
-{
-}
+public class TestMyScopedExport : ITestMyScopedExport;
 
 [ScopedService]
-public interface ITestScopedExport
-{
-}
+public interface ITestScopedExport;
 
-public class TestScopedExport : ITestScopedExport
-{
-}
+public class TestScopedExport : ITestScopedExport;
 
 [SingletonService]
-public interface ITestGenericExport<T>
-{
-}
+public interface ITestGenericExport<T>;
 
-public class TestGenericExport : ITestGenericExport<string>
-{
-}
+public class TestGenericExport : ITestGenericExport<string>;
 
-public interface ITestGenericWithNonGenericExport
-{
-}
+public interface ITestGenericWithNonGenericExport;
 
 [TransientService(ServiceType = typeof(ITestGenericWithNonGenericExport))]
-public interface ITestGenericWithNonGenericExport<T> : ITestGenericWithNonGenericExport
-{
-}
+public interface ITestGenericWithNonGenericExport<T> : ITestGenericWithNonGenericExport;
 
-public class TestGenericWithNonGenericExport : ITestGenericWithNonGenericExport<string>
-{
-}
+public class TestGenericWithNonGenericExport : ITestGenericWithNonGenericExport<string>;
