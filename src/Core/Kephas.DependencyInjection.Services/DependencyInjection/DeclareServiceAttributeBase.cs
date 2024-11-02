@@ -24,12 +24,12 @@ public abstract class DeclareServiceAttributeBase : ServiceAttributeBase, IServi
     /// <param name="serviceType">The service type.</param>
     /// <param name="implementationType">The implementation type.</param>
     /// <param name="lifetime">The lifetime.</param>
-    protected DeclareServiceAttributeBase(Type serviceType, Type implementationType, AppServiceLifetime lifetime)
-        : base(lifetime)
+    /// <param name="genericRegistration">The generic service kind.</param>
+    protected DeclareServiceAttributeBase(Type serviceType, Type implementationType, AppServiceLifetime lifetime, GenericRegistration genericRegistration = GenericRegistration.Default)
+        : base(lifetime, implementationType?.IsGenericTypeDefinition is true ? genericRegistration : GenericRegistration.AsConstructed)
     {
         ServiceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         InstancingStrategy = this.implementationType = implementationType ?? throw new ArgumentNullException(nameof(implementationType));
-        AsOpenGeneric = ServiceType.IsGenericTypeDefinition;
 
         if (!ServiceType.IsGenericTypeDefinition && !ServiceType.IsAssignableFrom(implementationType))
         {
@@ -89,6 +89,9 @@ public abstract class DeclareServiceAttributeBase : ServiceAttributeBase, IServi
 /// Marks an interface or a class to be an application service, declared at assembly level.
 /// This is useful when the service to be annotated is not accessible for modification.
 /// </summary>
+/// <remarks>
+/// This kind of declaration does not allow registrations as open generic.
+/// </remarks>
 /// <typeparam name="TService">The service type.</typeparam>
 /// <typeparam name="TImplementation">The implementation type.</typeparam>
 public abstract class DeclareServiceAttributeBase<TService, TImplementation> : ServiceAttributeBase, IServiceInfo, IServiceInfoProvider
@@ -99,7 +102,7 @@ public abstract class DeclareServiceAttributeBase<TService, TImplementation> : S
     /// </summary>
     /// <param name="lifetime">The lifetime.</param>
     protected DeclareServiceAttributeBase(AppServiceLifetime lifetime)
-        : base(lifetime)
+        : base(lifetime, GenericRegistration.AsConstructed)
     {
         ServiceType = typeof(TService);
         InstancingStrategy = typeof(TImplementation);
@@ -167,6 +170,7 @@ public abstract class DeclareServiceAttributeBase<TService, TImplementation, TMe
     /// Initializes a new instance of the <see cref="DeclareServiceAttributeBase{TService,TImplementation,TMetadata}"/> class.
     /// </summary>
     /// <param name="lifetime">The lifetime.</param>
-    protected DeclareServiceAttributeBase(AppServiceLifetime lifetime) : base(lifetime) =>
+    protected DeclareServiceAttributeBase(AppServiceLifetime lifetime)
+        : base(lifetime) =>
         MetadataType = typeof(TMetadata);
 }

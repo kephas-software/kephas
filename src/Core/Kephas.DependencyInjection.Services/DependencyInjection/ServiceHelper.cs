@@ -143,6 +143,19 @@ public static class ServiceHelper
         return metadata;
     }
 
+    /// <summary>
+    /// Converts the <see cref="GenericRegistration"/> to a nullable boolean.
+    /// </summary>
+    /// <param name="genericRegistration">The value to convert.</param>
+    /// <param name="serviceType">The service type.</param>
+    /// <returns><c>null</c> for non-generic types, <c>false</c> for constructed generic types, <c>true</c> for open generic types if not set <see cref="GenericRegistration.AsConstructed"/>, otherwise <c>false</c>.</returns>
+    public static bool? ToNullableBoolean(this GenericRegistration genericRegistration, Type? serviceType) =>
+        serviceType?.IsGenericType is not true
+            ? null
+            : serviceType.IsConstructedGenericType
+                ? false
+                : genericRegistration is GenericRegistration.Default or GenericRegistration.AsOpen;
+
     private static string? TryGetServiceKey(string implementationName, Type? serviceType)
     {
         if (serviceType is null)

@@ -15,15 +15,43 @@ using Kephas.DependencyInjection.Reflection;
 namespace Kephas.DependencyInjection;
 
 /// <summary>
+/// Enumerates the generic service kind.
+/// </summary>
+public enum GenericRegistration
+{
+    /// <summary>
+    /// The default for the provided service type is considered: None for non-generic types, Open for open generic types, Constructed for the rest.
+    /// </summary>
+    Default,
+    
+    /// <summary>
+    /// Register open generic services.
+    /// </summary>
+    AsOpen,
+    
+    /// <summary>
+    /// Register constructed generic services.
+    /// </summary>
+    AsConstructed,
+}
+
+/// <summary>
 /// Marks an interface or a class to be a transient application service contract.
 /// </summary>
 public abstract class ServiceAttributeBase : Attribute, IServiceInfo
 {
+    private readonly GenericRegistration genericRegistration;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ServiceAttributeBase"/> class.
     /// </summary>
     /// <param name="lifetime">The lifetime.</param>
-    protected ServiceAttributeBase(AppServiceLifetime lifetime) => Lifetime = lifetime;
+    /// <param name="genericRegistration">The generic service kind.</param>
+    protected ServiceAttributeBase(AppServiceLifetime lifetime, GenericRegistration genericRegistration)
+    {
+        Lifetime = lifetime;
+        this.genericRegistration = genericRegistration;
+    }
 
     /// <summary>
     /// Gets the application service lifetime.
@@ -39,7 +67,7 @@ public abstract class ServiceAttributeBase : Attribute, IServiceInfo
     /// <value>
     ///   <c>true</c> if the contract should be exported as an open generic; otherwise, <c>false</c>.
     /// </value>
-    public bool AsOpenGeneric { get; set; }
+    public bool? AsOpenGeneric => genericRegistration.ToNullableBoolean(ServiceType);
 
     /// <summary>
     /// Gets or sets the contract type of the export.
@@ -79,8 +107,13 @@ public abstract class ServiceAttributeBase : Attribute, IServiceInfo
     /// </returns>
     public override string ToString()
     {
-        var openGeneric = AsOpenGeneric ? ", open generic" : string.Empty;
-
-        return $"{ServiceType}{openGeneric}, {Lifetime}";
+        var openGeneric = 
+            AsOpenGeneric is null
+                ? string.Empty :
+                AsOpenGeneric is true
+                    ? ", open generic"
+                    : ", closed generic";
+        var metadata = MetadataType is null ? string.Empty : $", {MetadataType.Name}";
+        return $"{ServiceType}{openGeneric}, {Lifetime}{metadata}";
     }
 }

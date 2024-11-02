@@ -13,9 +13,10 @@ namespace Kephas.DependencyInjection;
 /// </summary>
 /// <param name="serviceType">The service type.</param>
 /// <param name="implementationType">The implementation type.</param>
+/// <param name="genericRegistration">The generic service kind.</param>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public sealed class DeclareSingletonServiceAttribute(Type serviceType, Type implementationType)
-    : DeclareServiceAttributeBase(serviceType, implementationType, AppServiceLifetime.Singleton);
+public sealed class DeclareSingletonServiceAttribute(Type serviceType, Type implementationType, GenericRegistration genericRegistration = GenericRegistration.Default)
+    : DeclareServiceAttributeBase(serviceType, implementationType, AppServiceLifetime.Singleton, genericRegistration);
 
 /// <summary>
 /// Marks an interface or a class to be a singleton application service, declared at assembly level.

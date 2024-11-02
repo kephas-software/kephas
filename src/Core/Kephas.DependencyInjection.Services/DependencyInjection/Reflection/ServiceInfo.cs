@@ -24,7 +24,7 @@ public record ServiceInfo : IServiceInfo
     ///                             <c>true</c> if the contract should be exported as an open generic;
     ///                             otherwise, <c>false</c>.
     /// </param>
-    public ServiceInfo(Type serviceType, AppServiceLifetime lifetime = AppServiceLifetime.Transient, bool asOpenGeneric = false)
+    public ServiceInfo(Type serviceType, AppServiceLifetime lifetime = AppServiceLifetime.Transient, bool? asOpenGeneric = null)
     {
         _ = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
 
@@ -150,7 +150,7 @@ public record ServiceInfo : IServiceInfo
     /// <value>
     ///   <c>true</c> if the contract should be exported as an open generic; otherwise, <c>false</c>.
     /// </value>
-    public bool AsOpenGeneric { get; private set; }
+    public bool? AsOpenGeneric { get; private set; }
 
     /// <summary>
     /// Gets the metadata attached to the service information.
@@ -208,7 +208,12 @@ public record ServiceInfo : IServiceInfo
     /// </returns>
     public override string ToString()
     {
-        var openGeneric = AsOpenGeneric ? ", open generic" : string.Empty;
+        var openGeneric = 
+            AsOpenGeneric is null
+                ? string.Empty :
+                AsOpenGeneric is true
+                    ? ", open generic"
+                    : ", closed generic";
         IServiceInfo serviceInfo = this;
         var instanceTypeString = serviceInfo.ImplementationType != null ? $"/type:{serviceInfo.ImplementationType}" : string.Empty;
         var instanceString = serviceInfo.Instance != null ? $"/instance:{serviceInfo.Instance}" : string.Empty;

@@ -15,7 +15,7 @@
         <Product>Kephas Framework</Product>
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-        <Description>Provides extended dependency injection/services infrastructure.</Description>
+        <Description>Provides the primary infrastructure for defining and collecting application services.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>

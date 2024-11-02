@@ -33,7 +33,7 @@ public interface IServiceInfo : IFormattable, IHasServiceType
     /// <value>
     ///   <c>true</c> if the contract should be exported as an open generic; otherwise, <c>false</c>.
     /// </value>
-    bool AsOpenGeneric { get; }
+    bool? AsOpenGeneric { get; }
 
     /// <summary>
     /// Gets the supported metadata.
@@ -169,9 +169,13 @@ public interface IServiceInfo : IFormattable, IHasServiceType
         var sb = new StringBuilder();
         sb.Append($"{{ lifetime: '{Lifetime}'");
 
-        if (AsOpenGeneric)
+        if (AsOpenGeneric is true)
         {
             sb.Append(", asOpenGeneric: true");
+        }
+        else if (AsOpenGeneric is false)
+        {
+            sb.Append(", asOpenGeneric: false");
         }
 
         if (ImplementationType != null)
