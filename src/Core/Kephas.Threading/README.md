@@ -15,7 +15,7 @@ Typically used areas and classes/interfaces/services:
 ## Other resources
 
 * [Kephas.Runtime.Abstractions](https://www.nuget.org/packages/Kephas.Services)
-* [Kephas.DependencyInjection](https://www.nuget.org/packages/Kephas.DependencyInjection)
+* [Kephas.DependencyInjection.Services](https://www.nuget.org/packages/Kephas.DependencyInjection.Services)
 * [Kephas.Services.Autofac](https://www.nuget.org/packages/Kephas.Services.Autofac)
 * [Kephas.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection)
 

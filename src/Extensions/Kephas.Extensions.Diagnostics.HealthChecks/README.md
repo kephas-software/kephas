@@ -37,7 +37,7 @@ services.AddHealthCheckServices();
 ## Other resources
 
 * [Kephas.Exceptions](https://www.nuget.org/packages/Kephas.Exceptions)
-* [Kephas.DependencyInjection](https://www.nuget.org/packages/Kephas.DependencyInjection)
+* [Kephas.DependencyInjection.Services](https://www.nuget.org/packages/Kephas.DependencyInjection.Services)
 * [Kephas.Analyzers](https://www.nuget.org/packages/Kephas.Analyzers)
 
 > Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.

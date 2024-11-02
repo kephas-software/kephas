@@ -73,7 +73,7 @@ var appAssemblies = appRuntime.GetAppAssemblies();
 
 ## Other resources
 
-* [Kephas.DependencyInjection](https://www.nuget.org/packages/Kephas.DependencyInjection)
+* [Kephas.DependencyInjection.Services](https://www.nuget.org/packages/Kephas.DependencyInjection.Services)
 
 > Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
 

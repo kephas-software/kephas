@@ -9,7 +9,7 @@ The time provider service registered by default in the DI container.
 ## Other resources
 
 * [Kephas.Exceptions](https://www.nuget.org/packages/Kephas.Exceptions)
-* [Kephas.DependencyInjection](https://www.nuget.org/packages/Kephas.DependencyInjection)
+* [Kephas.DependencyInjection.Services](https://www.nuget.org/packages/Kephas.DependencyInjection.Services)
 * [Kephas.Reflection](https://www.nuget.org/packages/Kephas.Reflection)
 * [Kephas.Analyzers](https://www.nuget.org/packages/Kephas.Analyzers)
 

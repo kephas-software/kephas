@@ -8,7 +8,7 @@ Typically used areas and classes/interfaces/services:
 
 ## Other resources
 
-* [Kephas.DependencyInjection](https://www.nuget.org/packages/Kephas.DependencyInjection)
+* [Kephas.DependencyInjection.Services](https://www.nuget.org/packages/Kephas.DependencyInjection.Services)
 * [Kephas.Reflection](https://www.nuget.org/packages/Kephas.Reflection)
 * [Kephas.Operations.Diagnostics](https://www.nuget.org/packages/Kephas.Operations.Diagnostics)
 
