@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Core\Kephas.DependencyInjection\Kephas.DependencyInjection.csproj" />
+        <ProjectReference Include="..\..\..\Core\Kephas.DependencyInjection.Services\Kephas.DependencyInjection.Services.csproj" />
         <ProjectReference Include="..\..\Kephas.Analyzers\Kephas.Analyzers.csproj" />
         <ProjectReference Include="..\Kephas.Analyzers.TestAssembly\Kephas.Analyzers.TestAssembly.csproj" />
     </ItemGroup>

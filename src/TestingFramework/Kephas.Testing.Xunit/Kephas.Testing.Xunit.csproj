@@ -86,7 +86,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Core\Kephas.DependencyInjection\Kephas.DependencyInjection.csproj"/>
+        <ProjectReference Include="..\..\Core\Kephas.DependencyInjection.Services\Kephas.DependencyInjection.Services.csproj" />
         <ProjectReference Include="..\..\Core\Kephas.DependencyInjection.Builder\Kephas.DependencyInjection.Builder.csproj"/>
         <ProjectReference Include="..\..\Extensions\Kephas.Extensions\Kephas.Extensions.csproj"/>
         <ProjectReference Include="..\..\Extensions\Kephas.Extensions.Serilog\Kephas.Extensions.Serilog.csproj"/>

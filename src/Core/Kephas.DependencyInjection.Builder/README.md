@@ -1,21 +1,7 @@
-﻿# Injection
+﻿# Dependency Injection (Builder)
 
 ## Introduction
-This package provides support for application services and dependency injection.
-
-Packages providing specific dependency injection implementations:
-* [Kephas.Services.Autofac](https://www.nuget.org/packages/Kephas.Services.Autofac)
-* [Kephas.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection)
-
-## Application services and dependency injection
-An application service is an in-process component handling a particular concern.
-It consists of:
-* The service contract. This is typically an interface and has two purposes:
-  * Provide the API for invoking the functionality.
-  * Be the key through which the service implementation is resolved.
-* One or more service implementations.
-* Metadata associated to the service contract.
-* Metadata associated to the service implementation.
+This package provides support for building collections of application services.
 
 > Consuming an application service implies depending on its contract and never on its implementation.
 
@@ -29,7 +15,7 @@ after that, the `IServiceProvider` will be built.
 #### Using the `IAppRuntime` service to collect the services
 
 ```csharp
-var builder = new AppServiceInfoCollectionBuilder()
+var builder = new ServiceInfoCollectionBuilder()
     .WithDynamicAppRuntime();
 var services = builder.Build();
 ```
@@ -37,7 +23,7 @@ var services = builder.Build();
 #### Using a custom function to collect the services
 
 ```csharp
-var builder = new AppServiceInfoCollectionBuilder(
+var builder = new ServiceInfoCollectionBuilder(
     new AppServicesSettings { GetAppAssemblies = () => typeof(MyTestClass).Assembly.FlattenReferences() });
 var services = builder.Build();
 ```
@@ -71,7 +57,7 @@ Kephas provides support for both [Microsoft.Extensions.DependencyInjection](http
 
 ### Service collection
 
-Services are collected using an `AppServiceInfoCollectionBuilder`. During this process:
+Services are collected using an `ServiceInfoCollectionBuilder`. During this process:
 * The builder:
   * Tries to use the `AppServicesSettings.GetServicesAssemblies` function.
   * If not set, it tries to identify the `IAppRuntime` service within the `IAppServices` collection, from which it calls `GetAppAssemblies()`.

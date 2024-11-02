@@ -168,7 +168,7 @@ public static class ServiceCollectionExtensions
                           ?? throw new InvalidOperationException($"The service type is not set for: {serviceInfo}.");
         var implementationType = serviceInfo.ImplementationType;
         var serviceDeclarationType = serviceInfo.ServiceDeclarationType;
-        if (serviceInfo.AsOpenGeneric && implementationType is null)
+        if (serviceInfo.AsOpenGeneric is true && implementationType is null)
         {
             throw new InvalidOperationException($"Must provide the implementation type for open generics in: {serviceInfo}.");
         }

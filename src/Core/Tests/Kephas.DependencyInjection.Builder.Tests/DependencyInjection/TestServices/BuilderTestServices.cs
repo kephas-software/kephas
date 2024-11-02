@@ -52,7 +52,7 @@ namespace Kephas.Tests.DependencyInjection.TestServices
 
     public class TwoGenericAppServiceIntBool : ITwoGenericAppService<int, bool>;
 
-    [SingletonService(AsOpenGeneric = true)]
+    [SingletonService(GenericRegistration.AsOpen)]
     public interface ITypedLogger<T>;
 
     public class TypedLogger<T> : ITypedLogger<T>;

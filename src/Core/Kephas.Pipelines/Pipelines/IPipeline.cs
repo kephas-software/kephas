@@ -15,7 +15,7 @@ namespace Kephas.Pipelines;
 /// <typeparam name="TTarget">The target type.</typeparam>
 /// <typeparam name="TOperationArgs">The operation arguments type.</typeparam>
 /// <typeparam name="TResult">The result type.</typeparam>
-[TransientService(AsOpenGeneric = true)]
+[TransientService(GenericRegistration.AsOpen)]
 public interface IPipeline<in TTarget, in TOperationArgs, TResult>
 {
     /// <summary>

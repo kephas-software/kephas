@@ -26,7 +26,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
             Exception = new ArgumentException("bad argument", "arg"),
         };
 
-        var json = this.jsonService.Serialize(responseModel);
+        var json = jsonService.Serialize(responseModel);
         Assert.Equal("{\"copyrightNotice\":\"mine\",\"durationInMilliseconds\":0,\"exception\":{\"message\":\"bad argument (Parameter \\u0027arg\\u0027)\",\"paramName\":\"arg\",\"data\":{},\"hResult\":-2147024809},\"statusCode\":0,\"errorId\":\"00000000-0000-0000-0000-000000000000\"}", json);
     }
     
@@ -34,7 +34,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
     public void Deserialize_ErrorModel_non_generic_ArgumentException_as_ExceptionData()
     {
         var json = "{\"copyrightNotice\":null,\"durationInMilliseconds\":0,\"exception\":{\"message\":\"bad argument (Parameter \\u0027arg\\u0027)\",\"paramName\":\"arg\",\"targetSite\":null,\"data\":{},\"innerException\":null,\"helpLink\":null,\"source\":null,\"hResult\":-2147024809,\"stackTrace\":null},\"message\":null,\"statusCode\":0,\"errorId\":\"00000000-0000-0000-0000-000000000000\"}";
-        var errorModel = (ErrorModel<ExceptionData>)this.jsonService.Deserialize(json, typeof(ErrorModel<ExceptionData>))!;
+        var errorModel = (ErrorModel<ExceptionData>)jsonService.Deserialize(json, typeof(ErrorModel<ExceptionData>))!;
         
         Assert.Equal("bad argument (Parameter 'arg')", errorModel.Exception!.Message);
     }
@@ -43,7 +43,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
     public void Deserialize_ErrorModel_ArgumentException_as_ExceptionData()
     {
         var json = "{\"copyrightNotice\":null,\"durationInMilliseconds\":0,\"exception\":{\"message\":\"bad argument (Parameter \\u0027arg\\u0027)\",\"paramName\":\"arg\",\"targetSite\":null,\"data\":{},\"innerException\":null,\"helpLink\":null,\"source\":null,\"hResult\":-2147024809,\"stackTrace\":null},\"message\":null,\"statusCode\":0,\"errorId\":\"00000000-0000-0000-0000-000000000000\"}";
-        var errorModel = this.jsonService.Deserialize<ErrorModel<ExceptionData>>(json);
+        var errorModel = jsonService.Deserialize<ErrorModel<ExceptionData>>(json);
         
         Assert.Equal("bad argument (Parameter 'arg')", errorModel.Exception!.Message);
     }
@@ -52,7 +52,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
     public async Task DeserializeAsync_ErrorModel_nono_generic_ArgumentException_as_ExceptionData()
     {
         var json = "{\"copyrightNotice\":null,\"durationInMilliseconds\":0,\"exception\":{\"message\":\"bad argument (Parameter \\u0027arg\\u0027)\",\"paramName\":\"arg\",\"targetSite\":null,\"data\":{},\"innerException\":null,\"helpLink\":null,\"source\":null,\"hResult\":-2147024809,\"stackTrace\":null},\"message\":null,\"statusCode\":0,\"errorId\":\"00000000-0000-0000-0000-000000000000\"}";
-        var errorModel = (ErrorModel<ExceptionData>)(await this.jsonService.DeserializeAsync(json, typeof(ErrorModel<ExceptionData>)))!;
+        var errorModel = (ErrorModel<ExceptionData>)(await jsonService.DeserializeAsync(json, typeof(ErrorModel<ExceptionData>)))!;
         
         Assert.Equal("bad argument (Parameter 'arg')", errorModel.Exception!.Message);
     }
@@ -61,7 +61,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
     public async Task DeserializeAsync_ErrorModel_ArgumentException_as_ExceptionData()
     {
         var json = "{\"copyrightNotice\":null,\"durationInMilliseconds\":0,\"exception\":{\"message\":\"bad argument (Parameter \\u0027arg\\u0027)\",\"paramName\":\"arg\",\"targetSite\":null,\"data\":{},\"innerException\":null,\"helpLink\":null,\"source\":null,\"hResult\":-2147024809,\"stackTrace\":null},\"message\":null,\"statusCode\":0,\"errorId\":\"00000000-0000-0000-0000-000000000000\"}";
-        var errorModel = await this.jsonService.DeserializeAsync<ErrorModel<ExceptionData>>(json);
+        var errorModel = await jsonService.DeserializeAsync<ErrorModel<ExceptionData>>(json);
         
         Assert.Equal("bad argument (Parameter 'arg')", errorModel.Exception!.Message);
     }
@@ -77,7 +77,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
         };
         var zero = "0";
 
-        var json = this.jsonService.Serialize(responseModel);
+        var json = jsonService.Serialize(responseModel);
         Assert.Equal($"{{\"durationInMilliseconds\":{zero},\"message\":\"OK\",\"numberOfElements\":1,\"elements\":\"hi there\"}}", json);
     }
     
@@ -91,7 +91,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
         };
         var zero = "0";
 
-        var json = this.jsonService.Serialize(responseModel);
+        var json = jsonService.Serialize(responseModel);
         Assert.Equal($"{{\"durationInMilliseconds\":{zero},\"numberOfElements\":2,\"elements\":[\"hi\",\"there\"]}}", json);
     }
     
@@ -104,7 +104,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
             Elements = new List<string> { "hi", "there" },
         };
         var zero = "0";
-        var json = await this.jsonService.SerializeAsync(responseModel);
+        var json = await jsonService.SerializeAsync(responseModel);
         Assert.Equal($"{{\"durationInMilliseconds\":{zero},\"numberOfElements\":2,\"elements\":[\"hi\",\"there\"]}}", json);
     }
     
@@ -116,7 +116,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
             NumberOfElements = 2,
             Elements = new List<string> { "hi", "there" },
         };
-        var json = this.jsonService.Serialize(responseModel, typeof(IResponseModel));
+        var json = jsonService.Serialize(responseModel, typeof(IResponseModel));
         Assert.Equal($"{{\"numberOfElements\":2}}", json);
     }
     
@@ -128,7 +128,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
             NumberOfElements = 2,
             Elements = new List<string> { "hi", "there" },
         };
-        var json = await this.jsonService.SerializeAsync(responseModel, typeof(IResponseModel));
+        var json = await jsonService.SerializeAsync(responseModel, typeof(IResponseModel));
         Assert.Equal($"{{\"numberOfElements\":2}}", json);
     }
     
@@ -141,7 +141,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
             Elements = new List<string> { "hi", "there" },
         };
         var zero = "0";
-        var json = this.jsonService.Serialize(responseModel);
+        var json = jsonService.Serialize(responseModel);
         Assert.Equal($"{{\"durationInMilliseconds\":{zero},\"numberOfElements\":2,\"elements\":[\"hi\",\"there\"]}}", json);
     }
     
@@ -149,7 +149,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
     public void Deserialize_ResponseModel_string()
     {
         var json = "{\"copyrightNotice\":null,\"durationInMilliseconds\":0,\"message\":null,\"numberOfElements\":1,\"elements\":\"hi there\"}";
-        var responseModel = this.jsonService.Deserialize<ResponseModel<string>>(json);
+        var responseModel = jsonService.Deserialize<ResponseModel<string>>(json);
         
         Assert.Equal(1, responseModel.NumberOfElements);
         Assert.Equal("hi there", responseModel.Elements);
@@ -159,7 +159,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
     public void Deserialize_ResponseModel_List_of_string()
     {
         var json = "{\"copyrightNotice\":null,\"durationInMilliseconds\":0,\"message\":null,\"numberOfElements\":2,\"elements\":[\"hi\",\"there\"]}";
-        var responseModel = this.jsonService.Deserialize<ResponseModel<List<string>>>(json);
+        var responseModel = jsonService.Deserialize<ResponseModel<List<string>>>(json);
 
         Assert.Equal(2, responseModel.NumberOfElements);
         Assert.Collection(
@@ -172,12 +172,12 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
     public void Deserialize_Serialize_ResponseModel_as_dynamic()
     {
         var json = "{\"copyrightNotice\":null,\"durationInMilliseconds\":0,\"message\":null,\"numberOfElements\":2,\"elements\":[{\"p1\":\"hi\"},{\"p1\":\"there\"}]}";
-        var responseModel = this.jsonService.Deserialize<ResponseModel<dynamic>>(json);
+        var responseModel = jsonService.Deserialize<ResponseModel<dynamic>>(json);
 
         responseModel.CopyrightNotice = "Copyright Test";
         responseModel.DurationInMilliseconds = 12;
         var duration = "12";
-        var newJson = this.jsonService.Serialize(responseModel);
+        var newJson = jsonService.Serialize(responseModel);
         Assert.Equal($"{{\"copyrightNotice\":\"Copyright Test\",\"durationInMilliseconds\":{duration},\"numberOfElements\":2,\"elements\":[{{\"p1\":\"hi\"}},{{\"p1\":\"there\"}}]}}", newJson);
     }
     
@@ -185,12 +185,12 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
     public void Deserialize_Serialize_ResponseModel_as_dynamic_include_nulls()
     {
         var json = "{\"copyrightNotice\":null,\"durationInMilliseconds\":0,\"message\":null,\"numberOfElements\":2,\"elements\":[{\"p1\":\"hi\"},{\"p1\":\"there\"}]}";
-        var responseModel = this.jsonService.Deserialize<ResponseModel<dynamic>>(json);
+        var responseModel = jsonService.Deserialize<ResponseModel<dynamic>>(json);
 
         responseModel.CopyrightNotice = "Copyright Test";
         responseModel.DurationInMilliseconds = 12;
         var duration = "12";
-        var newJson = this.jsonService.Serialize(
+        var newJson = jsonService.Serialize(
             responseModel,
             options => options.DefaultIgnoreCondition = JsonIgnoreCondition.Never);
 
@@ -201,7 +201,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
     public void Deserialize_ResponseModel_string_excess_data()
     {
         var json = "{\"copyrightNotice\":null,\"durationInMilliseconds\":0,\"message\":null,\"numberOfElements\":1,\"elements\":\"hi there\",\"name\":\"john doe\"}";
-        var responseModel = this.jsonService.Deserialize<ResponseModel<string>>(json);
+        var responseModel = jsonService.Deserialize<ResponseModel<string>>(json);
 
         Assert.NotNull(responseModel.Data);
         Assert.Equal("john doe", responseModel.Data["name"].ToString());
@@ -211,7 +211,7 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
     public void Deserialize_dynamic_ToString()
     {
         var json = "{\"copyrightNotice\":null,\"durationInMilliseconds\":0,\"message\":null,\"numberOfElements\":1,\"elements\":\"hi there\",\"name\":\"john doe\"}";
-        var responseModel = this.jsonService.Deserialize<dynamic>(json);
+        var responseModel = jsonService.Deserialize<dynamic>(json);
         var newJson = responseModel.ToString();
 
         Assert.Equal(json, newJson);
@@ -226,10 +226,10 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
             (Guid.Parse("27091f5f-e3d0-473c-b17f-f22fee68013a"), 403, "Not Authorized"),
         };
 
-        var json = this.jsonService.Serialize(elements);
+        var json = jsonService.Serialize(elements);
         Assert.Equal($"[{{\"item1\":\"533213ce-7a7b-445d-a466-572ceea2490a\",\"item2\":200,\"item3\":\"OK\"}},{{\"item1\":\"27091f5f-e3d0-473c-b17f-f22fee68013a\",\"item2\":403,\"item3\":\"Not Authorized\"}}]", json);
 
-        var newElements = this.jsonService.Deserialize<IEnumerable<(Guid id, int status, string? message)>>(json);
+        var newElements = jsonService.Deserialize<IEnumerable<(Guid id, int status, string? message)>>(json);
         Assert.Collection(
             newElements,
             e => Assert.Equal((Guid.Parse("533213ce-7a7b-445d-a466-572ceea2490a"), 200, "OK"), e),

@@ -26,6 +26,5 @@ public class HealthChecksIntegrationTest : IntegrationTestBase<HealthChecksInteg
             e => e.ServiceKey == "Memory" && e.FailureStatus == HealthStatus.Unhealthy,
             e => e.ServiceKey == "Process" && e.FailureStatus == HealthStatus.Unhealthy
         );
-
     }
 }

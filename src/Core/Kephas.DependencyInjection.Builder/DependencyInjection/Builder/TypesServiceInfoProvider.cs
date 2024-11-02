@@ -22,7 +22,8 @@ internal class TypesServiceInfoProvider : IServiceInfoProvider
     /// Initializes a new instance of the <see cref="TypesServiceInfoProvider"/> class.
     /// </summary>
     /// <param name="types">The types.</param>
-    public TypesServiceInfoProvider(IEnumerable<Type> types) => this.types = types?.ToList() ?? throw new ArgumentNullException(nameof(types));
+    public TypesServiceInfoProvider(IEnumerable<Type> types) =>
+        this.types = types?.ToList() ?? throw new ArgumentNullException(nameof(types));
 
     /// <summary>
     /// Gets the service declaration types.

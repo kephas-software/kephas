@@ -94,4 +94,66 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     """);
             });
     }
+    [Fact]
+
+    public void Generate_DeclareServices_ImplementationOfClosedGeneric()
+    {
+        var sourceCode =
+            """
+            using System;
+            using Kephas.DependencyInjection;
+            
+            namespace Kephas.Sample;
+
+            public interface ITestGenericWithNonGenericExport;
+            
+            [TransientService(ServiceType = typeof(ITestGenericWithNonGenericExport))]
+            public interface ITestGenericWithNonGenericExport<T> : ITestGenericWithNonGenericExport;
+            
+            public class TestGenericWithNonGenericExport : ITestGenericWithNonGenericExport<string>;
+            """;
+
+        var result = GetRunResult(sourceCode);
+
+        // Assert the driver use the cached result from AssemblyName and Syntax
+        Assert.Collection(
+            result.GeneratedSources,
+            source =>
+            {
+                source.HintName.Should().Be("DeclaredServices.g.cs");
+                var stringSource = source.SourceText.ToString();
+                stringSource.Should().Contain(
+                    """
+                    #nullable enable
+                    
+                    using System;
+                    using System.Collections.Generic;
+                    using System.Diagnostics.CodeAnalysis;
+                    using System.Reflection;
+                    
+                    using Kephas.DependencyInjection;
+                    using Kephas.DependencyInjection.ServiceProviders;
+                    
+                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    
+                    namespace Kephas.DependencyInjection.ServiceProviders.Generated
+                    {
+                       [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+                       internal partial class DeclareServices_DeclareServicesSourceGeneratorTest: IServiceInfoProvider
+                       {
+                           IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations()
+                           {
+                                yield return new ServiceDeclaration(typeof(ITestGenericWithNonGenericExport<>), null);
+                           }
+                    
+                           IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
+                           {
+                                yield return new ServiceImplementationDeclaration(typeof(TestGenericWithNonGenericExport), typeof(Kephas.Sample.ITestGenericWithNonGenericExport<System.String>));
+                           }
+                       }
+                    }
+                    
+                    """);
+            });
+    }
 }
