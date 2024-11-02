@@ -17,4 +17,4 @@ public record TwoStreamReturnStringTypedMessage : IStreamReturnStringMessage;
 
 public record StreamReturnStringMessage : IStreamRequest<string>;
 
-public record StreamNonDeclaredMessage : IStreamRequest<int>;
+public record StreamReturnIntMessage : IStreamRequest<int>;

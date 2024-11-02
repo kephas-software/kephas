@@ -9,9 +9,9 @@ using Kephas.DependencyInjection;
 using Kephas.Extensions.Mediator;
 using MediatR;
 
-[assembly: DeclareTransientServiceFamily(typeof(IRequestHandler<>), ServiceType = typeof(IRequestHandlerBase), MetadataType = typeof(RequestResponseMetadata))]
-[assembly: DeclareTransientServiceFamily(typeof(IRequestHandler<,>), ServiceType = typeof(IRequestResponseHandlerBase), MetadataType = typeof(RequestResponseMetadata))]
-[assembly: DeclareTransientServiceFamily(typeof(IStreamRequestHandler<,>), ServiceType = typeof(IStreamRequestHandlerBase), MetadataType = typeof(RequestResponseMetadata))]
-[assembly: DeclareTransientServiceFamily(typeof(INotificationHandler<>), ServiceType = typeof(INotificationHandlerBase), MetadataType = typeof(NotificationMetadata))]
-[assembly: DeclareTransientServiceFamily(typeof(IPipelineBehavior<,>), ServiceType = typeof(IPipelineBehaviorBase), MetadataType = typeof(RequestResponseMetadata))]
-[assembly: DeclareTransientServiceFamily(typeof(IStreamPipelineBehavior<,>), ServiceType = typeof(IStreamPipelineBehaviorBase), MetadataType = typeof(RequestResponseMetadata))]
+[assembly: DeclareTransientServiceFamily(typeof(IRequestHandler<>), MetadataType = typeof(RequestResponseMetadata))]
+[assembly: DeclareTransientServiceFamily(typeof(IRequestHandler<,>), MetadataType = typeof(RequestResponseMetadata))]
+[assembly: DeclareTransientServiceFamily(typeof(IStreamRequestHandler<,>), MetadataType = typeof(RequestResponseMetadata))]
+[assembly: DeclareTransientServiceFamily(typeof(INotificationHandler<>),  MetadataType = typeof(NotificationMetadata))]
+[assembly: DeclareTransientServiceFamily(typeof(IPipelineBehavior<,>), MetadataType = typeof(RequestResponseMetadata))]
+[assembly: DeclareTransientServiceFamily(typeof(IStreamPipelineBehavior<,>), MetadataType = typeof(RequestResponseMetadata))]

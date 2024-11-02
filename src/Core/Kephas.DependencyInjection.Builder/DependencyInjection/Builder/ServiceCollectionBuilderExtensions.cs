@@ -193,6 +193,14 @@ internal static class ServiceInfoCollectionBuilderExtensions
         Type serviceDeclarationType,
         Type implementationType)
     {
+        if (serviceDeclarationType.IsGenericTypeDefinition && (implementationType.IsConstructedGenericType || !implementationType.IsGenericType))
+        {
+            var serviceDeclarationTypeGenericDefinition = serviceDeclarationType;
+            serviceDeclarationType =
+                implementationType.TryGetBaseConstructedGenericOf(serviceDeclarationTypeGenericDefinition)
+                    ?? throw new InvalidOperationException($"The service declaration type {serviceDeclarationTypeGenericDefinition} does not have any constructed type that the implementation type {implementationType} can be converted to.");
+        }
+        
         if (!serviceMap.TryGetValue(serviceDeclarationType, out var serviceEntry))
         {
             // if the service declaration type is not found in the map,
@@ -201,19 +209,7 @@ internal static class ServiceInfoCollectionBuilderExtensions
             if (serviceDeclarationType.IsConstructedGenericType)
             {
                 var serviceDeclarationTypeGenericDefinition = serviceDeclarationType.GetGenericTypeDefinition();
-                if (serviceMap.TryGetValue(serviceDeclarationTypeGenericDefinition, out serviceEntry))
-                {
-                    // if the service declaration based on the generic type definition is found,
-                    // build a new service declaration based on the constructed generic type
-                    // and add a new entry in the map.
-                    var openGenericServiceInfo = serviceEntry.ServiceInfo;
-                    var closedGenericServiceInfo = new ServiceInfo(openGenericServiceInfo, serviceDeclarationType, serviceDeclarationType);
-                    var implementationServiceInfo = new ServiceInfo(closedGenericServiceInfo, serviceDeclarationType, serviceDeclarationType, implementationType);
-                    ((IServiceInfo)implementationServiceInfo).AddMetadata(ServiceHelper.GetServiceMetadata(implementationType, serviceDeclarationType));
-
-                    // add to the list of service infos on the first place the declaration.
-                    serviceMap[serviceDeclarationType] = new ServiceEntry(closedGenericServiceInfo) { Registrations = { implementationServiceInfo } };
-                }
+                AddConstructedImplementationType(serviceMap, serviceDeclarationTypeGenericDefinition, serviceDeclarationType, implementationType);
             }
         }
         else
@@ -222,6 +218,25 @@ internal static class ServiceInfoCollectionBuilderExtensions
             var implementationServiceInfo = new ServiceInfo(declarationServiceInfo, declarationServiceInfo.ServiceType ?? serviceDeclarationType, serviceDeclarationType, implementationType);
             ((IServiceInfo)implementationServiceInfo).AddMetadata(ServiceHelper.GetServiceMetadata(implementationType, serviceDeclarationType));
             serviceEntry.Registrations.Add(implementationServiceInfo);
+        }
+    }
+
+    private static void AddConstructedImplementationType(IDictionary<Type, ServiceEntry> serviceMap,
+        Type serviceDeclarationTypeGenericDefinition, Type serviceDeclarationType, Type implementationType)
+    {
+        ServiceEntry? serviceEntry;
+        if (serviceMap.TryGetValue(serviceDeclarationTypeGenericDefinition, out serviceEntry))
+        {
+            // if the service declaration based on the generic type definition is found,
+            // build a new service declaration based on the constructed generic type
+            // and add a new entry in the map.
+            var openGenericServiceInfo = serviceEntry.ServiceInfo;
+            var closedGenericServiceInfo = new ServiceInfo(openGenericServiceInfo, serviceDeclarationType, serviceDeclarationType);
+            var implementationServiceInfo = new ServiceInfo(closedGenericServiceInfo, serviceDeclarationType, serviceDeclarationType, implementationType);
+            ((IServiceInfo)implementationServiceInfo).AddMetadata(ServiceHelper.GetServiceMetadata(implementationType, serviceDeclarationType));
+
+            // add to the list of service infos on the first place the declaration.
+            serviceMap[serviceDeclarationType] = new ServiceEntry(closedGenericServiceInfo) { Registrations = { implementationServiceInfo } };
         }
     }
 

@@ -17,4 +17,4 @@ public record TwoReturnStringTypedMessage : IReturnStringMessage;
 
 public record ReturnStringMessage : IRequest<string>;
 
-public record NonDeclaredMessage : IRequest<int>;
+public record ReturnIntMessage : IRequest<int>;

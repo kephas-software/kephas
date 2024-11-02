@@ -19,4 +19,4 @@ public record TwoReturnVoidTypedMessage : IReturnVoidMessage;
 
 public record ReturnVoidMessage : IReturnVoidMessageBase;
 
-public record NonDeclaredVoidMessage : IRequest;
+public record OtherVoidMessage : IRequest;

@@ -11,10 +11,10 @@ using MediatR;
 
 namespace Kephas.Extensions.Tests.TestServices;
 
-public abstract class TestRequestVoidHandlerBase<TRequest> : RequestHandlerBase<TRequest>
+public abstract class TestRequestVoidHandlerBase<TRequest> : IRequestHandler<TRequest>
     where TRequest : IRequest
 {
-    public override Task Handle(TRequest request, CancellationToken cancellationToken) =>
+    public Task Handle(TRequest request, CancellationToken cancellationToken) =>
         Task.FromResult(GetType().Name);
 }
 
@@ -25,8 +25,8 @@ internal class ReturnVoidInterfaceHandler : TestRequestVoidHandlerBase<IReturnVo
 
 public class OneReturnVoidTypedHandler : TestRequestVoidHandlerBase<OneReturnVoidTypedMessage>;
 
-public class NonDeclaredVoidHandler : IRequestHandler<NonDeclaredVoidMessage>
+public class OtherVoidHandler : IRequestHandler<OtherVoidMessage>
 {
-    public Task Handle(NonDeclaredVoidMessage request, CancellationToken cancellationToken) =>
+    public Task Handle(OtherVoidMessage request, CancellationToken cancellationToken) =>
         Task.FromResult(GetType().Name.Length);
 }

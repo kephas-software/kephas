@@ -12,10 +12,10 @@ using MediatR;
 
 namespace Kephas.Extensions.Tests.TestServices;
 
-public abstract class TestStreamRequestHandlerBase<TRequest> : StreamRequestHandlerBase<TRequest, string>
+public abstract class TestStreamRequestHandlerBase<TRequest> : IStreamRequestHandler<TRequest, string>
     where TRequest : IStreamRequest<string>
 {
-    public override async IAsyncEnumerable<string> Handle(TRequest request, [EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<string> Handle(TRequest request, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         await Task.Delay(10, cancellationToken);
         yield return GetType().Name;
@@ -29,9 +29,9 @@ internal class StreamReturnStringInterfaceHandler : TestStreamRequestHandlerBase
 
 public class OneStreamReturnStringTypedHandler : TestStreamRequestHandlerBase<OneStreamReturnStringTypedMessage>;
 
-public class StreamNonDeclaredHandler : IStreamRequestHandler<StreamNonDeclaredMessage, int>
+public class StreamReturnIntHandler : IStreamRequestHandler<StreamReturnIntMessage, int>
 {
-    public async IAsyncEnumerable<int> Handle(StreamNonDeclaredMessage request, [EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<int> Handle(StreamReturnIntMessage request, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         await Task.Delay(10, cancellationToken);
         yield return GetType().Name.Length;

@@ -13,10 +13,10 @@ using Microsoft.Extensions.Logging;
 namespace Kephas.Extensions.Tests.TestServices;
 
 public abstract class TestPipelineBehaviorBase<TRequest>
-    : PipelineBehaviorBase<TRequest, string>
+    : IPipelineBehavior<TRequest, string>
     where TRequest : IRequest<string>
 {
-    public override async Task<string> Handle(TRequest request, RequestHandlerDelegate<string> next, CancellationToken cancellationToken) =>
+    public async Task<string> Handle(TRequest request, RequestHandlerDelegate<string> next, CancellationToken cancellationToken) =>
         $"{GetType().Name} > {await next()}";
 }
 
@@ -28,18 +28,18 @@ public class OneReturnStringTypedBehavior : TestPipelineBehaviorBase<OneReturnSt
 [Priority(Priority.Lowest)]
 internal class ReturnStringBehavior : TestPipelineBehaviorBase<IRequest<string>>;
 
-internal class NonDeclaredBehavior : IPipelineBehavior<NonDeclaredMessage, int>
+internal class ReturnIntBehavior : IPipelineBehavior<ReturnIntMessage, int>
 {
-    public async Task<int> Handle(NonDeclaredMessage request, RequestHandlerDelegate<int> next, CancellationToken cancellationToken) =>
+    public async Task<int> Handle(ReturnIntMessage request, RequestHandlerDelegate<int> next, CancellationToken cancellationToken) =>
         await next() + GetType().Name.Length;
 }
 
 [Priority(Priority.AboveNormal)]
 public class OpenGenericBehavior<TRequest, TResponse>(ILogger<OpenGenericBehavior<TRequest, TResponse>> logger)
-    : PipelineBehaviorBase<TRequest, TResponse>()
+    : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    public override async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         if (typeof(TResponse) == typeof(string))
         {

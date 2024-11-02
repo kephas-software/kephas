@@ -27,10 +27,10 @@ public class MediatorServiceRegistration : IServiceRegistration
 
         services.AddMediatR(config =>
         {
-            var appRuntime = services.GetAppRuntime();
-            config.RegisterServicesFromAssemblies(appRuntime.GetAppAssemblies().ToArray());
-            config.TypeEvaluator = type => !typeof(IDeclaredHandlerService).IsAssignableFrom(type);
             config.MediatorImplementationType = typeof(MediatorService);
+            // Disable automatic scanning, the MediatorServiceProvider will resolve the services.
+            config.RegisterServicesFromAssemblies(GetType().Assembly);
+            config.TypeEvaluator = type => false;
         });
     }
 }

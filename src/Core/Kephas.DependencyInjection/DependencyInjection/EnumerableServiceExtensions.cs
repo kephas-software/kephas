@@ -181,7 +181,7 @@ public static class EnumerableServiceExtensions
     /// <returns>If found, the requested service, otherwise an exception occurs.</returns>
     public static TService GetRequiredService<TService, TMetadata>(
         this IFactoryEnumerable<TService, TMetadata> factoryServices,
-        Func<TMetadata, bool> predicate)
+        Func<TMetadata, bool>? predicate = null)
         where TService : notnull
     {
         _ = factoryServices  ?? throw new ArgumentNullException(nameof(factoryServices));
