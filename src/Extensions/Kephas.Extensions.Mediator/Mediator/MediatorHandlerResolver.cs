@@ -44,10 +44,11 @@ public class MediatorHandlerResolver(IServiceInfoCollection serviceInfoCollectio
         where THandler : notnull
     {
         var matchingTypes = GetMatchingTypes(handlerType);
-        if (matchingTypes.Contains(handlerType))
+        var exactMatchingTypes = matchingTypes.Where(t => t.type == handlerType).ToList();
+        if (exactMatchingTypes.Count > 0)
         {
             // for single resolvers, if the handler type can be matched exactly, consider only that handler type
-            matchingTypes = [handlerType];
+            matchingTypes = exactMatchingTypes;
         }
 
         return matchingTypes.Count switch
@@ -67,35 +68,42 @@ public class MediatorHandlerResolver(IServiceInfoCollection serviceInfoCollectio
             0 => _ => null,
             1 => sp => sp.GetRequiredService<IFactoryEnumerable<THandler, ServiceMetadata>>()
                 .Select(f => (object)f.GetService()),
-            _ => GetCombinedResolver(matchingTypes),
+            _ => GetCombinedEnumerationResolver(matchingTypes),
         };
     }
 
-    private Func<IServiceProvider,IEnumerable<object>?> GetCombinedResolver(IList<Type> matchingTypes)
+    private Func<IServiceProvider,IEnumerable<object>?> GetCombinedEnumerationResolver(IList<(Type type, bool isFromOpenGeneric, ServiceMetadata? metadata)> matchingTypes)
     {
-        var resolvers = new List<Func<IServiceProvider, IEnumerable<IFactory<object, ServiceMetadata>>>>();
-        foreach (Type matchingType in matchingTypes)
-        {
-            var factoryEnumerableType = typeof(IEnumerable<>).MakeGenericType(typeof(IFactory<,>).MakeGenericType(matchingType, typeof(ServiceMetadata)));
-            resolvers.Add(sp => ((IEnumerable<IFactory<object, ServiceMetadata>>)sp.GetRequiredService(factoryEnumerableType)));
-        }
-
+        var resolvers = GetHandlerResolvers(matchingTypes);
         return sp => new FactoryEnumerable<object, ServiceMetadata>(resolvers.SelectMany(r => r(sp))).SelectServices();
     }
 
-    private Func<IServiceProvider, object?> GetCombinedSingleResolver(IList<Type> matchingTypes)
+    private Func<IServiceProvider, object?> GetCombinedSingleResolver(IList<(Type type, bool isFromOpenGeneric, ServiceMetadata? metadata)> matchingTypes)
     {
-        var resolvers = new List<Func<IServiceProvider, IEnumerable<IFactory<object, ServiceMetadata>>>>();
-        foreach (Type matchingType in matchingTypes)
-        {
-            var factoryEnumerableType = typeof(IEnumerable<>).MakeGenericType(typeof(IFactory<,>).MakeGenericType(matchingType, typeof(ServiceMetadata)));
-            resolvers.Add(sp => (IEnumerable<IFactory<object, ServiceMetadata>>)sp.GetRequiredService(factoryEnumerableType));
-        }
-
+        var resolvers = GetHandlerResolvers(matchingTypes);
         return sp => new FactoryEnumerable<object, ServiceMetadata>(resolvers.SelectMany(r => r(sp))).GetRequiredService();
     }
 
-    private IList<Type> GetMatchingTypes(Type handlerType)
+    private static List<Func<IServiceProvider, IEnumerable<IFactory<object, ServiceMetadata>>>> GetHandlerResolvers(IList<(Type type, bool isFromOpenGeneric, ServiceMetadata? metadata)> matchingTypes)
+    {
+        var resolvers = new List<Func<IServiceProvider, IEnumerable<IFactory<object, ServiceMetadata>>>>();
+        foreach (var (matchingType, isFromOpenGeneric, metadata) in matchingTypes)
+        {
+            if (isFromOpenGeneric)
+            {
+                resolvers.Add(sp => [new Factory<object, ServiceMetadata>(() => sp.GetRequiredService(matchingType), metadata!)]);
+            }
+            else
+            {
+                var factoryEnumerableType = typeof(IEnumerable<>).MakeGenericType(typeof(IFactory<,>).MakeGenericType(matchingType, typeof(ServiceMetadata)));
+                resolvers.Add(sp => (IEnumerable<IFactory<object, ServiceMetadata>>)sp.GetRequiredService(factoryEnumerableType));
+            }
+        }
+
+        return resolvers;
+    }
+
+    private IList<(Type type, bool isFromOpenGeneric, ServiceMetadata? metadata)> GetMatchingTypes(Type handlerType)
     {
         // TODO how to handle open generics?
         
@@ -108,7 +116,10 @@ public class MediatorHandlerResolver(IServiceInfoCollection serviceInfoCollectio
                 .Where(si => si.ServiceType?.IsConstructedGenericType is true &&
                              si.ServiceType.GetGenericTypeDefinition() == openGenericHandlerType &&
                              si.ServiceType.GenericTypeArguments[0].IsAssignableFrom(messageType))
-                .Select(si => si.ServiceType!)
+                .Select(si => (si.ServiceType!, false, (ServiceMetadata?)null))
+                .Union(serviceInfoCollection
+                    .Where(si => si.ServiceType == openGenericHandlerType)
+                    .Select(si => (si.ImplementationType!.MakeGenericType(handlerType.GenericTypeArguments), true, (ServiceMetadata?)new ServiceMetadata(si.Metadata))))
                 .ToList();
         }
 
