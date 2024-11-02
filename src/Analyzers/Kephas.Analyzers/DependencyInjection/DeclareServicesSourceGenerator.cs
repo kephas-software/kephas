@@ -30,7 +30,7 @@ public class DeclareServicesSourceGenerator : IncrementalGeneratorBase<TypeDecla
 
         var source = new StringBuilder();
         source.AppendLine(
-            $"""
+            $$"""
             #nullable enable
 
             using System;
@@ -41,6 +41,8 @@ public class DeclareServicesSourceGenerator : IncrementalGeneratorBase<TypeDecla
             using Kephas.DependencyInjection;
             using Kephas.DependencyInjection.ServiceProviders;
 
+            [assembly: DeclareServices<{{serviceTypeProvider.typeNamespace}}.{{serviceTypeProvider.typeName}}>()]
+            
             """);
         var isProviderGenerated = DependencyInjectionAnalyzerHelper.AppendServicesInfoProviderClass(
             serviceTypeProvider,

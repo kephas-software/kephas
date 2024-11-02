@@ -125,7 +125,7 @@ public class ServiceInfoCollectionBuilder
         ConfigureBuilder?.Invoke(this);
         var serviceAssemblies = GetServiceAssemblies();
         var implementationTypes = DependencyInjectionHelper.GetEligibleImplementationTypes(serviceAssemblies, IncludeInternal).ToList();
-        return AddServices(Services, implementationTypes, GetProviders(serviceAssemblies, implementationTypes));
+        return AddServices(Services, implementationTypes, GetProviders(serviceAssemblies));
     }
 
     private IServiceInfoCollection AddServices(
@@ -151,23 +151,18 @@ public class ServiceInfoCollectionBuilder
         return services.AddServices(serviceDeclarationInfos, serviceImplementationDeclarations);
     }
 
-    private IEnumerable<IServiceInfoProvider> GetProviders(IList<Assembly> serviceAssemblies, IList<Type> implementationTypes)
+    private IEnumerable<IServiceInfoProvider> GetProviders(IList<Assembly> serviceAssemblies)
     {
         var assemblyProviders = serviceAssemblies
             .SelectMany(a =>
                 a.GetCustomAttributes().OfType<IServiceInfoProvider>()
                     .Select(p => (provider: p, priority: p.GetPriority())));
-        
-        var userDefinedProviders = implementationTypes
-            .Where(t => typeof(IServiceInfoProvider).IsAssignableFrom(t))
-            .Select(t => (provider: (IServiceInfoProvider)Activator.CreateInstance(t)!, priority: t.GetCustomAttribute<PriorityAttribute>()?.Value ?? Priority.Normal));
 
         var builderProviders = Providers
             .Select(p => (provider: p, priority: Priority.Normal));
         
         var providers = builderProviders
             .Union([(provider: new TypesServiceInfoProvider(Types), priority: Priority.Normal)])
-            .Union(userDefinedProviders)
             .Union(assemblyProviders);
 
         return providers

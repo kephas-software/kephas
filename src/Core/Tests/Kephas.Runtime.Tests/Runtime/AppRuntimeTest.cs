@@ -14,9 +14,6 @@ public class AppRuntimeTest
         {
             "FluentAssertions",
             "Kephas.Runtime",
-            "Kephas.Collections",
-            "Kephas.Extensions",
-            "Kephas.Runtime.AssemblyLoader",
             "xunit.core",
             "xunit.abstractions",
             "xunit.assert",
@@ -41,9 +38,6 @@ public class AppRuntimeTest
         {
             "Kephas.Runtime.Tests",
             "Kephas.Runtime",
-            "Kephas.Collections",
-            "Kephas.Extensions",
-            "Kephas.Runtime.AssemblyLoader",
         };
         var appRuntime = new AppRuntime(new AppRuntimeSettings {EntryAssembly = GetType().Assembly, AppAssemblyNamePattern = "^Kephas\\."});
         var appAssemblies = appRuntime.GetAppAssemblies();

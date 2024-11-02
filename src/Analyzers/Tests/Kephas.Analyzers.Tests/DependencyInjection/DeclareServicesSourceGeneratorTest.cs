@@ -64,6 +64,8 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.ServiceProviders;
                     
+                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    
                     namespace Kephas.DependencyInjection.ServiceProviders.Generated
                     {
                        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]

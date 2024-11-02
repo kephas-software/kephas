@@ -166,18 +166,7 @@ internal static class ServiceInfoCollectionBuilderExtensions
 
         foreach (var (serviceDeclarationType, serviceInfo) in serviceDeclarationInfos)
         {
-            var serviceEntry = GetOrAddServiceEntry(serviceMap, serviceDeclarationType, serviceInfo);
-            // if the declaration of the service info contains an implementation type,
-            // add it to the declarations list for further processing.
-            if (serviceInfo.ImplementationType is not null)
-            {
-            }
-            // otherwise, if the instancing strategy is instance or factory,
-            // add the service info to the registrations list.
-            else if (serviceInfo.InstancingStrategy is not null)
-            {
-                // serviceEntry.Registrations.Add(new ServiceInfo(serviceInfo, serviceInfo.ServiceType, serviceInfo.ServiceDeclarationType, serviceInfo.InstancingStrategy));
-            }
+            GetOrAddServiceEntry(serviceMap, serviceDeclarationType, serviceInfo);
         }
 
         serviceImplementationDeclarationsList.ForEach(si => AddService(serviceMap, si.ServiceDeclarationType, si.ImplementationType));
