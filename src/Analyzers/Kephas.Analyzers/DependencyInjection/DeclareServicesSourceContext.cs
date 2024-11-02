@@ -17,14 +17,14 @@ public class DeclareServicesSourceContext(((Compilation, ImmutableArray<TypeDecl
     : SourceContext<TypeDeclarationSyntax>(output, productionContext), IDeclareServicesSourceContext
 {
     private IList<TypeDeclarationSyntax>? serviceDeclarationTypes;
-    private IList<ClassDeclarationSyntax>? metadataTypes;
+    private IList<TypeDeclarationSyntax>? metadataTypes;
     private IList<ClassDeclarationSyntax>? implementationTypes;
 
     public IList<TypeDeclarationSyntax> ServiceDeclarationTypes =>
         serviceDeclarationTypes ??= Nodes.Where(t => t.IsServiceDeclarationType()).ToList();
 
-    public IList<ClassDeclarationSyntax> MetadataTypes =>
-        metadataTypes ??= Nodes.OfType<ClassDeclarationSyntax>().Where(t => t.CanBeMetadataType()).ToList();
+    public IList<TypeDeclarationSyntax> MetadataTypes =>
+        metadataTypes ??= Nodes.OfType<TypeDeclarationSyntax>().Where(t => t.CanBeMetadataType()).ToList();
 
     public IList<ClassDeclarationSyntax> ImplementationTypes =>
         implementationTypes ??= Nodes.OfType<ClassDeclarationSyntax>().Where(t => t.CanBeServiceImplementationService()).ToList();

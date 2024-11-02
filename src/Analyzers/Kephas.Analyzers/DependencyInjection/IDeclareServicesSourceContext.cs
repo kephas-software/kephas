@@ -15,7 +15,7 @@ public interface IDeclareServicesSourceContext : ISourceContext<TypeDeclarationS
 {
     public IList<TypeDeclarationSyntax> ServiceDeclarationTypes { get; }
 
-    public IList<ClassDeclarationSyntax> MetadataTypes { get; }
+    public IList<TypeDeclarationSyntax> MetadataTypes { get; }
 
     public IList<ClassDeclarationSyntax> ImplementationTypes { get; }
 }

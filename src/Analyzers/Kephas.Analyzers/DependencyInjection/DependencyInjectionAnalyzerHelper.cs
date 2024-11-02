@@ -120,13 +120,18 @@ internal static class DependencyInjectionAnalyzerHelper
             return false;
         }
 
-        return type.Modifiers.Any(m => m.ValueText == "public")
+        return type.Modifiers.Any(m => m.ValueText is "public" or "internal")
                && type.Modifiers.All(m => m.ValueText != "static")
                && type.Modifiers.All(m => m.ValueText != "abstract");
     }
 
-    public static bool CanBeMetadataType(this ClassDeclarationSyntax type)
+    public static bool CanBeMetadataType(this TypeDeclarationSyntax type)
     {
+        if (type is not ClassDeclarationSyntax and not RecordDeclarationSyntax)
+        {
+            return false;
+        }
+
         var attrLists = type.AttributeLists;
         var attrs = attrLists.SelectMany(al => al.Attributes).ToList();
         if (attrs.Any(a => ContainsAttribute(a, ExcludedAttrs)))
@@ -284,14 +289,14 @@ internal static class DependencyInjectionAnalyzerHelper
         return !isProviderEmpty;
     }
 
-    private static ClassDeclarationSyntax? TryGetMetadataType(
-        TypeDeclarationSyntax contractType,
-        IEnumerable<ClassDeclarationSyntax> metadataTypes)
+    private static TypeDeclarationSyntax? TryGetMetadataType(
+        TypeDeclarationSyntax serviceDeclarationType,
+        IEnumerable<TypeDeclarationSyntax> metadataTypes)
     {
         var metadataTypeName =
-            contractType is InterfaceDeclarationSyntax && contractType.Identifier.Text.StartsWith("I")
-                ? contractType.Identifier.Text.Substring(1)
-                : contractType.Identifier.Text;
+            serviceDeclarationType is InterfaceDeclarationSyntax && serviceDeclarationType.Identifier.Text.StartsWith("I")
+                ? serviceDeclarationType.Identifier.Text.Substring(1)
+                : serviceDeclarationType.Identifier.Text;
         metadataTypeName = $"{metadataTypeName}Metadata";
         return metadataTypes.FirstOrDefault(t => t.Identifier.Text == metadataTypeName);
     }

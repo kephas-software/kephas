@@ -94,8 +94,8 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     """);
             });
     }
-    [Fact]
 
+    [Fact]
     public void Generate_DeclareServices_ImplementationOfClosedGeneric()
     {
         var sourceCode =
@@ -149,6 +149,71 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                            IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
                            {
                                 yield return new ServiceImplementationDeclaration(typeof(TestGenericWithNonGenericExport), typeof(Kephas.Sample.ITestGenericWithNonGenericExport<System.String>));
+                           }
+                       }
+                    }
+                    
+                    """);
+            });
+    }
+
+    [Fact]
+    public void Generate_DeclareServices_MetadataSupport()
+    {
+        var sourceCode =
+            """
+            using System;
+            using Kephas.DependencyInjection;
+            
+            namespace Kephas.Sample;
+
+            [SingletonService]
+            public interface ITransformer;
+            
+            public record TransformerMetadata : ServiceMetadata;
+            
+            internal class InternalTransformer : ITransformer;
+
+            [ExcludeFromDependencyInjection]
+            public class ExcludedTransformer : ITransformer;
+            """;
+
+        var result = GetRunResult(sourceCode);
+
+        // Assert the driver use the cached result from AssemblyName and Syntax
+        Assert.Collection(
+            result.GeneratedSources,
+            source =>
+            {
+                source.HintName.Should().Be("DeclaredServices.g.cs");
+                var stringSource = source.SourceText.ToString();
+                stringSource.Should().Contain(
+                    """
+                    #nullable enable
+                    
+                    using System;
+                    using System.Collections.Generic;
+                    using System.Diagnostics.CodeAnalysis;
+                    using System.Reflection;
+                    
+                    using Kephas.DependencyInjection;
+                    using Kephas.DependencyInjection.ServiceProviders;
+                    
+                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    
+                    namespace Kephas.DependencyInjection.ServiceProviders.Generated
+                    {
+                       [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+                       internal partial class DeclareServices_DeclareServicesSourceGeneratorTest: IServiceInfoProvider
+                       {
+                           IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations()
+                           {
+                                yield return new ServiceDeclaration(typeof(ITransformer), typeof(TransformerMetadata));
+                           }
+                    
+                           IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
+                           {
+                                yield return new ServiceImplementationDeclaration(typeof(InternalTransformer), typeof(Kephas.Sample.ITransformer));
                            }
                        }
                     }
