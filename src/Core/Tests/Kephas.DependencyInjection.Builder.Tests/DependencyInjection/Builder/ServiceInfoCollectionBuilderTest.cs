@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.Builder.Configuration;
 using Kephas.DependencyInjection.Metadata;
@@ -189,19 +190,45 @@ public class ServiceInfoCollectionBuilderTest
     }
 
     [Fact]
-    public void Build_generic_with_nongeneric_base()
+    public void Build_generic_with_nongeneric_base_from_types()
     {
-        var parts = new[]
-        {
-            typeof(IOneGenericAppService<>),
-            typeof(OneGenericAppServiceString),
-        };
-        var builder = CreateBuilder();
-        var services = builder.AddTypes(parts).Build();
+        var services = CreateBuilder()
+            .AddTypes(
+                typeof(IOneGenericAppService<>),
+                typeof(OneGenericAppServiceString))
+            .Build();
 
         services.Count(s => s.ImplementationType is not null).Should().Be(1);
         var testBuilder = services.Single(s => s.ImplementationType is not null);
         testBuilder.ServiceType.Should().Be(typeof(IOneGenericAppService));
+    }
+
+    [Fact]
+    public void Build_generic_with_nongeneric_base_from_provider()
+    {
+        var services = CreateBuilder()
+            .AddProviders(
+                new OneGenericServiceInfoProvider())
+            .Build();
+
+        services.Count(s => s.ImplementationType is not null).Should().Be(1);
+        var testBuilder = services.Single(s => s.ImplementationType is not null);
+        testBuilder.ServiceType.Should().Be(typeof(IOneGenericAppService));
+    }
+
+    [Fact]
+    public void Build_generic_with_generic_from_family_declaration_attribute()
+    {
+        var services = CreateBuilder()
+            .AddProviders(
+                new DeclareSingletonServiceFamilyAttribute(typeof(IOneGenericAppService<>)))
+            .AddAssemblies(
+                typeof(IOneGenericAppService<>).Assembly)
+            .Build();
+
+        services.Count(s => s.ImplementationType is not null).Should().Be(1);
+        var testBuilder = services.Single(s => s.ImplementationType is not null);
+        testBuilder.ServiceType.Should().Be(typeof(IOneGenericAppService<string>));
     }
 
     [Fact]

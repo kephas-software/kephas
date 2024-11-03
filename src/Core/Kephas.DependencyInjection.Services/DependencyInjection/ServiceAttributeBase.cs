@@ -30,9 +30,9 @@ public enum GenericRegistration
     AsOpen,
     
     /// <summary>
-    /// Register constructed generic services.
+    /// Register closed generic services.
     /// </summary>
-    AsConstructed,
+    AsClosed,
 }
 
 /// <summary>

@@ -7,6 +7,7 @@
 
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Metadata;
+using Kephas.DependencyInjection.ServiceProviders;
 
 namespace Kephas.Tests.DependencyInjection.TestServices
 {
@@ -56,6 +57,19 @@ namespace Kephas.Tests.DependencyInjection.TestServices
     public interface ITypedLogger<T>;
 
     public class TypedLogger<T> : ITypedLogger<T>;
+
+    internal class OneGenericServiceInfoProvider : IServiceInfoProvider
+    {
+        public IEnumerable<ServiceDeclaration>? GetServiceDeclarations()
+        {
+            yield return new ServiceDeclaration(typeof(IOneGenericAppService<>));
+        }
+        
+        public IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
+        {
+            yield return new ServiceImplementationDeclaration(typeof(OneGenericAppServiceString), typeof(IOneGenericAppService<string>));
+        }
+    }
 
     namespace CustomValueAppServiceMetadata
     {

@@ -27,7 +27,7 @@ public class TypesServiceInfoProviderTest
             typeof(IMyService), typeof(MyAbstractClass),
             typeof(IMyLogger<>), typeof(MyLogger<>),
         };
-        var provider = new TypesServiceInfoProvider(types);
+        var provider = new TypesServiceInfoProvider(types, includeInternal: true);
 
         var declarations = ((IServiceInfoProvider)provider).GetServiceDeclarations();
 
@@ -50,7 +50,7 @@ public class TypesServiceInfoProviderTest
             typeof(IMyService), typeof(MyService), typeof(MyPrivateService),
             typeof(IMyLogger<>), typeof(MyLogger<>),
         };
-        var provider = new TypesServiceInfoProvider(types);
+        var provider = new TypesServiceInfoProvider(types, includeInternal: true);
 
         var declarations = provider.GetImplementationDeclarations(types);
 

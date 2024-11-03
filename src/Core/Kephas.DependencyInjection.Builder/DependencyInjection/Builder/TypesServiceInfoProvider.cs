@@ -14,16 +14,9 @@ namespace Kephas.DependencyInjection.Builder;
 /// Implementation of <see cref="IServiceInfoProvider"/> for an enumeration of types.
 /// </summary>
 [ExcludeFromDependencyInjection]
-internal class TypesServiceInfoProvider : IServiceInfoProvider
+internal class TypesServiceInfoProvider(IEnumerable<Type> types, bool includeInternal) : IServiceInfoProvider
 {
-    private readonly List<Type> types;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TypesServiceInfoProvider"/> class.
-    /// </summary>
-    /// <param name="types">The types.</param>
-    public TypesServiceInfoProvider(IEnumerable<Type> types) =>
-        this.types = types?.ToList() ?? throw new ArgumentNullException(nameof(types));
+    private readonly List<Type> types = types?.ToList() ?? throw new ArgumentNullException(nameof(types));
 
     /// <summary>
     /// Gets the service declaration types.
@@ -44,27 +37,26 @@ internal class TypesServiceInfoProvider : IServiceInfoProvider
     /// </returns>
     public IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes) =>
         from type in types
-        where type.IsEligibleImplementationType(includeInternal: true)
+        where type.IsEligibleImplementationType(includeInternal: includeInternal)
         let serviceDeclarationType = TryGetServiceDeclarationType(type)
         where serviceDeclarationType != null
         select new ServiceImplementationDeclaration(type, serviceDeclarationType!);
 
-    private Type? TryGetServiceDeclarationType(Type type)
+    private Type? TryGetServiceDeclarationType(Type implementationType)
     {
-        if (IsServiceDeclarationType(type))
+        if (IsServiceDeclarationType(implementationType))
         {
-            return GetOriginalServiceDeclarationType(type);
+            return GetOriginalServiceDeclarationType(implementationType);
         }
 
-        var serviceDeclarationType = type.GetInterfaces()
-            .Select(t => t.ToNormalizedType())
+        var serviceDeclarationType = implementationType.GetInterfaces()
             .FirstOrDefault(IsServiceDeclarationType);
         if (serviceDeclarationType != null)
         {
             return GetOriginalServiceDeclarationType(serviceDeclarationType);
         }
 
-        var baseType = type.BaseType?.ToNormalizedType();
+        var baseType = implementationType.BaseType?.ToNormalizedType();
         while (baseType != null)
         {
             if (IsServiceDeclarationType(baseType))
@@ -91,7 +83,7 @@ internal class TypesServiceInfoProvider : IServiceInfoProvider
             return type;
         }
 
-        return serviceInfo.ServiceType is { IsGenericType: false }
+        return serviceInfo.ServiceType is { IsGenericType: true }
             ? type.GetGenericTypeDefinition()
             : type;
     }

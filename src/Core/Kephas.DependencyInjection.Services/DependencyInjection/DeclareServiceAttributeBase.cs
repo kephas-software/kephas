@@ -26,7 +26,7 @@ public abstract class DeclareServiceAttributeBase : ServiceAttributeBase, IServi
     /// <param name="lifetime">The lifetime.</param>
     /// <param name="genericRegistration">The generic service kind.</param>
     protected DeclareServiceAttributeBase(Type serviceType, Type implementationType, AppServiceLifetime lifetime, GenericRegistration genericRegistration = GenericRegistration.Default)
-        : base(lifetime, implementationType?.IsGenericTypeDefinition is true ? genericRegistration : GenericRegistration.AsConstructed)
+        : base(lifetime, implementationType?.IsGenericTypeDefinition is true ? genericRegistration : GenericRegistration.AsClosed)
     {
         ServiceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         InstancingStrategy = this.implementationType = implementationType ?? throw new ArgumentNullException(nameof(implementationType));
@@ -102,7 +102,7 @@ public abstract class DeclareServiceAttributeBase<TService, TImplementation> : S
     /// </summary>
     /// <param name="lifetime">The lifetime.</param>
     protected DeclareServiceAttributeBase(AppServiceLifetime lifetime)
-        : base(lifetime, GenericRegistration.AsConstructed)
+        : base(lifetime, GenericRegistration.AsClosed)
     {
         ServiceType = typeof(TService);
         InstancingStrategy = typeof(TImplementation);

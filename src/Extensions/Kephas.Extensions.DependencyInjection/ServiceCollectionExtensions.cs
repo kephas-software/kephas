@@ -278,14 +278,14 @@ public static class ServiceCollectionExtensions
 
         if (typeof(TService).IsGenericTypeDefinition)
         {
-            ServiceCollectionServiceExtensions.AddSingleton(services, typeof(TService), typeof(TImplementation));
+            services.AddSingletonRaw(typeof(TService), typeof(TImplementation));
         }
         else
         {
             services.AddSingleton(typeof(TImplementation));
             if (typeof(TService) != typeof(TImplementation))
             {
-                ServiceCollectionServiceExtensions.AddSingleton(services, typeof(TService), provider => provider.GetRequiredService(typeof(TImplementation)));
+                services.AddSingletonRaw(typeof(TService), provider => provider.GetRequiredService(typeof(TImplementation)));
             }
         }
 
@@ -418,14 +418,14 @@ public static class ServiceCollectionExtensions
 
         if (typeof(TService).IsGenericTypeDefinition)
         {
-            ServiceCollectionServiceExtensions.AddTransient(services, typeof(TService), typeof(TImplementation));
+            services.AddTransientRaw(typeof(TService), typeof(TImplementation));
         }
         else
         {
             services.AddTransient(typeof(TImplementation));
             if (typeof(TService) != typeof(TImplementation))
             {
-                ServiceCollectionServiceExtensions.AddTransient(services, typeof(TService), provider => provider.GetRequiredService(typeof(TImplementation)));
+                services.AddTransientRaw(typeof(TService), provider => provider.GetRequiredService(typeof(TImplementation)));
             }
         }
 
@@ -511,14 +511,14 @@ public static class ServiceCollectionExtensions
 
         if (typeof(TService).IsGenericTypeDefinition)
         {
-            ServiceCollectionServiceExtensions.AddScoped(services, typeof(TService), typeof(TImplementation));
+            services.AddScopedRaw(typeof(TService), typeof(TImplementation));
         }
         else
         {
             services.AddScoped(typeof(TImplementation));
             if (typeof(TService) != typeof(TImplementation))
             {
-                ServiceCollectionServiceExtensions.AddScoped(services, typeof(TService), provider => provider.GetRequiredService(typeof(TImplementation)));
+                services.AddScopedRaw(typeof(TService), provider => provider.GetRequiredService(typeof(TImplementation)));
             }
         }
 
@@ -809,8 +809,16 @@ public static class ServiceCollectionExtensions
         => ServiceCollectionServiceExtensions.AddSingleton(services, serviceType, implementationType);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static IServiceCollection AddSingletonRaw(this IServiceCollection services, Type serviceType, Func<IServiceProvider, object> factory)
+        => ServiceCollectionServiceExtensions.AddSingleton(services, serviceType, factory);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static IServiceCollection AddScopedRaw(this IServiceCollection services, Type serviceType, Type implementationType)
         => ServiceCollectionServiceExtensions.AddScoped(services, serviceType, implementationType);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static IServiceCollection AddScopedRaw(this IServiceCollection services, Type serviceType, Func<IServiceProvider, object> factory)
+        => ServiceCollectionServiceExtensions.AddScoped(services, serviceType, factory);
 
     private static IServiceCollection AddServiceFactoriesOfObject<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]T,

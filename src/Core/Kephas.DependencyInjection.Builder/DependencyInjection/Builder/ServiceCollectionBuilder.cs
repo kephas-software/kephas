@@ -5,9 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Kephas.Collections;
 using Kephas.DependencyInjection.Builder.Configuration;
+using Kephas.DependencyInjection.Builder.Resources;
 using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
@@ -148,7 +150,7 @@ public class ServiceInfoCollectionBuilder
             .Select(d => new ServiceImplementationDeclaration(d.ImplementationType.ToNormalizedType(), d.ServiceDeclarationType.ToNormalizedType()))
             .ToList();
 
-        return services.AddServices(serviceDeclarationInfos, serviceImplementationDeclarations);
+        return AddServices(services, serviceDeclarationInfos, serviceImplementationDeclarations);
     }
 
     private IEnumerable<IServiceInfoProvider> GetProviders(IList<Assembly> serviceAssemblies)
@@ -162,7 +164,7 @@ public class ServiceInfoCollectionBuilder
             .Select(p => (provider: p, priority: Priority.Normal));
         
         var providers = builderProviders
-            .Union([(provider: new TypesServiceInfoProvider(Types), priority: Priority.Normal)])
+            .Union([(provider: new TypesServiceInfoProvider(Types, IncludeInternal), priority: Priority.Normal)])
             .Union(assemblyProviders);
 
         return providers
@@ -177,5 +179,92 @@ public class ServiceInfoCollectionBuilder
         var appAssemblies = assemblies;
 
         return appAssemblies.ToList();
+    }
+    
+    private static IServiceInfoCollection AddServices(
+        IServiceInfoCollection services,
+        IEnumerable<ServiceDeclarationInfo> serviceDeclarationInfos,
+        IEnumerable<ServiceImplementationDeclaration> implementationDeclarations)
+    {
+        var existingDeclarations = services.TryGetServiceInstance<IServiceDeclarationInfoCollection>();
+        serviceDeclarationInfos = existingDeclarations is null
+            ? new ServiceDeclarationInfoCollection(serviceDeclarationInfos.ToList())
+            : new ServiceDeclarationInfoCollection(existingDeclarations.Union(serviceDeclarationInfos).ToList());
+        services.Replace((IServiceDeclarationInfoCollection)serviceDeclarationInfos);
+
+        var clusters = BuildServicesClusters(
+            serviceDeclarationInfos,
+            implementationDeclarations);
+
+        var validationResults = new List<ValidationResult>();
+        foreach (var servicesCluster in clusters)
+        {
+            // order the services by override and processing priority, resolve overrides
+            // and with the rest of the services register them in the computed order.
+            var sortedRegistrations = servicesCluster.SortRegistrationsDescending();
+            foreach (var appServiceInfo in sortedRegistrations)
+            {
+                var validationResult = AddAppService(services, appServiceInfo);
+                if (validationResult != ValidationResult.Success)
+                {
+                    validationResults.Add(validationResult!);
+                }
+            }
+        }
+
+        return services;
+    }
+
+    private static ValidationResult? AddAppService(
+        IServiceInfoCollection appServices,
+        IServiceInfo serviceInfo)
+    {
+        var result = CheckServiceType(serviceInfo);
+
+        appServices.Add(serviceInfo);
+
+        return result;
+    }
+
+    internal static ValidationResult? CheckServiceType(IServiceInfo serviceInfo)
+    {
+        var serviceDeclarationType = serviceInfo.ServiceDeclarationType;
+        var serviceType = serviceInfo.ServiceType;
+        if (serviceDeclarationType is null || serviceType is null)
+        {
+            return ValidationResult.Success;
+        }
+
+        if (serviceType.IsGenericTypeDefinition)
+        {
+            // TODO check to see if any of the interfaces have as generic definition the exported contract.
+        }
+        else if (!serviceType.IsAssignableFrom(serviceDeclarationType))
+        {
+            // Warning: the serviceType and the declaration type might not be compatible.
+            var serviceValidationMessage = string.Format(
+                Strings.AppServiceContractTypeDoesNotMatchServiceContract,
+                serviceType,
+                serviceDeclarationType);
+            return new ValidationResult(serviceValidationMessage);
+        }
+        
+        return ValidationResult.Success;
+    }
+
+    private static IEnumerable<ServicesCluster> BuildServicesClusters(
+        IEnumerable<ServiceDeclarationInfo> serviceDeclarationInfos,
+        IEnumerable<ServiceImplementationDeclaration> serviceImplementationDeclarations)
+    {
+        var serviceMap = new ServicesClusterMap();
+
+        foreach (var serviceDeclarationInfo in serviceDeclarationInfos)
+        {
+            serviceMap.AddServiceDeclarationInfo(serviceDeclarationInfo);
+        }
+
+        serviceImplementationDeclarations.ForEach(si => serviceMap.AddServiceImplementationDeclaration(si));
+
+        return serviceMap.GetClusters();
     }
 }

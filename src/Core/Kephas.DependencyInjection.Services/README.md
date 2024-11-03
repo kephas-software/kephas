@@ -51,7 +51,8 @@ Various containers take slightly different approaches for these steps. So, what 
 * `ServiceType`: the key for identifying the service implementations and, at the same time, the service API.
 * `Lifetime`: `Transient`, `Scoped`, or `Singleton`.
 * `MetadataType`: the type used to store metadata, typically specializing `ServiceMetadata`.
-* `AsOpenGeneric`: 
+* `AsOpenGeneric`: indicates whether an open generic service should be registered as open generic,
+or instead constructed service implementation are expected.
 
 #### Example: Simple service declaration
 

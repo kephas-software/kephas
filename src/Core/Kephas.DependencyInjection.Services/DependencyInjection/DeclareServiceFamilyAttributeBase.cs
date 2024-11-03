@@ -30,7 +30,7 @@ public abstract class DeclareServiceFamilyAttributeBase : ServiceAttributeBase, 
     /// <param name="serviceDeclarationType">The service declaration type.</param>
     /// <param name="lifetime">The lifetime.</param>
     protected DeclareServiceFamilyAttributeBase(Type serviceDeclarationType, AppServiceLifetime lifetime)
-        : base(lifetime, GenericRegistration.AsConstructed)
+        : base(lifetime, GenericRegistration.AsClosed)
     {
         this.serviceDeclarationType = serviceDeclarationType ?? throw new ArgumentNullException(nameof(serviceDeclarationType));
         ServiceType = serviceDeclarationType;
@@ -100,7 +100,7 @@ public abstract class DeclareServiceFamilyAttributeBase<TService> : ServiceAttri
     /// </summary>
     /// <param name="lifetime">The lifetime.</param>
     protected DeclareServiceFamilyAttributeBase(AppServiceLifetime lifetime)
-        : base(lifetime, GenericRegistration.AsConstructed)
+        : base(lifetime, GenericRegistration.AsClosed)
     {
         serviceDeclarationType = typeof(TService);
         ServiceType = typeof(TService);

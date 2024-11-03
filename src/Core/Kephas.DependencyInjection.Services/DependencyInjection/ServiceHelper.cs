@@ -148,7 +148,7 @@ public static class ServiceHelper
     /// </summary>
     /// <param name="genericRegistration">The value to convert.</param>
     /// <param name="serviceType">The service type.</param>
-    /// <returns><c>null</c> for non-generic types, <c>false</c> for constructed generic types, <c>true</c> for open generic types if not set <see cref="GenericRegistration.AsConstructed"/>, otherwise <c>false</c>.</returns>
+    /// <returns><c>null</c> for non-generic types, <c>false</c> for constructed generic types, <c>true</c> for open generic types if not set <see cref="GenericRegistration.AsClosed"/>, otherwise <c>false</c>.</returns>
     public static bool? ToNullableBoolean(this GenericRegistration genericRegistration, Type? serviceType) =>
         serviceType?.IsGenericType is not true
             ? null
