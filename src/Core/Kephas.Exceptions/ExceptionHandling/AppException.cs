@@ -24,6 +24,7 @@ public class AppException : Exception, IErrorNotification
 
     /// <summary>
     /// Gets the severity. The default value is <see cref="SeverityLevel.Error"/>.
+    /// This helps in identifying the criticality of the exception and can be used for logging, monitoring, or handling exceptions based on their severity.
     /// </summary>
     public SeverityLevel Severity { get; init; } = SeverityLevel.Error;
 }
