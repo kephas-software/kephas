@@ -40,7 +40,10 @@ public static class HealthCheckReportMiddleware
         var healthChecks = services.GetServices<Lazy<IHealthCheck, HealthCheckMetadata>>();
         var hcOptions = services.GetRequiredService<IOptions<HealthChecksSettings>>();
 
-        UseHealthChecksReportForPath(app, hcOptions.Value.ReportUrlPath, healthChecks);
+        if (hcOptions.Value.EnableReport)
+        {
+            UseHealthChecksReportForPath(app, hcOptions.Value.ReportUrlPath, healthChecks);
+        }
             
         return app;
     }

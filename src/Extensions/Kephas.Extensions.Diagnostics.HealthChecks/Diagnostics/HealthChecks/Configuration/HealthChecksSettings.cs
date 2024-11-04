@@ -15,6 +15,11 @@ namespace Kephas.Extensions.Diagnostics.HealthChecks.Configuration;
 public record HealthChecksSettings
 {
     /// <summary>
+    /// Gets or sets a value indicating whether the health checks report is enabled. Default is <c>true</c>.
+    /// </summary>
+    public bool EnableReport { get; set; } = true;
+    
+    /// <summary>
     /// Gets or sets the URL path for invoking the health checks. Default is "/health-report".
     /// </summary>
     public string ReportUrlPath { get; set; } = "/health-report";
