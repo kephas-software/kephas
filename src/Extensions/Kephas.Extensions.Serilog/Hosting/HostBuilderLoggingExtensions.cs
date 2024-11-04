@@ -48,7 +48,7 @@ public static class HostBuilderLoggingExtensions
 
         builder.ConfigureServices((_, services) =>
         {
-            services.AddSingleton<ILogLevelSwitch, SerilogLevelSwitch>();
+            services.AddSingletonWithMetadata<ILogLevelSwitch, SerilogLevelSwitch>();
         });
 
         builder.UseSerilog((context, services, loggerConfiguration) =>
