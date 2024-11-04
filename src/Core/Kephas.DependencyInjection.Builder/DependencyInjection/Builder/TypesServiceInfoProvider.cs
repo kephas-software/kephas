@@ -89,6 +89,6 @@ internal class TypesServiceInfoProvider(IEnumerable<Type> types, bool includeInt
     }
 
     private bool IsServiceDeclarationType(Type type) =>
-        (type.IsAbstract && types.Contains(type)) ||
+        //(type.IsAbstract && types.Contains(type)) ||
         ((IServiceInfoProvider)this).TryGetServiceDeclarationInfo(type) != null;
 }

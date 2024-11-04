@@ -77,8 +77,8 @@ public class ServiceInfoCollectionBuilderNonGenericTest
         },
         new[]
         {
-            typeof(ChainSingleOverrideTestService),
             typeof(DerivedOverrideSingleTestService),
+            typeof(ChainSingleOverrideTestService),
         })]
     [InlineData(
         new[]

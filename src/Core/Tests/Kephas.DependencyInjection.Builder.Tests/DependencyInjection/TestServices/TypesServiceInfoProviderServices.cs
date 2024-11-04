@@ -18,8 +18,10 @@ internal interface IScopedService;
 [SingletonService]
 public interface ISingletonService;
 
+[TransientService]
 public abstract class MyAbstractClass;
-    
+
+[TransientService]
 public interface IMyService;
 
 internal class MyService : IMyService;
