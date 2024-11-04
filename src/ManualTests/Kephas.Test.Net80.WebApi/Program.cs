@@ -1,5 +1,6 @@
 ﻿using System.IO.Compression;
 using Kephas.Extensions;
+using Kephas.Web.HealthCheck;
 using Kephas.Web.Hosting;
 using Kephas.Web.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -39,6 +40,8 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
 
     services.AddAntiforgery();
 
+    services.AddHealthCheckServices();
+
     services.ConfigureControllers();
 }
 
@@ -47,6 +50,9 @@ void ConfigureMiddleware(WebApplication app)
     // Configure the HTTP request pipeline.
 
     app.UseHttpsRedirection();
+
+    app.UseHealthChecks("/health");
+    app.UseHealthChecksReport();
 
     app.UseStaticFiles();
     app.UseResponseCompression();

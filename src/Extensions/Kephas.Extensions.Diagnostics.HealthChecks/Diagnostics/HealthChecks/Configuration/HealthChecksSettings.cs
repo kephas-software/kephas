@@ -15,9 +15,9 @@ namespace Kephas.Extensions.Diagnostics.HealthChecks.Configuration;
 public record HealthChecksSettings
 {
     /// <summary>
-    /// Gets or sets the URL path for invoking the health checks. Default is "/health".
+    /// Gets or sets the URL path for invoking the health checks. Default is "/health-report".
     /// </summary>
-    public string UrlPath { get; set; } = "/health";
+    public string ReportUrlPath { get; set; } = "/health-report";
 
     /// <summary>
     /// Enumerates the patterns used to provide information about the application modules.
