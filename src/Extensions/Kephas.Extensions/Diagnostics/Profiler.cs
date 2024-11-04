@@ -29,7 +29,7 @@ public static class Profiler
     /// The elapsed time.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static TimeSpan ProfileTimeWarningStopwatch(
+    public static TimeSpan ProfileTimeWarning(
         this Action action,
         ILogger? logger = null,
         [CallerMemberName] string? memberName = null) =>
@@ -46,7 +46,7 @@ public static class Profiler
     /// The elapsed time.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static (T result, TimeSpan elapsed) ProfileTimeWarningStopwatch<T>(
+    public static (T result, TimeSpan elapsed) ProfileTimeWarning<T>(
         this Func<T> action,
         ILogger? logger = null,
         [CallerMemberName] string? memberName = null) =>
@@ -62,7 +62,7 @@ public static class Profiler
     /// The elapsed time.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static TimeSpan ProfileTimeInfoStopwatch(
+    public static TimeSpan ProfileTimeInfo(
         this Action action,
         ILogger? logger = null,
         [CallerMemberName] string? memberName = null) =>
@@ -79,7 +79,7 @@ public static class Profiler
     /// The elapsed time.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static (T result, TimeSpan elapsed) ProfileTimeInfoStopwatch<T>(
+    public static (T result, TimeSpan elapsed) ProfileTimeInfo<T>(
         this Func<T> action,
         ILogger? logger = null,
         [CallerMemberName] string? memberName = null) =>
@@ -95,7 +95,7 @@ public static class Profiler
     /// The elapsed time.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static TimeSpan ProfileTimeDebugStopwatch(
+    public static TimeSpan ProfileTimeDebug(
         this Action action,
         ILogger? logger = null,
         [CallerMemberName] string? memberName = null) =>
@@ -112,7 +112,7 @@ public static class Profiler
     /// The elapsed time.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static (T result, TimeSpan elapsed) ProfileTimeDebugStopwatch<T>(
+    public static (T result, TimeSpan elapsed) ProfileTimeDebug<T>(
         this Func<T> action,
         ILogger? logger = null,
         [CallerMemberName] string? memberName = null) =>
@@ -128,7 +128,7 @@ public static class Profiler
     /// The elapsed time.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static TimeSpan ProfileTimeTraceStopwatch(
+    public static TimeSpan ProfileTimeTrace(
         this Action action,
         ILogger? logger = null,
         [CallerMemberName] string? memberName = null) =>
@@ -145,7 +145,7 @@ public static class Profiler
     /// The elapsed time.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static (T result, TimeSpan elapsed) ProfileTimeTraceStopwatch<T>(
+    public static (T result, TimeSpan elapsed) ProfileTimeTrace<T>(
         this Func<T> action,
         ILogger? logger = null,
         [CallerMemberName] string? memberName = null) =>

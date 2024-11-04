@@ -15,8 +15,11 @@ namespace Kephas.Extensions.Tests.Diagnostics;
 
 public class ProfilerTest
 {
-    [Fact]
-    public void ProfileTimeWarningStopwatch_Action_LogsElapsedTime()
+    [Theory]
+    [MemberData(nameof(GetActionProfileTime_LogsElapsedTime_Sync_Data))]
+    public void ProfileTime_Action_LogsElapsedTime(
+        Func<Action, ILogger?, string, TimeSpan> profile,
+        LogLevel expectedLogLevel)
     {
         // Arrange
         var logger = Substitute.For<ILogger>();
@@ -26,79 +29,88 @@ public class ProfilerTest
         };
 
         // Act
-        var elapsed = action.ProfileTimeWarningStopwatch(logger);
+        var elapsed = profile(action, logger, "method");
 
         // Assert
         elapsed.Should().BeGreaterThan(TimeSpan.Zero);
         logger.Received().Log(
-            LogLevel.Warning,
+            expectedLogLevel,
             Arg.Any<EventId>(),
             Arg.Is<object>(o => o.ToString().Contains("Started")),
             Arg.Any<Exception>(),
             Arg.Any<Func<object, Exception?, string>>());
         logger.Received().Log(
-            LogLevel.Warning,
+            expectedLogLevel,
             Arg.Any<EventId>(),
             Arg.Is<object>(o => o.ToString().Contains("Ended")),
             Arg.Any<Exception>(),
             Arg.Any<Func<object, Exception?, string>>());
     }
 
-    [Fact]
-    public void ProfileTimeWarningStopwatch_Func_LogsElapsedTime()
+    [Theory]
+    [MemberData(nameof(GetFuncProfileTime_LogsElapsedTime_Sync_Data))]
+    public void ProfileTime_Func_LogsElapsedTime(
+        Func<Func<int>, ILogger?, string, (int result, TimeSpan elapsed)> profile,
+        LogLevel expectedLogLevel)
     {
         // Arrange
         var logger = Substitute.For<ILogger>();
         Func<int> func = () => 42;
 
         // Act
-        var (result, elapsed) = func.ProfileTimeWarningStopwatch(logger);
+        var (result, elapsed) = profile(func, logger, "method");
 
         // Assert
         result.Should().Be(42);
         elapsed.Should().BeGreaterThan(TimeSpan.Zero);
         logger.Received().Log(
-            LogLevel.Warning,
+            expectedLogLevel,
             Arg.Any<EventId>(),
             Arg.Is<object>(o => o.ToString().Contains("Started")),
             Arg.Any<Exception>(),
             Arg.Any<Func<object, Exception?, string>>());
         logger.Received().Log(
-            LogLevel.Warning,
+            expectedLogLevel,
             Arg.Any<EventId>(),
             Arg.Is<object>(o => o.ToString().Contains("Ended")),
             Arg.Any<Exception>(),
             Arg.Any<Func<object, Exception?, string>>());
     }
 
-    [Fact]
-    public async Task ProfileTimeWarningAsync_Action_LogsElapsedTime()
+    [Theory]
+    [MemberData(nameof(GetActionProfileTime_LogsElapsedTime_Data))]
+    public async Task ProfileTimeAsync_Action_LogsElapsedTime(
+        Func<Func<Task>, ILogger?, string, Task<TimeSpan>> profile,
+        LogLevel expectedLogLevel)
     {
         // Arrange
         var logger = Substitute.For<ILogger>();
         Func<Task> action = async () => await Task.Delay(10);
 
         // Act
-        var elapsed = await action.ProfileTimeWarningAsync(logger);
+        var elapsed = await profile(action, logger, "method");
 
         // Assert
         elapsed.Should().BeGreaterThan(TimeSpan.Zero);
         logger.Received().Log(
-            LogLevel.Warning,
+            expectedLogLevel,
             Arg.Any<EventId>(),
             Arg.Is<object>(o => o.ToString().Contains("Started")),
             Arg.Any<Exception>(),
             Arg.Any<Func<object, Exception?, string>>());
         logger.Received().Log(
-            LogLevel.Warning,
+            expectedLogLevel,
             Arg.Any<EventId>(),
             Arg.Is<object>(o => o.ToString().Contains("Ended")),
             Arg.Any<Exception>(),
             Arg.Any<Func<object, Exception?, string>>());
     }
 
-    [Fact]
-    public async Task ProfileTimeWarningAsync_Func_LogsElapsedTime()
+    [Theory]
+    [MemberData(nameof(GetFuncProfileTime_LogsElapsedTime_Data))]
+    public async Task ProfileTimeAsync_Func_LogsElapsedTime(
+        Func<Func<Task<int>>, ILogger?, string, Task<(int result, TimeSpan elapsed)>> profile,
+        LogLevel expectedLogLevel)
     {
         // Arrange
         var logger = Substitute.For<ILogger>();
@@ -109,22 +121,58 @@ public class ProfilerTest
         };
 
         // Act
-        var (result, elapsed) = await func.ProfileTimeWarningAsync(logger);
+        var (result, elapsed) = await profile(func, logger, "method");
 
         // Assert
         result.Should().Be(42);
         elapsed.Should().BeGreaterThan(TimeSpan.Zero);
         logger.Received().Log(
-            LogLevel.Warning,
+            expectedLogLevel,
             Arg.Any<EventId>(),
             Arg.Is<object>(o => o.ToString().Contains("Started")),
             Arg.Any<Exception>(),
             Arg.Any<Func<object, Exception?, string>>());
         logger.Received().Log(
-            LogLevel.Warning,
+            expectedLogLevel,
             Arg.Any<EventId>(),
             Arg.Is<object>(o => o.ToString().Contains("Ended")),
             Arg.Any<Exception>(),
             Arg.Any<Func<object, Exception?, string>>());
     }
+
+    public static TheoryData<Func<Func<Task<int>>, ILogger?, string, Task<(int result, TimeSpan elapsed)>>, LogLevel> GetFuncProfileTime_LogsElapsedTime_Data() =>
+        new()
+        {
+            { Profiler.ProfileTimeWarningAsync, LogLevel.Warning },
+            { Profiler.ProfileTimeInfoAsync, LogLevel.Information },
+            { Profiler.ProfileTimeDebugAsync, LogLevel.Debug },
+            { Profiler.ProfileTimeTraceAsync, LogLevel.Trace },
+        };
+
+    public static TheoryData<Func<Func<Task>, ILogger?, string, Task<TimeSpan>>, LogLevel> GetActionProfileTime_LogsElapsedTime_Data() =>
+        new()
+        {
+            { Profiler.ProfileTimeWarningAsync, LogLevel.Warning },
+            { Profiler.ProfileTimeInfoAsync, LogLevel.Information },
+            { Profiler.ProfileTimeDebugAsync, LogLevel.Debug },
+            { Profiler.ProfileTimeTraceAsync, LogLevel.Trace },
+        };
+
+    public static TheoryData<Func<Action, ILogger?, string, TimeSpan>, LogLevel> GetActionProfileTime_LogsElapsedTime_Sync_Data() =>
+        new()
+        {
+            { Profiler.ProfileTimeWarning, LogLevel.Warning },
+            { Profiler.ProfileTimeInfo, LogLevel.Information },
+            { Profiler.ProfileTimeDebug, LogLevel.Debug },
+            { Profiler.ProfileTimeTrace, LogLevel.Trace },
+        };
+
+    public static TheoryData<Func<Func<int>, ILogger?, string, (int result, TimeSpan elapsed)>, LogLevel> GetFuncProfileTime_LogsElapsedTime_Sync_Data() =>
+        new()
+        {
+            { Profiler.ProfileTimeWarning, LogLevel.Warning },
+            { Profiler.ProfileTimeInfo, LogLevel.Information },
+            { Profiler.ProfileTimeDebug, LogLevel.Debug },
+            { Profiler.ProfileTimeTrace, LogLevel.Trace },
+        };
 }
