@@ -49,7 +49,7 @@ internal class TypesServiceInfoProvider(IEnumerable<Type> types, bool includeInt
             return GetOriginalServiceDeclarationType(implementationType);
         }
 
-        var serviceDeclarationType = implementationType.GetInterfaces()
+        var serviceDeclarationType = implementationType.GetInterfaces().Select(t => t.ToNormalizedType())
             .FirstOrDefault(IsServiceDeclarationType);
         if (serviceDeclarationType != null)
         {

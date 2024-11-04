@@ -106,8 +106,9 @@ public class ServiceInfoCollectionBuilderGenericsTest
     }
 
     [Theory]
-    [InlineData(typeof(IGenericCollector<>))]
-    public void Build_generic_with_generic_from_family_declaration_attribute(Type serviceDeclarationType)
+    [InlineData(typeof(IGenericCollector<>), typeof(IGenericCollector<string>))]
+    [InlineData(typeof(IGenericTwoCollector<,>), typeof(IGenericTwoCollector<int, bool>))]
+    public void Build_generic_with_generic_from_family_declaration_attribute(Type serviceDeclarationType, Type expectedServiceDeclarationType)
     {
         var services = CreateBuilder()
             .AddProviders(new DeclareSingletonServiceFamilyAttribute(serviceDeclarationType))
@@ -116,7 +117,7 @@ public class ServiceInfoCollectionBuilderGenericsTest
 
         services.Count(s => s.ImplementationType is not null).Should().Be(1);
         var testBuilder = services.Single(s => s.ImplementationType is not null);
-        testBuilder.ServiceType.Should().Be(typeof(IGenericCollector<string>));
+        testBuilder.ServiceType.Should().Be(expectedServiceDeclarationType);
     }
 
     [Theory]

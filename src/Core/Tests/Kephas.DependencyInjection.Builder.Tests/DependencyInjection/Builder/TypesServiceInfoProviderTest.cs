@@ -5,12 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
 using FluentAssertions;
-using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.ServiceProviders;
-using Microsoft.Extensions.Logging;
+using Kephas.Tests.DependencyInjection.TestServices;
 using Xunit;
 
 namespace Kephas.Tests.DependencyInjection.Builder;
@@ -33,12 +31,12 @@ public class TypesServiceInfoProviderTest
 
         declarations.Should().NotBeNull();
         declarations.Should().Satisfy(
-            d => d.ServiceDeclarationType == typeof(IMyLogger<>) && d.MetadataType == null,
-            d => d.ServiceDeclarationType == typeof(IMyService) && d.MetadataType == null,
-            d => d.ServiceDeclarationType == typeof(MyAbstractClass) && d.MetadataType == null,
             d => d.ServiceDeclarationType == typeof(ITransientService) && d.MetadataType == null,
             d => d.ServiceDeclarationType == typeof(IScopedService) && d.MetadataType == null,
-            d => d.ServiceDeclarationType == typeof(ISingletonService) && d.MetadataType == null);
+            d => d.ServiceDeclarationType == typeof(ISingletonService) && d.MetadataType == null,
+            d => d.ServiceDeclarationType == typeof(IMyService) && d.MetadataType == null,
+            d => d.ServiceDeclarationType == typeof(MyAbstractClass) && d.MetadataType == null,
+            d => d.ServiceDeclarationType == typeof(IMyLogger<>) && d.MetadataType == null);
     }
 
     [Fact]
@@ -60,23 +58,5 @@ public class TypesServiceInfoProviderTest
             d => d.ServiceDeclarationType == typeof(IMyLogger<>) && d.ImplementationType == typeof(MyLogger<>));
     }
 
-    [TransientService]
-    internal interface ITransientService;
-
-    [ScopedService]
-    internal interface IScopedService;
-
-    [SingletonService]
-    public interface ISingletonService;
-
-    public abstract class MyAbstractClass;
-    
-    public interface IMyService;
-
-    internal class MyService : IMyService;
-
     private class MyPrivateService : IMyService;
-
-    public interface IMyLogger<in T>;
-    internal class MyLogger<T> : IMyLogger<T>;
 }

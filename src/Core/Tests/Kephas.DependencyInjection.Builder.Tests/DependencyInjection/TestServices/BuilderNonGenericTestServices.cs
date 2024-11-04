@@ -13,25 +13,25 @@ namespace Kephas.Tests.DependencyInjection.TestServices
     [SingletonService]
     public interface ISingleTestService;
 
-    [SingletonService]
-    public interface IMultipleTestService;
-
     public class SingleTestService : ISingleTestService;
 
     [Priority(Priority.High)]
     public class SingleOverridenTestService : ISingleTestService;
-
-    public class MultipleTestService : IMultipleTestService;
-
-    public class NewMultipleTestService : IMultipleTestService;
-
-    public class DerivedMultipleTestService : MultipleTestService;
 
     [OverrideBaseImplementation]
     public class ChainSingleOverrideTestService : SingleOverridenTestService;
 
     [OverrideBaseImplementation]
     public class DerivedOverrideSingleTestService : SingleTestService;
+
+    [SingletonService]
+    public interface IMultipleTestService;
+
+    public class MultipleTestService : IMultipleTestService;
+
+    public class NewMultipleTestService : IMultipleTestService;
+
+    public class DerivedMultipleTestService : MultipleTestService;
 
     namespace CustomValueAppServiceMetadata
     {
