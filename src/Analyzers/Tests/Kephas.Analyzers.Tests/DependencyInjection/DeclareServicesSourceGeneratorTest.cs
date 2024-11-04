@@ -221,4 +221,68 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     """);
             });
     }
+
+    [Fact]
+    public void Generate_DeclareServices_OpenGenericOverride()
+    {
+        var sourceCode =
+            """
+            using System;
+            using Kephas.DependencyInjection;
+            
+            namespace Kephas.Sample;
+
+            [SingletonService]
+            public interface IOpenGeneric<T>;
+            
+            internal class OpenGeneric<T> : IOpenGeneric<T>;
+
+            [OverrideBaseImplementation]
+            internal class OverrideOpenGeneric<T> : OpenGeneric<T>;
+            """;
+
+        var result = GetRunResult(sourceCode);
+
+        // Assert the driver use the cached result from AssemblyName and Syntax
+        Assert.Collection(
+            result.GeneratedSources,
+            source =>
+            {
+                source.HintName.Should().Be("DeclaredServices.g.cs");
+                var stringSource = source.SourceText.ToString();
+                stringSource.Should().Contain(
+                    """
+                    #nullable enable
+                    
+                    using System;
+                    using System.Collections.Generic;
+                    using System.Diagnostics.CodeAnalysis;
+                    using System.Reflection;
+                    
+                    using Kephas.DependencyInjection;
+                    using Kephas.DependencyInjection.ServiceProviders;
+                    
+                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    
+                    namespace Kephas.DependencyInjection.ServiceProviders.Generated
+                    {
+                       [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+                       internal partial class DeclareServices_DeclareServicesSourceGeneratorTest: IServiceInfoProvider
+                       {
+                           IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations()
+                           {
+                                yield return new ServiceDeclaration(typeof(IOpenGeneric<>), null);
+                           }
+                    
+                           IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
+                           {
+                                yield return new ServiceImplementationDeclaration(typeof(OpenGeneric<>), typeof(Kephas.Sample.IOpenGeneric<>));
+                                yield return new ServiceImplementationDeclaration(typeof(OverrideOpenGeneric<>), typeof(Kephas.Sample.IOpenGeneric<>));
+                           }
+                       }
+                    }
+                    
+                    """);
+            });
+    }
 }
