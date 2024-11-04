@@ -5,11 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Metadata;
-using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
-using NSubstitute;
+using Kephas.Extensions.Tests.TestServices;
+
+[assembly: DeclareServices<MultiFilterServiceInfoProvider>]
 
 namespace Kephas.Extensions.Tests.TestServices;
 
