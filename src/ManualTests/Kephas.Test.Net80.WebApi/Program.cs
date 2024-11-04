@@ -3,6 +3,7 @@ using Kephas.Extensions;
 using Kephas.Web.HealthCheck;
 using Kephas.Web.Hosting;
 using Kephas.Web.Mvc;
+using Kephas.Web.OpenApi;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,12 +43,16 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
 
     services.AddHealthCheckServices();
 
+    services.AddOpenApiDocumentation(configuration);
+
     services.ConfigureControllers();
 }
 
 void ConfigureMiddleware(WebApplication app)
 {
     // Configure the HTTP request pipeline.
+
+    app.UseOpenApiDocumentation();
 
     app.UseHttpsRedirection();
 
