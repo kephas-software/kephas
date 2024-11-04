@@ -19,8 +19,8 @@ public sealed class SingletonServiceAttribute : ServiceAttributeBase
     /// <summary>
     /// Initializes a new instance of the <see cref="SingletonServiceAttribute"/> class.
     /// </summary>
-    public SingletonServiceAttribute(GenericRegistration genericRegistration = GenericRegistration.Default)
-        : base(AppServiceLifetime.Singleton, genericRegistration)
+    public SingletonServiceAttribute(RegistrationKind registrationKind = RegistrationKind.Default)
+        : base(AppServiceLifetime.Singleton, registrationKind)
     {
     }
 }

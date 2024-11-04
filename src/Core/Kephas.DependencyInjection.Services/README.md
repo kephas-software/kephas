@@ -88,7 +88,7 @@ public interface IAsyncPipelineBehavior<in TTarget, in TArgs, TResult> : IAsyncP
 #### Example: Open generic service declaration 
 
 ```csharp
-[TransientService(GenericRegistration.AsOpen)]
+[TransientService(RegistrationKind.AsOpenGeneric)]
 public interface ILazyEnumerable<TService>
     : IEnumerable<Lazy<TService, ServiceMetadata>>
 {

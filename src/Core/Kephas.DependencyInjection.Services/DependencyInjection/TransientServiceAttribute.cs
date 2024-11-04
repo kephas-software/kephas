@@ -16,8 +16,8 @@ public sealed class TransientServiceAttribute : ServiceAttributeBase
     /// <summary>
     /// Initializes a new instance of the <see cref="ScopedServiceAttribute"/> class.
     /// </summary>
-    public TransientServiceAttribute(GenericRegistration genericRegistration = GenericRegistration.Default)
-        : base(AppServiceLifetime.Transient, genericRegistration)
+    public TransientServiceAttribute(RegistrationKind registrationKind = RegistrationKind.Default)
+        : base(AppServiceLifetime.Transient, registrationKind)
     {
     }
 }

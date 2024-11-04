@@ -10,6 +10,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Kephas.DependencyInjection.Metadata;
 
 namespace Kephas.DependencyInjection;
@@ -144,17 +145,17 @@ public static class ServiceHelper
     }
 
     /// <summary>
-    /// Converts the <see cref="GenericRegistration"/> to a nullable boolean.
+    /// Converts the <see cref="RegistrationKind"/> to a nullable boolean.
     /// </summary>
-    /// <param name="genericRegistration">The value to convert.</param>
+    /// <param name="registrationKind">The value to convert.</param>
     /// <param name="serviceType">The service type.</param>
-    /// <returns><c>null</c> for non-generic types, <c>false</c> for constructed generic types, <c>true</c> for open generic types if not set <see cref="GenericRegistration.AsClosed"/>, otherwise <c>false</c>.</returns>
-    public static bool? ToNullableBoolean(this GenericRegistration genericRegistration, Type? serviceType) =>
+    /// <returns><c>null</c> for non-generic types, <c>false</c> for constructed generic types, <c>true</c> for open generic types if not set <see cref="RegistrationKind.AsClosedGeneric"/>, otherwise <c>false</c>.</returns>
+    public static bool? ToNullableBoolean(this RegistrationKind registrationKind, Type? serviceType) =>
         serviceType?.IsGenericType is not true
             ? null
             : serviceType.IsConstructedGenericType
                 ? false
-                : genericRegistration is GenericRegistration.Default or GenericRegistration.AsOpen;
+                : registrationKind is RegistrationKind.Default or RegistrationKind.AsOpenGeneric;
 
     private static string? TryGetServiceKey(string implementationName, Type? serviceType)
     {
@@ -169,8 +170,18 @@ public static class ServiceHelper
             suffix = suffix[1..];
         }
 
+        suffix = StripGenericSuffix(suffix);
+        implementationName = StripGenericSuffix(implementationName);
+
         return implementationName.EndsWith(suffix) && implementationName.Length > suffix.Length
             ? implementationName[..^(suffix.Length)]
             : null;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static string StripGenericSuffix(string typeName)
+    {
+        var genericIndex = typeName.IndexOf('`');
+        return genericIndex > 0 ? typeName[..genericIndex] : typeName;
     }
 }

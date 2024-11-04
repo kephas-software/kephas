@@ -19,8 +19,8 @@ public sealed class ScopedServiceAttribute : ServiceAttributeBase
     /// <summary>
     /// Initializes a new instance of the <see cref="ScopedServiceAttribute"/> class.
     /// </summary>
-    public ScopedServiceAttribute(GenericRegistration genericRegistration = GenericRegistration.Default)
-        : base(AppServiceLifetime.Scoped, genericRegistration)
+    public ScopedServiceAttribute(RegistrationKind registrationKind = RegistrationKind.Default)
+        : base(AppServiceLifetime.Scoped, registrationKind)
     {
     }
 }

@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.Builder.Configuration;
 using Kephas.DependencyInjection.Metadata;
@@ -13,7 +12,7 @@ using Xunit;
 
 namespace Kephas.Tests.DependencyInjection.Builder;
 
-public class ServiceInfoCollectionBuilderTest
+public class ServiceInfoCollectionBuilderNonGenericTest
 {
     [Fact]
     public void Build_Multiple()
@@ -155,22 +154,6 @@ public class ServiceInfoCollectionBuilderTest
     }
 
     [Fact]
-    public void Build_generic()
-    {
-        var parts = new[]
-        {
-            typeof(IGenericAppService<>),
-            typeof(GenericAppService<>),
-        };
-        var builder = CreateBuilder();
-        var services = builder.AddTypes(parts).Build();
-
-        services.Count(s => s.ImplementationType is not null).Should().Be(1);
-        var match = services.First(s => s.ImplementationType is not null);
-        match.ImplementationType.Should().Be(typeof(GenericAppService<>));
-    }
-
-    [Fact]
     public void Build_default_metadata()
     {
         var parts = new[]
@@ -187,108 +170,6 @@ public class ServiceInfoCollectionBuilderTest
         metadata.Count.Should().Be(2);
         metadata.Should().ContainKey(nameof(ServiceMetadata.ImplementationType));
         metadata[nameof(ServiceMetadata.ImplementationType)].Should().Be(typeof(DefaultMetadataAppService));
-    }
-
-    [Fact]
-    public void Build_generic_with_nongeneric_base_from_types()
-    {
-        var services = CreateBuilder()
-            .AddTypes(
-                typeof(IOneGenericAppService<>),
-                typeof(OneGenericAppServiceString))
-            .Build();
-
-        services.Count(s => s.ImplementationType is not null).Should().Be(1);
-        var testBuilder = services.Single(s => s.ImplementationType is not null);
-        testBuilder.ServiceType.Should().Be(typeof(IOneGenericAppService));
-    }
-
-    [Fact]
-    public void Build_generic_with_nongeneric_base_from_provider()
-    {
-        var services = CreateBuilder()
-            .AddProviders(
-                new OneGenericServiceInfoProvider())
-            .Build();
-
-        services.Count(s => s.ImplementationType is not null).Should().Be(1);
-        var testBuilder = services.Single(s => s.ImplementationType is not null);
-        testBuilder.ServiceType.Should().Be(typeof(IOneGenericAppService));
-    }
-
-    [Fact]
-    public void Build_generic_with_generic_from_family_declaration_attribute()
-    {
-        var services = CreateBuilder()
-            .AddProviders(
-                new DeclareSingletonServiceFamilyAttribute(typeof(IOneGenericAppService<>)))
-            .AddAssemblies(
-                typeof(IOneGenericAppService<>).Assembly)
-            .Build();
-
-        services.Count(s => s.ImplementationType is not null).Should().Be(1);
-        var testBuilder = services.Single(s => s.ImplementationType is not null);
-        testBuilder.ServiceType.Should().Be(typeof(IOneGenericAppService<string>));
-    }
-
-    [Fact]
-    public void Build_generic_with_nongeneric_metadata()
-    {
-        var parts = new[]
-        {
-            typeof(IOneGenericAppService<>),
-            typeof(OneGenericAppServiceString),
-        };
-        var builder = CreateBuilder();
-        var services = builder.AddTypes(parts).Build();
-
-        var testBuilder = services.First(s => s.ImplementationType is not null);
-        var metadata = testBuilder.Metadata;
-
-        metadata.Count.Should().Be(3);
-        metadata.Should().ContainKey("TType");
-        metadata["TType"].Should().Be(typeof(string));
-    }
-
-    [Fact]
-    public void Build_generic_with_nongeneric_metadata_two()
-    {
-        var parts = new[]
-        {
-            typeof(ITwoGenericAppService<,>),
-            typeof(TwoGenericAppServiceIntBool),
-        };
-        var builder = CreateBuilder();
-        var services = builder.AddTypes(parts).Build();
-
-        var testBuilder = services.First(s => s.ImplementationType is not null);
-        var metadata = testBuilder.Metadata;
-
-        metadata.Count.Should().Be(4);
-        metadata.Should().ContainKey("FromType");
-        metadata.Should().ContainKey("ToType");
-
-        metadata["FromType"].Should().Be(typeof(int));
-        metadata["ToType"].Should().Be(typeof(bool));
-    }
-
-    [Fact]
-    public void Build_as_open_generic_ITypedLogger()
-    {
-        var parts = new[]
-        {
-            typeof(ITypedLogger<>),
-            typeof(TypedLogger<>),
-        };
-        var builder = CreateBuilder();
-        var services = builder.AddTypes(parts).Build();
-
-        var serviceInfo = services.Single(s => s.ImplementationType is not null);
-        var metadata = serviceInfo.Metadata;
-
-        metadata.Should().Satisfy(
-            kv => kv.Key == nameof(ServiceMetadata.ImplementationType) && kv.Value == typeof(TypedLogger<>),
-            kv => kv.Key == nameof(ServiceMetadata.ServiceKey) && kv.Value == typeof(TypedLogger<>).Name);
     }
 
     [Fact]

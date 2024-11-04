@@ -10,7 +10,7 @@ using Kephas.DependencyInjection.Metadata;
 
 namespace Kephas.Extensions.Tests.TestServices;
 
-[SingletonService(GenericRegistration.AsOpen)]
+[SingletonService(RegistrationKind.AsOpenGeneric)]
 public interface IOpen<T> { }
 
 public class DefaultOpen<T> : IOpen<T> { }

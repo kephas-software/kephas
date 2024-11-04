@@ -15,24 +15,35 @@ using Kephas.DependencyInjection.Reflection;
 namespace Kephas.DependencyInjection;
 
 /// <summary>
-/// Enumerates the generic service kind.
+/// Enumerates the DI container registration kinds.
 /// </summary>
-public enum GenericRegistration
+public enum RegistrationKind
 {
     /// <summary>
-    /// The default for the provided service type is considered: None for non-generic types, Open for open generic types, Constructed for the rest.
+    /// The default for the provided service type is considered:
+    /// <list type="bullet">
+    ///     <item>
+    ///         <description>Simple (service type, implementation type) for non-generic types.</description>
+    ///     </item>
+    ///     <item>
+    ///         <description>Open generic (open generic service type, open generic implementation type) for open generic types.</description>
+    ///     </item>
+    ///     <item>
+    ///         <description>Simple (closed generic service type, implementation type) for constructed/closed generic types.</description>
+    ///     </item>
+    /// </list>
     /// </summary>
     Default,
     
     /// <summary>
     /// Register open generic services.
     /// </summary>
-    AsOpen,
+    AsOpenGeneric,
     
     /// <summary>
     /// Register closed generic services.
     /// </summary>
-    AsClosed,
+    AsClosedGeneric,
 }
 
 /// <summary>
@@ -40,17 +51,17 @@ public enum GenericRegistration
 /// </summary>
 public abstract class ServiceAttributeBase : Attribute, IServiceInfo
 {
-    private readonly GenericRegistration genericRegistration;
+    private readonly RegistrationKind registrationKind;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ServiceAttributeBase"/> class.
     /// </summary>
     /// <param name="lifetime">The lifetime.</param>
-    /// <param name="genericRegistration">The generic service kind.</param>
-    protected ServiceAttributeBase(AppServiceLifetime lifetime, GenericRegistration genericRegistration)
+    /// <param name="registrationKind">The DI container registration kind.</param>
+    protected ServiceAttributeBase(AppServiceLifetime lifetime, RegistrationKind registrationKind)
     {
         Lifetime = lifetime;
-        this.genericRegistration = genericRegistration;
+        this.registrationKind = registrationKind;
     }
 
     /// <summary>
@@ -67,7 +78,7 @@ public abstract class ServiceAttributeBase : Attribute, IServiceInfo
     /// <value>
     ///   <c>true</c> if the contract should be exported as an open generic; otherwise, <c>false</c>.
     /// </value>
-    public bool? AsOpenGeneric => genericRegistration.ToNullableBoolean(ServiceType);
+    public bool? AsOpenGeneric => registrationKind.ToNullableBoolean(ServiceType);
 
     /// <summary>
     /// Gets or sets the contract type of the export.

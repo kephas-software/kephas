@@ -2,7 +2,7 @@
 
 namespace Kephas.Analyzers.TestAssembly;
 
-[ScopedService(GenericRegistration.AsOpen)]
+[ScopedService(RegistrationKind.AsOpenGeneric)]
 public interface IOpenGenericContract<TValue>
 {
 }

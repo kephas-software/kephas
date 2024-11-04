@@ -24,9 +24,9 @@ public abstract class DeclareServiceAttributeBase : ServiceAttributeBase, IServi
     /// <param name="serviceType">The service type.</param>
     /// <param name="implementationType">The implementation type.</param>
     /// <param name="lifetime">The lifetime.</param>
-    /// <param name="genericRegistration">The generic service kind.</param>
-    protected DeclareServiceAttributeBase(Type serviceType, Type implementationType, AppServiceLifetime lifetime, GenericRegistration genericRegistration = GenericRegistration.Default)
-        : base(lifetime, implementationType?.IsGenericTypeDefinition is true ? genericRegistration : GenericRegistration.AsClosed)
+    /// <param name="registrationKind">The DI container registration kind.</param>
+    protected DeclareServiceAttributeBase(Type serviceType, Type implementationType, AppServiceLifetime lifetime, RegistrationKind registrationKind = RegistrationKind.Default)
+        : base(lifetime, implementationType?.IsGenericTypeDefinition is true ? registrationKind : RegistrationKind.AsClosedGeneric)
     {
         ServiceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
         InstancingStrategy = this.implementationType = implementationType ?? throw new ArgumentNullException(nameof(implementationType));
@@ -102,7 +102,7 @@ public abstract class DeclareServiceAttributeBase<TService, TImplementation> : S
     /// </summary>
     /// <param name="lifetime">The lifetime.</param>
     protected DeclareServiceAttributeBase(AppServiceLifetime lifetime)
-        : base(lifetime, GenericRegistration.AsClosed)
+        : base(lifetime, RegistrationKind.AsClosedGeneric)
     {
         ServiceType = typeof(TService);
         InstancingStrategy = typeof(TImplementation);

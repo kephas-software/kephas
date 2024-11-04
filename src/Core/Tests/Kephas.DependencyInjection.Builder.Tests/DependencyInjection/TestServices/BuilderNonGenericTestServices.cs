@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BuilderTestServices.cs" company="Kephas Software SRL">
+// <copyright file="BuilderNonGenericTestServices.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,7 +7,6 @@
 
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Metadata;
-using Kephas.DependencyInjection.ServiceProviders;
 
 namespace Kephas.Tests.DependencyInjection.TestServices
 {
@@ -33,43 +32,6 @@ namespace Kephas.Tests.DependencyInjection.TestServices
 
     [OverrideBaseImplementation]
     public class DerivedOverrideSingleTestService : SingleTestService;
-
-    [SingletonService]
-    public interface IGenericAppService<T>;
-
-    public interface IOneGenericAppService;
-
-    [SingletonService(ServiceType = typeof(IOneGenericAppService))]
-    public interface IOneGenericAppService<T> : IOneGenericAppService;
-
-    public interface ITwoGenericAppService;
-
-    [SingletonService(ServiceType = typeof(ITwoGenericAppService))]
-    public interface ITwoGenericAppService<TFrom, ToType> : ITwoGenericAppService;
-
-    public class GenericAppService<T> : IGenericAppService<T>;
-
-    public class OneGenericAppServiceString : IOneGenericAppService<string>;
-
-    public class TwoGenericAppServiceIntBool : ITwoGenericAppService<int, bool>;
-
-    [SingletonService(GenericRegistration.AsOpen)]
-    public interface ITypedLogger<T>;
-
-    public class TypedLogger<T> : ITypedLogger<T>;
-
-    internal class OneGenericServiceInfoProvider : IServiceInfoProvider
-    {
-        public IEnumerable<ServiceDeclaration>? GetServiceDeclarations()
-        {
-            yield return new ServiceDeclaration(typeof(IOneGenericAppService<>));
-        }
-        
-        public IEnumerable<ServiceImplementationDeclaration> GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
-        {
-            yield return new ServiceImplementationDeclaration(typeof(OneGenericAppServiceString), typeof(IOneGenericAppService<string>));
-        }
-    }
 
     namespace CustomValueAppServiceMetadata
     {
