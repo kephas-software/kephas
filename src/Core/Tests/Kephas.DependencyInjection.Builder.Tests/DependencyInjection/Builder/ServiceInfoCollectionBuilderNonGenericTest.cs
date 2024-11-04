@@ -77,8 +77,8 @@ public class ServiceInfoCollectionBuilderNonGenericTest
         },
         new[]
         {
-            typeof(DerivedOverrideSingleTestService),
             typeof(ChainSingleOverrideTestService),
+            typeof(DerivedOverrideSingleTestService),
         })]
     [InlineData(
         new[]
@@ -148,9 +148,8 @@ public class ServiceInfoCollectionBuilderNonGenericTest
         var orderedServices = services
             .Where(s => s.ImplementationType is not null)
             .ToList();
-        orderedServices.Count.Should().Be(2);
-        orderedServices[0].ImplementationType.Should().Be(typeof(SingleTestService));
-        orderedServices[1].ImplementationType.Should().Be(typeof(SingleOverridenTestService));
+        orderedServices.Select(s => s.ImplementationType)
+            .Should().Equal(typeof(SingleTestService), typeof(SingleOverridenTestService));
     }
 
     [Fact]

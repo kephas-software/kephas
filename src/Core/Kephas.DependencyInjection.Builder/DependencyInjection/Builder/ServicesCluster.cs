@@ -57,10 +57,6 @@ internal record ServicesCluster(Type ServiceType, IServiceInfo ServiceInfo)
 
         return overrideChain.Select(e => e.serviceInfo).ToList();
     }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Priority GetPriority(IServiceInfo serviceInfo) =>
-        (Priority)(serviceInfo.Metadata?.TryGetValue(nameof(ServiceMetadata.Priority)) ?? Priority.Normal);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static Type? GetImplementationTypeBase(IServiceInfo serviceInfo) =>

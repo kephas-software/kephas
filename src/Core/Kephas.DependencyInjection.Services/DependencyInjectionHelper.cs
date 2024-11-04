@@ -8,6 +8,8 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Metadata;
+using Kephas.DependencyInjection.Reflection;
 using Kephas.DependencyInjection.ServiceProviders;
 using Kephas.Reflection;
 
@@ -15,6 +17,33 @@ namespace Kephas;
 
 internal static class DependencyInjectionHelper
 {
+    /// <summary>
+    /// Gets the priority from the provided metadata.
+    /// </summary>
+    /// <param name="metadata">The metadata.</param>
+    /// <returns>The priority value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static Priority GetPriority(this object? metadata) =>
+        (metadata as IHasPriority)?.Priority
+            ?? TryGetPriority(metadata as IDictionary<string, object?>)
+            ?? Priority.Normal;
+
+    /// <summary>
+    /// Gets the priority from the provided <see cref="IServiceInfo"/>.
+    /// </summary>
+    /// <param name="serviceInfo">The <see cref="IServiceInfo"/> instance.</param>
+    /// <returns>The priority value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static Priority GetPriority(this IServiceInfo serviceInfo) =>
+        TryGetPriority(serviceInfo.Metadata) ?? Priority.Normal;
+
+    private static Priority? TryGetPriority(IDictionary<string, object?>? metadata) =>
+        metadata is null
+            ? null
+            : metadata.TryGetValue(nameof(ServiceMetadata.Priority), out var priority)
+                ? priority as Priority?
+                : null;
+
     public static IEnumerable<Type> GetEligibleImplementationType(Type serviceType, IEnumerable<Assembly> assemblies, bool includeInternal)
         => GetEligibleImplementationTypes(assemblies, includeInternal)
             .Where(serviceType.IsAssignableFrom);

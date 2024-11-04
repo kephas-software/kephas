@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Runtime.CompilerServices;
-using Kephas.DependencyInjection.Metadata;
 using Kephas.DependencyInjection.Resources;
 
 namespace Kephas.DependencyInjection;
@@ -189,12 +187,4 @@ public static class EnumerableServiceExtensions
         var service = factoryServices.GetService(predicate);
         return service ?? throw new InvalidOperationException(ServicesAbstractionsStrings.OrderedServiceFactoryCollection_service_with_requested_criteria_not_found);
     }
-
-    /// <summary>
-    /// Gets the priority from the provided metadata.
-    /// </summary>
-    /// <param name="metadata">The metadata.</param>
-    /// <returns>The priority value.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Priority GetPriority(this object? metadata) => (metadata as IHasPriority)?.Priority ?? Priority.Normal;
 }

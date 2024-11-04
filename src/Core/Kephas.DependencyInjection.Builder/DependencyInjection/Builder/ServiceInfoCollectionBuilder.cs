@@ -126,13 +126,13 @@ public class ServiceInfoCollectionBuilder
     {
         ConfigureBuilder?.Invoke(this);
         var serviceAssemblies = GetServiceAssemblies();
-        var implementationTypes = DependencyInjectionHelper.GetEligibleImplementationTypes(serviceAssemblies, IncludeInternal).ToList();
-        return AddServices(Services, implementationTypes, GetProviders(serviceAssemblies));
+        var eligibleImplementationTypes = DependencyInjectionHelper.GetEligibleImplementationTypes(serviceAssemblies, IncludeInternal).ToList();
+        return AddServices(Services, eligibleImplementationTypes, GetProviders(serviceAssemblies));
     }
 
     private IServiceInfoCollection AddServices(
         IServiceInfoCollection services,
-        IList<Type> implementationTypes,
+        IList<Type> eligibleImplementationTypes,
         IEnumerable<IServiceInfoProvider> serviceInfoProviders)
     {
         // get all type infos from the injection assemblies
@@ -146,7 +146,7 @@ public class ServiceInfoCollectionBuilder
 
         // create and normalize declarations
         var serviceImplementationDeclarations = serviceInfoProviders
-            .SelectMany(p => p.GetImplementationDeclarations(implementationTypes))
+            .SelectMany(p => p.GetImplementationDeclarations(eligibleImplementationTypes))
             .Select(d => new ServiceImplementationDeclaration(d.ImplementationType.ToNormalizedType(), d.ServiceDeclarationType.ToNormalizedType()))
             .ToList();
 
