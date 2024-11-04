@@ -610,7 +610,6 @@ It aggregates the enabled rule services and applies them to each of the service 
 
 ## Other resources
 
-* [Kephas.Services.Autofac](https://www.nuget.org/packages/Kephas.Services.Autofac)
 * [Kephas.Extensions.DependencyInjection](https://www.nuget.org/packages/Kephas.Extensions.DependencyInjection)
 
 > Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
