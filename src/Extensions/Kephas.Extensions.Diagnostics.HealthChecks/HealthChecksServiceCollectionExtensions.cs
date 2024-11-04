@@ -34,10 +34,10 @@ public static class HealthChecksServiceCollectionExtensions
     /// <param name="services">The service collection.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <returns>The provided service collection, for chaining the calls.</returns>
-    public static IServiceCollection AddHealthCheckServices(
+    public static IServiceCollection AddHealthChecks(
         this IServiceCollection services,
         IConfiguration configuration)
-        => AddHealthCheckServices(
+        => AddHealthChecks(
             services,
             options => configuration.GetSection(HealthChecksSection)?.Bind(options),
             options => configuration.GetSection(MemoryHealthCheckSection)?.Bind(options)
@@ -50,12 +50,12 @@ public static class HealthChecksServiceCollectionExtensions
     /// <param name="config">Optional. The configuration callback.</param>
     /// <param name="memoryConfig">Optional. The memory check configuration callback.</param>
     /// <returns>The provided service collection, for chaining the calls.</returns>
-    public static IServiceCollection AddHealthCheckServices(
+    public static IServiceCollection AddHealthChecks(
         this IServiceCollection services,
         Action<HealthChecksSettings>? config = null,
         Action<MemoryCheckSettings>? memoryConfig = null)
     {
-        var builder = services.AddHealthChecks();
+        var builder = HealthCheckServiceCollectionExtensions.AddHealthChecks(services);
 
         var hcOptions = new HealthChecksSettings();
         config?.Invoke(hcOptions);

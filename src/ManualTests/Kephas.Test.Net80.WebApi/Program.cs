@@ -41,8 +41,6 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
 
     services.AddAntiforgery();
 
-    services.AddHealthCheckServices();
-
     services.AddOpenApiDocumentation(configuration);
 
     services.ConfigureControllers();

@@ -25,6 +25,6 @@ public class HealthChecksServiceRegistration : IServiceRegistration
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        services.AddHealthCheckServices(configuration);
+        services.AddHealthChecks(configuration);
     }
 }

@@ -128,9 +128,16 @@ public static class ServiceCollectionExtensions
         builderConfig?.Invoke(builderSettings);
         var builder = new ServiceInfoCollectionBuilder(builderSettings);
 
-        foreach (var serviceInfo in builder.Build())
+        var serviceInfos = builder.Build();
+        foreach (var serviceInfo in serviceInfos)
         {
-            services.AddServiceInfo(configuration, serviceInfo);
+            services.AddServiceInfo(serviceInfo);
+        }
+
+        foreach (var serviceInfo in serviceInfos
+                     .Where(si => si.ServiceType?.IsServiceRegistration(si.ImplementationType) is true))
+        {
+            RegisterServices(serviceInfo.ImplementationType!, services, configuration);
         }
 
         return services;
@@ -152,12 +159,10 @@ public static class ServiceCollectionExtensions
     /// Adds the application service to the <see cref="IServiceCollection"/>.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="configuration">The application configuration.</param>
     /// <param name="serviceInfo">The <see cref="IServiceInfo"/>.</param>
     /// <returns>The provided service collection.</returns>
     public static IServiceCollection AddServiceInfo(
         this IServiceCollection services,
-        IConfiguration configuration,
         IServiceInfo serviceInfo)
     {
         services = services ?? throw new ArgumentNullException(nameof(services));
@@ -171,11 +176,6 @@ public static class ServiceCollectionExtensions
         if (serviceInfo.AsOpenGeneric is true && implementationType is null)
         {
             throw new InvalidOperationException($"Must provide the implementation type for open generics in: {serviceInfo}.");
-        }
-
-        if (IsServiceRegistration(serviceType, implementationType))
-        {
-            RegisterServices(implementationType, services, configuration);
         }
 
         return serviceInfo switch
@@ -930,7 +930,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
     
-    private static bool IsServiceRegistration(Type serviceType, [NotNullWhen(true)] Type? implementationType)
+    private static bool IsServiceRegistration(this Type serviceType, [NotNullWhen(true)] Type? implementationType)
         => serviceType == typeof(IServiceRegistration) && implementationType?.IsAbstract is false;
     
     private static void RegisterServices(Type implementationType, IServiceCollection services, IConfiguration configuration)
