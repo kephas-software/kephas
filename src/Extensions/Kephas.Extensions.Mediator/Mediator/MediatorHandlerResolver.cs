@@ -53,15 +53,8 @@ public class MediatorHandlerResolver(IServiceInfoCollection serviceInfoCollectio
         return matchingTypes.Count switch
         {
             0 => _ => null,
-            1 => sp => GetExactMatchingHandlers(sp, matchingTypes[0].type).GetRequiredService(),
             _ => GetCombinedSingleResolver(matchingTypes),
         };
-    }
-
-    private static IFactoryEnumerable<object, ServiceMetadata> GetExactMatchingHandlers(IServiceProvider sp, Type handlerType)
-    {
-        var factoryEnumerableType = typeof(IFactoryEnumerable<,>).MakeGenericType(handlerType, typeof(ServiceMetadata));
-        return (IFactoryEnumerable<object, ServiceMetadata>)sp.GetRequiredService(factoryEnumerableType);
     }
 
     private Func<IServiceProvider, IEnumerable<object>?> ComputeEnumerationResolver(Type handlerType)
@@ -70,7 +63,6 @@ public class MediatorHandlerResolver(IServiceInfoCollection serviceInfoCollectio
         return matchingTypes.Count switch
         {
             0 => _ => null,
-            1 => sp => GetExactMatchingHandlers(sp, matchingTypes[0].type).Select(f => f.GetService()),
             _ => GetCombinedEnumerationResolver(matchingTypes),
         };
     }
