@@ -20,7 +20,7 @@ public abstract class TestPipelineBehaviorBase<TRequest>
         $"{GetType().Name} > {await next()}";
 }
 
-[Priority(Priority.High)]
+[Priority(Priority.Highest)]
 public class ReturnStringTypedBehavior : TestPipelineBehaviorBase<IReturnStringMessage>;
 
 public class OneReturnStringTypedBehavior : TestPipelineBehaviorBase<OneReturnStringTypedMessage>;

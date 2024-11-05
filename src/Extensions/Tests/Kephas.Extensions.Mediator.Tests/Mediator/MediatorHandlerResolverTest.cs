@@ -9,6 +9,7 @@ using System.Reflection;
 using FluentAssertions;
 using Kephas.DependencyInjection.Reflection;
 using Kephas.Extensions.Mediator;
+using Kephas.Extensions.Mediator.PipelineBehaviors;
 using Kephas.Extensions.Tests.TestServices;
 using Kephas.Reflection;
 using Kephas.Testing;
@@ -35,6 +36,7 @@ public class MediatorHandlerResolverTest() : IntegrationTestBase<MediatorHandler
 
         serviceInstance.Should().BeOfType(expectedInstanceType);
     }
+
     [Theory]
     [MemberData(nameof(GetMultipleServiceData))]
     public void GetService_ReturnsMultipleService(Type serviceType, IEnumerable<Type> expectedInstanceTypes)
@@ -70,19 +72,48 @@ public class MediatorHandlerResolverTest() : IntegrationTestBase<MediatorHandler
         {
             {
                 typeof(IEnumerable<IPipelineBehavior<OneReturnStringTypedMessage, string>>),
-                [typeof(ReturnStringTypedBehavior), typeof(OpenGenericBehavior<OneReturnStringTypedMessage, string>), typeof(OneReturnStringTypedBehavior), typeof(ReturnStringBehavior)]
+                [
+                    typeof(ReturnStringTypedBehavior),
+                    typeof(LogPipelineBehavior<OneReturnStringTypedMessage, string>),
+                    typeof(RequestValidationPipelineBehavior<OneReturnStringTypedMessage, string>),
+                    typeof(OpenGenericBehavior<OneReturnStringTypedMessage, string>),
+                    typeof(OneReturnStringTypedBehavior),
+                    typeof(ReturnStringBehavior),
+                ]
             },
             {
                 typeof(IEnumerable<IPipelineBehavior<TwoReturnStringTypedMessage, string>>),
-                [typeof(ReturnStringTypedBehavior), typeof(OpenGenericBehavior<TwoReturnStringTypedMessage, string>), typeof(ReturnStringBehavior)]
+                [
+                    typeof(ReturnStringTypedBehavior),
+                    typeof(LogPipelineBehavior<TwoReturnStringTypedMessage, string>),
+                    typeof(RequestValidationPipelineBehavior<TwoReturnStringTypedMessage, string>),
+                    typeof(OpenGenericBehavior<TwoReturnStringTypedMessage, string>),
+                    typeof(ReturnStringBehavior),
+                ]
             },
             {
                 typeof(IEnumerable<IPipelineBehavior<ReturnStringMessage, string>>),
-                [typeof(OpenGenericBehavior<ReturnStringMessage, string>), typeof(ReturnStringBehavior)]
+                [
+                    typeof(LogPipelineBehavior<ReturnStringMessage, string>),
+                    typeof(RequestValidationPipelineBehavior<ReturnStringMessage, string>),
+                    typeof(OpenGenericBehavior<ReturnStringMessage, string>),
+                    typeof(ReturnStringBehavior),
+                ]
             },
             {
                 typeof(IEnumerable<IPipelineBehavior<ReturnIntMessage, int>>),
-                [typeof(OpenGenericBehavior<ReturnIntMessage, int>), typeof(ReturnIntBehavior)]
+                [
+                    typeof(LogPipelineBehavior<ReturnIntMessage, int>),
+                    typeof(RequestValidationPipelineBehavior<ReturnIntMessage, int>),
+                    typeof(OpenGenericBehavior<ReturnIntMessage, int>),
+                    typeof(ReturnIntBehavior),
+                ]
+            },
+            {
+                typeof(IEnumerable<IStreamPipelineBehavior<StreamReturnIntMessage, int>>),
+                [
+                    typeof(StreamRequestValidationPipelineBehavior<StreamReturnIntMessage, int>),
+                ]
             },
 
             // { typeof(IRequestHandler<OneReturnVoidTypedMessage>), typeof(OneReturnVoidTypedHandler) },
