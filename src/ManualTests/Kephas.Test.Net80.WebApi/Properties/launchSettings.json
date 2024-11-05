@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Kephas.Test.Net80.WebApi": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:12333;http://localhost:12334"
+    }
+  }
+}

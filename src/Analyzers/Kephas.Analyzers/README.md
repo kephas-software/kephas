@@ -4,11 +4,11 @@
 Provides analysis of Kephas based assemblies and code generation.
 
 Typically used areas and classes/interfaces/services:
-* ``AppServicesSourceGenerator``, ``ModuleInitializerSourceGenerator``.
+* `DeclareServicesSourceGenerator`, `ModuleInitializerSourceGenerator`, `RuntimeElementInfoFactorySourceGenerator`.
 
-## Application services
+## Dependency Injection
 
-Generates code for application services registered through `AppServiceContract` attributes.
+Generates code for services registered through one of `[SingletonService]`, `[ScopedService]`, or `[TransientService]` attributes.
 
 ## Assembly initializers
 
@@ -20,7 +20,7 @@ Generates code for automatic registration of runtime element information factori
 
 ## Other resources
 
-* [Kephas.Services.Abstractions](https://www.nuget.org/packages/Kephas.Services.Abstractions)
-* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
+* [Kephas.DependencyInjection.Services](https://www.nuget.org/packages/Kephas.DependencyInjection.Services)
+* [Kephas.DependencyInjection.Services](https://www.nuget.org/packages/Kephas.DependencyInjection.Services)
 
 > Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.

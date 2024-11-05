@@ -8,70 +8,69 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Collections.Graphs
+namespace Kephas.Collections.Graphs;
+
+/// <summary>
+/// Defines the contract for a graph edge.
+/// </summary>
+public interface IGraphEdge
 {
     /// <summary>
-    /// Defines the contract for a graph edge.
+    /// Gets the node from which the edge starts.
     /// </summary>
-    public interface IGraphEdge
-    {
-        /// <summary>
-        /// Gets the node from which the edge starts.
-        /// </summary>
-        /// <value>
-        /// The node from which the edge starts.
-        /// </value>
-        IGraphNode From { get; }
-
-        /// <summary>
-        /// Gets the node where the edge ends.
-        /// </summary>
-        /// <value>
-        /// The node where the edge ends.
-        /// </value>
-        IGraphNode To { get; }
-
-        /// <summary>
-        /// Gets or sets the value associated to edge.
-        /// </summary>
-        object? Value { get; set; }
-    }
+    /// <value>
+    /// The node from which the edge starts.
+    /// </value>
+    IGraphNode From { get; }
 
     /// <summary>
-    /// Defines the contract for a graph edge.
+    /// Gets the node where the edge ends.
     /// </summary>
-    /// <typeparam name="TNodeValue">Type of the node value.</typeparam>
-    /// <typeparam name="TEdgeValue">The edge value.</typeparam>
-    public interface IGraphEdge<TNodeValue, TEdgeValue> : IGraphEdge
+    /// <value>
+    /// The node where the edge ends.
+    /// </value>
+    IGraphNode To { get; }
+
+    /// <summary>
+    /// Gets or sets the value associated to edge.
+    /// </summary>
+    object? Value { get; set; }
+}
+
+/// <summary>
+/// Defines the contract for a graph edge.
+/// </summary>
+/// <typeparam name="TNodeValue">Type of the node value.</typeparam>
+/// <typeparam name="TEdgeValue">The edge value.</typeparam>
+public interface IGraphEdge<TNodeValue, TEdgeValue> : IGraphEdge
+{
+    /// <summary>
+    /// Gets the node from which the edge starts.
+    /// </summary>
+    /// <value>
+    /// The node from which the edge starts.
+    /// </value>
+    new IGraphNode<TNodeValue> From { get; }
+
+    /// <summary>
+    /// Gets the node where the edge ends.
+    /// </summary>
+    /// <value>
+    /// The node where the edge ends.
+    /// </value>
+    new IGraphNode<TNodeValue> To { get; }
+
+    /// <summary>
+    /// Gets or sets the value of the edge.
+    /// </summary>
+    new TEdgeValue Value { get; set; }
+
+    /// <summary>
+    /// Gets or sets the value associated to edge.
+    /// </summary>
+    object? IGraphEdge.Value
     {
-        /// <summary>
-        /// Gets the node from which the edge starts.
-        /// </summary>
-        /// <value>
-        /// The node from which the edge starts.
-        /// </value>
-        new IGraphNode<TNodeValue> From { get; }
-
-        /// <summary>
-        /// Gets the node where the edge ends.
-        /// </summary>
-        /// <value>
-        /// The node where the edge ends.
-        /// </value>
-        new IGraphNode<TNodeValue> To { get; }
-
-        /// <summary>
-        /// Gets or sets the value of the edge.
-        /// </summary>
-        new TEdgeValue Value { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value associated to edge.
-        /// </summary>
-        object? IGraphEdge.Value
-        {
-            get => Value;
-            set => Value = (TEdgeValue)(object?)value!;
-        }
+        get => Value;
+        set => Value = (TEdgeValue)(object?)value!;
     }
 }

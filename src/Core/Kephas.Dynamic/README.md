@@ -205,7 +205,7 @@ expandable.Age = 34; // value is set into the inner dictionary
 ## Other resources
 
 * [Kephas.Logging](https://www.nuget.org/packages/Kephas.Logging)
-* [Kephas.Services](https://www.nuget.org/packages/Kephas.Services)
+* [Kephas.DependencyInjection.Services](https://www.nuget.org/packages/Kephas.DependencyInjection.Services)
 * [Kephas.Reflection](https://www.nuget.org/packages/Kephas.Reflection)
 * [Kephas.Analyzers](https://www.nuget.org/packages/Kephas.Analyzers)
 

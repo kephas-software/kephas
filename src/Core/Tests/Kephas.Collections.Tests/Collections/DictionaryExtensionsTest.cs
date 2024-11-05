@@ -8,30 +8,29 @@
 using Kephas.Collections;
 using Xunit;
 
-namespace Kephas.Tests.Collections
+namespace Kephas.Tests.Collections;
+
+public class DictionaryExtensionsTest
 {
-    public class DictionaryExtensionsTest
+    [Fact]
+    public void Merge_different()
     {
-        [Fact]
-        public void Merge_different()
-        {
-            var dict = new Dictionary<string, string> { { "1", "one" } }
-                .Merge(new Dictionary<string, string>() { { "2", "two" } });
+        var dict = new Dictionary<string, string> { { "1", "one" } }
+            .Merge(new Dictionary<string, string>() { { "2", "two" } });
 
-            Assert.Equal(2, dict.Count);
-            Assert.Equal("one", dict["1"]);
-            Assert.Equal("two", dict["2"]);
-        }
+        Assert.Equal(2, dict.Count);
+        Assert.Equal("one", dict["1"]);
+        Assert.Equal("two", dict["2"]);
+    }
 
-        [Fact]
-        public void Merge_same_key()
-        {
-            var dict = new Dictionary<string, string> { { "1", "one" }, { "2", "two" } }
-                .Merge(new Dictionary<string, string>() { { "2", "three" } });
+    [Fact]
+    public void Merge_same_key()
+    {
+        var dict = new Dictionary<string, string> { { "1", "one" }, { "2", "two" } }
+            .Merge(new Dictionary<string, string>() { { "2", "three" } });
 
-            Assert.Equal(2, dict.Count);
-            Assert.Equal("one", dict["1"]);
-            Assert.Equal("three", dict["2"]);
-        }
+        Assert.Equal(2, dict.Count);
+        Assert.Equal("one", dict["1"]);
+        Assert.Equal("three", dict["2"]);
     }
 }

@@ -9,16 +9,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Dynamic
+namespace Kephas.Dynamic;
+
+using System.Dynamic;
+
+
+/// <summary>
+/// Contract for dynamic objects allowing getting or setting
+/// properties by their name through an indexer.
+/// </summary>
+public interface IExpando : IDynamicMetaObjectProvider, IDynamic
 {
-    using System.Dynamic;
-
-
-    /// <summary>
-    /// Contract for dynamic objects allowing getting or setting
-    /// properties by their name through an indexer.
-    /// </summary>
-    public interface IExpando : IDynamicMetaObjectProvider, IDynamic
-    {
-    }
 }

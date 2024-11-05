@@ -1,0 +1,96 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;net6.0</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
+        <WarningsAsErrors>nullable</WarningsAsErrors>
+
+        <Authors>Ioan Crisan</Authors>
+        <Company>Kephas Software SRL</Company>
+        <Product>Kephas Framework</Product>
+
+        <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+        <Description>Provides a common infrastructure for testing Kephas based services.</Description>
+        <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
+
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
+        <PackageIcon>kephas.logo.stone.png</PackageIcon>
+        <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
+        <RepositoryType>github</RepositoryType>
+        <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageTags>kephas framework testing</PackageTags>
+
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NeutralLanguage>en</NeutralLanguage>
+        <DefineConstants>KEPHAS</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <RootNamespace>Kephas.Testing</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+        <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="NSubstitute" Version="5.1.0"/>
+        <PackageReference Include="xunit.extensibility.core" Version="2.9.2"/>
+    </ItemGroup>
+
+    <Choose>
+        <When Condition="'$(TargetFramework)'=='net6.0'">
+            <ItemGroup>
+                <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0"/>
+                <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0"/>
+                <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0"/>
+                <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0"/>
+                <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0"/>
+                <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0"/>
+            </ItemGroup>
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
+                <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0"/>
+                <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0"/>
+                <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2"/>
+                <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2"/>
+                <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2"/>
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
+
+    <ItemGroup>
+        <None Include="..\..\kephas.logo.stone.png" Pack="true" PackagePath="\"/>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+        <None Include="release-notes.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\Kephas.DependencyInjection.Services\Kephas.DependencyInjection.Services.csproj" />
+        <ProjectReference Include="..\..\Core\Kephas.DependencyInjection.Builder\Kephas.DependencyInjection.Builder.csproj"/>
+        <ProjectReference Include="..\..\Extensions\Kephas.Extensions\Kephas.Extensions.csproj"/>
+        <ProjectReference Include="..\..\Extensions\Kephas.Extensions.Serilog\Kephas.Extensions.Serilog.csproj"/>
+        <ProjectReference Include="..\..\Extensions\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj"/>
+    </ItemGroup>
+
+</Project>

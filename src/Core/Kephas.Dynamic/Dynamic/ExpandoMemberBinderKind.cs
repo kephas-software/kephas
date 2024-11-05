@@ -5,39 +5,38 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Dynamic
+namespace Kephas.Dynamic;
+
+using System;
+
+/// <summary>
+/// Enumerates the flags for controlling the member binding through indexer or dynamic member access.
+/// </summary>
+[Flags]
+public enum ExpandoMemberBinderKind
 {
-    using System;
+    /// <summary>
+    /// No binders should be used.
+    /// </summary>
+    None = 0x00,
 
     /// <summary>
-    /// Enumerates the flags for controlling the member binding through indexer or dynamic member access.
+    /// Use only the binder for the inner dictionary.
     /// </summary>
-    [Flags]
-    public enum ExpandoMemberBinderKind
-    {
-        /// <summary>
-        /// No binders should be used.
-        /// </summary>
-        None = 0x00,
+    InnerDictionary = 0x01,
 
-        /// <summary>
-        /// Use only the binder for the inner dictionary.
-        /// </summary>
-        InnerDictionary = 0x01,
+    /// <summary>
+    /// Use only the binder for the inner object.
+    /// </summary>
+    InnerObject = 0x02,
 
-        /// <summary>
-        /// Use only the binder for the inner object.
-        /// </summary>
-        InnerObject = 0x02,
+    /// <summary>
+    /// Use only the binder for the current expando object.
+    /// </summary>
+    This = 0x04,
 
-        /// <summary>
-        /// Use only the binder for the current expando object.
-        /// </summary>
-        This = 0x04,
-
-        /// <summary>
-        /// Use all member binders.
-        /// </summary>
-        All = InnerDictionary | InnerObject | This,
-    }
+    /// <summary>
+    /// Use all member binders.
+    /// </summary>
+    All = InnerDictionary | InnerObject | This,
 }

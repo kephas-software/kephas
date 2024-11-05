@@ -8,23 +8,22 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Reflection
-{
-    using System;
+namespace Kephas.Reflection;
 
+using System;
+
+/// <summary>
+/// Exception for signalling circular dependency errors.
+/// </summary>
+public class CircularDependencyException : Exception
+{
     /// <summary>
-    /// Exception for signalling circular dependency errors.
+    /// Initializes a new instance of the <see cref="CircularDependencyException"/> class.
     /// </summary>
-    public class CircularDependencyException : Exception
+    /// <param name="message">The message.</param>
+    /// <param name="innerException">Optional. The inner exception.</param>
+    public CircularDependencyException(string message, Exception? innerException = null)
+        : base(message, innerException)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CircularDependencyException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="innerException">Optional. The inner exception.</param>
-        public CircularDependencyException(string message, Exception? innerException = null)
-            : base(message, innerException)
-        {
-        }
     }
 }

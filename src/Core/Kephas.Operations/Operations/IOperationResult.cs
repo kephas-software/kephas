@@ -24,12 +24,12 @@ public interface IOperationResult
     object? Value { get; set; }
 
     /// <summary>
-    /// Gets or sets the state of the operation.
+    /// Gets or sets the status of the operation.
     /// </summary>
     /// <value>
-    /// The state of the operation.
+    /// The status of the operation.
     /// </value>
-    OperationState OperationState { get; set; }
+    OperationStatus OperationStatus { get; set; }
 
     /// <summary>
     /// Gets or sets the timestamp when the operation started.
@@ -47,7 +47,7 @@ public interface IOperationResult
     /// <value>
     /// The percent completed.
     /// </value>
-    float PercentCompleted { get; set; }
+    float? PercentCompleted { get; set; }
 
     /// <summary>
     /// Gets or sets the elapsed time.
@@ -55,7 +55,7 @@ public interface IOperationResult
     /// <value>
     /// The elapsed time.
     /// </value>
-    TimeSpan Elapsed { get; set; }
+    TimeSpan? Elapsed { get; set; }
 
     /// <summary>
     /// Gets the messages.
@@ -69,11 +69,11 @@ public interface IOperationResult
     /// Deconstructs this instance.
     /// </summary>
     /// <param name="value">The result value.</param>
-    /// <param name="state">The result state.</param>
-    void Deconstruct(out object? value, out OperationState state)
+    /// <param name="status">The result status.</param>
+    void Deconstruct(out object? value, out OperationStatus status)
     {
         value = Value;
-        state = OperationState;
+        status = OperationStatus;
     }
 }
 
@@ -99,10 +99,10 @@ public interface IOperationResult<TValue> : IOperationResult
     /// Deconstructs this instance.
     /// </summary>
     /// <param name="value">The result value.</param>
-    /// <param name="state">The result state.</param>
-    void Deconstruct(out TValue value, out OperationState state)
+    /// <param name="status">The result status.</param>
+    void Deconstruct(out TValue value, out OperationStatus status)
     {
         value = Value;
-        state = OperationState;
+        status = OperationStatus;
     }
 }

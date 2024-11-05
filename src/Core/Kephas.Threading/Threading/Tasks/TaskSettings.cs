@@ -8,25 +8,24 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Threading.Tasks
+namespace Kephas.Threading.Tasks;
+
+using System;
+
+/// <summary>
+/// Task settings.
+/// </summary>
+public class TaskSettings
 {
-    using System;
+    /// <summary>
+    /// Gets or sets the default value of milliseconds to wait a task in a completion check cycle when simulating synchronous calls.
+    /// The default value is 20 milliseconds.
+    /// </summary>
+    public int? DefaultWaitMilliseconds { get; set; } = 20;
 
     /// <summary>
-    /// Task settings.
+    /// Gets or sets the default timeout when waiting for task completion in simulating synchronous calls.
+    /// The default value is 30 seconds.
     /// </summary>
-    public class TaskSettings
-    {
-        /// <summary>
-        /// Gets or sets the default value of milliseconds to wait a task in a completion check cycle when simulating synchronous calls.
-        /// The default value is 20 milliseconds.
-        /// </summary>
-        public int? DefaultWaitMilliseconds { get; set; } = 20;
-
-        /// <summary>
-        /// Gets or sets the default timeout when waiting for task completion in simulating synchronous calls.
-        /// The default value is 30 seconds.
-        /// </summary>
-        public TimeSpan? DefaultTimeout { get; set; } = TimeSpan.FromSeconds(30);
-    }
+    public TimeSpan? DefaultTimeout { get; set; } = TimeSpan.FromSeconds(30);
 }

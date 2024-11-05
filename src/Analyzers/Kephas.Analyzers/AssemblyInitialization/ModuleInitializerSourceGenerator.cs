@@ -70,7 +70,7 @@ public class ModuleInitializerSourceGenerator : IncrementalGeneratorBase<ClassDe
 
         source.AppendLine(
             $$"""
-                        var thisAssembly = Assembly.GetExecutingAssembly();
+                        var thisAssembly = typeof({{initializerName}}).Assembly;
                         foreach (var assemblyInitializer in thisAssembly.GetCustomAttributes<Attribute>().OfType<IAssemblyInitializer>())
                         {
                             try 

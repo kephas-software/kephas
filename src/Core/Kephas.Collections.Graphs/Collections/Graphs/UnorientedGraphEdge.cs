@@ -8,44 +8,43 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Collections.Graphs
+namespace Kephas.Collections.Graphs;
+
+/// <summary>
+/// Defines an unoriented graph edge.
+/// </summary>
+public class UnorientedGraphEdge : GraphEdge
 {
     /// <summary>
-    /// Defines an unoriented graph edge.
+    /// Initializes a new instance of the <see cref="UnorientedGraphEdge"/> class.
     /// </summary>
-    public class UnorientedGraphEdge : GraphEdge
+    /// <param name="from">The node from which the edge starts.</param>
+    /// <param name="to">The node where the edge ends.</param>
+    public UnorientedGraphEdge(GraphNode from, GraphNode to)
+        : base(from, to)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnorientedGraphEdge"/> class.
-        /// </summary>
-        /// <param name="from">The node from which the edge starts.</param>
-        /// <param name="to">The node where the edge ends.</param>
-        public UnorientedGraphEdge(GraphNode from, GraphNode to)
-            : base(from, to)
-        {
-            from = from ?? throw new ArgumentNullException(nameof(from));
-            to = to ?? throw new ArgumentNullException(nameof(to));
+        from = from ?? throw new ArgumentNullException(nameof(from));
+        to = to ?? throw new ArgumentNullException(nameof(to));
 
-            from.AddIncomingEdge(this);
-            to.AddOutgoingEdge(this);
-        }
+        from.AddIncomingEdge(this);
+        to.AddOutgoingEdge(this);
     }
+}
 
+/// <summary>
+/// Defines an unoriented graph edge connecting nodes holding values.
+/// </summary>
+/// <typeparam name="TNodeValue">Type of the node value.</typeparam>
+/// <typeparam name="TEdgeValue">Type of the edge value.</typeparam>
+public class UnorientedGraphEdge<TNodeValue, TEdgeValue> : GraphEdge<TNodeValue, TEdgeValue>
+{
     /// <summary>
-    /// Defines an unoriented graph edge connecting nodes holding values.
+    /// Initializes a new instance of the <see cref="UnorientedGraphEdge{TNodeValue, TEdgeValue}"/> class.
     /// </summary>
-    /// <typeparam name="TNodeValue">Type of the node value.</typeparam>
-    /// <typeparam name="TEdgeValue">Type of the edge value.</typeparam>
-    public class UnorientedGraphEdge<TNodeValue, TEdgeValue> : GraphEdge<TNodeValue, TEdgeValue>
+    /// <param name="from">The node from which the edge starts.</param>
+    /// <param name="to">The node where the edge ends.</param>
+    public UnorientedGraphEdge(GraphNode<TNodeValue> from, GraphNode<TNodeValue> to)
+        : base(from, to)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnorientedGraphEdge{TNodeValue, TEdgeValue}"/> class.
-        /// </summary>
-        /// <param name="from">The node from which the edge starts.</param>
-        /// <param name="to">The node where the edge ends.</param>
-        public UnorientedGraphEdge(GraphNode<TNodeValue> from, GraphNode<TNodeValue> to)
-            : base(from, to)
-        {
-        }
     }
 }

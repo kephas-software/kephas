@@ -13,46 +13,27 @@ using Xunit;
 
 namespace Kephas.Analyzers.Tests.AssemblyInitialization;
 
-public class ModuleInitializerSourceGeneratorTest
+public class ModuleInitializerSourceGeneratorTest : SourceGeneratorTestBase<ModuleInitializerSourceGenerator>
 {
     [Fact]
     public void Generate_MyAssemblyInitializer()
     {
-        var compilation = CSharpCompilation.Create(
-            "TestProject",
-            new[]
+        var sourceCode =
+            """
+
+            using System;
+            using Kephas.Runtime;
+
+            namespace Kephas.Sample;
+
+            public class MyAssemblyInitializer : IAssemblyInitializer
             {
-                CSharpSyntaxTree.ParseText(
-                    """
+                public void InitializeAssembly() { }
+            }
 
-                    using System;
-                    using Kephas.Runtime;
+            """;
 
-                    namespace Kephas.Sample;
-
-                    public class MyAssemblyInitializer : IAssemblyInitializer
-                    {
-                        public void InitializeAssembly() { }
-                    }
-
-                    """)
-            },
-            Basic.Reference.Assemblies.Net80.References.All,
-            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-
-        var generator = new ModuleInitializerSourceGenerator();
-        var sourceGenerator = generator.AsSourceGenerator();
-
-        // trackIncrementalGeneratorSteps allows to report info about each step of the generator
-        GeneratorDriver driver = CSharpGeneratorDriver.Create(
-            generators: new[] { sourceGenerator },
-            driverOptions: new GeneratorDriverOptions(default, trackIncrementalGeneratorSteps: true));
-
-        // Run the generator
-        driver = driver.RunGenerators(compilation);
-
-        // Assert the driver doesn't recompute the output
-        var result = driver.GetRunResult().Results.Single();
+        var result = GetRunResult(sourceCode);
 
         // Assert the driver use the cached result from AssemblyName and Syntax
         Assert.Collection(
@@ -62,7 +43,7 @@ public class ModuleInitializerSourceGeneratorTest
                 source.HintName.Should().Be("ModuleInitializer.g.cs");
                 var stringSource = source.SourceText.ToString();
                 stringSource.Should().Contain("[ModuleInitializer]");
-                stringSource.Should().Contain("internal static class ModuleInitializer_TestProject");
+                stringSource.Should().Contain("ModuleInitializer_ModuleInitializerSourceGeneratorTest");
                 stringSource.Should().Contain("initializer = (IAssemblyInitializer)new MyAssemblyInitializer();");
                 stringSource.Should().Contain("initializer.InitializeAssembly();");
             });

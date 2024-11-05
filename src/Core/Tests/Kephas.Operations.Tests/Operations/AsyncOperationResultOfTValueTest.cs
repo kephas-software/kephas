@@ -18,40 +18,40 @@ public class AsyncOperationResultOfTValueTest
     {
         var opResult = new AsyncOperationResult<int>(Task.FromResult(12));
 
-        Assert.Equal(OperationState.Completed, opResult.OperationState);
+        Assert.Equal(OperationStatus.Completed, opResult.OperationStatus);
         Assert.Equal(1f, opResult.PercentCompleted);
         Assert.Equal(12, opResult.Value);
     }
 
     [Fact]
-    public async Task AsyncOperationResult_task_completion_sets_state()
+    public async Task AsyncOperationResult_task_completion_sets_status()
     {
         var opResult = new AsyncOperationResult<int>(Task.FromResult(12));
         await opResult.AsTask();
 
-        Assert.Equal(OperationState.Completed, opResult.OperationState);
+        Assert.Equal(OperationStatus.Completed, opResult.OperationStatus);
         Assert.Equal(1f, opResult.PercentCompleted);
         Assert.Equal(12, opResult.Value);
     }
 
     [Fact]
-    public async Task AsyncOperationResult_task_completion_sets_state_delay()
+    public async Task AsyncOperationResult_task_completion_sets_status_delay()
     {
         var opResult = new AsyncOperationResult<int>(Task.Delay(100).ContinueWith(t => 12));
         await opResult.AsTask();
 
-        Assert.Equal(OperationState.Completed, opResult.OperationState);
+        Assert.Equal(OperationStatus.Completed, opResult.OperationStatus);
         Assert.Equal(1f, opResult.PercentCompleted);
         Assert.Equal(12, opResult.Value);
     }
 
     [Fact]
-    public async Task AsyncOperationResult_task_completion_sets_state_exception()
+    public async Task AsyncOperationResult_task_completion_sets_status_exception()
     {
         var opResult = new AsyncOperationResult<int>(Task.FromException<int>(new ArgumentException("arg")));
         await opResult.AsTask().ContinueWith(t =>
         {
-            Assert.Equal(OperationState.Failed, opResult.OperationState);
+            Assert.Equal(OperationStatus.Failed, opResult.OperationStatus);
             Assert.Equal(0f, opResult.PercentCompleted);
             var ex = Assert.Throws<AggregateException>(() => { var _ = opResult.Value; });
             ex!.InnerException.Should().BeOfType<ArgumentException>();
@@ -59,12 +59,12 @@ public class AsyncOperationResultOfTValueTest
     }
 
     [Fact]
-    public async Task AsyncOperationResult_task_completion_sets_state_canceled()
+    public async Task AsyncOperationResult_task_completion_sets_status_canceled()
     {
         var opResult = new AsyncOperationResult<int>(Task.FromCanceled<int>(new CancellationToken(true)));
         await opResult.AsTask().ContinueWith(t =>
         {
-            Assert.Equal(OperationState.Canceled, opResult.OperationState);
+            Assert.Equal(OperationStatus.Canceled, opResult.OperationStatus);
             Assert.Equal(0f, opResult.PercentCompleted);
             var ex = Assert.Throws<AggregateException>(() => { var _ = opResult.Value; });
             ex!.InnerException.Should().BeOfType<TaskCanceledException>();
@@ -116,9 +116,9 @@ public class AsyncOperationResultOfTValueTest
     public void Deconstruct()
     {
         IOperationResult<string> result = new AsyncOperationResult<string>(Task.FromResult("hello")).Complete();
-        var (value, state) = result;
+        var (value, status) = result;
 
         Assert.Equal("hello", value);
-        Assert.Equal(OperationState.Completed, state);
+        Assert.Equal(OperationStatus.Completed, status);
     }
 }

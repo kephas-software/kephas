@@ -5,10 +5,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Logging;
+using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Metadata;
 using Kephas.Resources;
-using Kephas.Services;
-using Microsoft.Extensions.Logging;
 
 namespace Kephas.Pipelines;
 
@@ -28,20 +27,10 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
     /// Initializes a new instance of the <see cref="AsyncPipeline{TTarget,TOperationArgs,TResult}"/> class.
     /// </summary>
     /// <param name="behaviors">Optional. The behaviors.</param>
-    /// <param name="logger">Optional. The logger.</param>
-    public AsyncPipeline(
-        ILazyEnumerable<IAsyncPipelineBehavior, PipelineBehaviorMetadata>? behaviors = null,
-        ILogger<AsyncPipeline<TTarget, TOperationArgs, TResult>>? logger = null)
+   public AsyncPipeline(ILazyEnumerable<IAsyncPipelineBehavior, PipelineBehaviorMetadata>? behaviors = null)
     {
         this.behaviors = behaviors;
-        this.Logger = logger;
     }
-
-    /// <summary>
-    /// Gets the logger.
-    /// </summary>
-    protected ILogger<AsyncPipeline<TTarget, TOperationArgs, TResult>>? Logger { get; }
-
 
     /// <summary>
     /// Processes the pipeline, invoking the behaviors in their priority order.
@@ -57,29 +46,10 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
         Func<Task<TResult>> operation,
         CancellationToken cancellationToken = default)
     {
-        var pipelineBehaviors = this.GetPipelineBehaviors();
+        var pipelineBehaviors = GetPipelineBehaviors();
         if (pipelineBehaviors?.Count is not > 0)
         {
-            if (this.Logger.IsDebugEnabled())
-            {
-                this.Logger?.LogDebug(
-                    PipelinesStrings.Pipeline_ProcessAsync_InvokingOperation_Message,
-                    typeof(TTarget),
-                    typeof(TOperationArgs),
-                    typeof(TResult));
-            }
-
             var result = operation();
-
-            if (this.Logger.IsDebugEnabled())
-            {
-                this.Logger?.LogDebug(
-                    PipelinesStrings.Pipeline_ProcessAsync_InvokedOperation_Message,
-                    typeof(TTarget),
-                    typeof(TOperationArgs),
-                    typeof(TResult));
-            }
-
             return result;
         }
 
@@ -89,52 +59,11 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
         {
             var hasBehavior = enumerator.MoveNext();
             var behavior = hasBehavior ? enumerator.Current : null;
-            if (this.Logger.IsDebugEnabled())
-            {
-                if (hasBehavior)
-                {
-                    this.Logger?.LogDebug(
-                        PipelinesStrings.Pipeline_ProcessAsync_InvokingBehavior_Message,
-                        behavior?.GetType(),
-                        typeof(TTarget),
-                        typeof(TOperationArgs),
-                        typeof(TResult));
-                }
-                else
-                {
-                    this.Logger?.LogDebug(PipelinesStrings.Pipeline_ProcessAsync_InvokingOperation_Message,
-                        typeof(TTarget),
-                        typeof(TOperationArgs),
-                        typeof(TResult));
-                }
-            }
-
             var result = hasBehavior
                 ? behavior is not null
                     ? await behavior.InvokeAsync(ToFuncOfTaskOfObject(next!), target, args, cancellationToken)
                     : throw new NullReferenceException(PipelinesStrings.Pipeline_ProcessAsync_NullBehavior_Exception)
                 : await operation();
-
-            if (this.Logger.IsDebugEnabled())
-            {
-                if (hasBehavior)
-                {
-                    this.Logger?.LogDebug(
-                        PipelinesStrings.Pipeline_ProcessAsync_InvokedBehavior_Message,
-                        behavior?.GetType(),
-                        typeof(TTarget),
-                        typeof(TOperationArgs),
-                        typeof(TResult));
-                }
-                else
-                {
-                    this.Logger?.LogDebug(
-                        PipelinesStrings.Pipeline_ProcessAsync_InvokedOperation_Message,
-                        typeof(TTarget),
-                        typeof(TOperationArgs),
-                        typeof(TResult));
-                }
-            }
 
             return (TResult)result!;
         };
@@ -147,11 +76,11 @@ public class AsyncPipeline<TTarget, TOperationArgs, TResult> : IAsyncPipeline<TT
     /// </summary>
     /// <returns></returns>
     protected virtual IReadOnlyList<IAsyncPipelineBehavior<TTarget, TOperationArgs, TResult>>? GetPipelineBehaviors() =>
-        this.cachedPipelineBehaviors ??= this.behaviors?
-            .SelectServices(b =>
-                (b.Metadata.TargetType?.IsAssignableFrom(typeof(TTarget)) ?? true) &&                       // covariant
-                (b.Metadata.OperationArgsType?.IsAssignableFrom(typeof(TOperationArgs)) ?? true) &&         // covariant
-                (b.Metadata.ResultType is null || typeof(TResult).IsAssignableFrom(b.Metadata.ResultType)))   // contravariant
+        cachedPipelineBehaviors ??= behaviors?
+            .SelectServices(m =>
+                (m.TargetType?.IsAssignableFrom(typeof(TTarget)) ?? true) &&                       // covariant
+                (m.OperationArgsType?.IsAssignableFrom(typeof(TOperationArgs)) ?? true) &&         // covariant
+                (m.ResultType is null || typeof(TResult).IsAssignableFrom(m.ResultType)))   // contravariant
             .Cast<IAsyncPipelineBehavior<TTarget, TOperationArgs, TResult>>()
             .ToList();
 

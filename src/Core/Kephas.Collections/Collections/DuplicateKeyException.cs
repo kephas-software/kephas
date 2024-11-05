@@ -10,64 +10,63 @@
 
 using Kephas.Resources;
 
-namespace Kephas.Collections
+namespace Kephas.Collections;
+
+/// <summary>
+/// Exception for signalling duplicate key errors.
+/// </summary>
+public class DuplicateKeyException : Exception
 {
     /// <summary>
-    /// Exception for signalling duplicate key errors.
+    /// Initializes a new instance of the <see cref="DuplicateKeyException"/> class.
     /// </summary>
-    public class DuplicateKeyException : ApplicationException
+    /// <param name="keyName">The name of the key.</param>
+    public DuplicateKeyException(string keyName)
+        : base(CollectionStrings.DuplicateKeyException_Message)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DuplicateKeyException"/> class.
-        /// </summary>
-        /// <param name="keyName">The name of the key.</param>
-        public DuplicateKeyException(string keyName)
-            : base(CollectionStrings.DuplicateKeyException_Message)
-        {
-            keyName = keyName ?? throw new ArgumentNullException(nameof(keyName));
+        keyName = keyName ?? throw new ArgumentNullException(nameof(keyName));
 
-            this.KeyName = keyName;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DuplicateKeyException"/> class.
-        /// </summary>
-        /// <param name="keyName">The name of the key.</param>
-        /// <param name="message">The message.</param>
-        public DuplicateKeyException(string keyName, string message)
-            : base(message)
-        {
-            keyName = keyName ?? throw new ArgumentNullException(nameof(keyName));
-
-            this.KeyName = keyName;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DuplicateKeyException"/>
-        ///  class.
-        /// </summary>
-        /// <param name="keyName">The name of the key.</param>
-        /// <param name="message">The message.</param>
-        /// <param name="inner">The inner exception.</param>
-        public DuplicateKeyException(string keyName, string message, Exception inner)
-            : base(message, inner)
-        {
-            keyName = keyName ?? throw new ArgumentNullException(nameof(keyName));
-
-            this.KeyName = keyName;
-        }
-
-        /// <summary>
-        /// Gets the name of the key.
-        /// </summary>
-        /// <value>
-        /// The name of the key.
-        /// </value>
-        public string KeyName { get; }
-
-        /// <summary>
-        /// Gets the duplicate item.
-        /// </summary>
-        public object? Item { get; init; }
+        this.KeyName = keyName;
     }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DuplicateKeyException"/> class.
+    /// </summary>
+    /// <param name="keyName">The name of the key.</param>
+    /// <param name="message">The message.</param>
+    public DuplicateKeyException(string keyName, string message)
+        : base(message)
+    {
+        keyName = keyName ?? throw new ArgumentNullException(nameof(keyName));
+
+        this.KeyName = keyName;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DuplicateKeyException"/>
+    ///  class.
+    /// </summary>
+    /// <param name="keyName">The name of the key.</param>
+    /// <param name="message">The message.</param>
+    /// <param name="inner">The inner exception.</param>
+    public DuplicateKeyException(string keyName, string message, Exception inner)
+        : base(message, inner)
+    {
+        keyName = keyName ?? throw new ArgumentNullException(nameof(keyName));
+
+        this.KeyName = keyName;
+    }
+
+    /// <summary>
+    /// Gets the name of the key.
+    /// </summary>
+    /// <value>
+    /// The name of the key.
+    /// </value>
+    public string KeyName { get; }
+
+    /// <summary>
+    /// Gets the duplicate item.
+    /// </summary>
+    public object? Item { get; init; }
 }

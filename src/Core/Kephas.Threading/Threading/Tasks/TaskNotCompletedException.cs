@@ -8,51 +8,50 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Threading.Tasks
+namespace Kephas.Threading.Tasks;
+
+using System;
+using System.Threading.Tasks;
+
+/// <summary>
+/// Exception for signalling task not completed errors.
+/// </summary>
+public class TaskNotCompletedException : Exception
 {
-    using System;
-    using System.Threading.Tasks;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TaskNotCompletedException" /> class.
+    /// </summary>
+    /// <param name="task">The task that is not completed.</param>
+    public TaskNotCompletedException(Task task)
+        : base("The task is not completed.")
+    {
+        Task = task;
+    }
+
+    /// <summary>Initializes a new instance of the <see cref="TaskNotCompletedException" /> class with the specified error message.</summary>
+    /// <param name="task">The task that is not completed.</param>
+    /// <param name="message">The message that describes the error. </param>
+    public TaskNotCompletedException(Task task, string message)
+        : base(message)
+    {
+        Task = task;
+    }
+
+    /// <summary>Initializes a new instance of the <see cref="TaskNotCompletedException" /> class with the specified error message and inner exception.</summary>
+    /// <param name="task">The task that is not completed.</param>
+    /// <param name="message">The message that describes the error. </param>
+    /// <param name="innerException">The exception that is the cause of the current exception. If the <paramref name="innerException" /> parameter is not null, the current exception is raised in a catch block that handles the inner exception. </param>
+    public TaskNotCompletedException(Task task, string message, Exception innerException)
+        : base(message, innerException)
+    {
+        Task = task;
+    }
 
     /// <summary>
-    /// Exception for signalling task not completed errors.
+    /// Gets the task that is not completed.
     /// </summary>
-    public class TaskNotCompletedException : Exception
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TaskNotCompletedException" /> class.
-        /// </summary>
-        /// <param name="task">The task that is not completed.</param>
-        public TaskNotCompletedException(Task task)
-            : base("The task is not completed.")
-        {
-            this.Task = task;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="TaskNotCompletedException" /> class with the specified error message.</summary>
-        /// <param name="task">The task that is not completed.</param>
-        /// <param name="message">The message that describes the error. </param>
-        public TaskNotCompletedException(Task task, string message)
-            : base(message)
-        {
-            this.Task = task;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="TaskNotCompletedException" /> class with the specified error message and inner exception.</summary>
-        /// <param name="task">The task that is not completed.</param>
-        /// <param name="message">The message that describes the error. </param>
-        /// <param name="innerException">The exception that is the cause of the current exception. If the <paramref name="innerException" /> parameter is not null, the current exception is raised in a catch block that handles the inner exception. </param>
-        public TaskNotCompletedException(Task task, string message, Exception innerException)
-            : base(message, innerException)
-        {
-            this.Task = task;
-        }
-
-        /// <summary>
-        /// Gets the task that is not completed.
-        /// </summary>
-        /// <value>
-        /// The task that is not completed.
-        /// </value>
-        public Task Task { get; }
-    }
+    /// <value>
+    /// The task that is not completed.
+    /// </value>
+    public Task Task { get; }
 }

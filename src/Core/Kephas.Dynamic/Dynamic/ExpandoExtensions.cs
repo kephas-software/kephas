@@ -30,16 +30,16 @@ public static class ExpandoExtensions
     /// Merges the indicated options into the context.
     /// </summary>
     /// <typeparam name="T">Type of the context.</typeparam>
-    /// <typeparam name="TContract">Type of the expando contract.</typeparam>
+    /// <typeparam name="TDynamic">Type of the expando contract.</typeparam>
     /// <param name="expando">The expando.</param>
     /// <param name="optionsConfig">The options configuration.</param>
     /// <returns>
     /// This <paramref name="expando"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T Merge<T, TContract>(this T expando, Action<TContract>? optionsConfig)
-        where T : class, TContract
-        where TContract : IDynamic
+    public static T Merge<T, TDynamic>(this T expando, Action<TDynamic>? optionsConfig)
+        where T : class, TDynamic
+        where TDynamic : IDynamic
     {
         expando = expando ?? throw new ArgumentNullException(nameof(expando));
 

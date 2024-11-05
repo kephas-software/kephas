@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
+using Kephas.DependencyInjection;
 
 namespace Kephas.Pipelines;
 
@@ -22,7 +22,7 @@ public interface IAsyncPipelineBehavior
 /// <typeparam name="TTarget">The target type.</typeparam>
 /// <typeparam name="TOperationArgs">The operation arguments type.</typeparam>
 /// <typeparam name="TResult">The result type.</typeparam>
-[AppServiceContract(AllowMultiple = true, ContractType = typeof(IAsyncPipelineBehavior))]
+[TransientService(ServiceType = typeof(IAsyncPipelineBehavior))]
 public interface IAsyncPipelineBehavior<in TTarget, in TOperationArgs, out TResult> : IAsyncPipelineBehavior
 {
     /// <summary>

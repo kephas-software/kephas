@@ -5,15 +5,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Versioning
-{
-    using System.Collections.Generic;
+namespace Kephas.Versioning;
 
-    /// <summary>
-    /// Contract for version comparer objects capable of sorting and determining the equality of
-    /// <see cref="SemanticVersion"/> objects.
-    /// </summary>
-    public interface IVersionComparer : IEqualityComparer<SemanticVersion>, IComparer<SemanticVersion>
-    {
-    }
+using System.Collections.Generic;
+
+/// <summary>
+/// Contract for version comparer objects capable of sorting and determining the equality of
+/// <see cref="SemanticVersion"/> objects.
+/// </summary>
+public interface IVersionComparer : IEqualityComparer<SemanticVersion>, IComparer<SemanticVersion>
+{
 }

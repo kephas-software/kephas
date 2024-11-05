@@ -21,7 +21,7 @@ public class OperationResultTest
     {
         var opResult = new OperationResult(12).Complete();
 
-        Assert.Equal(OperationState.Completed, opResult.OperationState);
+        Assert.Equal(OperationStatus.Completed, opResult.OperationStatus);
         Assert.Equal(1f, opResult.PercentCompleted);
         Assert.Equal(12, opResult.Value);
     }
@@ -30,8 +30,8 @@ public class OperationResultTest
     public void OperationResult_complete_exception()
     {
         var opResult = new ArgumentException("arg").ToOperationResult<object?>();
-        Assert.Equal(OperationState.Failed, opResult.OperationState);
-        Assert.Equal(0f, opResult.PercentCompleted);
+        Assert.Equal(OperationStatus.Failed, opResult.OperationStatus);
+        opResult.PercentCompleted.Should().BeNull();
         opResult.Value.Should().BeNull();
     }
 
@@ -49,9 +49,9 @@ public class OperationResultTest
     public void Deconstruct()
     {
         IOperationResult result = new OperationResult("hello").Complete();
-        var (value, state) = result;
+        var (value, status) = result;
 
         Assert.Equal("hello", value);
-        Assert.Equal(OperationState.Completed, state);
+        Assert.Equal(OperationStatus.Completed, status);
     }
 }

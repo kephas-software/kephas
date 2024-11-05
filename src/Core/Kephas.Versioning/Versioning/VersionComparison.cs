@@ -5,25 +5,24 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Versioning
+namespace Kephas.Versioning;
+
+/// <summary>Version comparison modes.</summary>
+public enum VersionComparison
 {
-    /// <summary>Version comparison modes.</summary>
-    public enum VersionComparison
-    {
-        /// <summary>
-        /// Semantic version 2.0.1-rc comparison.
-        /// </summary>
-        Default,
+    /// <summary>
+    /// Semantic version 2.0.1-rc comparison.
+    /// </summary>
+    Default,
 
-        /// <summary>Compares only the version numbers.</summary>
-        Version,
+    /// <summary>Compares only the version numbers.</summary>
+    Version,
 
-        /// <summary>
-        /// Include Version number and Release labels in the compare.
-        /// </summary>
-        VersionRelease,
+    /// <summary>
+    /// Include Version number and Release labels in the compare.
+    /// </summary>
+    VersionRelease,
 
-        /// <summary>Include all metadata during the compare.</summary>
-        VersionReleaseMetadata,
-    }
+    /// <summary>Include all metadata during the compare.</summary>
+    VersionReleaseMetadata,
 }

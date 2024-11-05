@@ -8,16 +8,15 @@
 using Kephas.Collections.Graphs;
 using Xunit;
 
-namespace Kephas.Tests.Collections.Graphs
+namespace Kephas.Tests.Collections.Graphs;
+
+public class GraphNodeOfTValueTest
 {
-        public class GraphNodeOfTValueTest
+    [Fact]
+    public void ToString_success()
     {
-        [Fact]
-        public void ToString_success()
-        {
-            var node = new GraphNode<int> { Value = 3 };
-            var toString = node.ToString();
-            Assert.Equal("{3}", toString);
-        }
+        var node = new GraphNode<int> { Value = 3 };
+        var toString = node.ToString();
+        Assert.Equal("{3}", toString);
     }
 }

@@ -7,11 +7,11 @@
 
 using System.Dynamic;
 
-namespace Kephas.Tests.Dynamic;
-
 using Kephas.Dynamic;
 using NSubstitute;
 using Xunit;
+
+namespace Kephas.Tests.Dynamic;
 
 public class ObjectExpandoTest
 {
@@ -64,7 +64,7 @@ public class ObjectExpandoTest
         var objValue = instance.GetPrivateAge();
 
         Assert.Equal(10, objValue);
-        Assert.Equal(null, value);
+        Assert.Null(value);
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public class ObjectExpandoTest
         expando.PrivateAge = 10;
         var objValue = instance.GetPrivateAge();
 
-        Assert.NotEqual(value, objValue);
+        Assert.NotEqual<object>(value, objValue);
         Assert.Equal(10, expando.PrivateAge);
         Assert.Equal(0, instance.GetPrivateAge());
     }
@@ -122,7 +122,7 @@ public class ObjectExpandoTest
         dynamic expando = new ObjectExpando(instance);
 
         var isOld = expando.IsOld();
-        isOld.Should().Be(expectedResult);
+        Assert.Equal(expectedResult, isOld);
     }
 
     [Fact]

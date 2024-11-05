@@ -8,15 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Logging;
-using Microsoft.Extensions.Logging;
-
 namespace Kephas.ExceptionHandling;
 
 /// <summary>
 /// Interface for notifications, providing a message and a severity.
 /// </summary>
-public interface IErrorNotification : IHasLogLevel
+public interface IErrorNotification : IHasSeverityLevel
 {
     /// <summary>
     /// Gets the notification message.
@@ -24,12 +21,12 @@ public interface IErrorNotification : IHasLogLevel
     string? Message { get; }
 
     /// <summary>
-    /// Gets the severity. The default value is <see cref="LogLevel.Error"/>.
+    /// Gets the severity. The default value is <see cref="SeverityLevel.Error"/>.
     /// </summary>
-    LogLevel Severity => LogLevel.Error;
+    SeverityLevel Severity => SeverityLevel.Error;
 
     /// <summary>
     /// Gets the log level.
     /// </summary>
-    LogLevel IHasLogLevel.LogLevel => Severity;
+    SeverityLevel IHasSeverityLevel.SeverityLevel => Severity;
 }

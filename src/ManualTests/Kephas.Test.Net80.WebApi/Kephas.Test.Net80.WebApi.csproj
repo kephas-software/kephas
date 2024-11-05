@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+
+        <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+        <WarningsAsErrors>nullable</WarningsAsErrors>
+
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\.generated</CompilerGeneratedFilesOutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Update="README.md">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Extensions\Kephas.Extensions.Mediator\Kephas.Extensions.Mediator.csproj" />
+      <ProjectReference Include="..\..\Web\Kephas.Web\Kephas.Web.csproj" />
+      <ProjectReference Include="..\..\Web\Kephas.Web.Serilog\Kephas.Web.Serilog.csproj" />
+    </ItemGroup>
+
+</Project>

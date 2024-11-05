@@ -8,80 +8,79 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Collections.Graphs
+namespace Kephas.Collections.Graphs;
+
+/// <summary>
+/// Extension methods for graphs.
+/// </summary>
+public static class GraphExtensions
 {
     /// <summary>
-    /// Extension methods for graphs.
+    /// Merges the source graph into this graph.
     /// </summary>
-    public static class GraphExtensions
+    /// <typeparam name="TGraph">Type of the graph.</typeparam>
+    /// <param name="graph">The graph to act on.</param>
+    /// <param name="sourceGraph">The source graph.</param>
+    /// <returns>
+    /// This graph.
+    /// </returns>
+    public static TGraph Merge<TGraph>(this TGraph graph, TGraph sourceGraph)
+        where TGraph : Graph
     {
-        /// <summary>
-        /// Merges the source graph into this graph.
-        /// </summary>
-        /// <typeparam name="TGraph">Type of the graph.</typeparam>
-        /// <param name="graph">The graph to act on.</param>
-        /// <param name="sourceGraph">The source graph.</param>
-        /// <returns>
-        /// This graph.
-        /// </returns>
-        public static TGraph Merge<TGraph>(this TGraph graph, TGraph sourceGraph)
-            where TGraph : Graph
+        graph = graph ?? throw new ArgumentNullException(nameof(graph));
+
+        if (sourceGraph == null)
         {
-            graph = graph ?? throw new ArgumentNullException(nameof(graph));
-
-            if (sourceGraph == null)
-            {
-                return graph;
-            }
-
-            sourceGraph.Nodes.ForEach(n => graph.AddNode(n));
-            sourceGraph.Edges.ForEach(e => graph.AddEdge(e));
-
             return graph;
         }
 
-        /// <summary>
-        /// Gets the connected subgraphs.
-        /// </summary>
-        /// <typeparam name="TGraph">Type of the graph.</typeparam>
-        /// <param name="graph">The graph to act on.</param>
-        /// <returns>
-        /// The connected subgraphs.
-        /// </returns>
-        public static ICollection<TGraph> GetConnectedSubgraphs<TGraph>(this TGraph graph)
-            where TGraph : Graph
+        sourceGraph.Nodes.ForEach(n => graph.AddNode(n));
+        sourceGraph.Edges.ForEach(e => graph.AddEdge(e));
+
+        return graph;
+    }
+
+    /// <summary>
+    /// Gets the connected subgraphs.
+    /// </summary>
+    /// <typeparam name="TGraph">Type of the graph.</typeparam>
+    /// <param name="graph">The graph to act on.</param>
+    /// <returns>
+    /// The connected subgraphs.
+    /// </returns>
+    public static ICollection<TGraph> GetConnectedSubgraphs<TGraph>(this TGraph graph)
+        where TGraph : Graph
+    {
+        graph = graph ?? throw new ArgumentNullException(nameof(graph));
+
+        var subgraphs = new List<TGraph>();
+
+        var nodes = new List<IGraphNode>(graph.Nodes);
+        while (nodes.Count > 0)
         {
-            graph = graph ?? throw new ArgumentNullException(nameof(graph));
+            var subgraph = (TGraph)graph.CreateSubgraph();
+            var connectedNodes = new List<IGraphNode> { nodes[0] };
 
-            var subgraphs = new List<TGraph>();
-
-            var nodes = new List<IGraphNode>(graph.Nodes);
-            while (nodes.Count > 0)
+            while (connectedNodes.Count > 0)
             {
-                var subgraph = (TGraph)graph.CreateSubgraph();
-                var connectedNodes = new List<IGraphNode> { nodes[0] };
+                var nextNodes = new List<IGraphNode>();
+                connectedNodes.ForEach(
+                    n =>
+                    {
+                        if (subgraph.AddNode(n))
+                        {
+                            nextNodes.AddRange(n.ConnectedNodes);
+                            nodes.Remove(n);
+                        }
+                    });
+                connectedNodes.ForEach(n => n.ConnectedEdges.ForEach(e => subgraph.AddEdge(e)));
 
-                while (connectedNodes.Count > 0)
-                {
-                    var nextNodes = new List<IGraphNode>();
-                    connectedNodes.ForEach(
-                        n =>
-                            {
-                                if (subgraph.AddNode(n))
-                                {
-                                    nextNodes.AddRange(n.ConnectedNodes);
-                                    nodes.Remove(n);
-                                }
-                            });
-                    connectedNodes.ForEach(n => n.ConnectedEdges.ForEach(e => subgraph.AddEdge(e)));
-
-                    connectedNodes = nextNodes;
-                }
-
-                subgraphs.Add(subgraph);
+                connectedNodes = nextNodes;
             }
 
-            return subgraphs;
+            subgraphs.Add(subgraph);
         }
+
+        return subgraphs;
     }
 }

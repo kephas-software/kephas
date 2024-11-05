@@ -9,9 +9,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using FluentAssertions;
-using Kephas.ExceptionHandling;
 using Kephas.Operations;
-using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Kephas.Tests.Operations;
@@ -25,28 +23,5 @@ public class OperationMessageTest
     {
         var msg = new OperationMessage(message) { Timestamp = timestamp };
         msg.ToString().Should().Be(expectedValue);
-    }
-
-    [Theory]
-    [InlineData(typeof(ArgumentException), "hello", LogLevel.Warning, "[Warning] hello (ArgumentException)")]
-    [InlineData(typeof(TestCriticalException), "hello", null, "[Critical] hello (TestCriticalException)")]
-    [InlineData(typeof(TestCriticalException), "hello", LogLevel.Warning, "[Warning] hello (TestCriticalException)")]
-    public void ToString_contains_exception(Type exceptionType, string exceptionMessage, LogLevel? logLevel, string expectedValue)
-    {
-        var exception = (Exception)Activator.CreateInstance(exceptionType, exceptionMessage)!;
-        var msg = logLevel is not null
-            ? new OperationMessage(exception) { LogLevel = logLevel.Value }
-            : new OperationMessage(exception);
-
-        msg.ToString().Should().Be(expectedValue);
-    }
-
-    internal class TestCriticalException : AppException
-    {
-        public TestCriticalException(string message)
-            : base(message)
-        {
-            Severity = LogLevel.Critical;
-        }
     }
 }

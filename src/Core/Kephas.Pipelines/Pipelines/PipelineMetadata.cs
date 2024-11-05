@@ -5,16 +5,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Collections;
-using Kephas.Services;
-using Kephas.Services.Metadata;
+using Kephas.DependencyInjection.Metadata;
 
 namespace Kephas.Pipelines;
 
 /// <summary>
 /// Metadata class for <see cref="IAsyncPipeline{TTarget,TOperationArgs,TResult}"/>.
 /// </summary>
-public class PipelineMetadata : AppServiceMetadata
+public record PipelineMetadata : ServiceMetadata
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PipelineMetadata"/> class.
@@ -28,9 +26,9 @@ public class PipelineMetadata : AppServiceMetadata
             return;
         }
 
-        this.TargetType = (Type?)metadata.TryGetValue(nameof(this.TargetType));
-        this.OperationArgsType = (Type?)metadata.TryGetValue(nameof(this.OperationArgsType));
-        this.ResultType = (Type?)metadata.TryGetValue(nameof(this.ResultType));
+        TargetType = (Type?)TryGetValue(metadata, nameof(TargetType));
+        OperationArgsType = (Type?)TryGetValue(metadata, nameof(OperationArgsType));
+        ResultType = (Type?)TryGetValue(metadata, nameof(ResultType));
     }
 
     /// <summary>
