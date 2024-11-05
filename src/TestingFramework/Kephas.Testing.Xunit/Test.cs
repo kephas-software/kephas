@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Text;
@@ -294,6 +295,84 @@ public static class Test
     {
         var regex = new Regex(namePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
         return AssemblyLoadContext.Default.Assemblies.Where(a => regex.IsMatch(a.GetName().Name ?? string.Empty));
+    }
+
+    /// <summary>
+    /// Executes the provided operation within the provided culture.
+    /// </summary>
+    /// <param name="cultureName">The culture name, for example "en-US" or "de-DE".</param>
+    /// <param name="operation">The operation to execute.</param>
+    public static void UsingCulture(string cultureName, Action operation)
+    {
+        _ = operation ?? throw new ArgumentNullException(nameof(operation));
+
+        UsingCulture(cultureName, () =>
+        {
+            operation?.Invoke();
+            return true;
+        });
+    }
+
+    /// <summary>
+    /// Executes the provided operation within the provided culture.
+    /// </summary>
+    /// <param name="cultureName">The culture name, for example "en-US" or "de-DE".</param>
+    /// <param name="operation">The operation to execute.</param>
+    public static T UsingCulture<T>(string cultureName, Func<T> operation)
+    {
+        _ = operation ?? throw new ArgumentNullException(nameof(operation));
+
+        var currentCulture = CultureInfo.CurrentCulture;
+        var currentUICulture = CultureInfo.CurrentUICulture;
+        try
+        {
+            CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo(cultureName);
+            return operation();
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = currentCulture;
+            CultureInfo.CurrentUICulture = currentUICulture;
+        }
+    }
+
+    /// <summary>
+    /// Executes the provided operation within the provided culture asynchronously.
+    /// </summary>
+    /// <param name="culture">The culture name, for example "en-US" or "de-DE".</param>
+    /// <param name="operation">The operation to execute.</param>
+    public static async Task UsingCultureAsync(string culture, Func<Task> operation)
+    {
+        _ = operation ?? throw new ArgumentNullException(nameof(operation));
+
+        await UsingCultureAsync(culture, async () =>
+        {
+            await operation();
+            return true;
+        });
+    }
+
+    /// <summary>
+    /// Executes the provided operation within the provided culture.
+    /// </summary>
+    /// <param name="culture">The culture name, for example "en-US" or "de-DE".</param>
+    /// <param name="operation">The operation to execute.</param>
+    public static async Task<T> UsingCultureAsync<T>(string culture, Func<Task<T>> operation)
+    {
+        _ = operation ?? throw new ArgumentNullException(nameof(operation));
+
+        var currentCulture = CultureInfo.CurrentCulture;
+        var currentUICulture = CultureInfo.CurrentUICulture;
+        try
+        {
+            CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo(culture);
+            return await operation();
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = currentCulture;
+            CultureInfo.CurrentUICulture = currentUICulture;
+        }
     }
 
     private static void ConfigureAppRuntimeSettings<T>(this AppRuntimeSettings settings, Action<AppRuntimeSettings>? appRuntimeConfig = null)
