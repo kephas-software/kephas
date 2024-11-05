@@ -112,6 +112,7 @@ public class MediatorHandlerResolverTest() : IntegrationTestBase<MediatorHandler
             {
                 typeof(IEnumerable<IStreamPipelineBehavior<StreamReturnIntMessage, int>>),
                 [
+                    typeof(StreamLogPipelineBehavior<StreamReturnIntMessage, int>),
                     typeof(StreamRequestValidationPipelineBehavior<StreamReturnIntMessage, int>),
                 ]
             },
