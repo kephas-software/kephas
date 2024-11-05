@@ -15,9 +15,5 @@ namespace Kephas.DependencyInjection.Metadata;
 /// </summary>
 /// <param name="value">The service key.</param>
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public class ServiceKeyAttribute(string value) : Attribute, IServiceMetadataValue<string>
-{
-    /// <summary>Gets the metadata value.</summary>
-    /// <value>The metadata value.</value>
-    public string Value { get; } = value ?? throw new ArgumentNullException(nameof(value));
-}
+public class ServiceKeyAttribute(string value)
+    : ServiceMetadataValueAttributeBase<string>(value ?? throw new ArgumentNullException(nameof(value)));
