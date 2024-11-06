@@ -30,18 +30,15 @@ public record ExceptionData() : IErrorNotification
         var errorNotification = exception as IErrorNotification;
         severity ??= errorNotification?.Severity ?? SeverityLevel.Error;
 
-        ExceptionType = errorNotification?.ExceptionType ?? exception.GetType().Name;
+        ErrorType = errorNotification?.ErrorType ?? exception.GetType().Name;
         Message = exception.Message;
         Severity = severity.Value;
     }
 
     /// <summary>
-    /// Gets or sets the type of the exception.
+    /// Gets or sets the type of the error.
     /// </summary>
-    /// <value>
-    /// The type of the exception.
-    /// </value>
-    public string? ExceptionType { get; set; }
+    public string? ErrorType { get; set; }
 
     /// <summary>
     /// Gets or sets the message.
@@ -66,5 +63,5 @@ public record ExceptionData() : IErrorNotification
     /// A string that represents the current object.
     /// </returns>
     public override string ToString() =>
-        $"{Message} ({ExceptionType}: {Severity})";
+        $"{Message} ({ErrorType}: {Severity})";
 }

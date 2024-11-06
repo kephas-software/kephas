@@ -26,8 +26,8 @@ public interface IErrorNotification : IHasSeverityLevel
     SeverityLevel IHasSeverityLevel.Severity => SeverityLevel.Error;
 
     /// <summary>
-    /// Gets the exception type.
+    /// Gets the error type.
     /// This can be used to identify the exception type in a more specific way.
     /// </summary>
-    public string? ExceptionType => GetType().Name;
+    public string? ErrorType => GetType().Name;
 }

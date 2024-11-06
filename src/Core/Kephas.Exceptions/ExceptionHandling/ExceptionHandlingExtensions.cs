@@ -38,7 +38,7 @@ public static class ExceptionHandlingExtensions
         return new AppException(exceptionData.Message)
         {
             Severity = exceptionData.Severity,
-            ExceptionType = exceptionData.ExceptionType,
+            ErrorType = exceptionData.ErrorType,
         };
     }
 }

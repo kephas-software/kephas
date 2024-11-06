@@ -30,7 +30,6 @@ public class AppException : Exception, IErrorNotification
 
     /// <summary>
     /// Gets or sets the exception type.
-    /// This can be used to identify the exception type in a more specific way.
     /// </summary>
-    public string? ExceptionType { get; init; }
+    public string? ErrorType { get; init; }
 }

@@ -59,7 +59,7 @@ public class OperationResultExtensionsTest
 
         updatedResult.Elapsed.Should().Be(elapsed);
         updatedResult.OperationStatus.Should().Be(OperationStatus.Failed);
-        updatedResult.Messages.Should().ContainSingle(m => m is ExceptionMessage && ((ExceptionMessage)m).Exception.ExceptionType == exception.GetType().Name);
+        updatedResult.Messages.Should().ContainSingle(m => m is ExceptionMessage && ((ExceptionMessage)m).Exception.ErrorType == exception.GetType().Name);
     }
 
     [Fact]
@@ -241,7 +241,7 @@ public class OperationResultExtensionsTest
         result.Value.Should().BeNull();
         result.Elapsed.Should().Be(elapsed);
         result.OperationStatus.Should().Be(OperationStatus.Failed);
-        result.Messages.Should().ContainSingle(m => m is ExceptionMessage && ((ExceptionMessage)m).Exception.ExceptionType == exception.GetType().Name);
+        result.Messages.Should().ContainSingle(m => m is ExceptionMessage && ((ExceptionMessage)m).Exception.ErrorType == exception.GetType().Name);
     }
 
     [Fact]
@@ -255,6 +255,6 @@ public class OperationResultExtensionsTest
         result.AsTask().IsFaulted.Should().BeTrue();
         result.Elapsed.Should().Be(elapsed);
         result.OperationStatus.Should().Be(OperationStatus.Failed);
-        result.Messages.Should().ContainSingle(m => m is ExceptionMessage && ((ExceptionMessage)m).Exception.ExceptionType == exception.GetType().Name);
+        result.Messages.Should().ContainSingle(m => m is ExceptionMessage && ((ExceptionMessage)m).Exception.ErrorType == exception.GetType().Name);
     }
 }
