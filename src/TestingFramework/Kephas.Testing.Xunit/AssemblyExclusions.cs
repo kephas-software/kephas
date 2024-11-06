@@ -7,4 +7,4 @@
 
 using Kephas.DependencyInjection;
 
-[assembly: ExcludeAssembliesFromDependencyInjection("^(Xunit|NUnit|Castle|NSubstitute|Moq)")]
+[assembly: ExcludeAssembliesFromDependencyInjection("^(Xunit|NUnit|Castle|NSubstitute|Moq|FluentAssertions|Newtonsoft)")]
