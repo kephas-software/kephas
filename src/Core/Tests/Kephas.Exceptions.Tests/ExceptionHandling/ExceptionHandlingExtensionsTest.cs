@@ -20,10 +20,10 @@ namespace Kephas.Tests.ExceptionHandling
         [InlineData(SeverityLevel.Warning, false)]
         [InlineData(SeverityLevel.Information, false)]
         [InlineData(SeverityLevel.None, false)]
-        public void IsError_ReturnsExpectedResult(SeverityLevel severityLevel, bool expected)
+        public void IsError_ReturnsExpectedResult(SeverityLevel severity, bool expected)
         {
             var obj = Substitute.For<IHasSeverityLevel>();
-            obj.SeverityLevel.Returns(severityLevel);
+            obj.Severity.Returns(severity);
 
             obj.IsError().Should().Be(expected);
         }
@@ -34,10 +34,10 @@ namespace Kephas.Tests.ExceptionHandling
         [InlineData(SeverityLevel.Warning, true)]
         [InlineData(SeverityLevel.Information, false)]
         [InlineData(SeverityLevel.None, false)]
-        public void IsWarning_ReturnsExpectedResult(SeverityLevel severityLevel, bool expected)
+        public void IsWarning_ReturnsExpectedResult(SeverityLevel severity, bool expected)
         {
             var obj = Substitute.For<IHasSeverityLevel>();
-            obj.SeverityLevel.Returns(severityLevel);
+            obj.Severity.Returns(severity);
 
             obj.IsWarning().Should().Be(expected);
         }

@@ -27,4 +27,10 @@ public class AppException : Exception, IErrorNotification
     /// This helps in identifying the criticality of the exception and can be used for logging, monitoring, or handling exceptions based on their severity.
     /// </summary>
     public SeverityLevel Severity { get; init; } = SeverityLevel.Error;
+
+    /// <summary>
+    /// Gets or sets the exception type.
+    /// This can be used to identify the exception type in a more specific way.
+    /// </summary>
+    public string? ExceptionType { get; init; }
 }

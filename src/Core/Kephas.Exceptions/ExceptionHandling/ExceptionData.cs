@@ -25,11 +25,12 @@ public record ExceptionData() : IErrorNotification
     public ExceptionData(Exception exception, SeverityLevel? severity = null)
         : this()
     {
-        exception = exception ?? throw new ArgumentNullException(nameof(exception));
+        ArgumentNullException.ThrowIfNull(exception);
 
-        severity ??= exception is IErrorNotification notification ? notification.Severity : SeverityLevel.Error;
+        var errorNotification = exception as IErrorNotification;
+        severity ??= errorNotification?.Severity ?? SeverityLevel.Error;
 
-        ExceptionType = exception.GetType().FullName!;
+        ExceptionType = errorNotification?.ExceptionType ?? exception.GetType().Name;
         Message = exception.Message;
         Severity = severity.Value;
     }
