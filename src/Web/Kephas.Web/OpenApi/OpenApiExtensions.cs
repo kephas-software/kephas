@@ -1,4 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="OpenApiExtensions.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +17,6 @@ namespace Kephas.Web.OpenApi;
 /// <summary>
 /// Provides extension methods to the NSwag (OpenAPI) package.
 /// </summary>
-[ExcludeFromCodeCoverage]
 public static class OpenApiExtensions
 {
     /// <summary>
