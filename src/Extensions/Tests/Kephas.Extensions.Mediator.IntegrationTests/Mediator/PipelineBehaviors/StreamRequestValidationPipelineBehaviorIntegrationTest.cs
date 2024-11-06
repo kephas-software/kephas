@@ -11,7 +11,7 @@ using Kephas.Testing;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
-using ValidationException = Kephas.Extensions.Validation.ValidationException;
+using ValidationException = Kephas.Validation.ValidationException;
 
 namespace Kephas.Extensions.Tests.Mediator.PipelineBehaviors;
 

@@ -7,7 +7,7 @@
 
 using FluentAssertions;
 using FluentValidation.Results;
-using Kephas.Extensions.Validation;
+using Kephas.Validation;
 using Xunit;
 
 namespace Kephas.Extensions.Tests.Validation;
@@ -18,14 +18,16 @@ public class IValidationServiceTest
     public void EnsureValid_IsValid()
     {
         IValidationService validationService = new TestValidationService();
-        validationService.EnsureValid("hello");
+        var exception = Record.Exception(() => validationService.EnsureValid("hello"));
+        exception.Should().BeNull();
     }
 
     [Fact]
     public async Task EnsureValidAsync_IsValid()
     {
         IValidationService validationService = new TestValidationService();
-        await validationService.EnsureValidAsync("hello");
+        var exception = await Record.ExceptionAsync(() => validationService.EnsureValidAsync("hello"));
+        exception.Should().BeNull();
     }
 
     [Fact]

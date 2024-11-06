@@ -5,27 +5,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
 using FluentValidation;
 using FluentValidation.Results;
+using Kephas.DependencyInjection;
 
-namespace Kephas.Extensions.Validation;
+namespace Kephas.Validation;
 
 /// <summary>
 /// Default implementation of the <see cref="IValidationService"/>.
 /// </summary>
-public class ValidationService : IValidationService
+public class ValidationService(ILazyEnumerable<IValidator, ValidatorMetadata> lazyEnumerable) : IValidationService
 {
-    private readonly IValidatorsProvider _validatorsProvider;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ValidationService"/> class.
-    /// </summary>
-    /// <param name="validatorsProvider">The service providing the validators.</param>
-    public ValidationService(IValidatorsProvider validatorsProvider)
-    {
-        _validatorsProvider = validatorsProvider ?? throw new ArgumentNullException(nameof(validatorsProvider));
-    }
-
     /// <summary>Validates the specified instance.</summary>
     /// <param name="obj">The object to be validated.</param>
     /// <returns>A ValidationResult object contains any validation failures.</returns>
@@ -34,7 +25,7 @@ public class ValidationService : IValidationService
         if (obj is null) return new ValidationResult();
 
         var validatedType = obj.GetType();
-        var validators = _validatorsProvider.GetValidators(validatedType);
+        var validators = GetValidators(validatedType);
         return new ValidationResult(validators.Select(v => v.Validate(GetValidationContext(obj, validatedType))));
     }
 
@@ -47,7 +38,7 @@ public class ValidationService : IValidationService
         if (obj is null) return new ValidationResult();
 
         var validatedType = obj.GetType();
-        var validators = _validatorsProvider.GetValidators(validatedType);
+        var validators = GetValidators(validatedType);
         var results = new List<ValidationResult>();
         foreach (var validator in validators)
         {
@@ -57,9 +48,11 @@ public class ValidationService : IValidationService
         return new ValidationResult(results);
     }
 
-    private static IValidationContext GetValidationContext(object obj, Type objType)
-    {
-        var validationContext = (IValidationContext)Activator.CreateInstance(typeof(ValidationContext<>).MakeGenericType(objType), obj)!;
-        return validationContext;
-    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private IEnumerable<IValidator> GetValidators(Type validatedType) =>
+        lazyEnumerable.SelectServices(m => m.ValidatedType?.IsAssignableFrom(validatedType) is true);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static IValidationContext GetValidationContext(object obj, Type objType) =>
+        (IValidationContext)Activator.CreateInstance(typeof(ValidationContext<>).MakeGenericType(objType), obj)!;
 }

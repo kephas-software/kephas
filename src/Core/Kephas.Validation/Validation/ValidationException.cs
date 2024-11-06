@@ -8,7 +8,7 @@
 using FluentValidation.Results;
 using Kephas.ExceptionHandling;
 
-namespace Kephas.Extensions.Validation;
+namespace Kephas.Validation;
 
 /// <summary>
 /// Exception occurring when the provided input is not valid.

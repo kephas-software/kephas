@@ -7,9 +7,8 @@
 
 using FluentValidation.Results;
 using Kephas.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Kephas.Extensions.Validation;
+namespace Kephas.Validation;
 
 /// <summary>
 /// Service used for validation.

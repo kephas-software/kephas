@@ -8,19 +8,20 @@
 using FluentAssertions;
 using Kephas.Extensions.Tests.UseCases.Model;
 using Kephas.Extensions.Tests.UseCases.Validators;
-using Kephas.Extensions.Validation;
 using Kephas.Testing;
+using Kephas.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace Kephas.Extensions.Tests;
 
-public class ValidationServiceRegistrationIntegrationTest
+public class ValidationServiceRegistrationIntegrationTest()
+    : IntegrationTestBase<ValidationServiceRegistrationIntegrationTest>(includeTestAssembly: true)
 {
     [Fact]
     public void AddValidationServices_integration_Validate()
     {
-        var validationService = GetValidationService();
+        var validationService = ServiceProvider.GetRequiredService<IValidationService>();
 
         var result = Test.UsingCulture(
             "en-US",
@@ -37,7 +38,7 @@ public class ValidationServiceRegistrationIntegrationTest
     [Fact]
     public async Task AddValidationServices_integration_ValidateAsync()
     {
-        var validationService = GetValidationService();
+        var validationService = ServiceProvider.GetRequiredService<IValidationService>();
 
         var result = await Test.UsingCultureAsync(
             "en-US",
@@ -54,8 +55,7 @@ public class ValidationServiceRegistrationIntegrationTest
     [Fact]
     public async Task AddValidationServices_integration_async_validators()
     {
-        var serviceProvider = GetServiceProvider();
-        using var scope = serviceProvider.CreateScope();
+        using var scope = ServiceProvider.CreateScope();
 
         var validationService = scope.ServiceProvider.GetRequiredService<IValidationService>();
 
@@ -67,27 +67,5 @@ public class ValidationServiceRegistrationIntegrationTest
         result.Errors.Should().Satisfy(
             e => e.ErrorMessage == "Producer validation failed.",
             e => e.ErrorMessage == "'Birthday' must be less than or equal to '4/5/2010 12:00:00 AM'.");
-    }
-
-    private static IValidationService GetValidationService()
-    {
-        var serviceProvider = GetServiceProvider();
-        var validationService = serviceProvider.GetRequiredService<IValidationService>();
-        return validationService;
-    }
-
-    private static ServiceProvider GetServiceProvider()
-    {
-        var services = new ServiceCollection();
-        services.AddApplicationServices(
-            Test.GetIntegrationConfig(),
-            options =>
-            {
-                options.AppAssemblyNamePattern = "^Kephas.";
-                options.EntryAssembly = typeof(TestPersonValidator).Assembly;
-            });
-
-        var serviceProvider = services.BuildServiceProvider();
-        return serviceProvider;
     }
 }

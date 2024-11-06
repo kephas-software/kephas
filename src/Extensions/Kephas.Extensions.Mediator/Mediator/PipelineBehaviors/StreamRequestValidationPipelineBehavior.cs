@@ -7,7 +7,7 @@
 
 using System.Runtime.CompilerServices;
 using Kephas.DependencyInjection.Metadata;
-using Kephas.Extensions.Validation;
+using Kephas.Validation;
 using MediatR;
 
 namespace Kephas.Extensions.Mediator.PipelineBehaviors;

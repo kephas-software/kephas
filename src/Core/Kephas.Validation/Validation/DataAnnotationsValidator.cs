@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace Kephas.Extensions.Validation;
+namespace Kephas.Validation;
 
 using ValidationResult = FluentValidation.Results.ValidationResult;
 
