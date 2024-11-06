@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Extensions.Tests.UseCases.Services;
+namespace Kephas.Tests.UseCases.Services;
 
 public class Repository : IRepository
 {

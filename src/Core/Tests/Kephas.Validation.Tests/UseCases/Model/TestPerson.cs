@@ -7,7 +7,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Kephas.Extensions.Tests.UseCases.Model;
+namespace Kephas.Tests.UseCases.Model;
 
 public record TestPerson(string Name, string Email, int Age, DateTime? Birthday) : IPerson
 {

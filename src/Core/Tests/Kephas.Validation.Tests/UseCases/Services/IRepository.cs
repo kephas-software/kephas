@@ -7,7 +7,7 @@
 
 using Kephas.DependencyInjection;
 
-namespace Kephas.Extensions.Tests.UseCases.Services;
+namespace Kephas.Tests.UseCases.Services;
 
 [ScopedService]
 public interface IRepository

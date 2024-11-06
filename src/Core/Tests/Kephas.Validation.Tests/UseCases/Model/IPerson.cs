@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Extensions.Tests.UseCases.Model;
+namespace Kephas.Tests.UseCases.Model;
 
 public interface IPerson
 {

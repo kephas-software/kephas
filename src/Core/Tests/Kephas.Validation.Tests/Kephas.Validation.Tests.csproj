@@ -7,7 +7,7 @@
         <Nullable>enable</Nullable>
         <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
 
-        <RootNamespace>Kephas.Extensions.Tests</RootNamespace>
+        <RootNamespace>Kephas.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

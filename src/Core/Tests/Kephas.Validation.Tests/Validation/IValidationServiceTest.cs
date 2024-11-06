@@ -10,7 +10,7 @@ using FluentValidation.Results;
 using Kephas.Validation;
 using Xunit;
 
-namespace Kephas.Extensions.Tests.Validation;
+namespace Kephas.Tests.Validation;
 
 public class IValidationServiceTest
 {

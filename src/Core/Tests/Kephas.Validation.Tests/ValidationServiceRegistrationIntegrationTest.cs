@@ -6,14 +6,13 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using FluentAssertions;
-using Kephas.Extensions.Tests.UseCases.Model;
-using Kephas.Extensions.Tests.UseCases.Validators;
 using Kephas.Testing;
+using Kephas.Tests.UseCases.Model;
 using Kephas.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-namespace Kephas.Extensions.Tests;
+namespace Kephas.Tests;
 
 public class ValidationServiceRegistrationIntegrationTest()
     : IntegrationTestBase<ValidationServiceRegistrationIntegrationTest>(includeTestAssembly: true)

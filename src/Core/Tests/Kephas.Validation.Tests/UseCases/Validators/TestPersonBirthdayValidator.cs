@@ -6,9 +6,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using FluentValidation;
-using Kephas.Extensions.Tests.UseCases.Model;
+using Kephas.Tests.UseCases.Model;
 
-namespace Kephas.Extensions.Tests.UseCases.Validators;
+namespace Kephas.Tests.UseCases.Validators;
 
 public class TestPersonBirthdayValidator : AbstractValidator<IPerson>
 {

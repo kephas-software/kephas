@@ -6,10 +6,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using FluentValidation;
-using Kephas.Extensions.Tests.UseCases.Model;
-using Kephas.Extensions.Tests.UseCases.Services;
+using Kephas.Tests.UseCases.Model;
+using Kephas.Tests.UseCases.Services;
 
-namespace Kephas.Extensions.Tests.UseCases.Validators;
+namespace Kephas.Tests.UseCases.Validators;
 
 public class TestBotRepositoryValidator : AbstractValidator<TestBot>
 {

@@ -13,7 +13,7 @@ namespace Kephas.Validation;
 
 using ValidationResult = FluentValidation.Results.ValidationResult;
 
-internal class DataAnnotationsValidator : IValidator
+internal class DataAnnotationsValidator : IValidator<object>
 {
     public ValidationResult Validate(IValidationContext context)
     {
@@ -25,6 +25,12 @@ internal class DataAnnotationsValidator : IValidator
 
         return new ValidationResult(results.Select(ToValidationFailure));
     }
+
+    public ValidationResult Validate(object instance) =>
+        Validate(new ValidationContext<object>(instance));
+
+    public Task<ValidationResult> ValidateAsync(object instance, CancellationToken cancellation = default) =>
+        ValidateAsync(new ValidationContext<object>(instance), cancellation);
 
     public Task<ValidationResult> ValidateAsync(IValidationContext context, CancellationToken cancellation = new CancellationToken())
     {
