@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Collections;
+using Kephas.Serialization.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +48,13 @@ public static class WebMvcHelper
                     options.CacheProfiles.Add("Default", new CacheProfile { Duration = CacheProfileDuration });
                     mvcOptionsConfig?.Invoke(options);
                 })
+            .AddJsonOptions(options =>
+            {
+                // TODO optimize
+                services.BuildServiceProvider()
+                    .GetRequiredService<IJsonSerializerOptionsProvider>()
+                    .ConfigureOptions(options.JsonSerializerOptions);
+            })
             .ConfigureApplicationParts();
         mvcBuilderConfig?.Invoke(mvcBuilder);
 
