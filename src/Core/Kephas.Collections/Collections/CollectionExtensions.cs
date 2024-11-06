@@ -29,9 +29,9 @@ public static class CollectionExtensions
     public static T AddRange<T, TItem>(this T collection, IEnumerable<TItem>? items)
         where T : class, ICollection<TItem>
     {
-        collection = collection ?? throw new ArgumentNullException(nameof(collection));
+        ArgumentNullException.ThrowIfNull(collection);
 
-        if (items == null)
+        if (items == null || ReferenceEquals(collection, items))
         {
             return collection;
         }
