@@ -174,11 +174,19 @@ public class ServiceInfoCollectionBuilder
 
     private IList<Assembly> GetServiceAssemblies()
     {
-        var assemblies = GetAppAssemblies().ToList();
-        assemblies.AddRange(Assemblies);
-        var appAssemblies = assemblies;
-
-        return appAssemblies.ToList();
+        // exclude the assemblies marked with the ExcludeAssembliesFromDependencyInjectionAttribute
+        // but only from the collected assemblies
+        // leave the ones the user added explicitly
+        var collectedAssemblies = GetAppAssemblies().ToList();
+        var exclusionAttributes = collectedAssemblies.Union(Assemblies)
+            .SelectMany(a => a.GetCustomAttributes<ExcludeAssembliesFromDependencyInjectionAttribute>())
+            .ToList();
+        collectedAssemblies = collectedAssemblies
+            .Where(a => exclusionAttributes.TrueForAll(e => !e.IsExcluded(a)))
+            .ToList();
+        
+        collectedAssemblies.AddRange(Assemblies);
+        return collectedAssemblies;
     }
     
     private static IServiceInfoCollection AddServices(
