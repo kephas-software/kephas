@@ -37,7 +37,8 @@ public static class WebMvcHelper
         Action<MvcOptions>? mvcOptionsConfig = null)
     {
         services.TryAddSingleton<IApplicationPartsProvider, ApplicationPartsProvider>();
-        var mvcBuilder = services.AddControllers(
+        var mvcBuilder = services
+            .AddControllers(
                 options =>
                 {
                     if (options.Filters.Any(item => item is IAllowAnonymousFilter))
