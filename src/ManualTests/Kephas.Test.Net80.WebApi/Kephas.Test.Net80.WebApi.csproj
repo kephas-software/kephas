@@ -26,6 +26,7 @@
         <ProjectReference Include="..\..\Web\Kephas.Web\Kephas.Web.csproj"/>
         <ProjectReference Include="..\..\Web\Kephas.Web.Exceptions\Kephas.Web.Exceptions.csproj"/>
         <ProjectReference Include="..\..\Web\Kephas.Web.Serilog\Kephas.Web.Serilog.csproj"/>
+        <ProjectReference Include="..\Kephas.Test.Endpoints.Diagnostics\Kephas.Test.Endpoints.Diagnostics.csproj" />
     </ItemGroup>
 
 </Project>
