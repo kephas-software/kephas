@@ -5,4 +5,4 @@
 
 # 12.0.0
 
-* NEW: Created `Kephas.Web.Mvc` package.
+* NEW: Created `Kephas.Web` package.

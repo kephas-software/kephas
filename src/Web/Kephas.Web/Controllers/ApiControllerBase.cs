@@ -27,11 +27,11 @@ public class ApiControllerBase : Controller
     /// <summary>
     /// Gets the logger of this controller.
     /// </summary>
-    protected ILogger Logger =>
+    protected internal ILogger Logger =>
         logger ??= (ILogger)HttpContext.RequestServices.GetRequiredService(typeof(ILogger<>).MakeGenericType(GetType()));
 
     /// <summary>
     /// Gets the mediator.
     /// </summary>
-    protected IMediator Mediator => mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
+    protected internal IMediator Mediator => mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
 }

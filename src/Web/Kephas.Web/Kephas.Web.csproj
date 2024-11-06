@@ -27,7 +27,7 @@
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageTags>kephas web mvc</PackageTags>
+        <PackageTags>kephas web</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -73,6 +73,7 @@
         <ProjectReference Include="..\..\Core\Kephas.Serialization.Json\Kephas.Serialization.Json.csproj" />
         <ProjectReference Include="..\..\Extensions\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj"/>
         <ProjectReference Include="..\..\Extensions\Kephas.Extensions.Diagnostics.HealthChecks\Kephas.Extensions.Diagnostics.HealthChecks.csproj" />
+        <ProjectReference Include="..\..\Extensions\Kephas.Extensions.Mediator\Kephas.Extensions.Mediator.csproj" />
     </ItemGroup>
 
 </Project>
