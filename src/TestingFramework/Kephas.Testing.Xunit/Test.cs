@@ -287,17 +287,6 @@ public static class Test
     }
 
     /// <summary>
-    /// Gets the loaded assemblies matching the provided <paramref name="namePattern"/>.
-    /// </summary>
-    /// <param name="namePattern">The name pattern.</param>
-    /// <returns>An enumeration of <see cref="Assembly"/>.</returns>
-    public static IEnumerable<Assembly> GetLoadedAssemblies(string namePattern)
-    {
-        var regex = new Regex(namePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        return AssemblyLoadContext.Default.Assemblies.Where(a => regex.IsMatch(a.GetName().Name ?? string.Empty));
-    }
-
-    /// <summary>
     /// Executes the provided operation within the provided culture.
     /// </summary>
     /// <param name="cultureName">The culture name, for example "en-US" or "de-DE".</param>
