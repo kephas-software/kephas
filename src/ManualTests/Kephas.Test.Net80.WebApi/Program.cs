@@ -50,6 +50,8 @@ void ConfigureMiddleware(WebApplication app)
 {
     // Configure the HTTP request pipeline.
 
+    app.UseExceptionHandler();
+
     app.UseOpenApiDocumentation();
 
     app.UseHttpsRedirection();
