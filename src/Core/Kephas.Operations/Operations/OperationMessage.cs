@@ -40,13 +40,13 @@ public record OperationMessage() : IOperationMessage
     /// <summary>
     /// Gets the severity level.
     /// </summary>
-    public SeverityLevel SeverityLevel { get; init; } = SeverityLevel.Information;
+    public SeverityLevel Severity { get; init; } = SeverityLevel.Information;
 
     /// <summary>Returns a string that represents the current object.</summary>
     /// <returns>A string that represents the current object.</returns>
     public override string ToString()
     {
-        var time = Timestamp is null ? null : $"{new DateTimeOffset(new DateTime(Timestamp.Value, DateTimeKind.Utc)):s} ";
-        return $"[{time}{SeverityLevel}] {Message}";
+        var time = Timestamp is null ? null : $"{DateTimeOffset.FromUnixTimeMilliseconds(Timestamp.Value):s} ";
+        return $"[{time}{Severity}] {Message}";
     }
 }
