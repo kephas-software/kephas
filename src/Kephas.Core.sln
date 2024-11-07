@@ -24,13 +24,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Analyzers.TestAssemb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Analyzers.Tests", "Analyzers\Tests\Kephas.Analyzers.Tests\Kephas.Analyzers.Tests.csproj", "{10A1501E-6825-4B09-9512-C6A6CBC10215}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection.Abstractions", "Core\Kephas.Reflection.Abstractions\Kephas.Reflection.Abstractions.csproj", "{D1B6D893-2BE2-4C16-AF9D-9EA0EE004F8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection", "Core\Kephas.Reflection\Kephas.Reflection.csproj", "{D1B6D893-2BE2-4C16-AF9D-9EA0EE004F8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Exceptions", "Core\Kephas.Exceptions\Kephas.Exceptions.csproj", "{778F12FD-FD9B-42F1-87ED-FAE027596983}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Exceptions.Tests", "Core\Tests\Kephas.Exceptions.Tests\Kephas.Exceptions.Tests.csproj", "{7A8CDEBE-9E23-4299-AD26-90F70F07D2FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection.Abstractions.Tests", "Core\Tests\Kephas.Reflection.Abstractions.Tests\Kephas.Reflection.Abstractions.Tests.csproj", "{827EB9A1-FBEE-4113-8F42-F1AA877D9702}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Reflection.Tests", "Core\Tests\Kephas.Reflection.Tests\Kephas.Reflection.Tests.csproj", "{827EB9A1-FBEE-4113-8F42-F1AA877D9702}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Dynamic", "Core\Kephas.Dynamic\Kephas.Dynamic.csproj", "{272912D5-B3F2-4C3D-9FD6-4FC63982CD6C}"
 EndProject

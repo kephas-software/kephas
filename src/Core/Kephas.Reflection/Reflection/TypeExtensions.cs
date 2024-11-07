@@ -8,25 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Reflection;
-
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.CompilerServices;
+
+namespace Kephas.Reflection;
 
 /// <summary>
 /// Extension methods for types.
 /// </summary>
 public static class TypeExtensions
 {
-    /// <summary>
-    /// The object type.
-    /// </summary>
-    internal static readonly Type ObjectType = typeof(object);
-
     /// <summary>
     /// Converts the raw type to a type usable for the runtime operations.
     /// This is either the non-generic type, the fully constructed generic type,
@@ -307,7 +299,7 @@ public static class TypeExtensions
             return null;
         }
 
-        while (type != ObjectType)
+        while (type != typeof(object))
         {
             if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == openGenericType)
             {

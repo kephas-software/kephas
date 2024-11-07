@@ -25,7 +25,7 @@ public record Signature : IReadOnlyList<Type>
     /// <param name="value">A variable-length parameters list containing value.</param>
     public Signature(params Type[] value)
     {
-        this.value = value ?? Type.EmptyTypes;
+        this.value = value ?? [];
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public record Signature : IReadOnlyList<Type>
     /// A hash code for the current object.
     /// </returns>
     public override int GetHashCode() =>
-        value.Select((t, i) => (i + 1) * (t?.GetType().GetHashCode() ?? 0)).Sum();
+        value.Select((t, i) => (i + 1) * (t?.GetHashCode() ?? 0)).Sum();
 
     /// <summary>
     /// Returns a string that represents the current object.

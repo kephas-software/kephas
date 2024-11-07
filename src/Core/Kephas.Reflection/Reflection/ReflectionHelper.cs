@@ -8,8 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Concurrent;
+using System.Dynamic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using Microsoft.CSharp.RuntimeBinder;
+using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
 namespace Kephas.Reflection;
 
@@ -18,6 +23,10 @@ namespace Kephas.Reflection;
 /// </summary>
 public static class ReflectionHelper
 {
+    private static readonly ConcurrentDictionary<string, CallSite<Func<CallSite, object, object>>> Getters = new();
+
+    private static readonly ConcurrentDictionary<string, CallSite<Func<CallSite, object, object?, object>>> Setters = new();
+
     /// <summary>
     /// Invokes the <paramref name="methodInfo"/> with the provided parameters,
     /// ensuring in case of an exception that the original exception is thrown.
@@ -231,10 +240,83 @@ public static class ReflectionHelper
     /// </summary>
     /// <param name="type">The type.</param>
     /// <returns>An enumeration of <see cref="PropertyInfo"/>.</returns>
-    public static IEnumerable<PropertyInfo> GetPublicInstanceProperties(Type type)
+    public static IEnumerable<PropertyInfo> GetPublicInstanceProperties(this Type type)
     {
         return type.GetRuntimeProperties()
             .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic
                         && p.GetIndexParameters().Length == 0);
+    }
+
+    /// <summary>
+    /// Gets the value of the property identified by its name.
+    /// </summary>
+    /// <param name="target">The target object.</param>
+    /// <param name="name">The property name.</param>
+    /// <returns>The property value.</returns>
+    public static object? GetPropertyValue(this object target, string name)
+    {
+        target = target ?? throw new ArgumentNullException(nameof(target));
+
+        var callSite = Getters.GetOrAdd(name, n => CallSite<Func<CallSite, object, object>>
+            .Create(
+                Binder.GetMember(
+                    CSharpBinderFlags.None,
+                    n,
+                    typeof(ReflectionHelper),
+                    [
+                        CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null)
+                    ])));
+
+        return callSite.Target(callSite, target);
+    }
+
+    /// <summary>
+    /// Sets the value of the property identified by its name.
+    /// </summary>
+    /// <param name="target">The target object.</param>
+    /// <param name="name">The property name.</param>
+    /// <param name="value">The value to be set.</param>
+    public static void SetPropertyValue(this object target, string name, object? value)
+    {
+        target = target ?? throw new ArgumentNullException(nameof(target));
+
+        if (target is not IDynamicMetaObjectProvider)
+        {
+            // TODO optimize
+            // workaround for non dynamic targets.
+            var propertyInfo = target.GetType().GetProperty(name, BindingFlags.Instance | BindingFlags.Public);
+            if (propertyInfo is null)
+            {
+                throw new InvalidOperationException($"Property {name} was not found.");
+            }
+
+            propertyInfo.SetValue(target, value);
+            return;
+        }
+
+        var callSite = Setters.GetOrAdd(name, n => CallSite<Func<CallSite, object, object?, object>>
+            .Create(
+                Binder.SetMember(
+                    CSharpBinderFlags.None,
+                    n,
+                    typeof(ReflectionHelper),
+                    [
+                        CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null),
+                        CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType, null)
+                    ])));
+
+        callSite.Target(callSite, target, value);
+    }
+
+    /// <summary>
+    /// Indicates whether the identifier is private.
+    /// </summary>
+    /// <param name="identifier">The identifier to act on.</param>
+    /// <returns>
+    /// True if the identifier is private, false if not.
+    /// </returns>
+    public static bool IsPrivate(this string identifier)
+    {
+        return identifier.StartsWith('_') || identifier.StartsWith('#');
     }
 }

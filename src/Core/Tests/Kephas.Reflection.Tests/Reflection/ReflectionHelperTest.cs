@@ -98,7 +98,46 @@ public class ReflectionHelperTests
     [Fact]
     public void GetPublicInstanceProperties_ReturnsCorrectProperties()
     {
-        var properties = ReflectionHelper.GetPublicInstanceProperties(typeof(string));
-        properties.Should().ContainSingle(p => p.Name == "Length");
+        var properties = typeof(SampleClass).GetPublicInstanceProperties();
+        properties.Should().ContainSingle(p => p.Name == "SampleProperty");
+    }
+
+    [Theory]
+    [MemberData(nameof(GetPropertyValue_TestData))]
+    public void GetPropertyValue_simple(object target, string name, object? expectedValue)
+    {
+        target.GetPropertyValue(name).Should().Be(expectedValue);
+    }
+
+    public static TheoryData<object, string, object?> GetPropertyValue_TestData() =>
+        new()
+        {
+            { typeof(string), "Name", "String" },
+            { "123", "Length", 3 },
+            { new SampleClass { SampleProperty = "Hello" }, "SampleProperty", "Hello" },
+            { new Person("John Doe", 23), "Name", "John Doe" },
+        };
+
+    [Theory]
+    [MemberData(nameof(SetPropertyValue_TestData))]
+    public void SetPropertyValue_simple(object instance, string name, object? newValue)
+    {
+        instance.SetPropertyValue(name, newValue);
+        instance.GetPropertyValue(name).Should().Be(newValue);
+    }
+
+    public static TheoryData<object, string, object?> SetPropertyValue_TestData() =>
+        new()
+        {
+            { new Person("John Doe", 23), "Name", "Jane Doe" },
+            { new SampleClass { SampleProperty = "Hello" }, "SampleProperty", "There" },
+        };
+
+    public record Person(string? Name, int Age);
+
+    public class SampleClass
+    {
+        public string SampleProperty { get; set; }
+        public static string StaticProperty { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿# Reflection Abstractions
+﻿# Reflection
 
 ## Introduction
 This package provides abstractions for reflection components.

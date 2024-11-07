@@ -5,27 +5,19 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Dynamic;
 
 using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Kephas.Dynamic.Resources;
+using Kephas.Reflection;
+
+namespace Kephas.Dynamic;
 
 /// <summary>
 /// Extension methods for <see cref="IExpando"/>.
 /// </summary>
 public static class ExpandoExtensions
 {
-    private static readonly IDictionary<Type, Func<string, object?>> Parsers = new Dictionary<Type, Func<string, object?>>
-    {
-        { typeof(bool), v => bool.TryParse(v, out var b) ? (object)b : null },
-        { typeof(int), v => int.TryParse(v, out var b) ? (object)b : null },
-        { typeof(long), v => long.TryParse(v, out var b) ? (object)b : null },
-        { typeof(DateTime), v => DateTime.TryParse(v, out var b) ? (object)b : null },
-        { typeof(Guid), v => Guid.TryParse(v, out var b) ? (object)b : null },
-    };
-
     /// <summary>
     /// Merges the indicated options into the context.
     /// </summary>
@@ -104,46 +96,6 @@ public static class ExpandoExtensions
         }
 
         return expando;
-    }
-
-    /// <summary>
-    /// An IExpando extension method that gets a member value using lax rules.
-    /// </summary>
-    /// <remarks>
-    /// The member name may be either Pascal or camel case, and in case it is a string
-    /// it is tried to be parsed.
-    /// </remarks>
-    /// <typeparam name="T">The value type.</typeparam>
-    /// <param name="expando">The expando to act on.</param>
-    /// <param name="member">The member.</param>
-    /// <param name="defaultValue">Optional. The default value.</param>
-    /// <returns>
-    /// The lax value.
-    /// </returns>
-    public static T? GetLaxValue<T>(this IDynamic expando, string member, T? defaultValue = default)
-    {
-        expando = expando ?? throw new ArgumentNullException(nameof(expando));
-        if (string.IsNullOrEmpty(member))
-        {
-            throw new ArgumentException(Strings.ExpandoExtensions_GetLaxValue_NonEmptyMemberName, nameof(member));
-        }
-
-        var pascalName = $"{char.ToUpper(member[0])}{member[1..]}"; // Pascal case
-        var value = expando[pascalName];
-        if (value == null)
-        {
-            var camelName = $"{char.ToLower(member[0])}{member[1..]}"; // Camel case
-            value = expando[camelName];
-        }
-
-        return value switch
-        {
-            null => defaultValue,
-            T typedValue => typedValue,
-            string stringValue when Parsers.TryGetValue(typeof(T), out var parser) =>
-                (T?)(parser(stringValue) ?? defaultValue),
-            _ => defaultValue
-        };
     }
 
     private static Type? TryGetEnumerableItemType(this Type type)

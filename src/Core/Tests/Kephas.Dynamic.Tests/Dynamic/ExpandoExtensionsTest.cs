@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using FluentAssertions;
+
 namespace Kephas.Tests.Dynamic;
 
 using System;
@@ -100,24 +102,6 @@ public class ExpandoExtensionsTest
         Assert.Equal(1, expando["hi"]);
         Assert.Equal(2, expando["how"]);
         Assert.Equal(3, expando["you"]);
-    }
-
-    [Fact]
-    public void GetLaxValue_string()
-    {
-        var expando = new Expando { ["myWay"] = "Frank Sinatra" };
-        var actual = expando.GetLaxValue<string>("MyWay");
-
-        Assert.Equal("Frank Sinatra", actual);
-    }
-
-    [Fact]
-    public void GetLaxValue_long_as_string()
-    {
-        var expando = new Expando { ["costs"] = "120000" };
-        var actual = expando.GetLaxValue<long>("Costs");
-
-        Assert.Equal(120000L, actual);
     }
 
     public class ExpandoWithReadonlyProperties : Expando
