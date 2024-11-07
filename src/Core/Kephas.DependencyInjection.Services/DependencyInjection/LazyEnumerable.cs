@@ -18,7 +18,8 @@ namespace Kephas.DependencyInjection;
 /// </summary>
 /// <typeparam name="TService">Type of the service.</typeparam>
 [Priority(Priority.Low)]
-public class LazyEnumerable<TService> : LazyEnumerable<TService, ServiceMetadata>, ILazyEnumerable<TService>
+public class LazyEnumerable<TService> 
+    : LazyEnumerableBase<TService, ServiceMetadata>, ILazyEnumerable<TService>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="LazyEnumerable{TService}"/> class.
@@ -36,59 +37,15 @@ public class LazyEnumerable<TService> : LazyEnumerable<TService, ServiceMetadata
 /// <typeparam name="TService">Type of the service.</typeparam>
 /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
 [Priority(Priority.Low)]
-public class LazyEnumerable<TService, TMetadata> : ILazyEnumerable<TService, TMetadata>
+public class LazyEnumerable<TService, TMetadata>
+    : LazyEnumerableBase<TService, TMetadata>, ILazyEnumerable<TService, TMetadata>
 {
-    private readonly ICollection<Lazy<TService, TMetadata>> serviceFactories;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="LazyEnumerable{TService,TMetadata}"/> class.
     /// </summary>
     /// <param name="serviceFactories">The service factories.</param>
-    public LazyEnumerable(IEnumerable<Lazy<TService, TMetadata>>? serviceFactories = null) =>
-        this.serviceFactories = ComputeServiceFactories(serviceFactories);
-
-    /// <summary>
-    /// Gets the enumerator.
-    /// </summary>
-    /// <returns>
-    /// The enumerator.
-    /// </returns>
-    public IEnumerator<Lazy<TService, TMetadata>> GetEnumerator() => serviceFactories.GetEnumerator();
-
-    /// <summary>
-    /// Gets the enumerator.
-    /// </summary>
-    /// <returns>
-    /// The enumerator.
-    /// </returns>
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-    private ICollection<Lazy<TService, TMetadata>> ComputeServiceFactories(IEnumerable<Lazy<TService, TMetadata>>? serviceFactories)
+    public LazyEnumerable(IEnumerable<Lazy<TService, TMetadata>>? serviceFactories = null)
+        : base(serviceFactories)
     {
-        if (serviceFactories == null)
-        {
-            return Array.Empty<Lazy<TService, TMetadata>>();
-        }
-
-        var orderedFactories = serviceFactories
-            .OrderBy(f => (f.Metadata as IHasPriority)?.Priority ?? Priority.Normal)
-            .ToList();
-
-        // get the overridden services which should be eliminated
-        var overriddenTypes = orderedFactories
-            .Where(f => f.Metadata is IHasImplementationType { OverrideBaseImplementation: true, ImplementationType.BaseType: { } })
-            .Select(f => (f.Metadata as IHasImplementationType)?.ImplementationType?.BaseType)
-            .ToList();
-        if (overriddenTypes.Count == 0)
-        {
-            return orderedFactories;
-        }
-
-        // eliminate the overridden services
-        orderedFactories = orderedFactories
-            .Where(f => !overriddenTypes.Contains((f.Metadata as IHasImplementationType)?.ImplementationType))
-            .ToList();
-
-        return orderedFactories;
     }
 }
