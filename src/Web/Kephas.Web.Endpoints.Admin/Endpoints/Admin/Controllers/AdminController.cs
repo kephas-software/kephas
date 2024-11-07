@@ -33,7 +33,7 @@ public class AdminController : ApiControllerBase
         Ok(await Mediator.Send(new GetLogLevelRequest()));
 
     /// <summary>
-    /// Gets the application's log level.
+    /// Sets the application's log level.
     /// </summary>
     /// <returns>A task yielding the <see cref="IActionResult"/> representing the result of the operation.</returns>
     [HttpPut("[action]")]
