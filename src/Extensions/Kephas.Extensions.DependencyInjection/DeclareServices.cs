@@ -8,6 +8,8 @@
 using Kephas.DependencyInjection;
 using Kephas.Extensions.DependencyInjection;
 
+// HACK Due to the fact that the analyzer ignores the *ServiceEnumerable, which override theier bases,
+// we need to declare the services explicitly here.
 // TODO remove these when analyzer gets fixed
 
 [assembly: DeclareTransientService(typeof(ILazyEnumerable<>), typeof(LazyServiceEnumerable<>))]
