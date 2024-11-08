@@ -71,7 +71,7 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
     {
         var services = new ServiceCollection();
 
-        Action act = () => services.GetRegisteredSingletonService<IAppRuntime>(() => null!);
+        Action act = () => services.GetRegisteredSingletonService<IAppRuntime>(() => throw new ServiceResolutionException("IAppRuntime not found"));
 
         act.Should().Throw<ServiceResolutionException>().WithMessage("*IAppRuntime*");
     }
