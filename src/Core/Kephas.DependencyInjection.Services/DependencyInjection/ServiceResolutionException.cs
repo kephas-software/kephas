@@ -5,33 +5,32 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.DependencyInjection
+namespace Kephas.DependencyInjection;
+
+/// <summary>
+/// Exception occurring when a service cannot be resolved.
+/// </summary>
+public class ServiceResolutionException : ServiceException
 {
     /// <summary>
-    /// Exception occurring when a service cannot be resolved.
+    /// Initializes a new instance of the <see cref="ServiceResolutionException"/> class.
     /// </summary>
-    public class ServiceResolutionException : ServiceException
+    /// <param name="message">The exception message.</param>
+    public ServiceResolutionException(string message) : base(message)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceResolutionException"/> class.
-        /// </summary>
-        /// <param name="message">The exception message.</param>
-        public ServiceResolutionException(string message) : base(message)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceResolutionException"/> class.
-        /// </summary>
-        /// <param name="message">The exception message.</param>
-        /// <param name="inner">The inner exception.</param>
-        public ServiceResolutionException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        /// <summary>
-        /// Gets the service type to resolve.
-        /// </summary>
-        public Type? ServiceType { get; init; }
     }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ServiceResolutionException"/> class.
+    /// </summary>
+    /// <param name="message">The exception message.</param>
+    /// <param name="inner">The inner exception.</param>
+    public ServiceResolutionException(string message, Exception inner) : base(message, inner)
+    {
+    }
+
+    /// <summary>
+    /// Gets the service type to resolve.
+    /// </summary>
+    public Type? ServiceType { get; init; }
 }

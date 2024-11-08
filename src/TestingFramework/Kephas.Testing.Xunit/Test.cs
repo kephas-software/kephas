@@ -242,7 +242,7 @@ public static class Test
         _ = services ?? throw new ArgumentNullException(nameof(services));
         _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
         
-        LoggingHelper.SetAppRuntime(services.GetAppRuntime());
+        LoggingHelper.SetAppRuntime(services.GetAppRuntime(defaultIfNotFound: true));
 
         services
             .AddLogging(builder =>

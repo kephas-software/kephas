@@ -15,12 +15,78 @@ using Kephas.Extensions.Tests.TestServices;
 using Kephas.Runtime;
 using Kephas.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using Xunit;
 
 namespace Kephas.Extensions.Tests.DependencyInjection;
 
 public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
 {
+    [Fact]
+    public void GetAppRuntime_ReturnsRegisteredAppRuntime()
+    {
+        var services = new ServiceCollection();
+        var appRuntime = Substitute.For<IAppRuntime>();
+        services.AddSingleton(appRuntime);
+
+        var result = services.GetAppRuntime();
+
+        result.Should().BeSameAs(appRuntime);
+    }
+
+    [Fact]
+    public void GetAppRuntime_ThrowsException_WhenNotRegistered()
+    {
+        var services = new ServiceCollection();
+
+        Action act = () => services.GetAppRuntime();
+
+        act.Should().Throw<ServiceResolutionException>().WithMessage("*IAppRuntime*");
+    }
+
+    [Fact]
+    public void GetAppRuntime_ReturnsDefaultAppRuntime_WhenNotRegistered()
+    {
+        var services = new ServiceCollection();
+
+        var result = services.GetAppRuntime(defaultIfNotFound: true);
+
+        result.Should().BeOfType<AppRuntime>();
+    }
+
+    [Fact]
+    public void GetRegisteredSingletonService_ReturnsRegisteredService()
+    {
+        var services = new ServiceCollection();
+        var service = Substitute.For<IAppRuntime>();
+        services.AddSingleton(service);
+
+        var result = services.GetRegisteredSingletonService<IAppRuntime>(() => null!);
+
+        result.Should().BeSameAs(service);
+    }
+
+    [Fact]
+    public void GetRegisteredSingletonService_ThrowsException_WhenNotRegistered()
+    {
+        var services = new ServiceCollection();
+
+        Action act = () => services.GetRegisteredSingletonService<IAppRuntime>(() => null!);
+
+        act.Should().Throw<ServiceResolutionException>().WithMessage("*IAppRuntime*");
+    }
+
+    [Fact]
+    public void GetRegisteredSingletonService_ReturnsDefaultService_WhenNotRegistered()
+    {
+        var services = new ServiceCollection();
+        var defaultService = Substitute.For<IAppRuntime>();
+
+        var result = services.GetRegisteredSingletonService(() => defaultService);
+
+        result.Should().BeSameAs(defaultService);
+    }
+
     [Theory]
     [InlineData(typeof(IServiceDeclarationInfoCollection))]
     [InlineData(typeof(IServiceInfoCollection))]
@@ -35,9 +101,10 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
                 Test.GetTestAppRuntime([]))
             .BuildServiceProvider();
         var requiredService = provider.GetRequiredService(serviceType);
-        requiredService.Should().BeSameAs(services.GetSingleton(serviceType, () => throw new Exception()));
+        requiredService.Should()
+            .BeSameAs(services.GetRegisteredSingletonService(serviceType, () => throw new Exception()));
     }
-    
+
     [Theory]
     [InlineData(typeof(IEnumerable<IAppRuntime>))]
     [InlineData(typeof(IReadOnlyCollection<IAppRuntime>))]
@@ -49,7 +116,7 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
         var provider = Test.BuildEmptyTestServiceProvider();
         provider.GetService(collectionType).Should().BeAssignableTo<IEnumerable<IAppRuntime>>();
     }
-    
+
     [Fact]
     public void AddApplicationServices_defaults()
     {
@@ -59,7 +126,8 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
 
     [Theory]
     [MemberData(nameof(GetAddApplicationServicesAssertions))]
-    public void AddApplicationServices_success(IEnumerable<Type> serviceInfoTypes, Type serviceType, Type expectedImplementationType)
+    public void AddApplicationServices_success(IEnumerable<Type> serviceInfoTypes, Type serviceType,
+        Type expectedImplementationType)
     {
         var sp = Test.BuildEmptyTestServiceProvider(
             builderConfig: b => b.AddTypes(serviceInfoTypes.ToArray()));
@@ -82,7 +150,10 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
             },
             {
                 // Registration order matters
-                [typeof(IOpen<>), typeof(MoreOpenWithDependency<>), typeof(MoreOpen<>), typeof(DefaultOpen<>), typeof(Dependency)],
+                [
+                    typeof(IOpen<>), typeof(MoreOpenWithDependency<>), typeof(MoreOpen<>), typeof(DefaultOpen<>),
+                    typeof(Dependency)
+                ],
                 typeof(IOpen<string>),
                 typeof(MoreOpen<string>)
             },
@@ -127,7 +198,7 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
         var myService = sp.GetRequiredService(typeof(IOpen<object>));
         myService.Should().BeOfType<MoreOpenWithDependency<object>>();
     }
-    
+
     [Fact]
     public void AddSingletonWithMetadata_non_declared_services()
     {
@@ -139,30 +210,34 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
 
         var nonDeclaredService = sp.GetRequiredService<INonDeclaredService>();
         nonDeclaredService.Should().BeOfType<NonDeclaredService>();
-        
+
         var lazyNonDeclaredService = sp.GetRequiredService<Lazy<INonDeclaredService>>();
         lazyNonDeclaredService.Should().BeOfType<LazyService<INonDeclaredService, NonDeclaredService>>();
         lazyNonDeclaredService.Value.Should().BeOfType<NonDeclaredService>();
 
-        var lazyNonDeclaredServiceWithMetadata = sp.GetRequiredService<Lazy<INonDeclaredService, NonDeclaredMetadata>>();
-        lazyNonDeclaredServiceWithMetadata.Should().BeOfType<LazyService<INonDeclaredService, NonDeclaredService, NonDeclaredMetadata>>();
+        var lazyNonDeclaredServiceWithMetadata =
+            sp.GetRequiredService<Lazy<INonDeclaredService, NonDeclaredMetadata>>();
+        lazyNonDeclaredServiceWithMetadata.Should()
+            .BeOfType<LazyService<INonDeclaredService, NonDeclaredService, NonDeclaredMetadata>>();
         lazyNonDeclaredServiceWithMetadata.Value.Should().BeOfType<NonDeclaredService>();
         lazyNonDeclaredServiceWithMetadata.Metadata.Name.Should().Be("Hello");
 
         var factoryNonDeclaredService = sp.GetRequiredService<IFactory<INonDeclaredService>>();
         factoryNonDeclaredService.Should().BeOfType<FactoryService<INonDeclaredService, NonDeclaredService>>();
         factoryNonDeclaredService.GetService().Should().BeOfType<NonDeclaredService>();
-        
-        var factoryNonDeclaredServiceWithMetadata = sp.GetRequiredService<IFactory<INonDeclaredService, NonDeclaredMetadata>>();
-        factoryNonDeclaredServiceWithMetadata.Should().BeOfType<FactoryService<INonDeclaredService, NonDeclaredService, NonDeclaredMetadata>>();
+
+        var factoryNonDeclaredServiceWithMetadata =
+            sp.GetRequiredService<IFactory<INonDeclaredService, NonDeclaredMetadata>>();
+        factoryNonDeclaredServiceWithMetadata.Should()
+            .BeOfType<FactoryService<INonDeclaredService, NonDeclaredService, NonDeclaredMetadata>>();
         factoryNonDeclaredServiceWithMetadata.GetService().Should().BeOfType<NonDeclaredService>();
         factoryNonDeclaredServiceWithMetadata.Metadata.Name.Should().Be("Hello");
-        
+
         lazyNonDeclaredService.Value.Should().BeSameAs(nonDeclaredService);
         lazyNonDeclaredServiceWithMetadata.Value.Should().BeSameAs(nonDeclaredService);
         factoryNonDeclaredService.GetService().Should().BeSameAs(nonDeclaredService);
         factoryNonDeclaredServiceWithMetadata.GetService().Should().BeSameAs(nonDeclaredService);
-        
+
         using var spNewScope = sp.CreateScope();
         var spNew = spNewScope.ServiceProvider;
         spNew.GetRequiredService<INonDeclaredService>().Should().BeSameAs(nonDeclaredService);
@@ -181,33 +256,37 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
 
         using var spScope = spRoot.CreateScope();
         var sp = spScope.ServiceProvider;
-        
+
         var nonDeclaredService = sp.GetRequiredService<INonDeclaredService>();
         nonDeclaredService.Should().BeOfType<NonDeclaredService>();
-        
+
         var lazyNonDeclaredService = sp.GetRequiredService<Lazy<INonDeclaredService>>();
         lazyNonDeclaredService.Should().BeOfType<LazyService<INonDeclaredService, NonDeclaredService>>();
         lazyNonDeclaredService.Value.Should().BeOfType<NonDeclaredService>();
 
-        var lazyNonDeclaredServiceWithMetadata = sp.GetRequiredService<Lazy<INonDeclaredService, NonDeclaredMetadata>>();
-        lazyNonDeclaredServiceWithMetadata.Should().BeOfType<LazyService<INonDeclaredService, NonDeclaredService, NonDeclaredMetadata>>();
+        var lazyNonDeclaredServiceWithMetadata =
+            sp.GetRequiredService<Lazy<INonDeclaredService, NonDeclaredMetadata>>();
+        lazyNonDeclaredServiceWithMetadata.Should()
+            .BeOfType<LazyService<INonDeclaredService, NonDeclaredService, NonDeclaredMetadata>>();
         lazyNonDeclaredServiceWithMetadata.Value.Should().BeOfType<NonDeclaredService>();
         lazyNonDeclaredServiceWithMetadata.Metadata.Name.Should().Be("Hello");
 
         var factoryNonDeclaredService = sp.GetRequiredService<IFactory<INonDeclaredService>>();
         factoryNonDeclaredService.Should().BeOfType<FactoryService<INonDeclaredService, NonDeclaredService>>();
         factoryNonDeclaredService.GetService().Should().BeOfType<NonDeclaredService>();
-        
-        var factoryNonDeclaredServiceWithMetadata = sp.GetRequiredService<IFactory<INonDeclaredService, NonDeclaredMetadata>>();
-        factoryNonDeclaredServiceWithMetadata.Should().BeOfType<FactoryService<INonDeclaredService, NonDeclaredService, NonDeclaredMetadata>>();
+
+        var factoryNonDeclaredServiceWithMetadata =
+            sp.GetRequiredService<IFactory<INonDeclaredService, NonDeclaredMetadata>>();
+        factoryNonDeclaredServiceWithMetadata.Should()
+            .BeOfType<FactoryService<INonDeclaredService, NonDeclaredService, NonDeclaredMetadata>>();
         factoryNonDeclaredServiceWithMetadata.GetService().Should().BeOfType<NonDeclaredService>();
         factoryNonDeclaredServiceWithMetadata.Metadata.Name.Should().Be("Hello");
-        
+
         lazyNonDeclaredService.Value.Should().BeSameAs(nonDeclaredService);
         lazyNonDeclaredServiceWithMetadata.Value.Should().BeSameAs(nonDeclaredService);
         factoryNonDeclaredService.GetService().Should().BeSameAs(nonDeclaredService);
         factoryNonDeclaredServiceWithMetadata.GetService().Should().BeSameAs(nonDeclaredService);
-        
+
         using var spNewScope = spRoot.CreateScope();
         var spNew = spNewScope.ServiceProvider;
         spNew.GetRequiredService<INonDeclaredService>().Should().NotBeSameAs(nonDeclaredService);
@@ -226,31 +305,35 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
 
         var nonDeclaredService = sp.GetRequiredService<INonDeclaredService>();
         nonDeclaredService.Should().BeOfType<NonDeclaredService>();
-        
+
         var lazyNonDeclaredService = sp.GetRequiredService<Lazy<INonDeclaredService>>();
         lazyNonDeclaredService.Should().BeOfType<LazyService<INonDeclaredService, NonDeclaredService>>();
         lazyNonDeclaredService.Value.Should().BeOfType<NonDeclaredService>();
 
-        var lazyNonDeclaredServiceWithMetadata = sp.GetRequiredService<Lazy<INonDeclaredService, NonDeclaredMetadata>>();
-        lazyNonDeclaredServiceWithMetadata.Should().BeOfType<LazyService<INonDeclaredService, NonDeclaredService, NonDeclaredMetadata>>();
+        var lazyNonDeclaredServiceWithMetadata =
+            sp.GetRequiredService<Lazy<INonDeclaredService, NonDeclaredMetadata>>();
+        lazyNonDeclaredServiceWithMetadata.Should()
+            .BeOfType<LazyService<INonDeclaredService, NonDeclaredService, NonDeclaredMetadata>>();
         lazyNonDeclaredServiceWithMetadata.Value.Should().BeOfType<NonDeclaredService>();
         lazyNonDeclaredServiceWithMetadata.Metadata.Name.Should().Be("Hello");
 
         var factoryNonDeclaredService = sp.GetRequiredService<IFactory<INonDeclaredService>>();
         factoryNonDeclaredService.Should().BeOfType<FactoryService<INonDeclaredService, NonDeclaredService>>();
         factoryNonDeclaredService.GetService().Should().BeOfType<NonDeclaredService>();
-        
-        var factoryNonDeclaredServiceWithMetadata = sp.GetRequiredService<IFactory<INonDeclaredService, NonDeclaredMetadata>>();
-        factoryNonDeclaredServiceWithMetadata.Should().BeOfType<FactoryService<INonDeclaredService, NonDeclaredService, NonDeclaredMetadata>>();
+
+        var factoryNonDeclaredServiceWithMetadata =
+            sp.GetRequiredService<IFactory<INonDeclaredService, NonDeclaredMetadata>>();
+        factoryNonDeclaredServiceWithMetadata.Should()
+            .BeOfType<FactoryService<INonDeclaredService, NonDeclaredService, NonDeclaredMetadata>>();
         factoryNonDeclaredServiceWithMetadata.GetService().Should().BeOfType<NonDeclaredService>();
         factoryNonDeclaredServiceWithMetadata.Metadata.Name.Should().Be("Hello");
-        
+
         lazyNonDeclaredService.Value.Should().NotBeSameAs(nonDeclaredService);
         lazyNonDeclaredServiceWithMetadata.Value.Should().NotBeSameAs(nonDeclaredService);
         factoryNonDeclaredService.GetService().Should().NotBeSameAs(nonDeclaredService);
         factoryNonDeclaredServiceWithMetadata.GetService().Should().NotBeSameAs(nonDeclaredService);
     }
-    
+
     [Fact]
     public void AddSingletonWithMetadata_non_declared_services_default_metadata()
     {
@@ -262,30 +345,33 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
 
         var nonDeclaredService = sp.GetRequiredService<INonDeclaredService>();
         nonDeclaredService.Should().BeOfType<NonDeclaredService>();
-        
+
         var lazyNonDeclaredService = sp.GetRequiredService<Lazy<INonDeclaredService>>();
         lazyNonDeclaredService.Should().BeOfType<LazyService<INonDeclaredService, NonDeclaredService>>();
         lazyNonDeclaredService.Value.Should().BeOfType<NonDeclaredService>();
 
         var lazyNonDeclaredServiceWithMetadata = sp.GetRequiredService<Lazy<INonDeclaredService, ServiceMetadata>>();
-        lazyNonDeclaredServiceWithMetadata.Should().BeOfType<LazyService<INonDeclaredService, NonDeclaredService, ServiceMetadata>>();
+        lazyNonDeclaredServiceWithMetadata.Should()
+            .BeOfType<LazyService<INonDeclaredService, NonDeclaredService, ServiceMetadata>>();
         lazyNonDeclaredServiceWithMetadata.Value.Should().BeOfType<NonDeclaredService>();
         lazyNonDeclaredServiceWithMetadata.Metadata.Priority.Should().Be(Priority.Normal);
 
         var factoryNonDeclaredService = sp.GetRequiredService<IFactory<INonDeclaredService>>();
         factoryNonDeclaredService.Should().BeOfType<FactoryService<INonDeclaredService, NonDeclaredService>>();
         factoryNonDeclaredService.GetService().Should().BeOfType<NonDeclaredService>();
-        
-        var factoryNonDeclaredServiceWithMetadata = sp.GetRequiredService<IFactory<INonDeclaredService, ServiceMetadata>>();
-        factoryNonDeclaredServiceWithMetadata.Should().BeOfType<FactoryService<INonDeclaredService, NonDeclaredService, ServiceMetadata>>();
+
+        var factoryNonDeclaredServiceWithMetadata =
+            sp.GetRequiredService<IFactory<INonDeclaredService, ServiceMetadata>>();
+        factoryNonDeclaredServiceWithMetadata.Should()
+            .BeOfType<FactoryService<INonDeclaredService, NonDeclaredService, ServiceMetadata>>();
         factoryNonDeclaredServiceWithMetadata.GetService().Should().BeOfType<NonDeclaredService>();
         factoryNonDeclaredServiceWithMetadata.Metadata.Priority.Should().Be(Priority.Normal);
-        
+
         lazyNonDeclaredService.Value.Should().BeSameAs(nonDeclaredService);
         lazyNonDeclaredServiceWithMetadata.Value.Should().BeSameAs(nonDeclaredService);
         factoryNonDeclaredService.GetService().Should().BeSameAs(nonDeclaredService);
         factoryNonDeclaredServiceWithMetadata.GetService().Should().BeSameAs(nonDeclaredService);
-        
+
         using var spNewScope = sp.CreateScope();
         var spNew = spNewScope.ServiceProvider;
         spNew.GetRequiredService<INonDeclaredService>().Should().BeSameAs(nonDeclaredService);
@@ -304,33 +390,36 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
 
         using var spScope = spRoot.CreateScope();
         var sp = spScope.ServiceProvider;
-        
+
         var nonDeclaredService = sp.GetRequiredService<INonDeclaredService>();
         nonDeclaredService.Should().BeOfType<NonDeclaredService>();
-        
+
         var lazyNonDeclaredService = sp.GetRequiredService<Lazy<INonDeclaredService>>();
         lazyNonDeclaredService.Should().BeOfType<LazyService<INonDeclaredService, NonDeclaredService>>();
         lazyNonDeclaredService.Value.Should().BeOfType<NonDeclaredService>();
 
         var lazyNonDeclaredServiceWithMetadata = sp.GetRequiredService<Lazy<INonDeclaredService, ServiceMetadata>>();
-        lazyNonDeclaredServiceWithMetadata.Should().BeOfType<LazyService<INonDeclaredService, NonDeclaredService, ServiceMetadata>>();
+        lazyNonDeclaredServiceWithMetadata.Should()
+            .BeOfType<LazyService<INonDeclaredService, NonDeclaredService, ServiceMetadata>>();
         lazyNonDeclaredServiceWithMetadata.Value.Should().BeOfType<NonDeclaredService>();
         lazyNonDeclaredServiceWithMetadata.Metadata.Priority.Should().Be(Priority.Normal);
 
         var factoryNonDeclaredService = sp.GetRequiredService<IFactory<INonDeclaredService>>();
         factoryNonDeclaredService.Should().BeOfType<FactoryService<INonDeclaredService, NonDeclaredService>>();
         factoryNonDeclaredService.GetService().Should().BeOfType<NonDeclaredService>();
-        
-        var factoryNonDeclaredServiceWithMetadata = sp.GetRequiredService<IFactory<INonDeclaredService, ServiceMetadata>>();
-        factoryNonDeclaredServiceWithMetadata.Should().BeOfType<FactoryService<INonDeclaredService, NonDeclaredService, ServiceMetadata>>();
+
+        var factoryNonDeclaredServiceWithMetadata =
+            sp.GetRequiredService<IFactory<INonDeclaredService, ServiceMetadata>>();
+        factoryNonDeclaredServiceWithMetadata.Should()
+            .BeOfType<FactoryService<INonDeclaredService, NonDeclaredService, ServiceMetadata>>();
         factoryNonDeclaredServiceWithMetadata.GetService().Should().BeOfType<NonDeclaredService>();
         factoryNonDeclaredServiceWithMetadata.Metadata.Priority.Should().Be(Priority.Normal);
-        
+
         lazyNonDeclaredService.Value.Should().BeSameAs(nonDeclaredService);
         lazyNonDeclaredServiceWithMetadata.Value.Should().BeSameAs(nonDeclaredService);
         factoryNonDeclaredService.GetService().Should().BeSameAs(nonDeclaredService);
         factoryNonDeclaredServiceWithMetadata.GetService().Should().BeSameAs(nonDeclaredService);
-        
+
         using var spNewScope = spRoot.CreateScope();
         var spNew = spNewScope.ServiceProvider;
         spNew.GetRequiredService<INonDeclaredService>().Should().NotBeSameAs(nonDeclaredService);
@@ -349,31 +438,34 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
 
         var nonDeclaredService = sp.GetRequiredService<INonDeclaredService>();
         nonDeclaredService.Should().BeOfType<NonDeclaredService>();
-        
+
         var lazyNonDeclaredService = sp.GetRequiredService<Lazy<INonDeclaredService>>();
         lazyNonDeclaredService.Should().BeOfType<LazyService<INonDeclaredService, NonDeclaredService>>();
         lazyNonDeclaredService.Value.Should().BeOfType<NonDeclaredService>();
 
         var lazyNonDeclaredServiceWithMetadata = sp.GetRequiredService<Lazy<INonDeclaredService, ServiceMetadata>>();
-        lazyNonDeclaredServiceWithMetadata.Should().BeOfType<LazyService<INonDeclaredService, NonDeclaredService, ServiceMetadata>>();
+        lazyNonDeclaredServiceWithMetadata.Should()
+            .BeOfType<LazyService<INonDeclaredService, NonDeclaredService, ServiceMetadata>>();
         lazyNonDeclaredServiceWithMetadata.Value.Should().BeOfType<NonDeclaredService>();
         lazyNonDeclaredServiceWithMetadata.Metadata.Priority.Should().Be(Priority.Normal);
 
         var factoryNonDeclaredService = sp.GetRequiredService<IFactory<INonDeclaredService>>();
         factoryNonDeclaredService.Should().BeOfType<FactoryService<INonDeclaredService, NonDeclaredService>>();
         factoryNonDeclaredService.GetService().Should().BeOfType<NonDeclaredService>();
-        
-        var factoryNonDeclaredServiceWithMetadata = sp.GetRequiredService<IFactory<INonDeclaredService, ServiceMetadata>>();
-        factoryNonDeclaredServiceWithMetadata.Should().BeOfType<FactoryService<INonDeclaredService, NonDeclaredService, ServiceMetadata>>();
+
+        var factoryNonDeclaredServiceWithMetadata =
+            sp.GetRequiredService<IFactory<INonDeclaredService, ServiceMetadata>>();
+        factoryNonDeclaredServiceWithMetadata.Should()
+            .BeOfType<FactoryService<INonDeclaredService, NonDeclaredService, ServiceMetadata>>();
         factoryNonDeclaredServiceWithMetadata.GetService().Should().BeOfType<NonDeclaredService>();
         factoryNonDeclaredServiceWithMetadata.Metadata.Priority.Should().Be(Priority.Normal);
-        
+
         lazyNonDeclaredService.Value.Should().NotBeSameAs(nonDeclaredService);
         lazyNonDeclaredServiceWithMetadata.Value.Should().NotBeSameAs(nonDeclaredService);
         factoryNonDeclaredService.GetService().Should().NotBeSameAs(nonDeclaredService);
         factoryNonDeclaredServiceWithMetadata.GetService().Should().NotBeSameAs(nonDeclaredService);
     }
-    
+
 #if NET6_0
     [Fact]
     public void AddSingletonWithMetadata_non_declared_factory()
@@ -412,7 +504,8 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
         factoryNonDeclaredService.Should().BeOfType<Factory<NonDeclaredService>>();
         factoryNonDeclaredService.GetService().Should().BeOfType<NonDeclaredService>();
         
-        var factoryNonDeclaredServiceWithMetadata = sp.GetRequiredService<IFactory<NonDeclaredService, NonDeclaredMetadata>>();
+        var factoryNonDeclaredServiceWithMetadata =
+ sp.GetRequiredService<IFactory<NonDeclaredService, NonDeclaredMetadata>>();
         factoryNonDeclaredServiceWithMetadata.Should().BeOfType<Factory<NonDeclaredService, NonDeclaredMetadata>>();
         factoryNonDeclaredServiceWithMetadata.GetService().Should().BeOfType<NonDeclaredService>();
         factoryNonDeclaredServiceWithMetadata.Metadata.Name.Should().Be("Hello");
@@ -471,7 +564,8 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
         factoryNonDeclaredService.Should().BeOfType<Factory<NonDeclaredService>>();
         factoryNonDeclaredService.GetService().Should().BeOfType<NonDeclaredService>();
         
-        var factoryNonDeclaredServiceWithMetadata = sp.GetRequiredService<IFactory<NonDeclaredService, NonDeclaredMetadata>>();
+        var factoryNonDeclaredServiceWithMetadata =
+ sp.GetRequiredService<IFactory<NonDeclaredService, NonDeclaredMetadata>>();
         factoryNonDeclaredServiceWithMetadata.Should().BeOfType<Factory<NonDeclaredService, NonDeclaredMetadata>>();
         factoryNonDeclaredServiceWithMetadata.GetService().Should().BeOfType<NonDeclaredService>();
         factoryNonDeclaredServiceWithMetadata.Metadata.Name.Should().Be("Hello");
@@ -501,7 +595,7 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
 
         var nonDeclaredService = sp.GetRequiredService<NonDeclaredService>();
         nonDeclaredService.Should().BeOfType<NonDeclaredService>();
-        
+
         var lazyNonDeclaredService = sp.GetRequiredService<Lazy<NonDeclaredService>>();
         lazyNonDeclaredService.Should().BeOfType<Lazy<NonDeclaredService>>();
         lazyNonDeclaredService.Value.Should().BeOfType<NonDeclaredService>();
@@ -514,12 +608,13 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
         var factoryNonDeclaredService = sp.GetRequiredService<IFactory<NonDeclaredService>>();
         factoryNonDeclaredService.Should().BeOfType<Factory<NonDeclaredService>>();
         factoryNonDeclaredService.GetService().Should().BeOfType<NonDeclaredService>();
-        
-        var factoryNonDeclaredServiceWithMetadata = sp.GetRequiredService<IFactory<NonDeclaredService, NonDeclaredMetadata>>();
+
+        var factoryNonDeclaredServiceWithMetadata =
+            sp.GetRequiredService<IFactory<NonDeclaredService, NonDeclaredMetadata>>();
         factoryNonDeclaredServiceWithMetadata.Should().BeOfType<Factory<NonDeclaredService, NonDeclaredMetadata>>();
         factoryNonDeclaredServiceWithMetadata.GetService().Should().BeOfType<NonDeclaredService>();
         factoryNonDeclaredServiceWithMetadata.Metadata.Name.Should().Be("Hello");
-        
+
         lazyNonDeclaredService.Value.Should().NotBeSameAs(nonDeclaredService);
         lazyNonDeclaredServiceWithMetadata.Value.Should().NotBeSameAs(nonDeclaredService);
         factoryNonDeclaredService.GetService().Should().NotBeSameAs(nonDeclaredService);
