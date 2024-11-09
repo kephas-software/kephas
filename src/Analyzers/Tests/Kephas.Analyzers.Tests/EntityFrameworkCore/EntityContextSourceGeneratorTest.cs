@@ -19,7 +19,13 @@ public class EntityContextSourceGeneratorIntegrationTest : SourceGeneratorTestBa
     {
         var sourceCode =
             """
-
+            // --------------------------------------------------------------------------------------------------------------------
+            // <copyright file="Entities.cs" company="Kephas Software SRL">
+            //   Copyright (c) Kephas Software SRL. All rights reserved.
+            //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+            // </copyright>
+            // --------------------------------------------------------------------------------------------------------------------
+            
             using Kephas.Analyzers.Entities.TestAssembly;
             using Kephas.Entities;
             
@@ -54,9 +60,16 @@ public class EntityContextSourceGeneratorIntegrationTest : SourceGeneratorTestBa
                     using Kephas.DependencyInjection.Metadata;
                     using Kephas.Entities;
                     using Kephas.Entities.Builder;
+                    // --------------------------------------------------------------------------------------------------------------------
+                    // <copyright file="Entities.cs" company="Kephas Software SRL">
+                    //   Copyright (c) Kephas Software SRL. All rights reserved.
+                    //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+                    // </copyright>
+                    // --------------------------------------------------------------------------------------------------------------------
+                    
                     using Kephas.Analyzers.Entities.TestAssembly;
                     
-                    namespace Kephas.Entities.EntityContexts;
+                    namespace Kephas.Entities.EntityContexts.Generated;
                     
                     [Priority(Priority.Normal)]
                     [EntityTypes(
@@ -73,6 +86,7 @@ public class EntityContextSourceGeneratorIntegrationTest : SourceGeneratorTestBa
                         public DbSet<Person> Person { get; set; } = null!;
                         public DbSet<Country> Country { get; set; } = null!;
                     }
+                    
                     """.Replace("\r\n", "\n"));
             });
     }

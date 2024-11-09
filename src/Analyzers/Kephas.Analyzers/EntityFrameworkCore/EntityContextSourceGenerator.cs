@@ -49,7 +49,7 @@ public class EntityContextSourceGenerator()
                 .Where(t => t is not null)
                 .ToList();
 
-            var entityContextNamespace = "Kephas.Entities.EntityContexts";
+            var entityContextNamespace = "Kephas.Entities.EntityContexts.Generated";
 
             // first add the usings / namespaces used by models, so that the DatContext class
             // can use the entity types without errors
@@ -160,8 +160,7 @@ public class EntityContextSourceGenerator()
 
         usings.AddRange(
             compilationUnit.Usings.Select(u => u.ToFullString()
-                .Replace("\r", string.Empty)
-                .Replace("\n", string.Empty)));
+                .TrimEnd('\r', '\n')));
         return string.Join("\n", usings.Distinct());
     }
 }
