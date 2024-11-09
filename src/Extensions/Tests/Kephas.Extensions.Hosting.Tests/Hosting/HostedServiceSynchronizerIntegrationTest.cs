@@ -12,7 +12,6 @@ using Kephas.Extensions.Tests.TestServices;
 using Kephas.Reflection;
 using Kephas.Testing;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog.Core;
 using Xunit;
 
 namespace Kephas.Extensions.Tests.Hosting;
