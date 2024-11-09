@@ -48,7 +48,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <SupportedPlatform Include="browser" />
+        <SupportedPlatform Include="browser"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -59,15 +59,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\..\kephas.logo.stone.png" Pack="true" PackagePath="\" />
-        <None Include="README.md" Pack="true" PackagePath="\" />
-        <None Include="release-notes.md" Pack="true" PackagePath="\" />
+        <None Include="..\..\kephas.logo.stone.png" Pack="true" PackagePath="\"/>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+        <None Include="release-notes.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Core\Kephas.Collections\Kephas.Collections.csproj" />
-      <ProjectReference Include="..\..\Core\Kephas.DependencyInjection.Services\Kephas.DependencyInjection.Services.csproj" />
-      <ProjectReference Include="..\..\Core\Kephas.Exceptions\Kephas.Exceptions.csproj" />
+        <ProjectReference Include="..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+        <ProjectReference Include="..\..\Core\Kephas.Collections\Kephas.Collections.csproj"/>
+        <ProjectReference Include="..\..\Core\Kephas.DependencyInjection.Services\Kephas.DependencyInjection.Services.csproj"/>
+        <ProjectReference Include="..\..\Core\Kephas.Exceptions\Kephas.Exceptions.csproj"/>
     </ItemGroup>
 
 </Project>
