@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace Kephas.DependencyInjection;
 
 /// <summary>
@@ -33,4 +35,33 @@ public class ServiceResolutionException : ServiceException
     /// Gets the service type to resolve.
     /// </summary>
     public Type? ServiceType { get; init; }
+}
+
+/// <summary>
+/// Exception occurring when a service cannot be resolved.
+/// </summary>
+public class ServiceResolutionException<TService> : ServiceResolutionException
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ServiceResolutionException"/> class.
+    /// </summary>
+    /// <param name="message">The exception message.</param>
+    public ServiceResolutionException(string? message = null) : base(message ?? GetDefaultMessage())
+    {
+        ServiceType = typeof(TService);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ServiceResolutionException"/> class.
+    /// </summary>
+    /// <param name="message">The exception message.</param>
+    /// <param name="inner">The inner exception.</param>
+    public ServiceResolutionException(string? message, Exception inner) : base(message ?? GetDefaultMessage(), inner)
+    {
+        ServiceType = typeof(TService);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static string GetDefaultMessage() =>
+        $"Service {typeof(TService).Name} could not be resolved.";
 }
