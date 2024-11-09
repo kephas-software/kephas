@@ -46,13 +46,22 @@ public static class ServiceCollectionExtensions
     /// </param>
     /// <returns>The <see cref="IAppRuntime"/>.</returns>
     public static IAppRuntime GetAppRuntime(this IServiceCollection services, bool defaultIfNotFound = false) =>
-        GetRegisteredSingletonService<IAppRuntime>(
+        GetSingletonService<IAppRuntime>(
             services,
             defaultIfNotFound
                 ? (() => new AppRuntime())
-                : (() => throw new ServiceResolutionException(
-                        $"The {nameof(IAppRuntime)} must be registered before trying to access it.")
-                    { ServiceType = typeof(IAppRuntime) }));
+                : (() => throw new ServiceResolutionException<IAppRuntime>($"The {nameof(IAppRuntime)} must be registered before trying to access it.")));
+
+    /// <summary>
+    /// Gets the <typeparamref name="TService"/> registered in <paramref name="services"/> as singleton instance.
+    /// </summary>
+    /// <remarks>
+    /// If the singleton instance is not found, an exception is thrown.
+    /// </remarks>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The <paramref name="services"/>.</returns>
+    public static TService GetRequiredSingletonService<TService>(this IServiceCollection services)
+        where TService : class => GetSingletonService<TService>(services, () => throw new ServiceResolutionException<TService>());
 
     /// <summary>
     /// Gets the <typeparamref name="TService"/> registered in <paramref name="services"/> as singleton instance.
@@ -60,14 +69,14 @@ public static class ServiceCollectionExtensions
     /// <param name="services">The service collection.</param>
     /// <param name="defaultFactory">The factory used to create the default value, if service not found.</param>
     /// <returns>The <paramref name="services"/>.</returns>
-    public static TService GetRegisteredSingletonService<TService>(this IServiceCollection services, Func<TService> defaultFactory)
+    public static TService GetSingletonService<TService>(this IServiceCollection services, Func<TService> defaultFactory)
         where TService : class
     {
         var serviceDescriptor = services.LastOrDefault(d => d.ServiceType == typeof(TService));
         return serviceDescriptor is null
             ? defaultFactory()
             : serviceDescriptor.ImplementationInstance as TService
-              ?? throw new ServiceResolutionException($"The {typeof(TService).Name} service is not registered as a singleton instance.") { ServiceType = typeof(TService) };
+              ?? throw new ServiceResolutionException<TService>($"The {typeof(TService).Name} service is not registered as a singleton instance.");
     }
 
     /// <summary>
@@ -77,7 +86,7 @@ public static class ServiceCollectionExtensions
     /// <param name="serviceType">The service type.</param>
     /// <param name="defaultFactory">The factory used to create the default value, if service not found.</param>
     /// <returns>The <paramref name="services"/>.</returns>
-    public static object GetRegisteredSingletonService(this IServiceCollection services, Type serviceType, Func<object> defaultFactory)
+    public static object GetSingletonService(this IServiceCollection services, Type serviceType, Func<object> defaultFactory)
     {
         var serviceDescriptor = services.LastOrDefault(d => d.ServiceType == serviceType);
         return serviceDescriptor is null
