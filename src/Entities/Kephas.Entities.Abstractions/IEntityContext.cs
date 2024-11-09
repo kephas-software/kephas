@@ -35,7 +35,7 @@ public interface IEntityContext
     /// </summary>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>A task yielding a value indicating whether a connection to the underlying database is available.</returns>
-    Task<bool> CanConnectAsync(CancellationToken cancellationToken = default);
+    Task<ConnectResult> CanConnectAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets a value indicating whether there are entities being changed.
