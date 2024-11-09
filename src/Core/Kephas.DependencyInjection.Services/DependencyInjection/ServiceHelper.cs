@@ -179,7 +179,7 @@ public static class ServiceHelper
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static string StripGenericSuffix(string typeName)
+    internal static string StripGenericSuffix(string typeName)
     {
         var genericIndex = typeName.IndexOf('`');
         return genericIndex > 0 ? typeName[..genericIndex] : typeName;
