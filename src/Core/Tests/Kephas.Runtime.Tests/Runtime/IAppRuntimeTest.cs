@@ -1,4 +1,11 @@
-﻿using System.Net;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IAppRuntimeTest.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Net;
 using System.Reflection;
 using FluentAssertions;
 using Kephas.Runtime;
