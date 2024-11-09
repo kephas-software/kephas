@@ -35,7 +35,7 @@ public static class HealthCheckReportMiddleware
     public static T UseHealthChecksReport<T>(this T app, string? path = null)
         where T : IApplicationBuilder
     {
-        app = app ?? throw new ArgumentNullException(nameof(app));
+        ArgumentNullException.ThrowIfNull(app);
 
         var services = app.ApplicationServices;
         var healthChecks = services.GetServices<Lazy<IHealthCheck, HealthCheckMetadata>>();

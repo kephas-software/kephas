@@ -8,7 +8,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Kephas.Analyzers.Tests;
+namespace Kephas.Testing.Analyzers;
 
 /// <summary>
 /// Test base for source generators.
