@@ -55,34 +55,34 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
     }
 
     [Fact]
-    public void GetRegisteredSingletonService_ReturnsRegisteredService()
+    public void GetSingletonService_ReturnsRegisteredService()
     {
         var services = new ServiceCollection();
         var service = Substitute.For<IAppRuntime>();
         services.AddSingleton(service);
 
-        var result = services.GetRegisteredSingletonService<IAppRuntime>(() => null!);
+        var result = services.GetSingletonService<IAppRuntime>(() => null!);
 
         result.Should().BeSameAs(service);
     }
 
     [Fact]
-    public void GetRegisteredSingletonService_ThrowsException_WhenNotRegistered()
+    public void GetSingletonService_ThrowsException_WhenNotRegistered()
     {
         var services = new ServiceCollection();
 
-        Action act = () => services.GetRegisteredSingletonService<IAppRuntime>(() => throw new ServiceResolutionException("IAppRuntime not found"));
+        Action act = () => services.GetSingletonService<IAppRuntime>(() => throw new ServiceResolutionException("IAppRuntime not found"));
 
         act.Should().Throw<ServiceResolutionException>().WithMessage("*IAppRuntime*");
     }
 
     [Fact]
-    public void GetRegisteredSingletonService_ReturnsDefaultService_WhenNotRegistered()
+    public void GetSingletonService_ReturnsDefaultService_WhenNotRegistered()
     {
         var services = new ServiceCollection();
         var defaultService = Substitute.For<IAppRuntime>();
 
-        var result = services.GetRegisteredSingletonService(() => defaultService);
+        var result = services.GetSingletonService(() => defaultService);
 
         result.Should().BeSameAs(defaultService);
     }
@@ -102,7 +102,7 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
             .BuildServiceProvider();
         var requiredService = provider.GetRequiredService(serviceType);
         requiredService.Should()
-            .BeSameAs(services.GetRegisteredSingletonService(serviceType, () => throw new Exception()));
+            .BeSameAs(services.GetSingletonService(serviceType, () => throw new Exception()));
     }
 
     [Theory]
