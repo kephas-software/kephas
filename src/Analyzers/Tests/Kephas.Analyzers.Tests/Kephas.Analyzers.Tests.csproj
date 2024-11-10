@@ -16,8 +16,6 @@
 
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="6.12.0"/>
-        <PackageReference Include="Basic.Reference.Assemblies.Net80" Version="1.4.5"/>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1"/>
         <PackageReference Include="NSubstitute" Version="5.1.0" />
         <PackageReference Include="xunit" Version="2.9.2"/>
@@ -29,6 +27,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\Core\Kephas.DependencyInjection.Services\Kephas.DependencyInjection.Services.csproj" />
+        <ProjectReference Include="..\..\..\TestingFramework\Kephas.Testing.Analyzers.Xunit\Kephas.Testing.Analyzers.Xunit.csproj" />
         <ProjectReference Include="..\..\Kephas.Analyzers\Kephas.Analyzers.csproj" />
         <ProjectReference Include="..\Kephas.Analyzers.TestAssembly\Kephas.Analyzers.TestAssembly.csproj" />
     </ItemGroup>

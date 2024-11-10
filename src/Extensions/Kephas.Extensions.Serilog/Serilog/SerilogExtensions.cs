@@ -92,8 +92,8 @@ public static class SerilogExtensions
             .AddSingleton<ILogLevelSwitch>(new SerilogLevelSwitch(configuration))
             .AddLogging(builder =>
             {
-                var appRuntime = services.GetAppRuntime();
-                var levelSwitch = services.GetSingleton<ILogLevelSwitch>(
+                var appRuntime = services.GetAppRuntime(defaultIfNotFound: true);
+                var levelSwitch = services.GetSingletonService<ILogLevelSwitch>(
                     () => throw new InvalidOperationException($"Must register the {nameof(SerilogLevelSwitch)} service prior to adding logging services."));
                 var loggerConfiguration = new LoggerConfiguration()
                     .ConfigureSerilog(configuration, appRuntime, (levelSwitch as ISerilogLevelSwitch)?.LevelSwitch);

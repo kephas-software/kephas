@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Collections.Concurrent;
-
 namespace Kephas.Operations;
 
 /// <summary>
@@ -82,7 +80,7 @@ public record OperationResult() : IOperationResult
     /// <value>
     /// The message.
     /// </value>
-    public ICollection<IOperationMessage> Messages { get; set; } = new ConcurrentCollection<IOperationMessage>();
+    public ICollection<IOperationMessage> Messages { get; set; } = new List<IOperationMessage>();
 }
 
 /// <summary>

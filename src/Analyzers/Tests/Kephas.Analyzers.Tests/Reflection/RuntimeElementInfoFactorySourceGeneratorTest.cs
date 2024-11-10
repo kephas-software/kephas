@@ -7,6 +7,7 @@
 
 using FluentAssertions;
 using Kephas.Analyzers.Reflection;
+using Kephas.Testing.Analyzers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Xunit;

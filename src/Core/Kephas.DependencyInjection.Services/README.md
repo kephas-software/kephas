@@ -62,6 +62,12 @@ public interface IJsonModifier
 {
     void Modify(JsonTypeInfo jsonTypeInfo);
 }
+
+// in this example, we have the following metadata:
+// ServiceType = typeof(IJsonModifier)
+// Lifetime = ServiceLifetime.Transient
+// MetadataType = ServiceMetadata
+// AsOpenGeneric = false
 ```
 
 #### Example: Generic service declaration with constructed generic implementations
@@ -74,7 +80,7 @@ and provide typed parameters.
 ```csharp
 public interface IAsyncPipelineBehavior;
 
-[TransientService(ServiceType = typeof(IAsyncPipelineBehavior))]
+[ScopedService(ServiceType = typeof(IAsyncPipelineBehavior))]
 public interface IAsyncPipelineBehavior<in TTarget, in TArgs, TResult> : IAsyncPipelineBehavior
 {
     Task<TResult> InvokeAsync(
@@ -83,6 +89,12 @@ public interface IAsyncPipelineBehavior<in TTarget, in TArgs, TResult> : IAsyncP
         TArgs args,
         CancellationToken cancellationToken);
 }
+
+// in this example, we have the following metadata:
+// ServiceType = typeof(IAsyncPipelineBehavior)
+// Lifetime = ServiceLifetime.Scoped
+// MetadataType = ServiceMetadata
+// AsOpenGeneric = false
 ```
 
 #### Example: Open generic service declaration 
@@ -93,11 +105,63 @@ public interface ILazyEnumerable<TService>
     : IEnumerable<Lazy<TService, ServiceMetadata>>
 {
 }
+
+// in this example, we have the following metadata:
+// ServiceType = typeof(ILazyEnumerable<>)
+// Lifetime = ServiceLifetime.Transient
+// MetadataType = ServiceMetadata
+// AsOpenGeneric = true
 ```
 
 ### Service implementation metadata
-The built-in supported metadata is stored by the `ServiceMetadata` record, or one specializing it.
+
+The built-in supported metadata is provided by the `ServiceMetadata` record, or one specializing it.
 The following values are provided:
+* `Priority`: the service priority, used to order the services.
+* `ServiceKey`: the service key, used to identify the service implementation.
+  * Typically, this is the name of the service implementation type from which the service type name has been stripped away.
+* `OverrideBaseImplementation`: True if the service overrides the service it specializes, false otherwise.
+* `ImplementationType`: the concrete service type implementing the service contract.
+
+#### Example: Service implementation metadata
+
+```csharp
+// The definition of the Health Check metadata 
+public record HealthCheckMetadata : ServiceMetadata
+{
+    public HealthCheckMetadata(IDictionary<string, object?>? metadata)
+        : base(metadata)
+    {
+        if (metadata == null)
+        {
+            return;
+        }
+
+        FailureStatus = (HealthStatus)Convert.ChangeType(TryGetValue(metadata, nameof(FailureStatus), HealthStatus.Healthy)!, typeof(int));
+        Timeout = (TimeSpan?)TryGetValue(metadata, nameof(Timeout));
+        Tags = (IEnumerable<string>)TryGetValue(metadata, nameof(Tags), null)!;
+    }
+
+    public HealthStatus? FailureStatus { get; }
+
+    public TimeSpan? Timeout { get; }
+    
+    public IEnumerable<string>? Tags { get; }
+}
+
+// attribute used to collect the Tags metadata
+[AttributeUsage(AttributeTargets.Class)]
+public sealed class TagsAttribute(params string[] value)
+    : ServiceMetadataValueAttributeBase<IEnumerable<string>>(value);
+
+// The service implementing IHealthCheck and using the metadata attributes
+[FailureStatus(HealthStatus.Unhealthy)]
+[Tags("process")]
+public class ProcessHealthCheck(IAppRuntime appRuntime) : IHealthCheck
+{
+    //...
+}
+```
 
 ## Declarative service registration
 
@@ -107,7 +171,26 @@ The following values are provided:
 
 #### Single services
 
-#### service families
+These services are declared using one of `[DeclareTransientService]`, `[DeclareScopedService]`, or `[DeclareSingletonService]`
+attributes at assembly level.
+This is useful when the service to be annotated is not accessible for modification, for example when defined in a third party assembly.
+
+```csharp
+[assembly: DeclareTransientService(typeof(ILazyEnumerable<>), typeof(LazyEnumerable<>))]
+[assembly: DeclareSingletonService<TimeProvider, DefaultTimeProvider>]
+```
+
+#### Service families
+
+These services are declared using one of `[DeclareTransientServiceFamily]`, `[DeclareScopedServiceFamily]`, or `[DeclareSingletonServiceFamily]`
+attributes at assembly level. All non-abstract types derived from the service type will be marked as service implementations (the service family).
+This is useful when the service to be annotated is not accessible for modification, for example when defined in a third party assembly.
+> Note: Open generics are not supported when declaring service families. In these cases, declare the services using
+> one of `[DeclareTransientService]`, `[DeclareScopedService]`, or `[DeclareSingletonService]`.
+
+```csharp
+[assembly: DeclareTransientServiceFamily(typeof(IRequestHandler<>), MetadataType = typeof(RequestResponseMetadata))]
+```
 
 ## Other resources
 

@@ -214,9 +214,9 @@ public static class OperationResultExtensions
         IOperationResult? resultToMerge)
         where TResult : class, IOperationResult
     {
-        result = result ?? throw new ArgumentNullException(nameof(result));
+        ArgumentNullException.ThrowIfNull(result);
 
-        if (resultToMerge == null)
+        if (resultToMerge == null || ReferenceEquals(resultToMerge, result))
         {
             return result;
         }
@@ -439,44 +439,7 @@ public static class OperationResultExtensions
 
         var status = GetOperationStatus(exception);
         return new AsyncOperationResult<TValue>(Task.FromException<TValue>(exception))
-            .MergeException(exception)
             .Complete(elapsed ?? TimeSpan.Zero, status);
-    }
-
-    /// <summary>
-    /// Flattens the operation result by aggregating the elapsed time
-    /// and messages into the nested one and returning it.
-    /// </summary>
-    /// <param name="aggregatedResult">The aggregated result.</param>
-    /// <param name="throwOnNull">Optional. If set to true throws and exception if the nested result is <c>null</c>.</param>
-    /// <typeparam name="TOperationResult">The operation result ype.</typeparam>
-    /// <returns>The nested result with aggregated elapsed time and messages.</returns>
-    public static TOperationResult? Flatten<TOperationResult>(
-        this IOperationResult<TOperationResult> aggregatedResult,
-        bool throwOnNull = true)
-        where TOperationResult : class, IOperationResult
-    {
-        aggregatedResult = aggregatedResult ?? throw new ArgumentNullException(nameof(aggregatedResult));
-
-        var nestedResult = aggregatedResult.Value;
-        if (nestedResult == null)
-        {
-            return throwOnNull
-                ? throw new ArgumentNullException(nameof(aggregatedResult), "The nested result is not set.")
-                : nestedResult;
-        }
-
-        return nestedResult
-            .MergeMessages(aggregatedResult)
-            .Complete(
-                nestedResult.Elapsed == TimeSpan.Zero
-                    ? aggregatedResult.Elapsed
-                    : aggregatedResult.Elapsed == TimeSpan.Zero
-                        ? nestedResult.Elapsed
-                        : aggregatedResult.Elapsed,
-                nestedResult.OperationStatus == Operations.OperationStatus.None
-                    ? aggregatedResult.OperationStatus
-                    : nestedResult.OperationStatus);
     }
 
     private static OperationStatus GetOperationStatus(Exception exception)
@@ -504,5 +467,7 @@ public static class OperationResultExtensions
     }
 
     private static Exception ToException(this IOperationMessage m)
-        => (m as ExceptionMessage)?.Exception ?? new OperationException(m.Message ?? "");
+        => (m is ExceptionMessage exceptionMessage)
+           ? exceptionMessage.Exception.ToException()
+           : new OperationException(m.Message ?? "") ;
 }

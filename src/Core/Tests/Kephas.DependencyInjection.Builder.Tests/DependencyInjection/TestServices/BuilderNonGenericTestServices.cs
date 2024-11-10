@@ -43,10 +43,7 @@ namespace Kephas.Tests.DependencyInjection.TestServices
 
         public class CustomValueNullMetadataAppService : ICustomValueMetadataAppService;
 
-        public class CustomValueMetadataAttribute(string value) : Attribute, IServiceMetadataValue<string>
-        {
-            public string Value { get; } = value;
-        }
+        public class CustomValueMetadataAttribute(string value) : ServiceMetadataValueAttributeBase<string>(value);
     }
 
     namespace CustomNamedValueAppServiceMetadata

@@ -21,14 +21,14 @@ public class ExceptionMessageTest
         var exception = new Exception("Test exception");
         var exceptionMessage = new ExceptionMessage(exception);
 
-        exceptionMessage.Exception.Should().Be(exception);
+        exceptionMessage.Exception.Should().Be(new ExceptionData(exception));
         exceptionMessage.Message.Should().Be("Test exception");
     }
 
     [Fact]
     public void Constructor_ThrowsArgumentNullExceptionForNullException()
     {
-        Action act = () => new ExceptionMessage(null);
+        Action act = () => new ExceptionMessage((Exception)null!);
 
         act.Should().Throw<ArgumentNullException>().WithMessage("*exception*");
     }
@@ -39,17 +39,16 @@ public class ExceptionMessageTest
         var exceptionMessage = new ExceptionMessage();
 
         exceptionMessage.Exception.Should().NotBeNull();
-        exceptionMessage.Exception.Should().BeOfType<Exception>();
+        exceptionMessage.Exception.Should().BeOfType<ExceptionData>();
     }
 
     [Fact]
     public void ExceptionProperty_SetsSeverityLevelWhenExceptionImplementsIHasSeverityLevel()
     {
-        var exception = Substitute.For<IHasSeverityLevel, Exception>();
-        exception.SeverityLevel.Returns(SeverityLevel.Critical);
-        var exceptionMessage = new ExceptionMessage((Exception)exception);
+        var exception = new AppException { Severity = SeverityLevel.Critical };
+        var exceptionMessage = new ExceptionMessage(exception);
 
-        exceptionMessage.SeverityLevel.Should().Be(SeverityLevel.Critical);
+        exceptionMessage.Severity.Should().Be(SeverityLevel.Critical);
     }
 
     [Fact]

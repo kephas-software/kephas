@@ -13,8 +13,5 @@ namespace Kephas.Extensions.Diagnostics.HealthChecks;
 /// Metadata attribute for <see cref="HealthCheckMetadata.Tags"/>.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class TagsAttribute(params string[] value) : Attribute, IServiceMetadataValue<IEnumerable<string>>
-{
-    /// <summary>Gets the typed metadata value.</summary>
-    public IEnumerable<string> Value { get; } = value;
-}
+public sealed class TagsAttribute(params string[] value)
+    : ServiceMetadataValueAttributeBase<IEnumerable<string>>(value);

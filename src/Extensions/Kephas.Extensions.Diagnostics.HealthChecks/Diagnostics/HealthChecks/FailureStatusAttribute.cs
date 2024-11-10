@@ -14,8 +14,4 @@ namespace Kephas.Extensions.Diagnostics.HealthChecks;
 /// Metadata value for the <see cref="HealthCheckMetadata.FailureStatus"/>.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class FailureStatusAttribute(HealthStatus value) : Attribute, IServiceMetadataValue<HealthStatus>
-{
-    /// <summary>Gets the typed metadata value.</summary>
-    public HealthStatus Value { get; } = value;
-}
+public sealed class FailureStatusAttribute(HealthStatus value) : ServiceMetadataValueAttributeBase<HealthStatus>(value);

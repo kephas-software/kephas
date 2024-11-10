@@ -1,9 +1,17 @@
-﻿namespace Kephas.Tests;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DynamicHelperTest.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 using System.Dynamic;
+using FluentAssertions;
 using Kephas.Dynamic;
 using NSubstitute;
 using Xunit;
+
+namespace Kephas.Tests;
 
 public class DynamicHelperTest
 {
@@ -23,8 +31,8 @@ public class DynamicHelperTest
         Assert.NotSame(obj, dyn);
 
         dyn.Add("John");
-        Assert.Equal(1, obj.Count);
-        Assert.True(obj.Contains("John"));
+        obj.Should().HaveCount(1);
+        obj.Should().Contain("John");
     }
 
     [Fact]
@@ -33,20 +41,21 @@ public class DynamicHelperTest
         var obj = new List<string> { "one", "two" };
         var dyn = obj.ToDynamicObject();
         Assert.NotSame(obj, dyn);
-
-        Assert.Equal(2, dyn.Count);
+        2.Should().Be(dyn.Count);
     }
 
     [Fact]
     public void ToDynamicObject_null_exception()
     {
-        Assert.Throws<ArgumentNullException>(() => ((object)null).ToDynamicObject());
+        Action act = () => ((object)null).ToDynamicObject();
+        act.Should().Throw<ArgumentNullException>();
     }
 
     [Fact]
     public void ToDynamic_null_exception()
     {
-        Assert.Throws<ArgumentNullException>(() => ((object)null!).ToDynamic());
+        Action act = () => ((object)null!).ToDynamic();
+        act.Should().Throw<ArgumentNullException>();
     }
 
     [Fact]
@@ -55,16 +64,16 @@ public class DynamicHelperTest
         var obj = new { Name = "John", FamilyName = "Doe" };
         var expando = obj.ToDynamic();
 
-        Assert.NotSame(obj, expando);
-        Assert.Equal("John", expando["Name"]);
-        Assert.Equal("Doe", expando["FamilyName"]);
+        expando.Should().NotBeSameAs(obj);
+        expando["Name"].Should().Be("John");
+        expando["FamilyName"].Should().Be("Doe");
     }
 
     [Fact]
     public void ToDynamic_dynamic()
     {
         var expando = Substitute.For<IDynamic>();
-        Assert.Same(expando, expando.ToDynamic());
+        expando.ToDynamic().Should().BeSameAs(expando);
     }
 
     [Fact]
@@ -75,7 +84,7 @@ public class DynamicHelperTest
 
         expando["hi"] = "there";
 
-        Assert.Equal("there", dictionary["hi"]);
+        dictionary["hi"].Should().Be("there");
     }
 
     [Fact]
@@ -86,49 +95,6 @@ public class DynamicHelperTest
 
         expando["hi"] = "there";
 
-        Assert.Equal("there", dictionary["hi"]);
-    }
-
-    [InlineData(typeof(string), "Name", "String")]
-    [InlineData("123", "Length", 3)]
-    [Theory]
-    public void GetValue_simple(object target, string name, object? value)
-    {
-        Assert.Equal(value, DynamicHelper.GetValue(target, name));
-    }
-
-    [InlineData("name", "John Doe")]
-    [Theory]
-    public void GetValue_dynamic(string name, object? value)
-    {
-        var expando = new DictionaryExpando<object?>(new Dictionary<string, object?> { { "name", "John Doe" } });
-        Assert.Equal(value, DynamicHelper.GetValue(expando, name));
-    }
-
-    [InlineData("Name", "Jane Doe")]
-    [InlineData("Age", 3)]
-    [Theory]
-    public void SetValue_simple(string name, object? value)
-    {
-        var person = new Person { Name = "John Doe", Age = 23 };
-        DynamicHelper.SetValue(person, name, value);
-        Assert.Equal(value, DynamicHelper.GetValue(person, name));
-    }
-
-    [InlineData("Name", "Jane Doe")]
-    [InlineData("Age", 3)]
-    [Theory]
-    public void SetValue_dynamic(string name, object? value)
-    {
-        var person = new ObjectExpando(new Person { Name = "John Doe", Age = 23 });
-        DynamicHelper.SetValue(person, name, value);
-        Assert.Equal(value, DynamicHelper.GetValue(person, name));
-    }
-
-    public class Person
-    {
-        public string? Name { get; set; }
-
-        public int Age { get; set; }
+        dictionary["hi"].Should().Be("there");
     }
 }

@@ -7,6 +7,7 @@
 
 using FluentAssertions;
 using Kephas.Analyzers.DependencyInjection;
+using Kephas.Testing.Analyzers;
 using Xunit;
 
 namespace Kephas.Analyzers.Tests.DependencyInjection;

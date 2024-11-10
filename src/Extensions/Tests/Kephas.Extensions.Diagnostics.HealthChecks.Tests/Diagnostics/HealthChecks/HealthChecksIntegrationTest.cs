@@ -18,7 +18,7 @@ namespace Kephas.Extensions.Tests.Diagnostics.HealthChecks;
 public class HealthChecksIntegrationTest : IntegrationTestBase<HealthChecksIntegrationTest>
 {
     [Fact]
-    public void COllectHealthChecks()
+    public void CollectHealthChecks()
     {
         var healthChecks = ServiceProvider.GetRequiredService<ILazyEnumerable<IHealthCheck, HealthCheckMetadata>>();
         healthChecks.Select(hc => hc.Metadata).Should().Satisfy(

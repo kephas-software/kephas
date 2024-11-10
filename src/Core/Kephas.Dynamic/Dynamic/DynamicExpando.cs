@@ -5,9 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Dynamic;
-
 using System.Dynamic;
+using Kephas.Reflection;
+
+namespace Kephas.Dynamic;
 
 /// <summary>
 /// An <see cref="IDynamic"/> wrapper over a dynamic object.
@@ -29,7 +30,7 @@ internal class DynamicExpando : IDynamic
     /// Gets the object the current instance adapts.
     /// </summary>
     /// <returns>The inner <see cref="IDynamicMetaObjectProvider"/>.</returns>
-    internal IDynamicMetaObjectProvider GetDynamicMetaObjectProvider() => this.obj;
+    internal IDynamicMetaObjectProvider GetDynamicMetaObjectProvider() => obj;
 
     /// <summary>
     /// Convenience method that provides a string Indexer
@@ -47,8 +48,8 @@ internal class DynamicExpando : IDynamic
     /// <returns>The requested member value.</returns>
     public object? this[string key]
     {
-        get => DynamicHelper.GetValue(this.obj, key);
-        set => DynamicHelper.SetValue(this.obj, key, value);
+        get => obj.GetPropertyValue(key);
+        set => obj.SetPropertyValue(key, value);
     }
 
     /// <summary>
@@ -56,7 +57,7 @@ internal class DynamicExpando : IDynamic
     /// </summary>
     /// <returns>An enumeration of member names.</returns>
     public IEnumerable<string> GetKeys() =>
-        this.obj switch
+        obj switch
         {
             IDynamic dynamic => dynamic.GetKeys(),
             DynamicObject dynObject => dynObject.GetDynamicMemberNames(),
@@ -71,7 +72,7 @@ internal class DynamicExpando : IDynamic
     /// True if defined, false if not.
     /// </returns>
     public bool HasKey(string key) =>
-        this.obj switch
+        obj switch
         {
             IDynamic dynamic => dynamic.HasKey(key),
             DynamicObject dynObject => dynObject.GetDynamicMemberNames().Contains(key),

@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Collections;
+using Kephas.Serialization.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,7 +37,8 @@ public static class WebMvcHelper
         Action<MvcOptions>? mvcOptionsConfig = null)
     {
         services.TryAddSingleton<IApplicationPartsProvider, ApplicationPartsProvider>();
-        var mvcBuilder = services.AddControllers(
+        var mvcBuilder = services
+            .AddControllers(
                 options =>
                 {
                     if (options.Filters.Any(item => item is IAllowAnonymousFilter))
@@ -47,6 +49,13 @@ public static class WebMvcHelper
                     options.CacheProfiles.Add("Default", new CacheProfile { Duration = CacheProfileDuration });
                     mvcOptionsConfig?.Invoke(options);
                 })
+            .AddJsonOptions(options =>
+            {
+                // TODO optimize
+                services.BuildServiceProvider()
+                    .GetRequiredService<IJsonSerializerOptionsProvider>()
+                    .ConfigureOptions(options.JsonSerializerOptions);
+            })
             .ConfigureApplicationParts();
         mvcBuilderConfig?.Invoke(mvcBuilder);
 

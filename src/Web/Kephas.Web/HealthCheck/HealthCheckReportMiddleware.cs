@@ -29,12 +29,13 @@ public static class HealthCheckReportMiddleware
     /// Registers the health check report in the application middleware.
     /// </summary>
     /// <param name="app">The application builder.</param>
+    /// <param name="path">The path for the health report. If not provided, the value provided by the <see cref="HealthChecksSettings.ReportUrlPath"/> will be used.</param>
     /// <typeparam name="T">The application builder type.</typeparam>
     /// <returns>The <paramref name="app"/>.</returns>
-    public static T UseHealthChecksReport<T>(this T app)
+    public static T UseHealthChecksReport<T>(this T app, string? path = null)
         where T : IApplicationBuilder
     {
-        app = app ?? throw new ArgumentNullException(nameof(app));
+        ArgumentNullException.ThrowIfNull(app);
 
         var services = app.ApplicationServices;
         var healthChecks = services.GetServices<Lazy<IHealthCheck, HealthCheckMetadata>>();
@@ -42,7 +43,7 @@ public static class HealthCheckReportMiddleware
 
         if (hcOptions.Value.EnableReport)
         {
-            UseHealthChecksReportForPath(app, hcOptions.Value.ReportUrlPath, healthChecks);
+            UseHealthChecksReportForPath(app, path ?? hcOptions.Value.ReportUrlPath, healthChecks);
         }
             
         return app;

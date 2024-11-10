@@ -8,12 +8,12 @@
 namespace Kephas.ExceptionHandling;
 
 /// <summary>
-/// Provides the <see cref="SeverityLevel"/> property.
+/// Provides the <see cref="Severity"/> property.
 /// </summary>
 public interface IHasSeverityLevel
 {
     /// <summary>
     /// Gets the severity level.
     /// </summary>
-    SeverityLevel SeverityLevel { get; }
+    SeverityLevel Severity { get; }
 }

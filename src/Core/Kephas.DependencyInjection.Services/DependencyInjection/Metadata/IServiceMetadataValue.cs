@@ -48,7 +48,7 @@ public interface IServiceMetadataValue : IServiceMetadataProvider
     /// <returns>The metadata name from the attribute type.</returns>
     public static string GetMetadataNameFromAttributeType(Type attributeType)
     {
-        var name = attributeType.Name;
+        var name = ServiceHelper.StripGenericSuffix(attributeType.Name);
         return name.EndsWith(AttributeSuffix) ? name[..^AttributeSuffix.Length] : name;
     }
 }

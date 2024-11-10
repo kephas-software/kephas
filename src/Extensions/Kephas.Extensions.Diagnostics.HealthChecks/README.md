@@ -1,7 +1,7 @@
-﻿# Extensions
+﻿# Extensions - Health Check Diagnostics
 
 ## Introduction
-This package provides extensions to Microsoft infrastructure.
+This package provides extensions to Microsoft infrastructure in the Health Check area.
 
 ## Health checks
 
@@ -13,9 +13,12 @@ By default, the following health checks are provided:
 * Example of usage
 
 ```csharp
-services.AddHealthCheckServices();
+// use the /health path
+app.UseHealthChecks("/health");
 
-app.UseHealthCheckServices();
+// for a more detailed report, add also this call:
+// note that the path is optional, and can be configured using `HealthCheckSettings`.
+app.UseHealthChecksReport("/health-report");
 ```
 
 * Example of registering own health check
@@ -23,16 +26,13 @@ app.UseHealthCheckServices();
 ```csharp
 [FailureStatus(HealthStatus.Unhealthy)]
 [Tags("db")]
-public class DatabaseHealthCheck : IHealthCheckService
+public class DatabaseHealthCheck : IHealthCheck
 {
     //...
 }
 
-// note that services implementing IHealthCheckService are automatically registered
-services.AddHealthCheckServices();
+// note that services implementing IHealthCheck are automatically registered
 ```
-
-> Note: register your custom health checks *before* invoking `services.AddHealthCheckServices()`, otherwise it will not be properly configured.
 
 ## Other resources
 

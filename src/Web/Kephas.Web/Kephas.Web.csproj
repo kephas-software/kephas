@@ -27,7 +27,7 @@
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/release-notes.md"))</PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageTags>kephas web mvc</PackageTags>
+        <PackageTags>kephas web</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -64,6 +64,21 @@
         <FrameworkReference Include="Microsoft.AspNetCore.App"/>
     </ItemGroup>
 
+    <Choose>
+        <When Condition="'$(TargetFramework)'=='net6.0'">
+            <ItemGroup>
+                <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
+                <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
+            </ItemGroup>
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+                <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
+
     <ItemGroup>
         <PackageReference Include="NSwag.AspNetCore" Version="14.1.0" />
     </ItemGroup>
@@ -73,6 +88,7 @@
         <ProjectReference Include="..\..\Core\Kephas.Serialization.Json\Kephas.Serialization.Json.csproj" />
         <ProjectReference Include="..\..\Extensions\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj"/>
         <ProjectReference Include="..\..\Extensions\Kephas.Extensions.Diagnostics.HealthChecks\Kephas.Extensions.Diagnostics.HealthChecks.csproj" />
+        <ProjectReference Include="..\..\Extensions\Kephas.Extensions.Mediator\Kephas.Extensions.Mediator.csproj" />
     </ItemGroup>
 
 </Project>

@@ -23,7 +23,7 @@ public class ExceptionDataTest
         var exceptionData = new ExceptionData(new Exception("hello"));
 
         Assert.Equal("hello", exceptionData.Message);
-        Assert.Equal(typeof(Exception).FullName, exceptionData.ExceptionType);
+        Assert.Equal(nameof(Exception), exceptionData.ErrorType);
         Assert.Equal(SeverityLevel.Error, exceptionData.Severity);
     }
 
@@ -33,7 +33,7 @@ public class ExceptionDataTest
         var exceptionData = new ExceptionData(new DataException("hello") { Severity = SeverityLevel.Critical });
 
         Assert.Equal("hello", exceptionData.Message);
-        Assert.Equal(typeof(DataException).FullName, exceptionData.ExceptionType);
+        Assert.Equal(nameof(DataException), exceptionData.ErrorType);
         Assert.Equal(SeverityLevel.Critical, exceptionData.Severity);
     }
 
@@ -43,7 +43,7 @@ public class ExceptionDataTest
         var exceptionData = new ExceptionData(new Exception("hello"), SeverityLevel.Warning);
 
         Assert.Equal("hello", exceptionData.Message);
-        Assert.Equal(typeof(Exception).FullName, exceptionData.ExceptionType);
+        Assert.Equal(nameof(Exception), exceptionData.ErrorType);
         Assert.Equal(SeverityLevel.Warning, exceptionData.Severity);
     }
 
@@ -53,7 +53,7 @@ public class ExceptionDataTest
         var exceptionData = new ExceptionData(new DataException("hello") { Severity = SeverityLevel.Critical }, SeverityLevel.Information);
 
         Assert.Equal("hello", exceptionData.Message);
-        Assert.Equal(typeof(DataException).FullName, exceptionData.ExceptionType);
+        Assert.Equal(nameof(DataException), exceptionData.ErrorType);
         Assert.Equal(SeverityLevel.Information, exceptionData.Severity);
     }
 }
@@ -70,7 +70,7 @@ internal class DataException : Exception, IErrorNotification
     public DataException(string message)
         : base(message)
     {
-        Severity = SeverityLevel.Error;
+        Severity = Kephas.ExceptionHandling.SeverityLevel.Error;
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ internal class DataException : Exception, IErrorNotification
     public DataException(string message, Exception inner)
         : base(message, inner)
     {
-        Severity = SeverityLevel.Error;
+        Severity = Kephas.ExceptionHandling.SeverityLevel.Error;
     }
 
     /// <summary>

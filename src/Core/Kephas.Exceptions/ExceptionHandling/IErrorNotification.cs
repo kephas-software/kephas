@@ -21,12 +21,13 @@ public interface IErrorNotification : IHasSeverityLevel
     string? Message { get; }
 
     /// <summary>
-    /// Gets the severity. The default value is <see cref="SeverityLevel.Error"/>.
+    /// Gets the severity level. The default value is <see cref="SeverityLevel.Error"/>.
     /// </summary>
-    SeverityLevel Severity => SeverityLevel.Error;
+    SeverityLevel IHasSeverityLevel.Severity => SeverityLevel.Error;
 
     /// <summary>
-    /// Gets the log level.
+    /// Gets the error type.
+    /// This can be used to identify the exception type in a more specific way.
     /// </summary>
-    SeverityLevel IHasSeverityLevel.SeverityLevel => Severity;
+    public string? ErrorType => GetType().Name;
 }

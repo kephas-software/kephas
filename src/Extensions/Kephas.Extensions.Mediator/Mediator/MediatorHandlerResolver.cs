@@ -28,7 +28,7 @@ public class MediatorHandlerResolver(IServiceInfoCollection serviceInfoCollectio
     public IEnumerable<THandler>? TryGetMatchingHandlerEnumeration<THandler>(IServiceProvider serviceProvider)
         where THandler : notnull
     {
-        var items = enumerationCache.GetOrAdd(typeof(THandler), ComputeEnumerationResolver<THandler>)(serviceProvider);
+        var items = enumerationCache.GetOrAdd(typeof(THandler), ComputeEnumerationResolver)(serviceProvider);
         return items?.Cast<THandler>();
     }
 
@@ -38,10 +38,9 @@ public class MediatorHandlerResolver(IServiceInfoCollection serviceInfoCollectio
     /// <returns>An matching handler or null, if the handler type is not handled.</returns>
     public THandler? TryGetMatchingHandler<THandler>(IServiceProvider serviceProvider)
         where THandler : notnull =>
-        (THandler?)singleCache.GetOrAdd(typeof(THandler), ComputeSingleResolver<THandler>)(serviceProvider);
+        (THandler?)singleCache.GetOrAdd(typeof(THandler), ComputeSingleResolver)(serviceProvider);
 
-    private Func<IServiceProvider, object?> ComputeSingleResolver<THandler>(Type handlerType)
-        where THandler : notnull
+    private Func<IServiceProvider, object?> ComputeSingleResolver(Type handlerType)
     {
         var matchingTypes = GetMatchingTypes(handlerType);
         var exactMatchingTypes = matchingTypes.Where(t => t.type == handlerType).ToList();
@@ -54,25 +53,16 @@ public class MediatorHandlerResolver(IServiceInfoCollection serviceInfoCollectio
         return matchingTypes.Count switch
         {
             0 => _ => null,
-            1 => sp => GetExactMatchingHandlers(sp, matchingTypes[0].type).GetRequiredService(),
             _ => GetCombinedSingleResolver(matchingTypes),
         };
     }
 
-    private static IFactoryEnumerable<object, ServiceMetadata> GetExactMatchingHandlers(IServiceProvider sp, Type handlerType)
-    {
-        var factoryEnumerableType = typeof(IFactoryEnumerable<,>).MakeGenericType(handlerType, typeof(ServiceMetadata));
-        return (IFactoryEnumerable<object, ServiceMetadata>)sp.GetRequiredService(factoryEnumerableType);
-    }
-
-    private Func<IServiceProvider, IEnumerable<object>?> ComputeEnumerationResolver<THandler>(Type handlerType)
-        where THandler : notnull
+    private Func<IServiceProvider, IEnumerable<object>?> ComputeEnumerationResolver(Type handlerType)
     {
         var matchingTypes = GetMatchingTypes(handlerType);
         return matchingTypes.Count switch
         {
             0 => _ => null,
-            1 => sp => GetExactMatchingHandlers(sp, matchingTypes[0].type).Select(f => f.GetService()),
             _ => GetCombinedEnumerationResolver(matchingTypes),
         };
     }

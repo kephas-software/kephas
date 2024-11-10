@@ -41,7 +41,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
 
     services.AddAntiforgery();
 
-    services.AddOpenApiDocumentation(configuration);
+    services.AddMemoryCache();
 
     services.ConfigureControllers();
 }
@@ -50,7 +50,13 @@ void ConfigureMiddleware(WebApplication app)
 {
     // Configure the HTTP request pipeline.
 
+    app.UseExceptionHandler();
+
     app.UseOpenApiDocumentation();
+#if NET8_0_OR_GREATER
+#else
+    app.UseApiVersioning();
+#endif
 
     app.UseHttpsRedirection();
 

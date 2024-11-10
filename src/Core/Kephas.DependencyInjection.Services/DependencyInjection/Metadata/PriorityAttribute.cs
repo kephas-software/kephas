@@ -14,27 +14,15 @@ namespace Kephas.DependencyInjection.Metadata;
 /// Indicates a processing priority used when more services must be processed.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public class PriorityAttribute : Attribute, IServiceMetadataValue<Priority>, IHasPriority
+public class PriorityAttribute(Priority value) : ServiceMetadataValueAttributeBase<Priority>(value), IHasPriority
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="PriorityAttribute" /> class.
     /// </summary>
     /// <param name="priority">The processing priority.</param>
-    public PriorityAttribute(int priority) => Value = (Priority)priority;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PriorityAttribute" /> class.
-    /// </summary>
-    /// <param name="priority">The processing priority.</param>
-    public PriorityAttribute(Priority priority) => Value = priority;
-
-    /// <summary>
-    /// Gets the priority value.
-    /// </summary>
-    /// <value>
-    /// The priority value.
-    /// </value>
-    public Priority Value { get; }
+    public PriorityAttribute(int priority) : this((Priority)priority)
+    {
+    }
 
     /// <summary>
     /// Gets the processing priority.

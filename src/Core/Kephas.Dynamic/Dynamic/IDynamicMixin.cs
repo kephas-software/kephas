@@ -5,15 +5,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Collections;
-
-namespace Kephas.Dynamic;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Kephas.Collections;
+using Kephas.Reflection;
+
+namespace Kephas.Dynamic;
 
 /// <summary>
 /// Mixin for providing a default implementation of an <see cref="IDynamic"/>.
@@ -62,15 +59,15 @@ public interface IDynamicMixin : IDynamic
     /// Converts the expando to a dictionary having as keys the property names and as values the
     /// respective properties' values.
     /// </summary>
-    /// <param name="keyFunc">Optional. The key transformation function.</param>
-    /// <param name="valueFunc">Optional. The value transformation function.</param>
+    /// <param name="keyGetter">Optional. The key transformation function.</param>
+    /// <param name="valueGetter">Optional. The value transformation function.</param>
     /// <returns>
     /// A dictionary of property values with their associated names.
     /// </returns>
     IDictionary<string, object?> IDictionaryConvertible.ToDictionary(
-        Func<string, string>? keyFunc,
-        Func<object?, object?>? valueFunc)
-        => ToDictionary(this, keyFunc, valueFunc);
+        Func<string, string>? keyGetter,
+        Func<object?, object?>? valueGetter)
+        => ToDictionary(this, keyGetter, valueGetter);
 
     /// <summary>
     /// Indicates whether the <paramref name="key"/> is defined in the expando.
@@ -145,12 +142,11 @@ public interface IDynamicMixin : IDynamic
             && binders.HasFlag(ExpandoMemberBinderKind.This))
         {
             var type = self.GetType();
-            foreach (var property in DynamicHelper.GetTypeProperties(type))
+            foreach (var property in type.GetPublicInstanceProperties())
             {
                 var propName = property.Name;
-                if (!hashSet.Contains(propName))
+                if (hashSet.Add(propName))
                 {
-                    hashSet.Add(propName);
                     yield return propName;
                 }
             }
@@ -161,12 +157,11 @@ public interface IDynamicMixin : IDynamic
             && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
         {
             var type = innerObject.GetType();
-            foreach (var property in DynamicHelper.GetTypeProperties(type!))
+            foreach (var property in type!.GetPublicInstanceProperties())
             {
                 var propName = property.Name;
-                if (!hashSet.Contains(propName))
+                if (hashSet.Add(propName))
                 {
-                    hashSet.Add(propName);
                     yield return propName;
                 }
             }
@@ -177,9 +172,8 @@ public interface IDynamicMixin : IDynamic
         {
             foreach (var propName in self.InnerDictionary!.Keys)
             {
-                if (!hashSet.Contains(propName))
+                if (hashSet.Add(propName))
                 {
-                    hashSet.Add(propName);
                     yield return propName;
                 }
             }
@@ -219,7 +213,7 @@ public interface IDynamicMixin : IDynamic
         if (innerObject != null && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
         {
             var innerObjectType = innerObject.GetType();
-            foreach (var prop in DynamicHelper.GetTypeProperties(innerObjectType))
+            foreach (var prop in innerObjectType.GetPublicInstanceProperties())
             {
                 var propName = prop.Name;
                 var value = prop.GetValue(innerObject);
@@ -232,7 +226,7 @@ public interface IDynamicMixin : IDynamic
         if (self != innerObject && binders.HasFlag(ExpandoMemberBinderKind.This))
         {
             var thisType = self.GetType();
-            foreach (var prop in DynamicHelper.GetTypeProperties(thisType))
+            foreach (var prop in thisType.GetPublicInstanceProperties())
             {
                 var propName = prop.Name;
                 var value = prop.GetValue(self);

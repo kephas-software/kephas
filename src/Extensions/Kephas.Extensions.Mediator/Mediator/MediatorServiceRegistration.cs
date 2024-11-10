@@ -30,7 +30,7 @@ public class MediatorServiceRegistration : IServiceRegistration
             config.MediatorImplementationType = typeof(MediatorService);
             // Disable automatic scanning, the MediatorServiceProvider will resolve the services.
             config.RegisterServicesFromAssemblies(GetType().Assembly);
-            config.TypeEvaluator = type => false;
+            config.TypeEvaluator = _ => false;
         });
     }
 }

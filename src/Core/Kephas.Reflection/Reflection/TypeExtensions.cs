@@ -1,0 +1,352 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TypeExtensions.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Extension methods for types.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+
+namespace Kephas.Reflection;
+
+/// <summary>
+/// Extension methods for types.
+/// </summary>
+public static class TypeExtensions
+{
+    /// <summary>
+    /// Converts the raw type to a type usable for the runtime operations.
+    /// This is either the non-generic type, the fully constructed generic type,
+    /// or the generic type definition.
+    /// </summary>
+    /// <remarks>
+    /// Sometimes the raw type provided is a constructed generic type
+    /// but not with all type arguments replaced. In this case the generic type definition
+    /// will be returned.
+    /// </remarks>
+    /// <param name="rawType">The raw type.</param>
+    /// <returns>The runtime type.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Type ToNormalizedType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type rawType)
+    {
+        rawType = rawType ?? throw new ArgumentNullException(nameof(rawType));
+
+        return rawType is { IsConstructedGenericType: true, ContainsGenericParameters: true }
+            ? rawType.GetGenericTypeDefinition()
+            : rawType;
+    }
+
+
+    /// <summary>
+    /// Gets the type wrapped by the <see cref="Nullable{T}"/> or,
+    /// if the type is not a nullable type, the type itself.
+    /// </summary>
+    /// <param name="type">The type to be checked.</param>
+    /// <returns>A <see cref="Type"/> instance.</returns>
+    public static Type GetNonNullableType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
+    {
+        type = type ?? throw new ArgumentNullException(nameof(type));
+
+        return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)
+            ? type.GenericTypeArguments[0]
+            : type;
+    }
+
+    /// <summary>
+    /// Indicates whether the type is an instance of the generic <see cref="Nullable{T}"/> type.
+    /// </summary>
+    /// <param name="type">The type to check.</param>
+    /// <returns>
+    ///   <c>true</c> if the type is nullable; otherwise, <c>false</c>.
+    /// </returns>
+    public static bool IsNullableType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
+    {
+        type = type ?? throw new ArgumentNullException(nameof(type));
+
+        return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether the type implements <see cref="IEnumerable"/>.
+    /// </summary>
+    /// <param name="type">The type to check.</param>
+    /// <returns>
+    ///   <c>true</c> if the type is enumerable; otherwise, <c>false</c>.
+    /// </returns>
+    public static bool IsEnumerable([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type)
+    {
+        return type != null
+               && typeof(IEnumerable).IsAssignableFrom(type);
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether the type implements <see cref="ICollection"/>.
+    /// </summary>
+    /// <param name="type">The type to check.</param>
+    /// <returns>
+    ///   <c>true</c> if the type is a collection; otherwise, <c>false</c>.
+    /// </returns>
+    public static bool IsReadOnlyCollection([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type)
+    {
+        if (type == null)
+        {
+            return false;
+        }
+
+        var collectionType = typeof(IReadOnlyCollection<>);
+        return type.IsConstructedGenericOf(collectionType) || type.GetInterfaces().Any(i => i.IsReadOnlyCollection());
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether the type implements <see cref="ICollection"/>.
+    /// </summary>
+    /// <param name="type">The type to check.</param>
+    /// <returns>
+    ///   <c>true</c> if the type is a collection; otherwise, <c>false</c>.
+    /// </returns>
+    public static bool IsCollection([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type)
+    {
+        if (type == null)
+        {
+            return false;
+        }
+
+        var collectionType = typeof(ICollection<>);
+        return type.IsConstructedGenericOf(collectionType) || type.GetInterfaces().Any(i => i.IsCollection());
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether the type implements <see cref="IDictionary{TKey,TValue}"/>.
+    /// </summary>
+    /// <param name="type">The type to check.</param>
+    /// <returns>
+    ///   <c>true</c> if the type is a collection; otherwise, <c>false</c>.
+    /// </returns>
+    public static bool IsDictionary([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type)
+    {
+        if (type == null)
+        {
+            return false;
+        }
+
+        var dictionaryType = typeof(IDictionary<,>);
+        return type.IsConstructedGenericOf(dictionaryType) || type.GetInterfaces().Any(i => i.IsDictionary());
+    }
+
+    /// <summary>
+    /// Gets a value indicating whether the type implements <see cref="IQueryable"/>.
+    /// </summary>
+    /// <param name="type">The type to check.</param>
+    /// <returns>
+    ///   <c>true</c> if the type is enumerable; otherwise, <c>false</c>.
+    /// </returns>
+    public static bool IsQueryable([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type)
+    {
+        return type != null
+               && typeof(IQueryable).IsAssignableFrom(type);
+    }
+
+    /// <summary>
+    /// Tries to get the key and item type of the generic dictionary type.
+    /// </summary>
+    /// <param name="type">The enumerable type.</param>
+    /// <returns>The item type if the provided type is enumerable, otherwise <c>null</c>.</returns>
+    public static (Type keyType, Type itemType)? TryGetDictionaryKeyItemType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
+    {
+        return TryGetDictionaryKeyItemType(type, typeof(IDictionary<,>));
+    }
+
+    /// <summary>
+    /// Tries to get the key and item type of the generic dictionary type.
+    /// </summary>
+    /// <param name="type">The enumerable type.</param>
+    /// <param name="dictionaryGenericType">The dictionary generic type.</param>
+    /// <returns>The item type if the provided type is enumerable, otherwise <c>null</c>.</returns>
+    public static (Type keyType, Type itemType)? TryGetDictionaryKeyItemType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type dictionaryGenericType)
+    {
+        if (!type.IsDictionary())
+        {
+            return null;
+        }
+
+        bool IsRequestedDictionary(Type t)
+        {
+            return t.IsGenericType && t.GetGenericTypeDefinition() == dictionaryGenericType;
+        }
+
+        var dictionaryType = IsRequestedDictionary(type)
+            ? type
+            : type.GetInterfaces().SingleOrDefault(IsRequestedDictionary);
+
+        return dictionaryType == null
+            ? ((Type keyType, Type itemType)?)null
+            : (dictionaryType.GenericTypeArguments[0], dictionaryType.GenericTypeArguments[1]);
+    }
+
+    /// <summary>
+    /// Tries to get the item type of the generic enumerable type.
+    /// </summary>
+    /// <param name="type">The enumerable type.</param>
+    /// <returns>The item type if the provided type is enumerable, otherwise <c>null</c>.</returns>
+    public static Type? TryGetEnumerableItemType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
+    {
+        return TryGetEnumerableItemType(type, typeof(IEnumerable<>));
+    }
+
+    /// <summary>
+    /// Tries to get the item type of the generic queryable type.
+    /// </summary>
+    /// <param name="type">The queryable type.</param>
+    /// <returns>The item type if the provided type is queryable, otherwise <c>null</c>.</returns>
+    public static Type? TryGetQueryableItemType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
+    {
+        return TryGetEnumerableItemType(type, typeof(IQueryable<>));
+    }
+
+    /// <summary>
+    /// Tries to get the item type of the generic collection type.
+    /// </summary>
+    /// <param name="type">The collection type.</param>
+    /// <returns>The item type if the provided type is a collection, otherwise <c>null</c>.</returns>
+    public static Type? TryGetCollectionItemType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type)
+    {
+        return TryGetEnumerableItemType(type, typeof(ICollection<>));
+    }
+
+    /// <summary>
+    /// Gets the generic item type of the enumerable type.
+    /// </summary>
+    /// <param name="type">The enumerable type.</param>
+    /// <param name="enumerableGenericType">Type of the enumerable generic.</param>
+    /// <returns>
+    /// The enumerable item type.
+    /// </returns>
+    public static Type? TryGetEnumerableItemType(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type enumerableGenericType)
+    {
+        if (!type.IsEnumerable())
+        {
+            return null;
+        }
+
+        bool IsRequestedEnumerable(Type t)
+        {
+            return t.IsGenericType && t.GetGenericTypeDefinition() == enumerableGenericType;
+        }
+
+        var enumerableType = IsRequestedEnumerable(type)
+            ? type
+            : type.GetInterfaces().SingleOrDefault(IsRequestedEnumerable);
+
+        return enumerableType?.GenericTypeArguments[0];
+    }
+
+    /// <summary>
+    /// Indicates whether the type is a constructed generic of the provided open generic type.
+    /// </summary>
+    /// <param name="type">The type to check.</param>
+    /// <param name="openGenericType">The open generic type.</param>
+    /// <returns>
+    /// <c>true</c> if the type is a constructed generic of the provided open generic type, <c>false</c> otherwise.
+    /// </returns>
+    public static bool IsConstructedGenericOf(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type? type,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type openGenericType)
+    {
+        type = type ?? throw new ArgumentNullException(nameof(type));
+
+        return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == openGenericType;
+    }
+
+    /// <summary>
+    /// A Type extension method that gets the base constructed generic of a provided type.
+    /// The base can be either an interface or a class.
+    /// </summary>
+    /// <param name="type">The type to act on.</param>
+    /// <param name="openGenericType">The open generic type of which constructed generic type is requested.</param>
+    /// <returns>
+    /// The base constructed generic.
+    /// </returns>
+    /// <example>
+    /// <code>
+    /// var type = typeof(string).GetBaseConstructedGenericOf(typeof(IEnumerable&lt;&gt;));
+    /// Assert.Same(type, typeof(IEnumerable&lt;char&gt;));
+    /// </code>
+    /// </example>
+    public static Type? TryGetBaseConstructedGenericOf(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type openGenericType)
+    {
+        type = type ?? throw new ArgumentNullException(nameof(type));
+        openGenericType = openGenericType ?? throw new ArgumentNullException(nameof(openGenericType));
+
+        if (openGenericType.IsInterface)
+        {
+            var implementedInterfaces = type.GetInterfaces();
+            var constructedInterface = implementedInterfaces.FirstOrDefault(
+                t => t.IsConstructedGenericType && t.GetGenericTypeDefinition() == openGenericType);
+            return constructedInterface;
+        }
+
+        if (!openGenericType.IsClass)
+        {
+            return null;
+        }
+
+        while (type != typeof(object))
+        {
+            if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == openGenericType)
+            {
+                return type;
+            }
+
+            type = type.BaseType!;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Gets the qualified full name of a <see cref="Type"/>. Optionally, strips away the version information.
+    /// </summary>
+    /// <param name="type">The type instance.</param>
+    /// <param name="stripVersionInfo"><c>true</c> to strip away the version information (optional).</param>
+    /// <returns>
+    /// The qualified full name.
+    /// </returns>
+    public static string? GetQualifiedFullName(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type,
+        bool stripVersionInfo = true)
+    {
+        type = type ?? throw new ArgumentNullException(nameof(type));
+
+        var qualifiedFullName = type.AssemblyQualifiedName;
+        if (string.IsNullOrEmpty(qualifiedFullName))
+        {
+            return qualifiedFullName;
+        }
+
+        if (stripVersionInfo)
+        {
+            // find the second occurence of , and cut there.
+            var index = qualifiedFullName.IndexOf(',');
+            if (index > 0)
+            {
+                index = qualifiedFullName.IndexOf(',', index + 1);
+            }
+
+            if (index > 0)
+            {
+                qualifiedFullName = qualifiedFullName[..index];
+            }
+        }
+
+        return qualifiedFullName;
+    }
+}

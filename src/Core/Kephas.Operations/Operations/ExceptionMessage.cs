@@ -14,37 +14,43 @@ namespace Kephas.Operations;
 /// </summary>
 public record ExceptionMessage() : OperationMessage()
 {
-    private readonly Exception? exception;
+    private ExceptionData? exception;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="OperationMessage"/> class.
     /// </summary>
     /// <param name="exception">The exception.</param>
     public ExceptionMessage(Exception exception)
+        : this(new ExceptionData(exception ?? throw new ArgumentNullException(nameof(exception))))
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OperationMessage"/> class.
+    /// </summary>
+    /// <param name="exceptionData">The exception data.</param>
+    public ExceptionMessage(ExceptionData exceptionData)
         : this()
     {
-        Exception = exception ?? throw new ArgumentNullException(nameof(exception));
-        Message = exception.Message;
+        Exception = exceptionData ?? throw new ArgumentNullException(nameof(exceptionData));
+        Message = exceptionData.Message;
     }
 
     /// <summary>
     /// Gets the exception, if any.
     /// </summary>
-    public Exception Exception
+    public ExceptionData Exception
     {
-        get => exception ?? new Exception();
+        get => exception ??= new ExceptionData(new Exception());
         init
         {
             exception = value ?? throw new ArgumentNullException(nameof(value));
-            if (exception is IHasSeverityLevel logLevelException)
-            {
-                SeverityLevel = logLevelException.SeverityLevel;
-            }
+            Severity = exception!.Severity;
         }
     }
 
     /// <summary>Returns a string that represents the current object.</summary>
     /// <returns>A string that represents the current object.</returns>
     public override string ToString() =>
-        $"{base.ToString()} [{exception?.GetType().Name}]";
+        $"{base.ToString()} [{exception!.ErrorType}]";
 }
