@@ -26,7 +26,7 @@ public record EntityContextFeatureMetadata : ServiceMetadata
             return;
         }
 
-        Provider = (string?)TryGetValue(metadata, nameof(Provider));
+        ProviderName = (string?)TryGetValue(metadata, nameof(ProviderName));
         EntityContextType = (Type?)TryGetValue(metadata, nameof(EntityContextType));
         EntityTypes = (IEnumerable<Type>?)TryGetValue(metadata, nameof(EntityTypes));
     }
@@ -34,7 +34,7 @@ public record EntityContextFeatureMetadata : ServiceMetadata
     /// <summary>
     /// Gets the provider.
     /// </summary>
-    public string? Provider { get; }
+    public string? ProviderName { get; }
 
     /// <summary>
     /// Gets the target entity context type.

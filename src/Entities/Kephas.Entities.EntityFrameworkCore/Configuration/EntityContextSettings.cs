@@ -43,5 +43,5 @@ public record EntityContextSettings
     /// Gets the provider, throwing an exception in case the provider could not be identified.
     /// </summary>
     /// <returns>The provider name.</returns>
-    public string GetRequiredProvider() => Connection?.Provider ?? throw new InvalidOperationException("The connection provider is not set.");
+    public string GetRequiredProvider() => Connection?.ProviderName ?? throw new InvalidOperationException("The connection provider is not set.");
 }
