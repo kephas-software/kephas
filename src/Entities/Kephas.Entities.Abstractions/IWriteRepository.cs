@@ -5,7 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.DependencyInjection;
 using Kephas.Entities.StoredProcedures;
 
 namespace Kephas.Entities;
@@ -13,7 +12,6 @@ namespace Kephas.Entities;
 /// <summary>
 /// Repository for writing data.
 /// </summary>
-[ScopedService]
 public interface IWriteRepository : IReadRepository
 {
     /// <summary>
