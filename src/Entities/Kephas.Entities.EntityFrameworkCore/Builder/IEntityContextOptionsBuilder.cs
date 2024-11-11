@@ -17,9 +17,9 @@ namespace Kephas.Entities.Builder;
 public interface IEntityContextOptionsBuilder : IEntityContextFeature
 {
     /// <summary>
-    /// Build the DbContext using the repository options.
+    /// Build the DbContext using the provided settings.
     /// </summary>
-    /// <param name="optionsBuilder">The options builder.</param>
-    /// <param name="repositoryOptions">The repository options.</param>
-    void Build(DbContextOptionsBuilder optionsBuilder, EntityContextSettings repositoryOptions);
+    /// <param name="optionsBuilder">The builder for the <see cref="DbContextOptions{TContext}"/>.</param>
+    /// <param name="entityContextSettings">The entity context settings.</param>
+    void Build(DbContextOptionsBuilder optionsBuilder, EntityContextSettings entityContextSettings);
 }

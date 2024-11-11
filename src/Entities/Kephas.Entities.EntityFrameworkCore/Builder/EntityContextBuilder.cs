@@ -17,7 +17,6 @@ namespace Kephas.Entities.Builder;
 /// The default implementation of <see cref="IEntityContextBuilder"/>.
 /// </summary>
 public class EntityContextBuilder(
-    IServiceProvider serviceProvider,
     ILazyEnumerable<IEntityContextFeature, EntityContextFeatureMetadata> lazyFeatures,
     IEntityContextSettingsProvider settingsProvider) : IEntityContextBuilder
 {
@@ -219,5 +218,5 @@ public class EntityContextBuilder(
         metadata.EntityContextType is null || metadata.EntityContextType.IsAssignableFrom(entityContextType);
 
     private static bool MatchProvider(EntityContextFeatureMetadata metadata, string provider) =>
-        metadata.Provider is null || string.Equals(metadata.Provider, provider, StringComparison.InvariantCultureIgnoreCase);
+        metadata.ProviderName is null || string.Equals(metadata.ProviderName, provider, StringComparison.InvariantCultureIgnoreCase);
 }
