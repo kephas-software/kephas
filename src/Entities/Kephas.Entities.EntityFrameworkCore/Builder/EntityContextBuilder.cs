@@ -202,7 +202,7 @@ public class EntityContextBuilder(
     /// <summary>
     /// Gets the entity context settings for the provided metadata.
     /// </summary>
-    /// <param name="metadata">The data context metadata.</param>
+    /// <param name="metadata">The entity context metadata.</param>
     /// <returns>The entity context settings.</returns>
     protected EntityContextSettings GetEntityContextSettings(EntityContextMetadata metadata) =>
         settingsProvider.GetEntityContextSettings(metadata.ServiceKey!);

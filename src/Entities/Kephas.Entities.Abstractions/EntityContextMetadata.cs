@@ -37,7 +37,7 @@ public record EntityContextMetadata : ServiceMetadata
     public Type? EntityContextType { get; set; }
 
     /// <summary>
-    /// Gets the entity types served by the data context.
+    /// Gets the entity types served by the entity context.
     /// </summary>
     public IEnumerable<Type>? EntityTypes { get; set; }
     

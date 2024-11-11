@@ -70,7 +70,7 @@ public static class EntityFrameworkCoreServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Add the data context services.
+    /// Add the entity context services.
     /// </summary>
     /// <typeparam name="TDbContext">The DB Context type.</typeparam>
     /// <param name="services">The service collection.</param>

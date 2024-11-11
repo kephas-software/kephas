@@ -21,7 +21,7 @@ public interface IReadRepository
     /// <summary>
     /// Gets the <see cref="IEntityContext"/> used by this repository to access data.
     /// </summary>
-    /// <param name="entityType">The entity type for which the data context is required.</param>
+    /// <param name="entityType">The entity type for which the entity context is required.</param>
     protected internal IEntityContext GetEntityContext(Type entityType);
 
     /// <summary>

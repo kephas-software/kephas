@@ -26,7 +26,7 @@ public abstract class EntityContextBase<TDbContext> : DbContext, IEntityContext<
     /// Initializes a new instance of the <see cref="EntityContextBase{TDbContext}"/> class.
     /// </summary>
     /// <param name="options">The context options.</param>
-    /// <param name="builder">The data context builder.</param>
+    /// <param name="builder">The entity context builder.</param>
     protected EntityContextBase(
         DbContextOptions<TDbContext> options,
         IEntityContextBuilder builder)
