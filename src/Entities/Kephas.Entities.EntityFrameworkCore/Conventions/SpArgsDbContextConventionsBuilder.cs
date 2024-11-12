@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SpArgsDataContextConventionsBuilder.cs" company="Kephas Software SRL">
+// <copyright file="SpArgsDbContextConventionsBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -14,7 +14,7 @@ namespace Kephas.Entities.Conventions;
 /// <summary>
 /// Conventions builder for SP args.
 /// </summary>
-public class SpArgsDataContextConventionsBuilder : IEntityContextConventionsBuilder
+public class SpArgsDbContextConventionsBuilder : IDbContextConventionsBuilder
 {
     /// <summary>
     /// Build the DbContext using the repository options.
