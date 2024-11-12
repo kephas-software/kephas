@@ -1,16 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDbReadRepository.cs" company="Kephas Software SRL">
+// <copyright file="SqlReadRepository.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.DependencyInjection;
+using Kephas.Entities.Interceptors;
 
 namespace Kephas.Entities;
 
 /// <summary>
-/// Base interface for repositories used in reading entities using EntityFrameworkCore.
+/// The default implementation of <see cref="ISqlReadRepository"/>
 /// </summary>
-[ScopedService]
-public interface IDbReadRepository : IReadRepository;
+public class SqlReadRepository(
+    ISqlEntityContextSelector entityContextSelector,
+    IRepositoryOperationPipeline operationPipeline)
+    : SqlReadRepositoryBase(entityContextSelector, operationPipeline), ISqlReadRepository;

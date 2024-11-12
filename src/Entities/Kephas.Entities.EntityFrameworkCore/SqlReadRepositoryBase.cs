@@ -1,20 +1,24 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DbReadRepositoryBase.cs" company="Kephas Software SRL">
+// <copyright file="SqlReadRepositoryBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
+using Kephas.Entities.Interceptors;
 using Kephas.Entities.StoredProcedures;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Kephas.Entities;
 
 /// <summary>
 /// The base implementation of <see cref="IReadRepository"/> for EntityFrameworkCore.
 /// </summary>
-public abstract class DbReadRepositoryBase(IDbEntityContextSelector entityContextSelector)
+public abstract class SqlReadRepositoryBase(
+    ISqlEntityContextSelector entityContextSelector,
+    IRepositoryOperationPipeline operationPipeline)
     : IReadRepository
 {
     /// <summary>
@@ -22,7 +26,7 @@ public abstract class DbReadRepositoryBase(IDbEntityContextSelector entityContex
     /// </summary>
     /// <param name="entityType">The entity type for which the entity context is required.</param>
     IEntityContext IReadRepository.GetEntityContext(Type entityType) =>
-        (IEntityContext)GetEntityContext(entityType);
+        (IEntityContext)GetDbContext(entityType);
 
     /// <summary>
     /// Gets a query over the entities of type <typeparamref name="T"/>.
@@ -82,12 +86,19 @@ public abstract class DbReadRepositoryBase(IDbEntityContextSelector entityContex
     /// Gets the <see cref="DbContext"/> used by this repository to access data.
     /// </summary>
     /// <param name="entityType">The entity type for which the entity context is required.</param>
-    protected virtual DbContext GetEntityContext(Type entityType) => (DbContext)entityContextSelector.GetEntityContext(entityType);
+    protected virtual DbContext GetDbContext(Type entityType) => (DbContext)entityContextSelector.GetEntityContext(entityType);
+
+    /// <summary>
+    /// Gets the database facade for the provided entity type.
+    /// </summary>
+    /// <param name="entityType">The entity type.</param>
+    /// <returns>The database facade.</returns>
+    protected virtual DatabaseFacade GetDatabase(Type entityType) => GetDbContext(entityType).Database;
 
     /// <summary>
     /// Gets the <see cref="DbSet{TEntity}"/> serving the provided entity type.
     /// </summary>
     /// <typeparam name="T">The entity type.</typeparam>
     /// <returns>The <see cref="DbSet{TEntity}"/> serving serving the entity type.</returns>
-    protected virtual DbSet<T> Set<T>() where T : class => GetEntityContext(typeof(T)).Set<T>();
+    protected virtual DbSet<T> Set<T>() where T : class => GetDbContext(typeof(T)).Set<T>();
 }
