@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEntityContextBuilder.cs" company="Kephas Software SRL">
+// <copyright file="IDbContextBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,7 +15,7 @@ namespace Kephas.Entities.Builder;
 /// Singleton service for initialization of <see cref="IEntityContext"/>s.
 /// </summary>
 [SingletonService]
-public interface IEntityContextBuilder
+public interface IDbContextBuilder
 {
     /// <summary>
     /// Gets the features supported by the provided <see cref="DbContext"/>.

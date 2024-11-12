@@ -1,27 +1,22 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MySqlEntityContextOptionsBuilder.cs" company="Kephas Software SRL">
+// <copyright file="MySqlDbContextOptionsBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Concurrent;
 using Kephas.Entities.Configuration;
 using Microsoft.EntityFrameworkCore;
-using MySql.Data.EntityFrameworkCore.Infrastructure;
-using MySql.Data.MySqlClient;
+using MySql.EntityFrameworkCore.Infrastructure;
 
 namespace Kephas.Entities.Builder;
 
 /// <summary>
-/// The SQLite flavor of the <see cref="IEntityContextOptionsBuilder"/>.
+/// The SQLite flavor of the <see cref="IDbContextOptionsBuilder"/>.
 /// </summary>
 [MySqlProviderName]
-public class MySqlEntityContextOptionsBuilder : IEntityContextOptionsBuilder
+public class MySqlDbContextOptionsBuilder : IDbContextOptionsBuilder
 {
-    private static readonly ConcurrentDictionary<string, MySqlConnection> InMemoryConnections =
-        new(StringComparer.InvariantCultureIgnoreCase);
-
     /// <summary>
     /// Build the DbContext using the provided settings.
     /// </summary>

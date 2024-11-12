@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SqliteEntityContextOptionsBuilder.cs" company="Kephas Software SRL">
+// <copyright file="SqliteDbContextOptionsBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,15 +10,14 @@ using Kephas.Entities.Configuration;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Kephas.Entities.Builder;
 
 /// <summary>
-/// The SQLite flavor of the <see cref="IEntityContextOptionsBuilder"/>.
+/// The SQLite flavor of the <see cref="IDbContextOptionsBuilder"/>.
 /// </summary>
 [SqliteProviderName]
-public class SqliteEntityContextOptionsBuilder : IEntityContextOptionsBuilder
+public class SqliteDbContextOptionsBuilder : IDbContextOptionsBuilder
 {
     private static readonly ConcurrentDictionary<string, SqliteConnection> InMemoryConnections =
         new(StringComparer.InvariantCultureIgnoreCase);
@@ -60,7 +59,7 @@ public class SqliteEntityContextOptionsBuilder : IEntityContextOptionsBuilder
         return connectionString.Contains(":memory:", StringComparison.InvariantCultureIgnoreCase) || connectionString.Contains("Mode=Memory", StringComparison.InvariantCultureIgnoreCase);
     }
 
-    private static void ConfigureSqliteOptions(SqliteDbContextOptionsBuilder sqlOptions, EntityContextSettings entityContextSettings)
+    private static void ConfigureSqliteOptions(Microsoft.EntityFrameworkCore.Infrastructure.SqliteDbContextOptionsBuilder sqlOptions, EntityContextSettings entityContextSettings)
     {
         var commandTimeout = entityContextSettings.Connection?.CommandTimeout;
         if (commandTimeout.HasValue)

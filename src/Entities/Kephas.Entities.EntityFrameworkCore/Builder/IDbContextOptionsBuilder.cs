@@ -14,7 +14,7 @@ namespace Kephas.Entities.Builder;
 /// <summary>
 /// Service for building <see cref="IEntityContext"/> services based on <see cref="DbContext"/>.
 /// </summary>
-public interface IEntityContextOptionsBuilder : IEntityContextFeature
+public interface IDbContextOptionsBuilder : IEntityContextFeature
 {
     /// <summary>
     /// Build the DbContext using the provided settings.

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EntityContextBuilder.cs" company="Kephas Software SRL">
+// <copyright file="DbContextBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -14,11 +14,11 @@ using Microsoft.EntityFrameworkCore;
 namespace Kephas.Entities.Builder;
 
 /// <summary>
-/// The default implementation of <see cref="IEntityContextBuilder"/>.
+/// The default implementation of <see cref="IDbContextBuilder"/>.
 /// </summary>
-public class EntityContextBuilder(
+public class DbContextBuilder(
     ILazyEnumerable<IEntityContextFeature, EntityContextFeatureMetadata> lazyFeatures,
-    IEntityContextSettingsProvider settingsProvider) : IEntityContextBuilder
+    IEntityContextSettingsProvider settingsProvider) : IDbContextBuilder
 {
     private readonly ConcurrentDictionary<Type, Action<ModelConfigurationBuilder>> dbConventionsConfigMap = new();
     private readonly ConcurrentDictionary<Type, Action<DbContextOptionsBuilder>> dbContextConfigMap = new();
@@ -85,7 +85,7 @@ public class EntityContextBuilder(
                 var metadata = GetEntityContextMetadata(t);
                 var entityContextSettings = GetEntityContextSettings(metadata);
                 var builders = GetFeatures(dbContext)
-                    .OfType<IEntityContextOptionsBuilder>()
+                    .OfType<IDbContextOptionsBuilder>()
                     .ToList();
                 return b =>
                 {
@@ -129,7 +129,7 @@ public class EntityContextBuilder(
                 var metadata = GetEntityContextMetadata(t);
                 var entityContextSettings = GetEntityContextSettings(metadata);
                 var builders = GetFeatures(dbContext)
-                    .OfType<IEntityContextConventionsBuilder>()
+                    .OfType<IDbContextConventionsBuilder>()
                     .ToList();
                 return b =>
                 {
@@ -176,7 +176,7 @@ public class EntityContextBuilder(
                 var metadata = GetEntityContextMetadata(t);
                 var entityContextSettings = GetEntityContextSettings(metadata);
                 var builders = GetFeatures(dbContext)
-                    .OfType<IEntityContextModelBuilder>()
+                    .OfType<IDbContextModelBuilder>()
                     .ToList();
                 var entityTypes = metadata.EntityTypes?.ToList() ?? [];
                 return b =>

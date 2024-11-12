@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using MySql.Data.EntityFrameworkCore.Infrastructure;
+using MySql.EntityFrameworkCore.Infrastructure;
 
 namespace Kephas.Entities.Configuration;
 

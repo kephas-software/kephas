@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEntityContextConventionsBuilder.cs" company="Kephas Software SRL">
+// <copyright file="IDbContextConventionsBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -14,7 +14,7 @@ namespace Kephas.Entities.Builder;
 /// <summary>
 /// Service for building <see cref="DbContext"/> conventions.
 /// </summary>
-public interface IEntityContextConventionsBuilder : IEntityContextFeature
+public interface IDbContextConventionsBuilder : IEntityContextFeature
 {
     /// <summary>
     /// Build the DbContext using the repository options.

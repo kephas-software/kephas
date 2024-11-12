@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEntityContextModelBuilder.cs" company="Kephas Software SRL">
+// <copyright file="IDbContextModelBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -14,7 +14,7 @@ namespace Kephas.Entities.Builder;
 /// <summary>
 /// Feature for building the model.
 /// </summary>
-public interface IEntityContextModelBuilder : IEntityContextFeature
+public interface IDbContextModelBuilder : IEntityContextFeature
 {
     /// <summary>
     /// Builds the model using the provided entity types.
