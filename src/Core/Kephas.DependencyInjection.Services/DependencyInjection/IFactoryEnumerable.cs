@@ -17,6 +17,7 @@ namespace Kephas.DependencyInjection;
 /// Interface for ordered service factory collection.
 /// </summary>
 /// <typeparam name="TService">The service type.</typeparam>
+[TransientService]
 public interface IFactoryEnumerable<out TService>
     : IEnumerable<IFactory<TService, ServiceMetadata>>
     where TService : notnull
@@ -28,6 +29,7 @@ public interface IFactoryEnumerable<out TService>
 /// </summary>
 /// <typeparam name="TService">The service type.</typeparam>
 /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
+[TransientService]
 public interface IFactoryEnumerable<out TService, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] out TMetadata>
     : IEnumerable<IFactory<TService, TMetadata>>
     where TService : notnull
