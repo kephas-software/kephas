@@ -24,6 +24,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
         <ProjectReference Include="..\..\..\TestingFramework\Kephas.Testing.Xunit\Kephas.Testing.Xunit.csproj"/>
+        <ProjectReference Include="..\..\Kephas.Entities.Abstractions\Kephas.Entities.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>
