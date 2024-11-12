@@ -67,7 +67,7 @@ public class EntityContextSourceGenerator()
                   [GeneratedCode("{{nameof(EntityContextSourceGenerator)}}", "{{Assembly.GetExecutingAssembly().GetName().Version}}")]
                   public partial class {{entityContextName}}EntityContext : EntityContextBase<{{entityContextName}}EntityContext>
                   {
-                      public {{entityContextName}}EntityContext(DbContextOptions<{{entityContextName}}EntityContext> options, IEntityContextBuilder builder)
+                      public {{entityContextName}}EntityContext(DbContextOptions<{{entityContextName}}EntityContext> options, IDbContextBuilder builder)
                           : base(options, builder)
                       {
                       }

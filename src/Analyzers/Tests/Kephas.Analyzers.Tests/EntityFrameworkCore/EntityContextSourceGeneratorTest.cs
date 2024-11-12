@@ -80,7 +80,7 @@ public class EntityContextSourceGeneratorIntegrationTest : SourceGeneratorTestBa
                     [GeneratedCode("EntityContextSourceGenerator", "1.0.0.0")]
                     public partial class TestEntityContext : EntityContextBase<TestEntityContext>
                     {
-                        public TestEntityContext(DbContextOptions<TestEntityContext> options, IEntityContextBuilder builder)
+                        public TestEntityContext(DbContextOptions<TestEntityContext> options, IDbContextBuilder builder)
                             : base(options, builder)
                         {
                         }
@@ -158,7 +158,7 @@ public class EntityContextSourceGeneratorIntegrationTest : SourceGeneratorTestBa
                     [GeneratedCode("EntityContextSourceGenerator", "1.0.0.0")]
                     public partial class TestEntityContext : EntityContextBase<TestEntityContext>
                     {
-                        public TestEntityContext(DbContextOptions<TestEntityContext> options, IEntityContextBuilder builder)
+                        public TestEntityContext(DbContextOptions<TestEntityContext> options, IDbContextBuilder builder)
                             : base(options, builder)
                         {
                         }
