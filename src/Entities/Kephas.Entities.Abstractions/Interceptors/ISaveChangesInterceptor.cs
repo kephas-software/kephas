@@ -61,5 +61,5 @@ public interface ISaveChangesInterceptor : IRepositoryOperationInterceptor<ISave
     /// <param name="next">The next invocation in the execution pipeline.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>An awaitable task yielding the expected response.</returns>
-    Task<int> HandleAsync(IWriteRepository repository, IEntityContext entityContext, Func<Task> next, CancellationToken cancellationToken = default);    
+    Task<int> HandleAsync(IWriteRepository repository, IEntityContext entityContext, Func<Task<int>> next, CancellationToken cancellationToken);    
 }

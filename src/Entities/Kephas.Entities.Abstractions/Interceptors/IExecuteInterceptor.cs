@@ -71,6 +71,6 @@ public interface IExecuteInterceptor<in TSpArgs> : IRepositoryOperationIntercept
     /// <param name="next">The next invocation in the execution pipeline.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>An awaitable task yielding the expected response.</returns>
-    Task HandleAsync(IWriteRepository repository, TSpArgs args, Func<Task> next, CancellationToken cancellationToken = default);    
+    Task HandleAsync(IWriteRepository repository, TSpArgs args, Func<Task> next, CancellationToken cancellationToken);    
 }
     

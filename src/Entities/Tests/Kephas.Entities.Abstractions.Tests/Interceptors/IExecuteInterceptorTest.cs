@@ -42,7 +42,8 @@ public class IExecuteInterceptorTest
         nextInvoked.Should().BeTrue();
     }
 
-    private class TestExecuteInterceptor(IWriteRepository testRepository, ISpArgs testSpArgs, ILogger<TestExecuteInterceptor> logger) : IExecuteInterceptor<ISpArgs>
+    private class TestExecuteInterceptor(IWriteRepository testRepository, ISpArgs testSpArgs, ILogger<TestExecuteInterceptor> logger)
+        : IExecuteInterceptor<ISpArgs>
     {
         public async Task HandleAsync(IWriteRepository repository, ISpArgs args, Func<Task> next, CancellationToken cancellationToken = default)
         {
