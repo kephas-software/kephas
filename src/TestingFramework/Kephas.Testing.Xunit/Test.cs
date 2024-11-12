@@ -7,9 +7,7 @@
 
 using System.Globalization;
 using System.Reflection;
-using System.Runtime.Loader;
 using System.Text;
-using System.Text.RegularExpressions;
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.Builder.Configuration;
@@ -176,6 +174,19 @@ public static class Test
             services
                 .Select(s => new Lazy<T, TMetadata>(() => s, ServiceHelper.GetServiceMetadata<TMetadata>(null, typeof(T)))));
 
+
+    /// <summary>
+    /// Gets the test lazy enumerator.
+    /// </summary>
+    /// <param name="services">The services</param>
+    /// <typeparam name="T">The service type.</typeparam>
+    /// <typeparam name="TMetadata">The metadata type.</typeparam>
+    /// <returns>The test <see cref="ILazyEnumerable{T,TMetadata}"/>.</returns>
+    public static ILazyEnumerable<T, TMetadata> GetTestLazyEnumerable<T, TMetadata>(IEnumerable<(T service, TMetadata metadata)> services) =>
+        new LazyEnumerable<T, TMetadata>(
+            services
+                .Select(s => new Lazy<T, TMetadata>(() => s.service, s.metadata)));
+
     /// <summary>
     /// Gets the test factory enumerator.
     /// </summary>
@@ -188,6 +199,19 @@ public static class Test
         new FactoryEnumerable<T, TMetadata>(
             services
                 .Select(s => new Factory<T, TMetadata>(() => s, ServiceHelper.GetServiceMetadata<TMetadata>(null, typeof(T)))));
+
+    /// <summary>
+    /// Gets the test factory enumerator.
+    /// </summary>
+    /// <param name="services">The services</param>
+    /// <typeparam name="T">The service type.</typeparam>
+    /// <typeparam name="TMetadata">The metadata type.</typeparam>
+    /// <returns>The test <see cref="IFactoryEnumerable{T,TMetadata}"/>.</returns>
+    public static IFactoryEnumerable<T, TMetadata> GetTestFactoryEnumerable<T, TMetadata>(IEnumerable<(T service, TMetadata metadata)> services)
+        where T : notnull =>
+        new FactoryEnumerable<T, TMetadata>(
+            services
+                .Select(s => new Factory<T, TMetadata>(() => s.service, s.metadata)));
 
     /// <summary>
     /// Gets a test <see cref="IAppRuntime"/> service.
