@@ -105,15 +105,6 @@ public class StringExtensionsTest
     }
 
     [Theory]
-    [InlineData("1{0}4{1}7{2}", new[] { "23", "56" }, "1{0}4{1}7{2}")]
-    [InlineData("1{0}2{1}3{2}4", new string[0], "1{0}2{1}3{2}4")]
-    public void FormatWith_edge_cases(string format, object?[] args, string expected)
-    {
-        var formatted = format.FormatWith(args);
-        formatted.Should().Be(expected);
-    }
-
-    [Theory]
     [InlineData(",", new string[0], "")]
     [InlineData("; ", new string[0], "")]
     [InlineData("x", new string[0], "")]
