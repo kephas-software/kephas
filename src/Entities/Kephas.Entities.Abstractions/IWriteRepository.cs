@@ -59,7 +59,7 @@ public interface IWriteRepository : IReadRepository
     /// </summary>
     /// <param name="id">The ID of the entity to delete.</param>
     /// <typeparam name="T">The entity type.</typeparam>
-    void Delete<T>(Guid id)
+    void Delete<T>(object id)
         where T : class
     {
         if (!TryDelete<T>(id))
@@ -74,7 +74,7 @@ public interface IWriteRepository : IReadRepository
     /// <param name="id">The ID of the entity to delete.</param>
     /// <typeparam name="T">The entity type.</typeparam>
     /// <returns><c>true</c> if the entity was found, otherwise <c>false</c>.</returns>
-    bool TryDelete<T>(Guid id)
+    bool TryDelete<T>(object id)
         where T : class;
 
     /// <summary>
