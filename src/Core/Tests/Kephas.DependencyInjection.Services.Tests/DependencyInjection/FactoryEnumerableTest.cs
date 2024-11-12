@@ -183,7 +183,7 @@ public class FactoryEnumerableTest
                     new ServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.Throws<InvalidOperationException>(() => factoryEnumerable.GetRequiredService(m => m.Priority == Priority.Normal));
+        Assert.Throws<ServiceResolutionException>(() => factoryEnumerable.GetRequiredService(m => m.Priority == Priority.Normal));
     }
 
     [Fact]
