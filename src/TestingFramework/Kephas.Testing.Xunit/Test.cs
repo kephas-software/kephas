@@ -293,8 +293,9 @@ public static class Test
     /// Gets the configuration based on the provided <paramref name="settingsFile"/> and its 'Development' flavor.
     /// </summary>
     /// <param name="settingsFile">The settings file. If not provided, 'appsettings.json' is considered.</param>
+    /// <param name="initialData">The configuration values.</param>
     /// <returns>The configuration.</returns>
-    public static IConfigurationRoot GetIntegrationConfig(string? settingsFile = null)
+    public static IConfigurationRoot GetIntegrationConfig(string? settingsFile = null, IDictionary<string, string?>? initialData = null)
     {
         settingsFile ??= "appsettings.json";
         var devSettingsFile = $"{settingsFile[0..^4]}Development.json"; 
@@ -306,6 +307,11 @@ public static class Test
         {
             { "Serilog:Using:0", typeof(HostBuilderLoggingExtensions).Assembly.GetName()!.Name }
         });
+
+        if (initialData is not null)
+        {
+            configurationBuilder.AddInMemoryCollection(initialData);
+        }
 
         return configurationBuilder.Build();
     }
