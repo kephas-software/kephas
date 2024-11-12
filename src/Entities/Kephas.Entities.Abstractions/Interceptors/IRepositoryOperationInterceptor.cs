@@ -32,7 +32,7 @@ public interface IRepositoryOperationInterceptor<in TOperation, TResult> : IRepo
     where TOperation : IRepositoryOperation<TResult>
 {
     /// <summary>
-    /// Invoked before the stored procedure is executed with the provided arguments.
+    /// Invoked when the operation is executed with the provided arguments.
     /// </summary>
     /// <param name="operation">The intercepted operation.</param>
     /// <param name="next">The next invocation in the execution pipeline.</param>

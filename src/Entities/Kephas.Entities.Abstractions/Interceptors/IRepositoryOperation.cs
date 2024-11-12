@@ -10,7 +10,13 @@ namespace Kephas.Entities.Interceptors;
 /// <summary>
 /// Marker interface for repository operations.
 /// </summary>
-public interface IRepositoryOperation;
+public interface IRepositoryOperation
+{
+    /// <summary>
+    /// Gets the repository.
+    /// </summary>
+    IReadRepository Repository { get; }
+}
 
 /// <summary>
 /// Marker interface for repository operations yielding a specific result.
