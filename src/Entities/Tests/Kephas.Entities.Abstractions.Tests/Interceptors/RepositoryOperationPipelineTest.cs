@@ -40,8 +40,8 @@ public class RepositoryOperationPipelineTest
         var interceptor2 = Substitute.For<IRepositoryInterceptor<IRepositoryOperation<int>, int>>();
         var factoryInterceptors = Test.GetTestFactoryEnumerable<IRepositoryInterceptor, RepositoryInterceptorMetadata>(
             [
-                (interceptor1, new RepositoryInterceptorMetadata(new Dictionary<string, object?> { ["OperationType"] = typeof(IRepositoryOperation<int>) })),
-                (interceptor2, new RepositoryInterceptorMetadata(new Dictionary<string, object?> { ["OperationType"] = typeof(IRepositoryOperation<int>) }))
+                (interceptor1, new RepositoryInterceptorMetadata(new Dictionary<string, object?> { ["OperationType"] = typeof(IRepositoryOperation<int>), ["ResultType"] = typeof(int) })),
+                (interceptor2, new RepositoryInterceptorMetadata(new Dictionary<string, object?> { ["OperationType"] = typeof(IRepositoryOperation<int>), ["ResultType"] = typeof(int) }))
             ]);
 
         var pipeline = new RepositoryOperationPipeline(factoryInterceptors);

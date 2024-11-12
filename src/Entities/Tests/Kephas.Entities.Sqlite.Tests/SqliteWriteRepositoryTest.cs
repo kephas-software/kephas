@@ -40,6 +40,10 @@ public class SqliteWriteRepositoryTest() : SqliteIntegrationTestBase<SqliteWrite
         await repository.SaveChangesAsync();
         storagePerson = await repository.GetByIdAsync<Person>(person.Id);
         storagePerson.Age.Should().Be(25);
+        
+        repository.Delete(person);
+        await repository.SaveChangesAsync();
+        repository.Query<Person>().Should().BeEmpty();
     }
     
     [Theory]
