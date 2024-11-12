@@ -13,31 +13,33 @@ using Xunit;
 
 namespace Kephas.Analyzers.Entities.Tests.DependencyInjection;
 
-public class DeclareServicesSourceGeneratorForEntityContextTest : SourceGeneratorTestBase<DeclareServicesSourceGenerator>
+public class DeclareServicesSourceGeneratorForRepositoryInterceptorTest : SourceGeneratorTestBase<DeclareServicesSourceGenerator>
 {
     [Fact]
-    public void Generate_DeclareServices_for_entity_context()
+    public void Generate_DeclareServices_for_repository_interceptor()
     {
         var sourceCode =
             """
-            
-            using System.CodeDom.Compiler;
-            using Microsoft.EntityFrameworkCore;
-            using Kephas.DependencyInjection;
             using Kephas.DependencyInjection.Metadata;
-            using Kephas.Entities;
-            using Kephas.Entities.Builder;
+            using Kephas.Validation;
+            using Microsoft.EntityFrameworkCore;
             
-            namespace Kephas.Entities.EntityContexts.Generated;
+            namespace Kephas.Entities.Interceptors;
             
-            [Priority(Priority.Normal)]
-            [ConnectionName("SqliteCrm")]
-            [GeneratedCode("EntityContextSourceGenerator", "1.0.0.0")]
-            public partial class SqliteCrmEntityContext : EntityContextBase<SqliteCrmEntityContext>
+            [Priority(Priority.Low)]
+            public class ValidationSaveChangesRepositoryInterceptor(IValidationService validationService)
+                : ISaveChangesRepositoryInterceptor
             {
-                public SqliteCrmEntityContext(DbContextOptions<SqliteCrmEntityContext> options, IDbContextBuilder builder)
-                    : base(options, builder)
+                public async Task<int> HandleAsync(IWriteRepository repository, IEntityContext entityContext, Func<Task<int>> next,
+                    CancellationToken cancellationToken)
                 {
+                    var dbContext = (DbContext)entityContext;
+                    foreach (var entry in dbContext.ChangeTracker.Entries())
+                    {
+                        await validationService.EnsureValidAsync(entry.Entity, cancellationToken);
+                    }
+                    
+                    return await next();
                 }
             }
             """;
@@ -66,12 +68,12 @@ public class DeclareServicesSourceGeneratorForEntityContextTest : SourceGenerato
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.ServiceProviders;
                     
-                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorForEntityContextTest>()]
+                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorForRepositoryInterceptorTest>()]
                     
                     namespace Kephas.DependencyInjection.ServiceProviders.Generated
                     {
                        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-                       internal partial class DeclareServices_DeclareServicesSourceGeneratorForEntityContextTest: IServiceInfoProvider
+                       internal partial class DeclareServices_DeclareServicesSourceGeneratorForRepositoryInterceptorTest: IServiceInfoProvider
                        {
                            IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations()
                            {
@@ -80,7 +82,7 @@ public class DeclareServicesSourceGeneratorForEntityContextTest : SourceGenerato
                     
                            IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
                            {
-                                yield return new ServiceImplementationDeclaration(typeof(SqliteCrmEntityContext), typeof(Kephas.Entities.IEntityContext<Kephas.Entities.EntityContexts.Generated.SqliteCrmEntityContext>));
+                                yield return new ServiceImplementationDeclaration(typeof(ValidationSaveChangesRepositoryInterceptor), typeof(Kephas.Entities.Interceptors.IRepositoryInterceptor<Kephas.Entities.Interceptors.ISaveChangesOperation, System.Int32>));
                            }
                        }
                     }
