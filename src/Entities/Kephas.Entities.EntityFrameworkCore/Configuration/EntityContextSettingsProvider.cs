@@ -23,20 +23,30 @@ public class EntityContextSettingsProvider(IOptions<EntitiesSettings> entitiesOp
     public EntityContextSettings GetEntityContextSettings(string entityContextName)
     {
         ArgumentNullException.ThrowIfNull(entityContextName);
-        
-        var entityContextSettings = (entitiesOptions.Value.EntityContexts?.FirstOrDefault(
-                c => entityContextName.Equals(c.Name, StringComparison.OrdinalIgnoreCase))
-            ?? new()) with { Name = entityContextName };
 
-        if (entityContextSettings.Connection is null)
+        var entitiesSettings = entitiesOptions.Value;
+        var entityContextSettings = (entitiesSettings.EntityContexts?.FirstOrDefault(
+                                         c => entityContextName.Equals(c.Name, StringComparison.OrdinalIgnoreCase))
+                                     ?? new()) with { Name = entityContextName };
+
+        var connectionSettings = entityContextSettings.Connection;
+        if (connectionSettings is null)
         {
-            var connectionName = entityContextSettings.ConnectionName ?? entityContextName;
-            var connectionSettings = entitiesOptions.Value.Connections?.FirstOrDefault(
+            var connectionName = entityContextSettings.ConnectionName ?? entitiesSettings.DefaultConnectionName ?? entityContextName;
+            connectionSettings = entitiesSettings.Connections?.FirstOrDefault(
                 c => connectionName.Equals(c.Name, StringComparison.OrdinalIgnoreCase));
             if (connectionSettings is not null)
             {
                 entityContextSettings.Connection = connectionSettings;
             }
+        }
+
+        if (connectionSettings is not null)
+        {
+            connectionSettings.CommandTimeout ??= entitiesSettings.DefaultCommandTimeout;
+            connectionSettings.MaxRetryCount ??= entitiesSettings.DefaultMaxRetryCount;
+            connectionSettings.MaxRetryDelay ??= entitiesSettings.DefaultMaxRetryDelay;
+            connectionSettings.QueryTrackingBehavior ??= entitiesSettings.DefaultQueryTrackingBehavior;
         }
         
         return entityContextSettings;

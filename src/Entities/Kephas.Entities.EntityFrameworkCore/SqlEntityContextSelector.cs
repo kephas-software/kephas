@@ -23,5 +23,6 @@ public class SqlEntityContextSelector(
     /// <param name="entityType">The served entity type.</param>
     /// <returns>The <see cref="IEntityContext"/>.</returns>
     public IEntityContext GetEntityContext(Type entityType) =>
-        lazyEntityContexts.GetRequiredService(m => m.EntityTypes?.Contains(entityType) is true);
+        lazyEntityContexts.GetService(m => m.EntityTypes?.Contains(entityType) is true)
+            ?? throw new ServiceResolutionException($"No entity context found for entity type '{entityType}'.");
 }
