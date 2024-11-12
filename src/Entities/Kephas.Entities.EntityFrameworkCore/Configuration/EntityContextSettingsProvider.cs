@@ -22,6 +22,23 @@ public class EntityContextSettingsProvider(IOptions<EntitiesSettings> entitiesOp
     /// <returns>The <see cref="EntityContextSettings"/>.</returns>
     public EntityContextSettings GetEntityContextSettings(string entityContextName)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(entityContextName);
+        
+        var entityContextSettings = (entitiesOptions.Value.EntityContexts?.FirstOrDefault(
+                c => entityContextName.Equals(c.Name, StringComparison.OrdinalIgnoreCase))
+            ?? new()) with { Name = entityContextName };
+
+        if (entityContextSettings.Connection is null)
+        {
+            var connectionName = entityContextSettings.ConnectionName ?? entityContextName;
+            var connectionSettings = entitiesOptions.Value.Connections?.FirstOrDefault(
+                c => connectionName.Equals(c.Name, StringComparison.OrdinalIgnoreCase));
+            if (connectionSettings is not null)
+            {
+                entityContextSettings.Connection = connectionSettings;
+            }
+        }
+        
+        return entityContextSettings;
     }
 }
