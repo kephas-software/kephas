@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IExecuteInterceptor.cs" company="Kephas Software SRL">
+// <copyright file="IExecuteRepositoryInterceptor.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -44,7 +44,7 @@ public record ExecuteOperation<TSpArgs>(IWriteRepository Repository, TSpArgs SpA
 /// Interceptor for executing a stored procedure.
 /// </summary>
 /// <typeparam name="TSpArgs">The type of the stoed procedure arguments.</typeparam>
-public interface IExecuteInterceptor<in TSpArgs> : IRepositoryOperationInterceptor<IExecuteOperation<TSpArgs>, object?>
+public interface IExecuteRepositoryInterceptor<in TSpArgs> : IRepositoryInterceptor<IExecuteOperation<TSpArgs>, object?>
     where TSpArgs : ISpArgs
 {
     /// <summary>
@@ -54,7 +54,7 @@ public interface IExecuteInterceptor<in TSpArgs> : IRepositoryOperationIntercept
     /// <param name="next">The next invocation in the execution pipeline.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>An awaitable task yielding the expected response.</returns>
-    async Task<object?> IRepositoryOperationInterceptor<IExecuteOperation<TSpArgs>, object?>.HandleAsync(
+    async Task<object?> IRepositoryInterceptor<IExecuteOperation<TSpArgs>, object?>.HandleAsync(
         IExecuteOperation<TSpArgs> operation,
         InterceptNextDelegate<object?> next,
         CancellationToken cancellationToken)

@@ -5,7 +5,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Reflection;
 using Kephas.DependencyInjection;
+using Kephas.Reflection;
 
 namespace Kephas.Entities.Interceptors;
 
@@ -14,9 +16,12 @@ namespace Kephas.Entities.Interceptors;
 /// </summary>
 /// <param name="factoryInterceptors">The enumeration of factory interceptors.</param>
 public class RepositoryOperationPipeline(
-    IFactoryEnumerable<IRepositoryOperationInterceptor, RepositoryOperationInterceptorMetadata> factoryInterceptors)
+    IFactoryEnumerable<IRepositoryInterceptor, RepositoryInterceptorMetadata> factoryInterceptors)
     : IRepositoryOperationPipeline
 {
+    private static readonly MethodInfo HandleAsyncMethod = ReflectionHelper.GetGenericMethodOf(_ =>
+        HandleAsync<IRepositoryOperation<int>, int>(null!, null!, null!, default));
+    
     /// <summary>
     /// Handles a repository operation asynchronously by invoking the interceptors and ultimately giving control to the .
     /// </summary>
@@ -34,15 +39,18 @@ public class RepositoryOperationPipeline(
 
         var operationArgsType = operationArgs.GetType();
         var interceptors = factoryInterceptors
-            .SelectServices(m => m.OperationType?.IsAssignableFrom(operationArgsType) is true)
-            .OfType<IRepositoryOperationInterceptor<IRepositoryOperation<TResult>, TResult>>();
+            .Where(f => f.Metadata.OperationType?.IsAssignableFrom(operationArgsType) is true);
         using var interceptorEnumerator = interceptors.GetEnumerator();
         InterceptNextDelegate<TResult>? next = null;
         next = async () =>
         {
             if (interceptorEnumerator.MoveNext())
             {
-                return await interceptorEnumerator.Current.HandleAsync(operationArgs, next!, cancellationToken);
+                var interceptorFactory = interceptorEnumerator.Current;
+                var handleAsync = HandleAsyncMethod.MakeGenericMethod(
+                    interceptorFactory.Metadata.OperationType!,
+                    interceptorFactory.Metadata.ResultType!);
+                return await handleAsync.Call<Task<TResult>>(null, interceptorFactory.GetService(), operationArgs, next!, cancellationToken);
             }
 
             return await handler();
@@ -50,4 +58,8 @@ public class RepositoryOperationPipeline(
 
         return await next();
     }
+    
+    private static Task<TResult> HandleAsync<TOperation, TResult>(IRepositoryInterceptor<TOperation, TResult> interceptor, TOperation operationArgs, InterceptNextDelegate<TResult> next, CancellationToken cancellationToken)
+        where TOperation : IRepositoryOperation<TResult> =>
+        interceptor.HandleAsync(operationArgs, next, cancellationToken);
 }

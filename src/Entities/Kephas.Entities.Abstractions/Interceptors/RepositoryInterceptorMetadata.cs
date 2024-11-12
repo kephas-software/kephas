@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RepositoryOperationInterceptorMetadata.cs" company="Kephas Software SRL">
+// <copyright file="RepositoryInterceptorMetadata.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,15 +10,15 @@ using Kephas.DependencyInjection.Metadata;
 namespace Kephas.Entities.Interceptors;
 
 /// <summary>
-/// Metadata for <see cref="IRepositoryOperationInterceptor"/> services.
+/// Metadata for <see cref="IRepositoryInterceptor"/> services.
 /// </summary>
-public record RepositoryOperationInterceptorMetadata : ServiceMetadata
+public record RepositoryInterceptorMetadata : ServiceMetadata
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="RepositoryOperationInterceptorMetadata"/> class.
+    /// Initializes a new instance of the <see cref="RepositoryInterceptorMetadata"/> class.
     /// </summary>
     /// <param name="metadata">The metadata.</param>
-    public RepositoryOperationInterceptorMetadata(IDictionary<string, object?>? metadata)
+    public RepositoryInterceptorMetadata(IDictionary<string, object?>? metadata)
         : base(metadata)
     {
         if (metadata == null)

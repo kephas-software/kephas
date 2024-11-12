@@ -70,6 +70,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Analyzers\Kephas.Analyzers\Kephas.Analyzers.csproj" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
         <ProjectReference Include="..\..\Core\Kephas.Dynamic\Kephas.Dynamic.csproj" />
+        <ProjectReference Include="..\..\Core\Kephas.Validation\Kephas.Validation.csproj" />
         <ProjectReference Include="..\..\Extensions\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
         <ProjectReference Include="..\..\Extensions\Kephas.Extensions\Kephas.Extensions.csproj" />
         <ProjectReference Include="..\Kephas.Entities.Abstractions\Kephas.Entities.Abstractions.csproj" />

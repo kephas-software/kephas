@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRepositoryOperationInterceptor.cs" company="Kephas Software SRL">
+// <copyright file="IRepositoryInterceptor.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,7 +11,7 @@ using Kephas.DependencyInjection;
 namespace Kephas.Entities.Interceptors;
 
 /// <summary>
-/// Represents an async continuation for the next task to execute in the <see cref="IRepositoryOperationInterceptor{TOperation,TResult}"/> pipeline.
+/// Represents an async continuation for the next task to execute in the <see cref="IRepositoryInterceptor{TOperation,TResult}"/> pipeline.
 /// </summary>
 /// <typeparam name="TResult">The type of the expected result.</typeparam>
 /// <returns>An awaitable task.</returns>
@@ -20,15 +20,15 @@ public delegate Task<TResult> InterceptNextDelegate<TResult>();
 /// <summary>
 /// Marker interface for repository operation interceptors.
 /// </summary>
-public interface IRepositoryOperationInterceptor;
+public interface IRepositoryInterceptor;
 
 /// <summary>
 /// Service for intercepting repository operations.
 /// </summary>
 /// <typeparam name="TOperation">The operation arguments.</typeparam>
 /// <typeparam name="TResult">The result type.</typeparam>
-[TransientService(ServiceType = typeof(IRepositoryOperationInterceptor))]
-public interface IRepositoryOperationInterceptor<in TOperation, TResult> : IRepositoryOperationInterceptor
+[TransientService(ServiceType = typeof(IRepositoryInterceptor), MetadataType = typeof(RepositoryInterceptorMetadata))]
+public interface IRepositoryInterceptor<in TOperation, TResult> : IRepositoryInterceptor
     where TOperation : IRepositoryOperation<TResult>
 {
     /// <summary>

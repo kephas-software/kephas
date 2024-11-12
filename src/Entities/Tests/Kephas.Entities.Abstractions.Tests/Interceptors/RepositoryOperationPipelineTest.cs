@@ -19,7 +19,7 @@ public class RepositoryOperationPipelineTest
     public async Task HandleAsync_Should_Invoke_Handler_When_No_Interceptors()
     {
         // Arrange
-        var factoryInterceptors = Test.GetTestFactoryEnumerable<IRepositoryOperationInterceptor, RepositoryOperationInterceptorMetadata>();
+        var factoryInterceptors = Test.GetTestFactoryEnumerable<IRepositoryInterceptor, RepositoryInterceptorMetadata>();
         
         var pipeline = new RepositoryOperationPipeline(factoryInterceptors);
         var operationArgs = Substitute.For<IRepositoryOperation<int>>();
@@ -36,12 +36,12 @@ public class RepositoryOperationPipelineTest
     public async Task HandleAsync_Should_Invoke_Interceptors_In_Order()
     {
         // Arrange
-        var interceptor1 = Substitute.For<IRepositoryOperationInterceptor<IRepositoryOperation<int>, int>>();
-        var interceptor2 = Substitute.For<IRepositoryOperationInterceptor<IRepositoryOperation<int>, int>>();
-        var factoryInterceptors = Test.GetTestFactoryEnumerable<IRepositoryOperationInterceptor, RepositoryOperationInterceptorMetadata>(
+        var interceptor1 = Substitute.For<IRepositoryInterceptor<IRepositoryOperation<int>, int>>();
+        var interceptor2 = Substitute.For<IRepositoryInterceptor<IRepositoryOperation<int>, int>>();
+        var factoryInterceptors = Test.GetTestFactoryEnumerable<IRepositoryInterceptor, RepositoryInterceptorMetadata>(
             [
-                (interceptor1, new RepositoryOperationInterceptorMetadata(new Dictionary<string, object?> { ["OperationType"] = typeof(IRepositoryOperation<int>) })),
-                (interceptor2, new RepositoryOperationInterceptorMetadata(new Dictionary<string, object?> { ["OperationType"] = typeof(IRepositoryOperation<int>) }))
+                (interceptor1, new RepositoryInterceptorMetadata(new Dictionary<string, object?> { ["OperationType"] = typeof(IRepositoryOperation<int>) })),
+                (interceptor2, new RepositoryInterceptorMetadata(new Dictionary<string, object?> { ["OperationType"] = typeof(IRepositoryOperation<int>) }))
             ]);
 
         var pipeline = new RepositoryOperationPipeline(factoryInterceptors);

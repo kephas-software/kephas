@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ISaveChangesInterceptor.cs" company="Kephas Software SRL">
+// <copyright file="ISaveChangesRepositoryInterceptor.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -38,7 +38,7 @@ public record SaveChangesOperation(IWriteRepository Repository, IEntityContext E
 /// <summary>
 /// Interceptor being invoked when the changes are persisted for an entity context.
 /// </summary>
-public interface ISaveChangesInterceptor : IRepositoryOperationInterceptor<ISaveChangesOperation, int>
+public interface ISaveChangesRepositoryInterceptor : IRepositoryInterceptor<ISaveChangesOperation, int>
 {
     /// <summary>
     /// Invoked when saving the changes is executed with the provided arguments.
@@ -47,7 +47,7 @@ public interface ISaveChangesInterceptor : IRepositoryOperationInterceptor<ISave
     /// <param name="next">The next invocation in the execution pipeline.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>An awaitable task yielding the expected response.</returns>
-    Task<int> IRepositoryOperationInterceptor<ISaveChangesOperation, int>.HandleAsync(
+    Task<int> IRepositoryInterceptor<ISaveChangesOperation, int>.HandleAsync(
         ISaveChangesOperation operation,
         InterceptNextDelegate<int> next,
         CancellationToken cancellationToken) =>
