@@ -46,7 +46,7 @@ public interface ISaveChangesRepositoryInterceptor : IRepositoryInterceptor<ISav
     /// <param name="operation">The intercepted operation.</param>
     /// <param name="next">The next invocation in the execution pipeline.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
-    /// <returns>An awaitable task yielding the expected response.</returns>
+    /// <returns>An awaitable task yielding the expected result.</returns>
     Task<int> IRepositoryInterceptor<ISaveChangesOperation, int>.HandleAsync(
         ISaveChangesOperation operation,
         InterceptNextDelegate<int> next,
@@ -60,6 +60,6 @@ public interface ISaveChangesRepositoryInterceptor : IRepositoryInterceptor<ISav
     /// <param name="entityContext">The affected entity context.</param>
     /// <param name="next">The next invocation in the execution pipeline.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
-    /// <returns>An awaitable task yielding the expected response.</returns>
+    /// <returns>An awaitable task yielding the expected result.</returns>
     Task<int> HandleAsync(IWriteRepository repository, IEntityContext entityContext, Func<Task<int>> next, CancellationToken cancellationToken);    
 }

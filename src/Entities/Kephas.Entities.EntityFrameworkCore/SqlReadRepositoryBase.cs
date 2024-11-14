@@ -37,13 +37,20 @@ public abstract class SqlReadRepositoryBase(
     public IQueryable<T> Query<T>(bool trackEntities = false) where T : class
     {
         var dbSet = Set<T>();
-        if (typeof(T).GetCustomAttribute<StoredProcedureAttribute>() is null)
-        {
-            return trackEntities ? dbSet : dbSet.AsNoTracking();
-        }
+        var entityType = typeof(T);
+        var queryOperation = new QueryOperation(this, (IEntityContext)GetDbContext(entityType), entityType);
+        return (IQueryable<T>)operationPipeline.Handle(
+            queryOperation,
+            () =>
+            {
+                if (entityType.GetCustomAttribute<StoredProcedureAttribute>() is null)
+                {
+                    return trackEntities ? dbSet : dbSet.AsNoTracking();
+                }
 
-        var rawQuery = dbSet.FromSqlInterpolated(new QuerySqlString<T>(new EmptySpArgs()));
-        return trackEntities ? rawQuery : rawQuery.AsNoTracking();
+                var rawQuery = dbSet.FromSqlInterpolated(new QuerySqlString<T>(new EmptySpArgs()));
+                return trackEntities ? rawQuery : rawQuery.AsNoTracking();
+            });
     }
 
     /// <summary>

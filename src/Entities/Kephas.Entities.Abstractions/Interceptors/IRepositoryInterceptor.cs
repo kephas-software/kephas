@@ -14,7 +14,7 @@ namespace Kephas.Entities.Interceptors;
 /// Represents an async continuation for the next task to execute in the <see cref="IRepositoryInterceptor{TOperation,TResult}"/> pipeline.
 /// </summary>
 /// <typeparam name="TResult">The type of the expected result.</typeparam>
-/// <returns>An awaitable task.</returns>
+/// <returns>An awaitable task yielding the result.</returns>
 public delegate Task<TResult> InterceptNextDelegate<TResult>();
 
 /// <summary>
@@ -37,6 +37,6 @@ public interface IRepositoryInterceptor<in TOperation, TResult> : IRepositoryInt
     /// <param name="operation">The intercepted operation.</param>
     /// <param name="next">The next invocation in the execution pipeline.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
-    /// <returns>An awaitable task yielding the expected response.</returns>
+    /// <returns>An awaitable task yielding the expected result.</returns>
     Task<TResult> HandleAsync([DisallowNull] TOperation operation, InterceptNextDelegate<TResult> next, CancellationToken cancellationToken = default);    
 }

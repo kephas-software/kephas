@@ -20,8 +20,9 @@ public class RepositoryOperationPipelineTest
     {
         // Arrange
         var factoryInterceptors = Test.GetTestFactoryEnumerable<IRepositoryInterceptor, RepositoryInterceptorMetadata>();
+        var factorySyncInterceptors = Test.GetTestFactoryEnumerable<IRepositorySyncInterceptor, RepositoryInterceptorMetadata>();
         
-        var pipeline = new RepositoryOperationPipeline(factoryInterceptors);
+        var pipeline = new RepositoryOperationPipeline(factoryInterceptors, factorySyncInterceptors);
         var operationArgs = Substitute.For<IRepositoryOperation<int>>();
         Func<Task<int>> handler = () => Task.FromResult(42);
 
@@ -43,8 +44,9 @@ public class RepositoryOperationPipelineTest
                 (interceptor1, new RepositoryInterceptorMetadata(new Dictionary<string, object?> { ["OperationType"] = typeof(IRepositoryOperation<int>), ["ResultType"] = typeof(int) })),
                 (interceptor2, new RepositoryInterceptorMetadata(new Dictionary<string, object?> { ["OperationType"] = typeof(IRepositoryOperation<int>), ["ResultType"] = typeof(int) }))
             ]);
+        var factorySyncInterceptors = Test.GetTestFactoryEnumerable<IRepositorySyncInterceptor, RepositoryInterceptorMetadata>();
 
-        var pipeline = new RepositoryOperationPipeline(factoryInterceptors);
+        var pipeline = new RepositoryOperationPipeline(factoryInterceptors, factorySyncInterceptors);
         var operationArgs = Substitute.For<IRepositoryOperation<int>>();
         Func<Task<int>> handler = () => Task.FromResult(42);
 
@@ -62,6 +64,58 @@ public class RepositoryOperationPipelineTest
         {
             interceptor1.HandleAsync(operationArgs, Arg.Any<InterceptNextDelegate<int>>(), Arg.Any<CancellationToken>());
             interceptor2.HandleAsync(operationArgs, Arg.Any<InterceptNextDelegate<int>>(), Arg.Any<CancellationToken>());
+        });
+    }
+    
+    [Fact]
+    public void Handle_Should_Invoke_Handler_When_No_Interceptors()
+    {
+        // Arrange
+        var factoryInterceptors = Test.GetTestFactoryEnumerable<IRepositoryInterceptor, RepositoryInterceptorMetadata>();
+        var factorySyncInterceptors = Test.GetTestFactoryEnumerable<IRepositorySyncInterceptor, RepositoryInterceptorMetadata>();
+        
+        var pipeline = new RepositoryOperationPipeline(factoryInterceptors, factorySyncInterceptors);
+        var operationArgs = Substitute.For<IRepositoryOperation<int>>();
+        Func<int> handler = () => 42;
+
+        // Act
+        var result = pipeline.Handle(operationArgs, handler);
+
+        // Assert
+        result.Should().Be(42);
+    }
+
+    [Fact]
+    public void Handle_Should_Invoke_Interceptors_In_Order()
+    {
+        // Arrange
+        var factoryInterceptors = Test.GetTestFactoryEnumerable<IRepositoryInterceptor, RepositoryInterceptorMetadata>();
+        var interceptor1 = Substitute.For<IRepositorySyncInterceptor<IRepositoryOperation<int>, int>>();
+        var interceptor2 = Substitute.For<IRepositorySyncInterceptor<IRepositoryOperation<int>, int>>();
+        var factorySyncInterceptors = Test.GetTestFactoryEnumerable<IRepositorySyncInterceptor, RepositoryInterceptorMetadata>(
+            [
+                (interceptor1, new RepositoryInterceptorMetadata(new Dictionary<string, object?> { ["OperationType"] = typeof(IRepositoryOperation<int>), ["ResultType"] = typeof(int) })),
+                (interceptor2, new RepositoryInterceptorMetadata(new Dictionary<string, object?> { ["OperationType"] = typeof(IRepositoryOperation<int>), ["ResultType"] = typeof(int) }))
+            ]);
+
+        var pipeline = new RepositoryOperationPipeline(factoryInterceptors, factorySyncInterceptors);
+        var operationArgs = Substitute.For<IRepositoryOperation<int>>();
+        Func<int> handler = () => 42;
+
+        interceptor1.Handle(operationArgs, Arg.Any<InterceptSyncNextDelegate<int>>())
+            .Returns(callInfo => callInfo.Arg<InterceptSyncNextDelegate<int>>().Invoke());
+        interceptor2.Handle(operationArgs, Arg.Any<InterceptSyncNextDelegate<int>>())
+            .Returns(callInfo => callInfo.Arg<InterceptSyncNextDelegate<int>>().Invoke());
+
+        // Act
+        var result = pipeline.Handle(operationArgs, handler);
+
+        // Assert
+        result.Should().Be(42);
+        Received.InOrder(() =>
+        {
+            interceptor1.Handle(operationArgs, Arg.Any<InterceptSyncNextDelegate<int>>());
+            interceptor2.Handle(operationArgs, Arg.Any<InterceptSyncNextDelegate<int>>());
         });
     }
 }

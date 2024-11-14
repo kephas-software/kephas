@@ -15,12 +15,17 @@ namespace Kephas.Entities.Interceptors;
 /// The default implementation of the <see cref="IRepositoryOperationPipeline"/>.
 /// </summary>
 /// <param name="factoryInterceptors">The enumeration of factory interceptors.</param>
+/// <param name="factorySyncInterceptors">The enumeration of factory sync interceptors.</param>
 public class RepositoryOperationPipeline(
-    IFactoryEnumerable<IRepositoryInterceptor, RepositoryInterceptorMetadata> factoryInterceptors)
+    IFactoryEnumerable<IRepositoryInterceptor, RepositoryInterceptorMetadata> factoryInterceptors,
+    IFactoryEnumerable<IRepositorySyncInterceptor, RepositoryInterceptorMetadata> factorySyncInterceptors)
     : IRepositoryOperationPipeline
 {
     private static readonly MethodInfo HandleAsyncMethod = ReflectionHelper.GetGenericMethodOf(_ =>
         HandleAsync<IRepositoryOperation<int>, int>(null!, null!, null!, default));
+    
+    private static readonly MethodInfo HandleMethod = ReflectionHelper.GetGenericMethodOf(_ =>
+        Handle<IRepositoryOperation<int>, int>(null!, null!, null!));
     
     /// <summary>
     /// Handles a repository operation asynchronously by invoking the interceptors and ultimately giving control to the .
@@ -58,8 +63,46 @@ public class RepositoryOperationPipeline(
 
         return await next();
     }
-    
+
+    /// <summary>
+    /// Handles a repository operation synchronously by invoking the sync interceptors and ultimately giving control to the  handler.
+    /// </summary>
+    /// <param name="operationArgs">The operation arguments.</param>
+    /// <param name="handler">The handler function.</param>
+    /// <typeparam name="TResult">The type of the result.</typeparam>
+    /// <returns>The operation result.</returns>
+    public TResult Handle<TResult>(IRepositoryOperation<TResult> operationArgs, Func<TResult> handler)
+    {
+        ArgumentNullException.ThrowIfNull(operationArgs);
+        ArgumentNullException.ThrowIfNull(handler);
+
+        var operationArgsType = operationArgs.GetType();
+        var interceptors = factorySyncInterceptors
+            .Where(f => f.Metadata.OperationType?.IsAssignableFrom(operationArgsType) is true);
+        using var interceptorEnumerator = interceptors.GetEnumerator();
+        InterceptSyncNextDelegate<TResult>? next = null;
+        next = () =>
+        {
+            if (interceptorEnumerator.MoveNext())
+            {
+                var interceptorFactory = interceptorEnumerator.Current;
+                var handle = HandleMethod.MakeGenericMethod(
+                    interceptorFactory.Metadata.OperationType!,
+                    interceptorFactory.Metadata.ResultType!);
+                return handle.Call<TResult>(null, interceptorFactory.GetService(), operationArgs, next!);
+            }
+
+            return handler();
+        };
+
+        return next();
+    }
+
     private static Task<TResult> HandleAsync<TOperation, TResult>(IRepositoryInterceptor<TOperation, TResult> interceptor, TOperation operationArgs, InterceptNextDelegate<TResult> next, CancellationToken cancellationToken)
         where TOperation : IRepositoryOperation<TResult> =>
         interceptor.HandleAsync(operationArgs, next, cancellationToken);
+
+    private static TResult Handle<TOperation, TResult>(IRepositorySyncInterceptor<TOperation, TResult> interceptor, TOperation operationArgs, InterceptSyncNextDelegate<TResult> next)
+        where TOperation : IRepositoryOperation<TResult> =>
+        interceptor.Handle(operationArgs, next);
 }

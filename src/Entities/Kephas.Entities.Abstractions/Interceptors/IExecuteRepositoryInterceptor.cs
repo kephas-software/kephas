@@ -53,7 +53,7 @@ public interface IExecuteRepositoryInterceptor<in TSpArgs> : IRepositoryIntercep
     /// <param name="operation">The intercepted operation.</param>
     /// <param name="next">The next invocation in the execution pipeline.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
-    /// <returns>An awaitable task yielding the expected response.</returns>
+    /// <returns>An awaitable task yielding the expected result.</returns>
     async Task<object?> IRepositoryInterceptor<IExecuteOperation<TSpArgs>, object?>.HandleAsync(
         IExecuteOperation<TSpArgs> operation,
         InterceptNextDelegate<object?> next,
@@ -70,7 +70,7 @@ public interface IExecuteRepositoryInterceptor<in TSpArgs> : IRepositoryIntercep
     /// <param name="args">The stored procedure arguments.</param>
     /// <param name="next">The next invocation in the execution pipeline.</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
-    /// <returns>An awaitable task yielding the expected response.</returns>
+    /// <returns>An awaitable task yielding the expected result.</returns>
     Task HandleAsync(IWriteRepository repository, TSpArgs args, Func<Task> next, CancellationToken cancellationToken);    
 }
     

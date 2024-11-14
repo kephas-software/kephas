@@ -16,7 +16,7 @@ namespace Kephas.Entities.Interceptors;
 public interface IRepositoryOperationPipeline
 {
     /// <summary>
-    /// Handles a repository operation asynchronously by invoking the interceptors and ultimately giving control to the .
+    /// Handles a repository operation asynchronously by invoking the interceptors and ultimately giving control to the handler.
     /// </summary>
     /// <param name="operationArgs">The operation arguments.</param>
     /// <param name="handler">The handler function.</param>
@@ -26,4 +26,14 @@ public interface IRepositoryOperationPipeline
     Task<TResult> HandleAsync<TResult>(IRepositoryOperation<TResult> operationArgs,
         Func<Task<TResult>> handler,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Handles a repository operation synchronously by invoking the sync interceptors and ultimately giving control to the  handler.
+    /// </summary>
+    /// <param name="operationArgs">The operation arguments.</param>
+    /// <param name="handler">The handler function.</param>
+    /// <typeparam name="TResult">The type of the result.</typeparam>
+    /// <returns>The operation result.</returns>
+    TResult Handle<TResult>(IRepositoryOperation<TResult> operationArgs,
+        Func<TResult> handler);
 }
