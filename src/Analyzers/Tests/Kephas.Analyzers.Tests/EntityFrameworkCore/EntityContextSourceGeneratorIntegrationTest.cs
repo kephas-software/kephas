@@ -20,9 +20,7 @@ public class EntityContextSourceGeneratorIntegrationTest : SourceGeneratorTestBa
         var sourceCode =
             """
             // --------------------------------------------------------------------------------------------------------------------
-            // <copyright file="Entities.cs" company="Kephas Software SRL">
-            //   Copyright (c) Kephas Software SRL. All rights reserved.
-            //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+            // <copyright file="EntityContextSourceGeneratorIntegrationTest.cs" company="Whatever SRL">
             // </copyright>
             // --------------------------------------------------------------------------------------------------------------------
             
@@ -54,22 +52,41 @@ public class EntityContextSourceGeneratorIntegrationTest : SourceGeneratorTestBa
                     
                     // Generated for EntityContextSourceGeneratorIntegrationTest, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
                     
+                    using System;
+                    using System.Collections.Generic;
+                    using System.Diagnostics.CodeAnalysis;
+                    using System.Reflection;
                     using System.CodeDom.Compiler;
                     using Microsoft.EntityFrameworkCore;
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.Metadata;
+                    using Kephas.DependencyInjection.ServiceProviders;
                     using Kephas.Entities;
                     using Kephas.Entities.Builder;
                     // --------------------------------------------------------------------------------------------------------------------
-                    // <copyright file="Entities.cs" company="Kephas Software SRL">
-                    //   Copyright (c) Kephas Software SRL. All rights reserved.
-                    //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+                    // <copyright file="EntityContextSourceGeneratorIntegrationTest.cs" company="Whatever SRL">
                     // </copyright>
                     // --------------------------------------------------------------------------------------------------------------------
                     
                     using Kephas.Analyzers.Entities.TestAssembly;
                     
-                    namespace Kephas.Entities.EntityContexts.Generated;
+                    [assembly: DeclareServices<EntityContextSourceGeneratorIntegrationTest.EntityContexts.Generated.DeclareServices_Test_EntityContextSourceGeneratorIntegrationTest>()]
+                    
+                    namespace EntityContextSourceGeneratorIntegrationTest.EntityContexts.Generated;
+                    
+                    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+                    internal partial class DeclareServices_Test_EntityContextSourceGeneratorIntegrationTest: IServiceInfoProvider
+                    {
+                        IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations()
+                        {
+                             yield break;
+                        }
+                    
+                        IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
+                        {
+                             yield return new ServiceImplementationDeclaration(typeof(TestEntityContext), typeof(IEntityContext<>));
+                        }
+                    }
                     
                     [Priority(Priority.Normal)]
                     [ConnectionName("Test")]
@@ -98,9 +115,7 @@ public class EntityContextSourceGeneratorIntegrationTest : SourceGeneratorTestBa
         var sourceCode =
             """
             // --------------------------------------------------------------------------------------------------------------------
-            // <copyright file="Entities.cs" company="Kephas Software SRL">
-            //   Copyright (c) Kephas Software SRL. All rights reserved.
-            //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+            // <copyright file="EntityContextSourceGeneratorIntegrationTest.cs" company="Whatever SRL">
             // </copyright>
             // --------------------------------------------------------------------------------------------------------------------
             
@@ -132,22 +147,41 @@ public class EntityContextSourceGeneratorIntegrationTest : SourceGeneratorTestBa
                     
                     // Generated for EntityContextSourceGeneratorIntegrationTest, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
                     
+                    using System;
+                    using System.Collections.Generic;
+                    using System.Diagnostics.CodeAnalysis;
+                    using System.Reflection;
                     using System.CodeDom.Compiler;
                     using Microsoft.EntityFrameworkCore;
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.Metadata;
+                    using Kephas.DependencyInjection.ServiceProviders;
                     using Kephas.Entities;
                     using Kephas.Entities.Builder;
                     // --------------------------------------------------------------------------------------------------------------------
-                    // <copyright file="Entities.cs" company="Kephas Software SRL">
-                    //   Copyright (c) Kephas Software SRL. All rights reserved.
-                    //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+                    // <copyright file="EntityContextSourceGeneratorIntegrationTest.cs" company="Whatever SRL">
                     // </copyright>
                     // --------------------------------------------------------------------------------------------------------------------
                     
                     using Kephas.Analyzers.Entities.TestAssembly;
                     
-                    namespace Kephas.Entities.EntityContexts.Generated;
+                    [assembly: DeclareServices<EntityContextSourceGeneratorIntegrationTest.EntityContexts.Generated.DeclareServices_Test_EntityContextSourceGeneratorIntegrationTest>()]
+                    
+                    namespace EntityContextSourceGeneratorIntegrationTest.EntityContexts.Generated;
+                    
+                    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+                    internal partial class DeclareServices_Test_EntityContextSourceGeneratorIntegrationTest: IServiceInfoProvider
+                    {
+                        IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations()
+                        {
+                             yield break;
+                        }
+                    
+                        IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
+                        {
+                             yield return new ServiceImplementationDeclaration(typeof(TestEntityContext), typeof(IEntityContext<>));
+                        }
+                    }
                     
                     [Priority(Priority.Normal)]
                     [ConnectionName("MyConnection")]

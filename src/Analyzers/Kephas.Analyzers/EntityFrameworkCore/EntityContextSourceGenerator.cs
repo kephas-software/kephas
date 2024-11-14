@@ -37,14 +37,15 @@ public class EntityContextSourceGenerator()
                 continue;
             }
 
+            var serviceTypeProvider = GetServiceTypeProviderClassName(context, entityContextName);
+            var entityContextTypeName = $"{entityContextName}EntityContext";
+
             string priority = GetPriority(arguments.Value);
             var connectionName = GetConnectionName(arguments.Value, entityContextName);
             var entityTypes = arguments!.Value
                 .Select(a => a.Expression as TypeOfExpressionSyntax)
                 .Where(t => t is not null)
                 .ToList();
-
-            var entityContextNamespace = "Kephas.Entities.EntityContexts.Generated";
 
             // first add the usings / namespaces used by models, so that the DatContext class
             // can use the entity types without errors
@@ -56,8 +57,24 @@ public class EntityContextSourceGenerator()
                   // Generated for {{context.Compilation.Assembly}}
 
                   {{GetUsingsForEntityTypes(attribute)}}
+                  
+                  [assembly: DeclareServices<{{serviceTypeProvider.typeNamespace}}.{{serviceTypeProvider.typeName}}>()]
+                  
+                  namespace {{serviceTypeProvider.typeNamespace}};
 
-                  namespace {{entityContextNamespace}};
+                  [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+                  internal partial class {{serviceTypeProvider.typeName}}: IServiceInfoProvider
+                  {
+                      IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations()
+                      {
+                           yield break;
+                      }
+                  
+                      IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
+                      {
+                           yield return new ServiceImplementationDeclaration(typeof({{entityContextTypeName}}), typeof(IEntityContext<>));
+                      }
+                  }
                   
                   [Priority({{priority}})]
                   [ConnectionName({{connectionName}})]
@@ -65,9 +82,9 @@ public class EntityContextSourceGenerator()
                   {{GetEntityTypeList("    ", entityTypes!)}}
                   )]
                   [GeneratedCode("{{nameof(EntityContextSourceGenerator)}}", "{{Assembly.GetExecutingAssembly().GetName().Version}}")]
-                  public partial class {{entityContextName}}EntityContext : EntityContextBase<{{entityContextName}}EntityContext>
+                  public partial class {{entityContextTypeName}} : EntityContextBase<{{entityContextTypeName}}>
                   {
-                      public {{entityContextName}}EntityContext(DbContextOptions<{{entityContextName}}EntityContext> options, IDbContextBuilder builder)
+                      public {{entityContextTypeName}}(DbContextOptions<{{entityContextTypeName}}> options, IDbContextBuilder builder)
                           : base(options, builder)
                       {
                       }
@@ -96,6 +113,11 @@ public class EntityContextSourceGenerator()
 
             context.SourceProductionContext.AddSource($"{entityContextName}EntityContext.g.cs", SourceText.From(source.ToString(), Encoding.UTF8));
         }
+    }
+
+    private static (string typeNamespace, string typeName) GetServiceTypeProviderClassName(ISourceContext<AttributeSyntax> context, string entityContextName)
+    {
+        return ($"{context.Compilation.Assembly.Name}.EntityContexts.Generated", $"DeclareServices_{entityContextName}_{context.Compilation.Assembly.Name.Replace(".", "_")}");
     }
 
     private static string GetPriority(SeparatedSyntaxList<AttributeArgumentSyntax> arguments)
@@ -188,10 +210,16 @@ public class EntityContextSourceGenerator()
 
         var usings = new List<string>
         {
+            "using System;",
+            "using System.Collections.Generic;",
+            "using System.Diagnostics.CodeAnalysis;",
+            "using System.Reflection;",
             "using System.CodeDom.Compiler;",
+
             "using Microsoft.EntityFrameworkCore;",
             "using Kephas.DependencyInjection;",
             "using Kephas.DependencyInjection.Metadata;",
+            "using Kephas.DependencyInjection.ServiceProviders;",
             "using Kephas.Entities;",
             "using Kephas.Entities.Builder;",
         };

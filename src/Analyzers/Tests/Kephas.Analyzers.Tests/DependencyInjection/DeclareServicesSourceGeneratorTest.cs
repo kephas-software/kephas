@@ -66,9 +66,9 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.ServiceProviders;
                     
-                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    [assembly: DeclareServices<DeclareServicesSourceGeneratorTest.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
                     
-                    namespace Kephas.DependencyInjection.ServiceProviders.Generated
+                    namespace DeclareServicesSourceGeneratorTest.ServiceProviders.Generated
                     {
                        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
                        internal partial class DeclareServices_DeclareServicesSourceGeneratorTest: IServiceInfoProvider
@@ -136,9 +136,9 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.ServiceProviders;
                     
-                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    [assembly: DeclareServices<DeclareServicesSourceGeneratorTest.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
                     
-                    namespace Kephas.DependencyInjection.ServiceProviders.Generated
+                    namespace DeclareServicesSourceGeneratorTest.ServiceProviders.Generated
                     {
                        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
                        internal partial class DeclareServices_DeclareServicesSourceGeneratorTest: IServiceInfoProvider
@@ -201,9 +201,9 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.ServiceProviders;
                     
-                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    [assembly: DeclareServices<DeclareServicesSourceGeneratorTest.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
                     
-                    namespace Kephas.DependencyInjection.ServiceProviders.Generated
+                    namespace DeclareServicesSourceGeneratorTest.ServiceProviders.Generated
                     {
                        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
                        internal partial class DeclareServices_DeclareServicesSourceGeneratorTest: IServiceInfoProvider
@@ -264,9 +264,9 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.ServiceProviders;
                     
-                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    [assembly: DeclareServices<DeclareServicesSourceGeneratorTest.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
                     
-                    namespace Kephas.DependencyInjection.ServiceProviders.Generated
+                    namespace DeclareServicesSourceGeneratorTest.ServiceProviders.Generated
                     {
                        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
                        internal partial class DeclareServices_DeclareServicesSourceGeneratorTest: IServiceInfoProvider
@@ -334,9 +334,9 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.ServiceProviders;
                     
-                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    [assembly: DeclareServices<DeclareServicesSourceGeneratorTest.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
                     
-                    namespace Kephas.DependencyInjection.ServiceProviders.Generated
+                    namespace DeclareServicesSourceGeneratorTest.ServiceProviders.Generated
                     {
                        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
                        internal partial class DeclareServices_DeclareServicesSourceGeneratorTest: IServiceInfoProvider

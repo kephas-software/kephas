@@ -8,9 +8,9 @@
 using System.Reflection;
 using FluentAssertions;
 using Kephas.Analyzers.Entities.TestAssembly;
+using Kephas.Analyzers.Entities.TestAssembly.EntityContexts.Generated;
 using Kephas.Analyzers.EntityFrameworkCore;
 using Kephas.Entities;
-using Kephas.Entities.EntityContexts.Generated;
 using Kephas.Reflection;
 using Kephas.Testing.Analyzers;
 using Microsoft.EntityFrameworkCore;

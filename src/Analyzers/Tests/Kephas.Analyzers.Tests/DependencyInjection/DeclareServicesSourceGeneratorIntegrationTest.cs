@@ -26,7 +26,7 @@ public class DeclareServicesSourceGeneratorIntegrationTest : SourceGeneratorTest
         appServicesAttrs.Should().ContainSingle();
 
         var serviceProviderType = appServicesAttrs[0].GetType().GenericTypeArguments[0];
-        serviceProviderType.FullName.Should().Be("Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_Kephas_Analyzers_TestAssembly");
+        serviceProviderType.FullName.Should().Be("Kephas.Analyzers.TestAssembly.ServiceProviders.Generated.DeclareServices_Kephas_Analyzers_TestAssembly");
     }
 
     [Fact]

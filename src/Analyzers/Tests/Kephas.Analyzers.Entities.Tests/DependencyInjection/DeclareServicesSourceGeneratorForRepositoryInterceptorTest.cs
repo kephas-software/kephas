@@ -68,9 +68,9 @@ public class DeclareServicesSourceGeneratorForRepositoryInterceptorTest : Source
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.ServiceProviders;
                     
-                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorForRepositoryInterceptorTest>()]
+                    [assembly: DeclareServices<DeclareServicesSourceGeneratorForRepositoryInterceptorTest.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorForRepositoryInterceptorTest>()]
                     
-                    namespace Kephas.DependencyInjection.ServiceProviders.Generated
+                    namespace DeclareServicesSourceGeneratorForRepositoryInterceptorTest.ServiceProviders.Generated
                     {
                        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
                        internal partial class DeclareServices_DeclareServicesSourceGeneratorForRepositoryInterceptorTest: IServiceInfoProvider

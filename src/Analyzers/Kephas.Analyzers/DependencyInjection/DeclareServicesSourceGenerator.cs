@@ -57,7 +57,7 @@ public class DeclareServicesSourceGenerator : IncrementalGeneratorBase<TypeDecla
 
     private static (string typeNamespace, string typeName) GetServiceTypeProviderClassName(IDeclareServicesSourceContext context)
     {
-        return ("Kephas.DependencyInjection.ServiceProviders.Generated", $"DeclareServices_{context.Compilation.Assembly.Name.Replace(".", "_")}");
+        return ($"{context.Compilation.Assembly.Name}.ServiceProviders.Generated", $"DeclareServices_{context.Compilation.Assembly.Name.Replace(".", "_")}");
     }
 
     /// <summary>

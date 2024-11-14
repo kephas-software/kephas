@@ -92,7 +92,7 @@ public class ModuleInitializerSourceGenerator : IncrementalGeneratorBase<ClassDe
 
     private (string typeNamespace, string typeName) GetModuleInitializerClassName(Compilation compilation)
     {
-        return ("Kephas.AssemblyInitialization.Generated",
+        return ($"{compilation.Assembly.Name}.AssemblyInitialization.Generated",
             $"ModuleInitializer_{compilation.Assembly.Name.Replace(".", "_")}");
     }
 }

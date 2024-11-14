@@ -51,5 +51,6 @@ public interface IEntityContext
 /// Typically, in an EntityFrameworkCode environment, entity contexts will specialize the DbContext class.
 /// </remarks>
 /// <typeparam name="TEntityContext">The entity context type.</typeparam>
+[ScopedService(ServiceType = typeof(IEntityContext), MetadataType = typeof(EntityContextMetadata))]
 public interface IEntityContext<TEntityContext> : IEntityContext
     where TEntityContext : IEntityContext;
