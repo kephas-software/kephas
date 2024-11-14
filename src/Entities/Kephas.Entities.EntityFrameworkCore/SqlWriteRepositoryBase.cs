@@ -37,7 +37,7 @@ public abstract class SqlWriteRepositoryBase(
     /// <param name="args">The stored procedure arguments. Their type is annotated with [<see cref="StoredProcedureAttribute"/>].</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>A task. Output parameters are retrieved in the provided <paramref name="args"/>.</returns>
-    public Task ExecuteAsync(ISpArgs args, CancellationToken cancellationToken = default)
+    public virtual Task ExecuteAsync(ISpArgs args, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(args);
 
@@ -113,7 +113,7 @@ public abstract class SqlWriteRepositoryBase(
     /// <remarks>Calling this method requires an enclosing transaction.</remarks>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>
     /// <returns>A task.</returns>
-    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var result = 0;
         foreach (var dbContext in activeDbContexts)
