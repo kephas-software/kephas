@@ -35,6 +35,13 @@ public class ContextAccessor : AsyncLocalAccessorBase<Dictionary<Type, object>>,
         (T?)GetData().GetValueOrDefault(typeof(T), default(T?)!);
 
     /// <summary>
+    /// Gets the context values.
+    /// </summary>
+    /// <returns>An enumeration of context values.</returns>
+    public IEnumerable<KeyValuePair<Type, object>> GetContext() =>
+        GetData().ToDictionary(kv => kv.Key, kv => kv.Value);
+
+    /// <summary>
     /// Gets the context writer for setting values in the context. 
     /// </summary>
     /// <returns>The context writer.</returns>
@@ -60,6 +67,26 @@ public class ContextAccessor : AsyncLocalAccessorBase<Dictionary<Type, object>>,
     /// <returns><c>true</c> is a value was set, otherwise <c>false</c>.</returns>
     bool IContextWriter.RemoveValue<T>() =>
         GetData().Remove(typeof(T));
+
+    /// <summary>
+    /// Restores the context from the provided values.
+    /// </summary>
+    /// <returns>This writer.</returns>
+    IContextWriter IContextWriter.RestoreContext(IEnumerable<KeyValuePair<Type, object>> context)
+    {
+        if (context is null)
+        {
+            return this;
+        }
+
+        var data = GetData();
+        foreach ((Type key, object value) in context)
+        {
+            data[key] = value;
+        }
+
+        return this;
+    }
 
     private Dictionary<Type, object> GetData()
     {

@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Text;
 using FluentAssertions;
 using Kephas.Context;
 using Xunit;
@@ -123,6 +124,61 @@ public class ContextAccessorTest
         }
 
         await Task.WhenAll(task1, task2);
+        
+        // Assert
+        contextAccessor.TryGetValue<string>().Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetContext_ShouldGetValueAndRestoreCorrectly()
+    {
+        // Arrange
+        var contextAccessor = new ContextAccessor();
+        var contextWriter = contextAccessor.GetWriter();
+        var expectedValue1 = "testValue1";
+        var expectedValue2 = new StringBuilder("testValue2");
+
+        contextAccessor.TryGetValue<string>().Should().BeNull();
+
+        // Act
+        IEnumerable<KeyValuePair<Type, object>> context = null!;
+
+        Task task1;
+        using (ExecutionContext.SuppressFlow())
+        {
+            task1 = Task.Factory.StartNew(() =>
+            {
+                contextWriter.SetValue(expectedValue1);
+                contextWriter.SetValue(expectedValue2);
+                context = contextAccessor.GetContext();
+                contextWriter.SetValue<object>(expectedValue1);
+                context.Should().NotBeNull();
+                context.Should().BeEquivalentTo(
+                [
+                    KeyValuePair.Create(typeof(string), (object)expectedValue1),
+                    KeyValuePair.Create(typeof(StringBuilder), (object)expectedValue2)
+                ]);
+            });
+        }
+
+        await task1;
+
+        Task task2;
+        using (ExecutionContext.SuppressFlow())
+        {
+            task2 = Task.Factory.StartNew(() =>
+            {
+                contextAccessor.GetContext().Should().BeEmpty();
+                contextWriter.RestoreContext(context);
+                contextAccessor.GetContext().Should().BeEquivalentTo(
+                [
+                    KeyValuePair.Create(typeof(string), (object)expectedValue1),
+                    KeyValuePair.Create(typeof(StringBuilder), (object)expectedValue2)
+                ]);
+            });
+        }
+
+        await task2;
         
         // Assert
         contextAccessor.TryGetValue<string>().Should().BeNull();

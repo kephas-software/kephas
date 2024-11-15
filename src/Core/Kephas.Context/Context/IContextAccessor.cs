@@ -28,6 +28,12 @@ public interface IContextAccessor
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <returns>The required value.</returns>
     T? TryGetValue<T>() where T : notnull;
+    
+    /// <summary>
+    /// Gets the context values.
+    /// </summary>
+    /// <returns>An enumeration of context values.</returns>
+    IEnumerable<KeyValuePair<Type, object>> GetContext();
 
     /// <summary>
     /// Gets the context writer for setting values in the context. 

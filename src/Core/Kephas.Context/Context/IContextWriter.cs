@@ -28,4 +28,10 @@ public interface IContextWriter
     /// <typeparam name="T">The type of the value to be removed.</typeparam>
     /// <returns><c>true</c> is a value was set, otherwise <c>false</c>.</returns>
     bool RemoveValue<T>() where T : notnull;
+    
+    /// <summary>
+    /// Restores the context from the provided values.
+    /// </summary>
+    /// <returns>This writer.</returns>
+    IContextWriter RestoreContext(IEnumerable<KeyValuePair<Type, object>> context);
 }
