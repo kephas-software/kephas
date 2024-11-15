@@ -10,11 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C4BE1689
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestingFramework", "TestingFramework", "{2AFCE6ED-697E-4986-A3B0-F9B7A126089F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Collections", "Core\Kephas.Collections\Kephas.Collections.csproj", "{5B9C6197-622F-40D0-9E2D-FB5D55CCFF60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core", "Core\Kephas.Core\Kephas.Core.csproj", "{5B9C6197-622F-40D0-9E2D-FB5D55CCFF60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Collections.Graphs", "Core\Kephas.Collections.Graphs\Kephas.Collections.Graphs.csproj", "{ACB4B60D-0F59-477C-96B0-D667093DCAF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Collections.Tests", "Core\Tests\Kephas.Collections.Tests\Kephas.Collections.Tests.csproj", "{BB13DC68-FE71-4566-B388-1CD32A60F03E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core.Tests", "Core\Tests\Kephas.Core.Tests\Kephas.Core.Tests.csproj", "{BB13DC68-FE71-4566-B388-1CD32A60F03E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Collections.Graphs.Tests", "Core\Tests\Kephas.Collections.Graphs.Tests\Kephas.Collections.Graphs.Tests.csproj", "{1470F9DE-F17B-4A34-B544-BB90CDF16389}"
 EndProject

@@ -81,7 +81,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Kephas.Collections\Kephas.Collections.csproj"/>
+        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Reflection\Kephas.Reflection.csproj" />
     </ItemGroup>
 
