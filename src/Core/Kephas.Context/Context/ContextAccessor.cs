@@ -16,15 +16,41 @@ namespace Kephas.Context;
 public class ContextAccessor : AsyncLocalAccessorBase<Dictionary<Type, object>>, IContextAccessor, IContextWriter
 {
     private readonly object syncLock = new ();
-    
+
     /// <summary>
     /// Gets the value with the provided type. If a value with the provided type was not registered, an exception is thrown.
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <returns>The required value.</returns>
     public T GetValue<T>() where T : notnull =>
-        TryGetValue<T>()
-        ?? throw new KeyNotFoundException($"No contextual value was set for type {typeof(T)}.");
+        GetOrAddValue<T>(() => throw new KeyNotFoundException($"No contextual value was set for type {typeof(T)}."));
+
+    /// <summary>
+    /// Gets the value with the provided type. If a value with the provided type was not registered,
+    /// a value will be produced with the <paramref name="valueGetter"/> and stored in the context.
+    /// </summary>
+    /// <typeparam name="T">The type of the value.</typeparam>
+    /// <returns>The required value.</returns>
+    public T GetOrAddValue<T>(Func<T> valueGetter) where T : notnull
+    {
+        var data = GetData();
+        if (data.TryGetValue(typeof(T), out var correlationId))
+        {
+            return (T)correlationId;
+        }
+
+        lock (syncLock)
+        {
+            if (data.TryGetValue(typeof(T), out correlationId))
+            {
+                return (T)correlationId;
+            }
+            
+            var value = valueGetter();
+            data[typeof(T)] = value;
+            return value;
+        }
+    }
 
     /// <summary>
     /// Trier to get the value with the provided type. If a value with the provided type was not registered, a <c>null</c> value is returned.

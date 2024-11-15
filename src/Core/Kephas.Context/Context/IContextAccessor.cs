@@ -23,6 +23,14 @@ public interface IContextAccessor
     T GetValue<T>() where T : notnull;
 
     /// <summary>
+    /// Gets the value with the provided type. If a value with the provided type was not registered,
+    /// a value will be produced with the <paramref name="valueGetter"/> and stored in the context.
+    /// </summary>
+    /// <typeparam name="T">The type of the value.</typeparam>
+    /// <returns>The required value.</returns>
+    T GetOrAddValue<T>(Func<T> valueGetter) where T : notnull;
+
+    /// <summary>
     /// Trier to get the value with the provided type. If a value with the provided type was not registered, a <c>null</c> value is returned.
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
