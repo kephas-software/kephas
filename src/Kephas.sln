@@ -158,6 +158,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Entities.Sqlite", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Entities.Sqlite.Tests", "Entities\Tests\Kephas.Entities.Sqlite.Tests\Kephas.Entities.Sqlite.Tests.csproj", "{E6B946BC-B20A-4522-ACF7-0C0CD87A03FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Context", "Core\Kephas.Context\Kephas.Context.csproj", "{CA006B08-B151-46FD-B883-0C8BDD6234F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Context.Tests", "Core\Tests\Kephas.Context.Tests\Kephas.Context.Tests.csproj", "{672EC105-F866-43D7-9793-A53985EAE998}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -236,6 +240,8 @@ Global
 		{E6384975-88BD-4104-AB5F-5B7149A4C34A} = {F1D6E909-E990-4C05-9E31-2D3C8EE6FA4C}
 		{63C41840-485E-4897-92B8-5953AF04A9C9} = {670DD7C9-5E0B-4B9E-86B3-9DDC285225D5}
 		{E6B946BC-B20A-4522-ACF7-0C0CD87A03FA} = {549436A0-5709-418A-8901-59421BBE828A}
+		{CA006B08-B151-46FD-B883-0C8BDD6234F0} = {81FD6983-22FF-4056-826D-F452165BAD60}
+		{672EC105-F866-43D7-9793-A53985EAE998} = {C4BE1689-DCCA-47D0-951A-04D96EE376AF}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5B9C6197-622F-40D0-9E2D-FB5D55CCFF60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -502,5 +508,13 @@ Global
 		{E6B946BC-B20A-4522-ACF7-0C0CD87A03FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6B946BC-B20A-4522-ACF7-0C0CD87A03FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6B946BC-B20A-4522-ACF7-0C0CD87A03FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA006B08-B151-46FD-B883-0C8BDD6234F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA006B08-B151-46FD-B883-0C8BDD6234F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA006B08-B151-46FD-B883-0C8BDD6234F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA006B08-B151-46FD-B883-0C8BDD6234F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{672EC105-F866-43D7-9793-A53985EAE998}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{672EC105-F866-43D7-9793-A53985EAE998}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{672EC105-F866-43D7-9793-A53985EAE998}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{672EC105-F866-43D7-9793-A53985EAE998}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
