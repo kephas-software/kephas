@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Security.Claims;
+using Kephas.Context;
 using Kephas.Web.Logging;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
@@ -27,7 +28,12 @@ public class HttpRequestEnricherTest
         var mockHttpRequest = Substitute.For<HttpRequest>();
         var mockConnectionInfo = Substitute.For<ConnectionInfo>();
         var mockClaimsPrincipal = Substitute.For<ClaimsPrincipal>();
-        var enricher = new HttpRequestEnricher(mockIHttpContextAccessor);
+
+        var mockContextAccessor = Substitute.For<IContextAccessor>();
+        var correlationId = new CorrelationId();
+        mockContextAccessor.TryGetValue<CorrelationId>().Returns(correlationId);
+
+        var enricher = new HttpRequestEnricher(mockIHttpContextAccessor, mockContextAccessor);
         var mockILogEventPropertyFactory = Substitute.For<ILogEventPropertyFactory>();
 
         var logEventLevel= new LogEventLevel();
@@ -54,12 +60,14 @@ public class HttpRequestEnricherTest
         mockILogEventPropertyFactory.CreateProperty("UserName", mockClaim,true).Returns(scalarStringA);
         var clientIP = mockConnectionInfo.RemoteIpAddress?.ToString();
         mockILogEventPropertyFactory.CreateProperty("ClientIP", clientIP, true).Returns(scalarStringA);
+        var correlationIdProperty = new LogEventProperty("CorrelationId", new ScalarValue(correlationId));
+        mockILogEventPropertyFactory.CreateProperty("CorrelationId", correlationId, true).Returns(correlationIdProperty);
 
         var mockLogEventPropertyValue = Substitute.For<LogEventPropertyValue>();
-        var logEventPropertys = new List<LogEventProperty> { new("Test", mockLogEventPropertyValue) };
+        var logEventProperties = new List<LogEventProperty> { new("Test", mockLogEventPropertyValue) };
         var messageTemplate = new MessageTemplate(new List<global::Serilog.Parsing.MessageTemplateToken>());
 
-        var logEvent = new LogEvent(DateTimeOffset.Now, logEventLevel, exception, messageTemplate, logEventPropertys);
+        var logEvent = new LogEvent(DateTimeOffset.Now, logEventLevel, exception, messageTemplate, logEventProperties);
 
         //Act
         enricher.Enrich(logEvent, mockILogEventPropertyFactory);
@@ -68,5 +76,6 @@ public class HttpRequestEnricherTest
         mockILogEventPropertyFactory.Received(1).CreateProperty("Uri", path, true);
         mockILogEventPropertyFactory.Received(1).CreateProperty("UserName", userName, true);
         mockILogEventPropertyFactory.Received(1).CreateProperty("ClientIP", $"{address}.0.0.0", true);
+        mockILogEventPropertyFactory.Received(1).CreateProperty("CorrelationId", correlationId, true);
     }
 }

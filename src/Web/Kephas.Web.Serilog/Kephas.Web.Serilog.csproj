@@ -78,6 +78,7 @@
     </Choose>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Core\Kephas.Context\Kephas.Context.csproj" />
       <ProjectReference Include="..\..\Extensions\Kephas.Extensions.Serilog\Kephas.Extensions.Serilog.csproj" />
     </ItemGroup>
 
