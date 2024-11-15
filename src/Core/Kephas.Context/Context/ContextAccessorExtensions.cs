@@ -18,5 +18,5 @@ public static class ContextAccessorExtensions
     /// <param name="contextAccessor">The context accessor.</param>
     /// <returns>The correlation ID.</returns>
     public static CorrelationId GetCorrelationId(this IContextAccessor contextAccessor) =>
-        contextAccessor.GetOrAddValue<CorrelationId>(() => new CorrelationId());
+        contextAccessor.GetOrAddValue(() => new CorrelationId());
 }
