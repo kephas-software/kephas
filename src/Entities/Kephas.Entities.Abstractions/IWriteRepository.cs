@@ -14,8 +14,86 @@ namespace Kephas.Entities;
 /// </summary>
 public interface IWriteRepository : IReadRepository
 {
+    #region Transactional support
+    
     /// <summary>
-    /// Executes the stored procedure with the provided arguments.
+    /// Gets a value indicating whether a transaction is active.
+    /// </summary>
+    bool HasTransaction();
+
+    /// <summary>
+    /// Executes the provided operation in a new or existing transaction.
+    /// </summary>
+    /// <remarks>Existing transactions are not rolled back, nor committed.</remarks>
+    /// <param name="operation">The operation to be executed.</param>
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    Task EnterTransactionAsync(
+        Func<IWriteRepository, CancellationToken, Task> operation,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(operation);
+
+        return HasTransaction()
+            ? operation(this, cancellationToken)
+            : EnterNewTransactionAsync(operation, cancellationToken);
+    } 
+
+    /// <summary>
+    /// Executes the provided operation in a new or existing transaction.
+    /// </summary>
+    /// <remarks>Existing transactions are not rolled back, nor committed.</remarks>
+    /// <typeparam name="TResult">The operation result type.</typeparam>
+    /// <param name="operation">The operation to be executed.</param>
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    Task<TResult> EnterTransactionAsync<TResult>(
+        Func<IWriteRepository, CancellationToken, Task<TResult>> operation,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(operation);
+        
+        return HasTransaction()
+            ? operation(this, cancellationToken)
+            : EnterNewTransactionAsync(operation, cancellationToken);
+    }
+
+    /// <summary>
+    /// Executes the provided operation in a new transaction.
+    /// </summary>
+    /// <param name="operation">The operation to be executed.</param>
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    Task EnterNewTransactionAsync(
+        Func<IWriteRepository, CancellationToken, Task> operation,
+        CancellationToken cancellationToken = default) =>
+        EnterNewTransactionAsyncCore(operation, cancellationToken);
+
+    /// <summary>
+    /// Executes the provided operation in a new transaction and returns the operation result.
+    /// </summary>
+    /// <typeparam name="TResult">The operation result type.</typeparam>
+    /// <param name="operation">The operation to be executed.</param>
+    /// <param name="cancellationToken">Optional. The cancellation token.</param>
+    async Task<TResult> EnterNewTransactionAsync<TResult>(
+        Func<IWriteRepository, CancellationToken, Task<TResult>> operation,
+        CancellationToken cancellationToken = default)
+    {
+        var task = await EnterNewTransactionAsyncCore(operation, cancellationToken);
+        // it is safe to get the result here, as the task is already completed.
+        return task.Result;
+    }
+
+    /// <summary>
+    /// Executes the operation inside a new transaction.
+    /// </summary>
+    protected Task<T> EnterNewTransactionAsyncCore<T>(
+        Func<IWriteRepository, CancellationToken, T> operation,
+        CancellationToken cancellationToken = default)
+        where T : Task;
+    
+    #endregion
+    
+    /// <summary>
+    /// Executes the stored procedure with the provided arguments inside a controlled context.
+    /// Use this method to ensure that the execution is performed within a transaction.
     /// </summary>
     /// <param name="args">The stored procedure arguments. Their type is annotated with [<see cref="StoredProcedureAttribute"/>].</param>
     /// <param name="cancellationToken">Optional. The cancellation token.</param>

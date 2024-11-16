@@ -15,6 +15,8 @@ using Kephas.Entities.StoredProcedures;
 using Kephas.Reflection;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Kephas.Entities;
 
@@ -30,7 +32,89 @@ public abstract class SqlWriteRepositoryBase(
         ReflectionHelper.GetGenericMethodOf(_ => ((SqlWriteRepositoryBase)null!).ExecuteAsync<ISpArgs>(null!, default));
     
     private readonly HashSet<DbContext> activeDbContexts = new();
+    
+    private bool hasTransaction;
 
+#region Transactions
+
+    /// <summary>
+    /// Gets a value indicating whether a transaction is active.
+    /// </summary>
+    public bool HasTransaction() => hasTransaction;
+
+    /// <summary>
+    /// Executes the operation inside a new transaction.
+    /// </summary>
+    async Task<T> IWriteRepository.EnterNewTransactionAsyncCore<T>(
+        Func<IWriteRepository, CancellationToken, T> operation,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(operation);
+
+        Func<Task<T>> next = null!;
+        using var enumerator = entityContextSelector.GetEnumerator();
+        next = async () =>
+        {
+            if (enumerator.MoveNext())
+            {
+                var dbContext = (DbContext)enumerator.Current;
+                return await EnterTransactionAsync(dbContext, next, cancellationToken);
+            }
+
+            var task = operation(this, cancellationToken);
+            await task;
+            return task;
+        };
+
+        try
+        {
+            hasTransaction = true;
+            return await next();
+        }
+        finally
+        {
+            hasTransaction = false;
+        }
+    }
+
+    private async Task<T> EnterTransactionAsync<T>(DbContext dbContext, Func<Task<T>> next, CancellationToken cancellationToken)
+        where T : Task
+    {
+        var database = dbContext.Database; 
+        var strategy = database.CreateExecutionStrategy();
+        return await strategy.ExecuteAsync(
+            async token =>
+            {
+                var (transaction, existing) = await BeginTransactionAsync(database, token);
+                try
+                {
+                    var result = await next();
+                    await transaction.CommitAsync(token);
+                    return result;
+                }
+                catch
+                {
+                    await transaction.RollbackAsync(token);
+                    throw;
+                }
+                finally
+                {
+                    if (!existing)
+                    {
+                        transaction.Dispose();
+                    }
+                }
+            }, cancellationToken);
+    }
+
+    private static async Task<(IDbContextTransaction transaction, bool existing)>
+        BeginTransactionAsync(DatabaseFacade database, CancellationToken token) =>
+        database.CurrentTransaction is not null
+            ? (database.CurrentTransaction, true)
+            : (await database.BeginTransactionAsync(token), false);
+
+    #endregion
+    
     /// <summary>
     /// Executes the stored procedure with the provided arguments.
     /// </summary>
