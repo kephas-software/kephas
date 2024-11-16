@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="C.cs" company="Kephas Software SRL">
+// <copyright file="RequiresTransactionPipelineBehaviorTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,12 +15,11 @@ namespace Kephas.Entities.Tests.Mediator;
 
 public class RequiresTransactionPipelineBehaviorTest
 {
-    private readonly IWriteRepository repository = Substitute.For<IWriteRepository>();
-
     [Fact]
     public async Task Handle_ShouldNotStartTransaction_WhenNoAttribute()
     {
         // Arrange
+        var repository = Substitute.For<IWriteRepository>();
         var request = new TestRequest();
         RequestHandlerDelegate<TestResponse> next = () => Task.FromResult(new TestResponse());
         var behavior = new RequiresTransactionPipelineBehavior<TestRequest, TestResponse>(repository);
@@ -38,31 +37,35 @@ public class RequiresTransactionPipelineBehaviorTest
     public async Task Handle_ShouldStartNewTransaction_WhenAttributeIndicatesNewTransaction()
     {
         // Arrange
+        var repository = Substitute.For<IWriteRepository>();
         var request = new TestRequestWithNewTransaction();
         RequestHandlerDelegate<TestResponse> next = () => Task.FromResult(new TestResponse());
-        var behaviorWithNew = new RequiresTransactionPipelineBehavior<TestRequestWithNewTransaction, TestResponse>(repository);
+        var behavior = new RequiresTransactionPipelineBehavior<TestRequestWithNewTransaction, TestResponse>(repository);
 
         // Act
-        var response = await behaviorWithNew.Handle(request, next, CancellationToken.None);
+        var response = await behavior.Handle(request, next, CancellationToken.None);
 
         // Assert
         response.Should().NotBeNull();
         await repository.Received(1).EnterNewTransactionAsync(Arg.Any<Func<IWriteRepository, CancellationToken, Task<TestResponse>>>(), Arg.Any<CancellationToken>());
+        await repository.DidNotReceive().EnterTransactionAsync(Arg.Any<Func<IWriteRepository, CancellationToken, Task<TestResponse>>>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
     public async Task Handle_ShouldEnterTransaction_WhenAttributeIndicatesExistingTransaction()
     {
         // Arrange
+        var repository = Substitute.For<IWriteRepository>();
         var request = new TestRequestWithExistingTransaction();
         RequestHandlerDelegate<TestResponse> next = () => Task.FromResult(new TestResponse());
-        var behaviorWithExisting = new RequiresTransactionPipelineBehavior<TestRequestWithExistingTransaction, TestResponse>(repository);
+        var behavior = new RequiresTransactionPipelineBehavior<TestRequestWithExistingTransaction, TestResponse>(repository);
 
         // Act
-        var response = await behaviorWithExisting.Handle(request, next, CancellationToken.None);
+        var response = await behavior.Handle(request, next, CancellationToken.None);
 
         // Assert
         response.Should().NotBeNull();
+        await repository.DidNotReceive().EnterNewTransactionAsync(Arg.Any<Func<IWriteRepository, CancellationToken, Task<TestResponse>>>(), Arg.Any<CancellationToken>());
         await repository.Received(1).EnterTransactionAsync(Arg.Any<Func<IWriteRepository, CancellationToken, Task<TestResponse>>>(), Arg.Any<CancellationToken>());
     }
 
