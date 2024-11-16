@@ -13,7 +13,7 @@ namespace Kephas.Entities;
 /// Service selecting an <see cref="IEntityContext"/> based on the entities it serves.
 /// </summary>
 [ScopedService]
-public interface ISqlEntityContextSelector
+public interface ISqlEntityContextSelector : IEnumerable<IEntityContext>
 {
     /// <summary>
     /// Gets the <see cref="IEntityContext"/> serving <paramref name="entityType"/>.
