@@ -46,7 +46,7 @@ public class RepositoryOperationPipeline(
         var interceptors = factoryInterceptors
             .Where(f => f.Metadata.OperationType?.IsAssignableFrom(operationArgsType) is true);
         using var interceptorEnumerator = interceptors.GetEnumerator();
-        InterceptNextDelegate<TResult>? next = null;
+        InterceptNextDelegate<TResult> next = null!;
         next = async () =>
         {
             if (interceptorEnumerator.MoveNext())
@@ -55,7 +55,7 @@ public class RepositoryOperationPipeline(
                 var handleAsync = HandleAsyncMethod.MakeGenericMethod(
                     interceptorFactory.Metadata.OperationType!,
                     interceptorFactory.Metadata.ResultType!);
-                return await handleAsync.Call<Task<TResult>>(null, interceptorFactory.GetService(), operationArgs, next!, cancellationToken);
+                return await handleAsync.Call<Task<TResult>>(null, interceptorFactory.GetService(), operationArgs, next, cancellationToken);
             }
 
             return await handler();
