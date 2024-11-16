@@ -69,13 +69,13 @@ public class RequiresTransactionPipelineBehaviorTest
         await repository.Received(1).EnterTransactionAsync(Arg.Any<Func<IWriteRepository, CancellationToken, Task<TestResponse>>>(), Arg.Any<CancellationToken>());
     }
 
-    private class TestRequest : IRequest<TestResponse> { }
+    public class TestRequest : IRequest<TestResponse> { }
 
     [RequiresTransaction(StartNewTransaction = true)]
-    private class TestRequestWithNewTransaction : IRequest<TestResponse> { }
+    public class TestRequestWithNewTransaction : IRequest<TestResponse> { }
 
     [RequiresTransaction(StartNewTransaction = false)]
-    private class TestRequestWithExistingTransaction : IRequest<TestResponse> { }
+    public class TestRequestWithExistingTransaction : IRequest<TestResponse> { }
 
-    private class TestResponse { }
+    public class TestResponse { }
 }
