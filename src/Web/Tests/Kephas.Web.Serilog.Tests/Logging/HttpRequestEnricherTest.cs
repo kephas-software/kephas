@@ -65,7 +65,7 @@ public class HttpRequestEnricherTest
 
         var mockLogEventPropertyValue = Substitute.For<LogEventPropertyValue>();
         var logEventProperties = new List<LogEventProperty> { new("Test", mockLogEventPropertyValue) };
-        var messageTemplate = new MessageTemplate(new List<global::Serilog.Parsing.MessageTemplateToken>());
+        var messageTemplate = new MessageTemplate(new List<Serilog.Parsing.MessageTemplateToken>());
 
         var logEvent = new LogEvent(DateTimeOffset.Now, logEventLevel, exception, messageTemplate, logEventProperties);
 
