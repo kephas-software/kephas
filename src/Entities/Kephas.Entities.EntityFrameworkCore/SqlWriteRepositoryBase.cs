@@ -24,23 +24,22 @@ namespace Kephas.Entities;
 /// The base implementation of <see cref="IWriteRepository"/> for EntityFrameworkCore.
 /// </summary>
 public abstract class SqlWriteRepositoryBase(
-    ISqlEntityContextSelector entityContextSelector,
+    ISqlEntityContextCollection entityContextCollection,
     IRepositoryOperationPipeline operationPipeline)
-    : SqlReadRepositoryBase(entityContextSelector, operationPipeline), IWriteRepository
+    : SqlReadRepositoryBase(entityContextCollection, operationPipeline), IWriteRepository
 {
     private static readonly MethodInfo ExecuteAsyncMethod =
         ReflectionHelper.GetGenericMethodOf(_ => ((SqlWriteRepositoryBase)null!).ExecuteAsync<ISpArgs>(null!, default));
     
     private readonly HashSet<DbContext> activeDbContexts = new();
-    
-    private bool hasTransaction;
+    private readonly HashSet<string> activeTransactions = new();
 
 #region Transactions
 
     /// <summary>
     /// Gets a value indicating whether a transaction is active.
     /// </summary>
-    public bool HasTransaction() => hasTransaction;
+    public bool HasTransaction() => activeTransactions.Count > 0;
 
     /// <summary>
     /// Executes the operation inside a new transaction.
@@ -52,13 +51,13 @@ public abstract class SqlWriteRepositoryBase(
         ArgumentNullException.ThrowIfNull(operation);
 
         Func<Task<T>> next = null!;
-        using var enumerator = entityContextSelector.GetEnumerator();
+        using var enumerator = entityContextCollection.GetEnumerator();
         next = async () =>
         {
             if (enumerator.MoveNext())
             {
-                var dbContext = (DbContext)enumerator.Current;
-                return await EnterTransactionAsync(dbContext, next, cancellationToken);
+                var entityContext = enumerator.Current;
+                return await EnterTransactionAsync(entityContext, next, cancellationToken);
             }
 
             var task = operation(this, cancellationToken);
@@ -68,24 +67,30 @@ public abstract class SqlWriteRepositoryBase(
 
         try
         {
-            hasTransaction = true;
             return await next();
         }
         finally
         {
-            hasTransaction = false;
+            activeTransactions.Clear();
         }
     }
 
-    private async Task<T> EnterTransactionAsync<T>(DbContext dbContext, Func<Task<T>> next, CancellationToken cancellationToken)
+    private async Task<T> EnterTransactionAsync<T>(IEntityContext entityContext, Func<Task<T>> next, CancellationToken cancellationToken)
         where T : Task
     {
+        var dbContext = (DbContext)entityContext;
+        var connectionName = entityContextCollection.GetConnectionName(entityContext);
         var database = dbContext.Database; 
         var strategy = database.CreateExecutionStrategy();
         return await strategy.ExecuteAsync(
             async token =>
             {
-                var (transaction, existing) = await BeginTransactionAsync(database, token);
+                var transaction = await TryBeginTransactionAsync(connectionName, database, token);
+                if (transaction is null)
+                {
+                    return await next();
+                }
+
                 try
                 {
                     var result = await next();
@@ -99,19 +104,16 @@ public abstract class SqlWriteRepositoryBase(
                 }
                 finally
                 {
-                    if (!existing)
-                    {
-                        transaction.Dispose();
-                    }
+                    transaction.Dispose();
                 }
             }, cancellationToken);
     }
 
-    private static async Task<(IDbContextTransaction transaction, bool existing)>
-        BeginTransactionAsync(DatabaseFacade database, CancellationToken token) =>
-        database.CurrentTransaction is not null
-            ? (database.CurrentTransaction, true)
-            : (await database.BeginTransactionAsync(token), false);
+    private async Task<IDbContextTransaction?> TryBeginTransactionAsync(
+        string connectionName, DatabaseFacade database, CancellationToken token) =>
+        !activeTransactions.Add(connectionName)|| database.CurrentTransaction is not null
+            ? null
+            : await database.BeginTransactionAsync(token);
 
     #endregion
     
@@ -204,6 +206,8 @@ public abstract class SqlWriteRepositoryBase(
         {
             result += await SaveChangesAsync(dbContext, cancellationToken);
         }
+        
+        activeDbContexts.Clear();
 
         return result;
     }
@@ -282,10 +286,10 @@ public abstract class SqlWriteRepositoryBase(
     /// <param name="entityType">The entity type for which the data context is required.</param>
     protected override DbContext GetDbContext(Type entityType)
     {
-        var dataContext = base.GetDbContext(entityType);
-        activeDbContexts.Add(dataContext);
+        var dbContext = base.GetDbContext(entityType);
+        activeDbContexts.Add(dbContext);
 
-        return dataContext;
+        return dbContext;
     }
 
     #region Stored Procedures

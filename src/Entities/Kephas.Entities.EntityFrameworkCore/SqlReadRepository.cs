@@ -13,6 +13,6 @@ namespace Kephas.Entities;
 /// The default implementation of <see cref="ISqlReadRepository"/>
 /// </summary>
 public class SqlReadRepository(
-    ISqlEntityContextSelector entityContextSelector,
+    ISqlEntityContextCollection entityContextCollection,
     IRepositoryOperationPipeline operationPipeline)
-    : SqlReadRepositoryBase(entityContextSelector, operationPipeline), ISqlReadRepository;
+    : SqlReadRepositoryBase(entityContextCollection, operationPipeline), ISqlReadRepository;

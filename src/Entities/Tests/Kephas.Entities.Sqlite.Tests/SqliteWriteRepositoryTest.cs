@@ -6,7 +6,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using FluentAssertions;
+using Kephas.Context;
 using Kephas.Entities.Tests.Models;
+using Kephas.Entities.Tests.Security;
 using Kephas.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -20,7 +22,8 @@ public class SqliteWriteRepositoryTest() : SqliteIntegrationTestBase<SqliteWrite
     public async Task SaveChangesAsync_CRUD_interceptors(string firstName, string lastName)
     {
         var repository = DefaultScope.ServiceProvider.GetRequiredService<ISqlWriteRepository>();
-        
+        EnsureAuthenticated();
+
         var person = new Person
         {
             FirstName = firstName,
@@ -45,7 +48,7 @@ public class SqliteWriteRepositoryTest() : SqliteIntegrationTestBase<SqliteWrite
         await repository.SaveChangesAsync();
         repository.Query<Person>().Should().BeEmpty();
     }
-    
+
     [Theory]
     [InlineData("John", "Doe", "JD", -2, new[] { "The field Age must be between 0 and 150." })]
     [InlineData("John", "Doe", "JD", 200, new[] { "The field Age must be between 0 and 150." })]
@@ -60,6 +63,7 @@ public class SqliteWriteRepositoryTest() : SqliteIntegrationTestBase<SqliteWrite
     public async Task SaveChangesAsync_validation_fails(string firstName, string lastName, string? initials, int age, string[] expectedErrors)
     {
         var repository = DefaultScope.ServiceProvider.GetRequiredService<ISqlWriteRepository>();
+        EnsureAuthenticated();
         
         var person = new Person
         {
@@ -73,5 +77,84 @@ public class SqliteWriteRepositoryTest() : SqliteIntegrationTestBase<SqliteWrite
         (await act.Should().ThrowAsync<ValidationException>())
             .Which.ValidationResult!.Errors.Select(e => e.ErrorMessage)
             .Should().BeEquivalentTo(expectedErrors);
+    }
+    
+    [Theory]
+    [InlineData("John", "Doe")]
+    public async Task SaveChangesAsync_CRUD_interceptors_with_transaction_commit(string firstName, string lastName)
+    {
+        var repository = DefaultScope.ServiceProvider.GetRequiredService<ISqlWriteRepository>();
+        EnsureAuthenticated();
+
+        var person = new Person
+        {
+            FirstName = firstName,
+            LastName = lastName
+        };
+
+        await repository.EnterTransactionAsync(async (r, t) =>
+        {
+            r.Add(person);
+            await r.SaveChangesAsync(t);
+
+            person.Id.Should().NotBeEmpty();
+            var storagePeople = r.Query<Person>();
+            storagePeople.Should().BeEquivalentTo([person]);
+            var storagePerson = storagePeople.Single();
+            storagePerson.Age.Should().Be(0);
+
+            person.Age = 25;
+            r.Update(person);
+            await r.SaveChangesAsync(t);
+            storagePerson = await r.GetByIdAsync<Person>(person.Id, t);
+            storagePerson.Age.Should().Be(25);
+        });
+        
+        
+        repository.Query<Person>().Should().BeEquivalentTo([person]);
+    }
+    
+    [Theory]
+    [InlineData("John", "Doe")]
+    public async Task SaveChangesAsync_CRUD_interceptors_with_transaction_rollback(string firstName, string lastName)
+    {
+        var repository = DefaultScope.ServiceProvider.GetRequiredService<ISqlWriteRepository>();
+        EnsureAuthenticated();
+
+        var person = new Person
+        {
+            FirstName = firstName,
+            LastName = lastName
+        };
+
+        var act = () => repository.EnterTransactionAsync(async (r, t) =>
+        {
+            r.Add(person);
+            await r.SaveChangesAsync(t);
+
+            person.Id.Should().NotBeEmpty();
+            var storagePeople = r.Query<Person>();
+            storagePeople.Should().BeEquivalentTo([person]);
+            var storagePerson = storagePeople.Single();
+            storagePerson.Age.Should().Be(0);
+
+            person.Age = 25;
+            r.Update(person);
+            await r.SaveChangesAsync(t);
+            storagePerson = await r.GetByIdAsync<Person>(person.Id, t);
+            storagePerson.Age.Should().Be(25);
+
+            throw new InvalidOperationException("Rollback transaction");
+        });
+
+        await act.Should().ThrowExactlyAsync<InvalidOperationException>();
+        
+        repository.Query<Person>().Should().BeEmpty();
+    }
+
+    private void EnsureAuthenticated()
+    {
+        var contextAccessor = DefaultScope.ServiceProvider.GetRequiredService<IContextAccessor>();
+        contextAccessor.GetOrAddValue(() => new UserInfo());
     }
 }

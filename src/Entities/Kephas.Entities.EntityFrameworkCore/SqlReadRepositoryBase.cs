@@ -17,7 +17,7 @@ namespace Kephas.Entities;
 /// The base implementation of <see cref="IReadRepository"/> for EntityFrameworkCore.
 /// </summary>
 public abstract class SqlReadRepositoryBase(
-    ISqlEntityContextSelector entityContextSelector,
+    ISqlEntityContextCollection entityContextCollection,
     IRepositoryOperationPipeline operationPipeline)
     : IReadRepository
 {
@@ -100,7 +100,7 @@ public abstract class SqlReadRepositoryBase(
     /// Gets the <see cref="DbContext"/> used by this repository to access data.
     /// </summary>
     /// <param name="entityType">The entity type for which the entity context is required.</param>
-    protected virtual DbContext GetDbContext(Type entityType) => (DbContext)entityContextSelector.GetEntityContext(entityType);
+    protected virtual DbContext GetDbContext(Type entityType) => (DbContext)entityContextCollection.GetEntityContext(entityType);
 
     /// <summary>
     /// Gets the database facade for the provided entity type.

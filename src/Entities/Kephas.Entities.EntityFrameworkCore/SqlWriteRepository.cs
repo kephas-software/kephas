@@ -13,6 +13,6 @@ namespace Kephas.Entities;
 /// The default implementation of <see cref="ISqlWriteRepository"/>
 /// </summary>
 public class SqlWriteRepository(
-    ISqlEntityContextSelector entityContextSelector,
+    ISqlEntityContextCollection entityContextCollection,
     IRepositoryOperationPipeline operationPipeline)
-    : SqlWriteRepositoryBase(entityContextSelector, operationPipeline), ISqlWriteRepository;
+    : SqlWriteRepositoryBase(entityContextCollection, operationPipeline), ISqlWriteRepository;

@@ -14,11 +14,17 @@ namespace Kephas.Entities.Tests.Interceptors;
 public class AuthorizationRepositoryInterceptor(IContextAccessor contextAccessor)
     : ISaveChangesRepositoryInterceptor
 {
-    public async Task<int> HandleAsync(IWriteRepository repository, IEntityContext entityContext, Func<Task<int>> next,
+    public Task<int> HandleAsync(IWriteRepository repository, IEntityContext entityContext, Func<Task<int>> next,
         CancellationToken cancellationToken)
     {
-        var user = contextAccessor.GetValue<UserInfo>();
-        // check permissions
-        throw new NotImplementedException();
+        // check whether the user is authorized to perform the operation
+        // for test purposes check only whether the user is authenticated 
+        var user = contextAccessor.TryGetValue<UserInfo>();
+        if (user is null)
+        {
+            throw new UnauthorizedAccessException();
+        }
+
+        return next();
     }
 }

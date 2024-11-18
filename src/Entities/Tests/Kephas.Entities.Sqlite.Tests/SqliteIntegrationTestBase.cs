@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.DependencyInjection;
+using Kephas.DependencyInjection.Metadata;
 using Kephas.Entities.Configuration;
 using Kephas.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -43,7 +44,7 @@ public abstract class SqliteIntegrationTestBase<TTestClass> : IntegrationTestBas
 
         var lazyEntityContexts = DefaultScope.ServiceProvider
             .GetRequiredService<ILazyEnumerable<IEntityContext, EntityContextMetadata>>();
-        foreach (var lazyEntityContext in lazyEntityContexts)
+        foreach (var lazyEntityContext in lazyEntityContexts.Where(l => l.Metadata.Priority == Priority.Low))
         {
             if(lazyEntityContext.Value is DbContext dbContext)
             {
