@@ -28,7 +28,7 @@ public class LoggingHelperTest
             appRuntime.GetAppInstanceId().Returns(appInstanceId);
             appRuntime.GetEnvironment().Returns("env");
 
-            var localNow = new DateTime(2024, 12, 25);
+            var localNow = new DateTime(2024, 12, 25, 0, 0, 0, DateTimeKind.Utc);
             var filePath = Path.Combine(LoggingHelper.FallbackLogPath, $"internal-{appInstanceId}.20241225.json");
 
             var threadId = Environment.CurrentManagedThreadId;
@@ -37,7 +37,7 @@ public class LoggingHelperTest
             {
                 LoggingHelper.WriteFallbackLogError("hello", appRuntime, localNow);
                 var lines = File.ReadAllLines(filePath);
-                lines.Should().Satisfy(e => e == $$$"""{"Time":"2024-12-24T23:00:00","Level":"Error","Message":"hello","AppName":"app","AppVersion":"","AppInstanceId":"{{{appInstanceId}}}","Env":"env","MachineName":"","ThreadId":"{{{threadId}}}"}""");
+                lines.Should().Satisfy(e => e == $$$"""{"Time":"2024-12-25T00:00:00","Level":"Error","Message":"hello","AppName":"app","AppVersion":"","AppInstanceId":"{{{appInstanceId}}}","Env":"env","MachineName":"","ThreadId":"{{{threadId}}}"}""");
             }
             finally
             {
