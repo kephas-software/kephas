@@ -7,6 +7,7 @@
 
 using System.Security.Claims;
 using Kephas.Context;
+using Kephas.Diagnostics;
 using Kephas.Web.Logging;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
@@ -31,7 +32,7 @@ public class HttpRequestEnricherTest
 
         var mockContextAccessor = Substitute.For<IContextAccessor>();
         var correlationId = new CorrelationId();
-        mockContextAccessor.TryGetValue<CorrelationId>().Returns(correlationId);
+        mockContextAccessor.GetOrAddValue(Arg.Any<Func<CorrelationId>>()).Returns(correlationId);
 
         var enricher = new HttpRequestEnricher(mockIHttpContextAccessor, mockContextAccessor);
         var mockILogEventPropertyFactory = Substitute.For<ILogEventPropertyFactory>();
@@ -55,13 +56,13 @@ public class HttpRequestEnricherTest
                      
 
         var scalarStringA = new LogEventProperty("a", new ScalarValue("a"));
-        mockILogEventPropertyFactory.CreateProperty("Uri", mockHttpRequest.Path.ToString(), true).Returns(scalarStringA);
+        mockILogEventPropertyFactory.CreateProperty("Uri", mockHttpRequest.Path.ToString(), false).Returns(scalarStringA);
         var mockClaim = mockClaimsPrincipal.Claims?.FirstOrDefault(x => x.Type == "username")?.Value;
-        mockILogEventPropertyFactory.CreateProperty("UserName", mockClaim,true).Returns(scalarStringA);
+        mockILogEventPropertyFactory.CreateProperty("UserName", mockClaim,false).Returns(scalarStringA);
         var clientIP = mockConnectionInfo.RemoteIpAddress?.ToString();
-        mockILogEventPropertyFactory.CreateProperty("ClientIP", clientIP, true).Returns(scalarStringA);
+        mockILogEventPropertyFactory.CreateProperty("ClientIP", clientIP, false).Returns(scalarStringA);
         var correlationIdProperty = new LogEventProperty("CorrelationId", new ScalarValue(correlationId));
-        mockILogEventPropertyFactory.CreateProperty("CorrelationId", correlationId, true).Returns(correlationIdProperty);
+        mockILogEventPropertyFactory.CreateProperty("CorrelationId", correlationId, false).Returns(correlationIdProperty);
 
         var mockLogEventPropertyValue = Substitute.For<LogEventPropertyValue>();
         var logEventProperties = new List<LogEventProperty> { new("Test", mockLogEventPropertyValue) };
@@ -73,9 +74,9 @@ public class HttpRequestEnricherTest
         enricher.Enrich(logEvent, mockILogEventPropertyFactory);
 
         //Assert
-        mockILogEventPropertyFactory.Received(1).CreateProperty("Uri", path, true);
-        mockILogEventPropertyFactory.Received(1).CreateProperty("UserName", userName, true);
-        mockILogEventPropertyFactory.Received(1).CreateProperty("ClientIP", $"{address}.0.0.0", true);
-        mockILogEventPropertyFactory.Received(1).CreateProperty("CorrelationId", correlationId, true);
+        mockILogEventPropertyFactory.Received(1).CreateProperty("Uri", path, false);
+        mockILogEventPropertyFactory.Received(1).CreateProperty("UserName", userName, false);
+        mockILogEventPropertyFactory.Received(1).CreateProperty("ClientIP", $"{address}.0.0.0", false);
+        mockILogEventPropertyFactory.Received(1).CreateProperty("CorrelationId", correlationId, false);
     }
 }

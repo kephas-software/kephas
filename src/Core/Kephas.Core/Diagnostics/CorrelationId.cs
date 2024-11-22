@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Context;
+namespace Kephas.Diagnostics;
 
 /// <summary>
 /// The correlation identifier.
