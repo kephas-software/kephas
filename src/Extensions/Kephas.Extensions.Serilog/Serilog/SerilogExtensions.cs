@@ -3,8 +3,9 @@ using Kephas.Runtime;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using Serilog.Core;
 using Serilog.Exceptions;
+using Serilog.Exceptions.Core;
+using Serilog.Exceptions.Destructurers;
 
 namespace Kephas.Extensions.Serilog;
 
@@ -13,15 +14,12 @@ namespace Kephas.Extensions.Serilog;
 /// </summary>
 public static class SerilogExtensions
 {
-    private static readonly int DefaultMaxDestructuringDepth = 5;
-    private static readonly int DefaultMaxCollectionCount = 10;
-    
     /// <summary>
     /// Adds the serilog configuration to the builder.
     /// </summary>
     /// <param name="configurationBuilder">The configuration builder.</param>
     /// <returns>The provided configuration builder.</returns>
-    public static IConfigurationBuilder AddSerilog(this IConfigurationBuilder configurationBuilder)
+    public static IConfigurationBuilder AddSerilogLogging(this IConfigurationBuilder configurationBuilder)
     {
         _ = configurationBuilder ?? throw new ArgumentNullException(nameof(configurationBuilder));
 
@@ -35,6 +33,53 @@ public static class SerilogExtensions
     }
 
     /// <summary>
+    /// Adds Serilog logging to the services when used from within a non-hosted application.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configureOptions">Optional callback used to configure the Serilog options.</param>
+    /// <returns>The provided service collection.</returns>
+    public static IServiceCollection AddSerilogLogging(
+        this IServiceCollection services,
+        Action<SerilogOptions>? configureOptions = null)
+    {
+        _ = services ?? throw new ArgumentNullException(nameof(services));
+
+        services
+            .AddSingleton<ILogLevelSwitch, SerilogLevelSwitch>()
+#if NET6_0
+            .AddLogging(builder =>
+            {
+                var serviceProvider = builder.Services.BuildServiceProvider();
+                var loggerConfiguration = new LoggerConfiguration();
+                loggerConfiguration.ConfigureSerilog(serviceProvider, configureOptions);
+
+                builder.AddSerilog(loggerConfiguration.CreateLogger());
+            });
+#else
+            .AddSerilog((serviceProvider, loggerConfiguration) =>
+            {
+                loggerConfiguration.ConfigureSerilog(serviceProvider, configureOptions);
+            });
+#endif
+        
+        return services;
+    }
+
+    internal static void ConfigureSerilog(this LoggerConfiguration loggerConfiguration,
+        IServiceProvider serviceProvider,
+        Action<SerilogOptions>? configureOptions)
+    {
+        var options = new SerilogOptions
+        {
+            AppRuntime = serviceProvider.GetService<IAppRuntime>(),
+            LevelSwitch = (serviceProvider.GetService<ILogLevelSwitch>() as ISerilogLevelSwitch)?.LevelSwitch,
+            Configuration = serviceProvider.GetService<IConfiguration>(),
+        };
+        configureOptions?.Invoke(options);
+        loggerConfiguration.ConfigureSerilogCore(serviceProvider, options);
+    }
+
+    /// <summary>
     /// Configures Serilog from the application configuration with default settings and enrichers.
     /// </summary>
     /// <remarks>
@@ -42,65 +87,78 @@ public static class SerilogExtensions
     /// Also, the application runtime is set and the self log.
     /// </remarks>
     /// <param name="loggerConfiguration">The logger configuration.</param>
-    /// <param name="configuration">The application configuration.</param>
-    /// <param name="appRuntime">The application runtime.</param>
-    /// <param name="loggingLevelSwitch">The switch to control the logging level at runtime.</param>
-    public static LoggerConfiguration ConfigureSerilog(this LoggerConfiguration loggerConfiguration,
-        IConfiguration configuration,
-        IAppRuntime? appRuntime = null,
-        LoggingLevelSwitch? loggingLevelSwitch = null)
+    /// <param name="serviceProvider">The service provider.</param>
+    /// <param name="options">The options to configure Serilog.</param>
+    private static LoggerConfiguration ConfigureSerilogCore(
+        this LoggerConfiguration loggerConfiguration,
+        IServiceProvider serviceProvider,
+        SerilogOptions? options = null)
     {
         _ = loggerConfiguration ?? throw new ArgumentNullException(nameof(loggerConfiguration));
+        options ??= new SerilogOptions();
 
-        if (appRuntime is not null)
+        if (options.AppRuntime is not null)
         {
-            LoggingHelper.SetAppRuntime(appRuntime);
+            LoggingHelper.SetAppRuntime(options.AppRuntime);
         }
+        var configuration = options.Configuration ?? new ConfigurationBuilder().Build();
+        
+        options.PreConfigure?.Invoke(serviceProvider, loggerConfiguration);
 
         loggerConfiguration
-            .Destructure.ToMaximumDepth(DefaultMaxDestructuringDepth)
-            .Destructure.ToMaximumCollectionCount(DefaultMaxCollectionCount)
+            .Destructure.ToMaximumDepth(options.MaxDestructuringDepth)
+            .Destructure.ToMaximumCollectionCount(options.MaxCollectionCount)
             .ReadFrom.Configuration(configuration)
             .Enrich.FromLogContext()
             .Enrich.WithThreadId()
             .Enrich.WithProcessId()
             .Enrich.WithMachineName()
-            .Enrich.WithExceptionDetails();
+            .UseConfiguredExceptionDetailsEnricher(options, serviceProvider)
+            .UseConfiguredLoggingLevelSwitch(options);
 
-        if (loggingLevelSwitch is not null)
-        {
-            loggerConfiguration
-                .MinimumLevel.ControlledBy(loggingLevelSwitch);
-        }
+        var selfLog = options.SelfLog
+                      ?? (message => LoggingHelper.WriteFallbackLogError(message, options.AppRuntime));
+        global::Serilog.Debugging.SelfLog.Enable(selfLog);
 
-        global::Serilog.Debugging.SelfLog.Enable(message => LoggingHelper.WriteFallbackLogError(message, appRuntime));
+        options.PostConfigure?.Invoke(serviceProvider, loggerConfiguration);
 
         return loggerConfiguration;
     }
 
-    /// <summary>
-    /// Adds Serilog logging to the services when used from within a non-hosted application.
-    /// </summary>
-    /// <param name="services">The service collection.</param>
-    /// <param name="configuration">The application configuration.</param>
-    /// <returns>The provided service collection.</returns>
-    public static IServiceCollection AddSerilogLogging(this IServiceCollection services, IConfiguration configuration)
+    private static LoggerConfiguration UseConfiguredLoggingLevelSwitch(this LoggerConfiguration loggerConfiguration, SerilogOptions options)
     {
-        _ = services ?? throw new ArgumentNullException(nameof(services));
+        if (options.LevelSwitch is not null)
+        {
+            loggerConfiguration
+                .MinimumLevel.ControlledBy(options.LevelSwitch);
+        }
 
-        services
-            .AddSingleton<ILogLevelSwitch>(new SerilogLevelSwitch(configuration))
-            .AddLogging(builder =>
-            {
-                var appRuntime = services.GetAppRuntime(defaultIfNotFound: true);
-                var levelSwitch = services.GetSingletonService<ILogLevelSwitch>(
-                    () => throw new InvalidOperationException($"Must register the {nameof(SerilogLevelSwitch)} service prior to adding logging services."));
-                var loggerConfiguration = new LoggerConfiguration()
-                    .ConfigureSerilog(configuration, appRuntime, (levelSwitch as ISerilogLevelSwitch)?.LevelSwitch);
-
-                builder.AddSerilog(loggerConfiguration.CreateLogger());
-            });
-        
-        return services;
+        return loggerConfiguration;
     }
+
+    private static LoggerConfiguration UseConfiguredExceptionDetailsEnricher(
+        this LoggerConfiguration loggerConfiguration,
+        SerilogOptions options,
+        IServiceProvider serviceProvider)
+    {
+        if (!options.UseExceptionDetailsEnricher)
+        {
+            return loggerConfiguration;
+        }
+
+        var exceptionOptions = options.ExceptionDestructuringOptions
+                               ?? new DestructuringOptionsBuilder()
+                                   .WithDestructurers(GetExceptionDestructurers(serviceProvider))
+                                   .WithIgnoreStackTraceAndTargetSiteExceptionFilter()
+                                   .WithDestructuringDepth(options.MaxDestructuringDepth)
+                                   .WithoutReflectionBasedDestructurer();
+        loggerConfiguration.Enrich.WithExceptionDetails(exceptionOptions);
+        loggerConfiguration.Enrich.With(new FallbackExceptionEnricher(exceptionOptions));
+
+        return loggerConfiguration;
+    }
+
+    private static IEnumerable<IExceptionDestructurer> GetExceptionDestructurers(IServiceProvider serviceProvider) =>
+        DestructuringOptionsBuilder.DefaultDestructurers
+            .Union(serviceProvider.GetServices<IExceptionDestructurer>());
 }

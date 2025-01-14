@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseWebLogging();
+builder.UseWebLogging();
 
 builder.WebHost
     .UseContentRoot(Directory.GetCurrentDirectory())

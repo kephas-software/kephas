@@ -7,7 +7,6 @@
 
 using Kephas.Extensions.Logging;
 using Kephas.Extensions.Serilog;
-using Kephas.Runtime;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -26,40 +25,55 @@ public static class HostBuilderLoggingExtensions
     /// <typeparam name="TBuilder">The builder type.</typeparam>
     /// <returns>The provided host builder.</returns>
     public static TBuilder UseLogging<TBuilder>(this TBuilder builder)
-        where TBuilder : IHostBuilder =>
-        UseLogging<TBuilder>(builder, (_, _, _) => { });
+        where TBuilder : 
+#if NET6_0
+        IHostBuilder =>
+#else
+        IHostApplicationBuilder =>
+#endif
+        UseLogging<TBuilder>(builder, _ => { });
 
     /// <summary>
     /// Configures the Serilog with default options.
     /// </summary>
     /// <param name="builder">The host builder.</param>
-    /// <param name="configureLogger">The action to configure the logger additionally.</param>
+    /// <param name="configureOptions">The action to configure additionally the logger.</param>
     /// <typeparam name="TBuilder">The builder type.</typeparam>
     /// <returns>The provided host builder.</returns>
     public static TBuilder UseLogging<TBuilder>(
         this TBuilder builder,
-        Action<HostBuilderContext, IServiceProvider, LoggerConfiguration> configureLogger)
-        where TBuilder : IHostBuilder
+        Action<SerilogOptions> configureOptions)
+        where TBuilder :
+#if NET6_0
+        IHostBuilder
     {
         builder = builder ?? throw new ArgumentNullException(nameof(builder));
-        configureLogger = configureLogger ?? throw new ArgumentNullException(nameof(configureLogger));
+        configureOptions = configureOptions ?? throw new ArgumentNullException(nameof(configureOptions));
 
-        builder.ConfigureHostConfiguration(configBuilder => configBuilder.AddSerilog());
+        builder.ConfigureHostConfiguration(configBuilder => configBuilder.AddSerilogLogging());
 
         builder.ConfigureServices((_, services) =>
         {
-            services.AddSingletonWithMetadata<ILogLevelSwitch, SerilogLevelSwitch>();
+            services.AddSingleton<ILogLevelSwitch, SerilogLevelSwitch>();
         });
 
-        builder.UseSerilog((context, services, loggerConfiguration) =>
-            {
-                var appRuntime = services.GetService<IAppRuntime>();
-                var levelSwitch = (services.GetService<ILogLevelSwitch>() as ISerilogLevelSwitch)?.LevelSwitch;
-                loggerConfiguration.ConfigureSerilog(context.Configuration, appRuntime, levelSwitch);
-                
-                configureLogger(context, services, loggerConfiguration);
-            });
+        builder.UseSerilog((_, serviceProvider, loggerConfiguration) =>
+        {
+            loggerConfiguration.ConfigureSerilog(serviceProvider, configureOptions);
+        });
 
         return builder;
     }
+#else
+            IHostApplicationBuilder
+    {
+        builder = builder ?? throw new ArgumentNullException(nameof(builder));
+        configureOptions = configureOptions ?? throw new ArgumentNullException(nameof(configureOptions));
+
+        builder.Configuration.AddSerilogLogging();
+        builder.Services.AddSerilogLogging(configureOptions);
+
+        return builder;
+    }
+#endif
 }

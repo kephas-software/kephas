@@ -6,10 +6,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Extensions.Hosting;
+using Kephas.Extensions.Serilog;
 using Kephas.Web.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 
 namespace Kephas.Web.Hosting;
 
@@ -26,37 +26,60 @@ public static class WebHostBuilderLoggingExtensions
     /// <returns>The provided host builder.</returns>
     public static TBuilder UseWebLogging<TBuilder>(
         this TBuilder builder)
-        where TBuilder : IHostBuilder =>
-        UseWebLogging<TBuilder>(builder, (_, _, _) => { });
+        where TBuilder :
+#if NET6_0
+        IHostBuilder =>
+#else
+        IHostApplicationBuilder =>
+#endif
+            UseWebLogging<TBuilder>(builder, _ => { });
 
     /// <summary>
     /// Configures the Serilog with default options.
     /// </summary>
     /// <param name="builder">The host builder.</param>
-    /// <param name="configureLogger">The action to configure the logger additionally.</param>
+    /// <param name="configureOptions">The action to configure the logger additionally.</param>
     /// <typeparam name="TBuilder">The builder type.</typeparam>
     /// <returns>The provided host builder.</returns>
     public static TBuilder UseWebLogging<TBuilder>(
         this TBuilder builder,
-        Action<HostBuilderContext, IServiceProvider, LoggerConfiguration> configureLogger)
-        where TBuilder : IHostBuilder
+        Action<SerilogOptions> configureOptions)
+        where TBuilder :
+#if NET6_0
+        IHostBuilder
+#else
+        IHostApplicationBuilder
+#endif
     {
+        configureOptions = configureOptions ?? throw new ArgumentNullException(nameof(configureOptions));
         builder = builder ?? throw new ArgumentNullException(nameof(builder));
-        configureLogger = configureLogger ?? throw new ArgumentNullException(nameof(configureLogger));
 
-        builder.ConfigureServices((context, services) =>
+#if NET6_0
+        builder.ConfigureServices((_, services) =>
         {
-            services.AddTransient<HttpRequestEnricher>();
+            services
+                .AddTransient<HttpRequestEnricher>()
+                .AddTransient<CorrelationIdEnricher>();
         });
+#else
+        builder.Services
+            .AddTransient<HttpRequestEnricher>()
+            .AddTransient<CorrelationIdEnricher>();
+#endif
         
-        builder.UseLogging((context, services, configuration) =>
+        builder.UseLogging(options =>
+        {
+            configureOptions(options);
+            var postConfigure = options.PostConfigure;
+            options.PostConfigure = (services, loggerConfiguration) =>
             {
-                configuration
+                postConfigure?.Invoke(services, loggerConfiguration);
+                loggerConfiguration
                     .Enrich.With(
-                        services.GetRequiredService<HttpRequestEnricher>());
-                
-                configureLogger(context, services, configuration);
-            });
+                        services.GetRequiredService<HttpRequestEnricher>(),
+                        services.GetRequiredService<CorrelationIdEnricher>());
+            };
+        });
 
         return builder;
     }

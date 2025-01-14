@@ -5,7 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Context;
 using Microsoft.AspNetCore.Http;
 using Serilog.Core;
 using Serilog.Events;
@@ -17,8 +16,7 @@ namespace Kephas.Web.Logging;
 /// </summary>
 /// <seealso cref="ILogEventEnricher" />
 public class HttpRequestEnricher(
-    IHttpContextAccessor httpContextAccessor,
-    IContextAccessor contextAccessor) : ILogEventEnricher
+    IHttpContextAccessor httpContextAccessor) : ILogEventEnricher
 {
     /// <summary>
     /// Enrich the log event.
@@ -39,7 +37,5 @@ public class HttpRequestEnricher(
             logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("UserName", httpContext.User?.Claims?.FirstOrDefault(x => x.Type == "username")?.Value, false));
             logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("ClientIP", httpContext.Connection?.RemoteIpAddress?.ToString(), false));
         }
-
-        logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("CorrelationId", contextAccessor.GetCorrelationId(), false));
     }
 }
