@@ -20,7 +20,7 @@ public record AppRuntimeSettings
     /// <remarks>
     /// System assemblies and test assemblies are excluded.
     /// </remarks>
-    public static readonly string DefaultAppAssemblyNamePattern = "^(?!System)(?!Microsoft)(?!mscorlib)(?!netstandard)(?!vshost32)(?!testhost)[A-Za-z0-9\\.]+(?<!Test(s)?)$";
+    public static readonly string DefaultAppAssemblyNamePattern = "^(?!System)(?!Microsoft)(?!mscorlib)(?!netstandard)(?!vshost32)(?!testhost)(?!xunit)[A-Za-z0-9\\.]+(?<!Test(s)?)$";
 
     /// <summary>
     /// The value for the <see cref="AppAssemblyNamePattern"/> with test assemblies included.
@@ -28,7 +28,7 @@ public record AppRuntimeSettings
     /// <remarks>
     /// System assemblies and test assemblies are excluded.
     /// </remarks>
-    public static readonly string TestsIncludedAppAssemblyNamePattern = "^(?!System)(?!Microsoft)(?!mscorlib)(?!netstandard)(?!vshost32)(?!testhost)";
+    public static readonly string TestsIncludedAppAssemblyNamePattern = "^(?!System)(?!Microsoft)(?!mscorlib)(?!netstandard)(?!vshost32)(?!testhost)(?!xunit)";
 
     /// <summary>
     /// Gets or sets the entry assembly.
