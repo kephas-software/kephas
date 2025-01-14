@@ -11,6 +11,7 @@ using Kephas.Extensions.Hosting;
 using Kephas.Extensions.Tests.TestServices;
 using Kephas.Reflection;
 using Kephas.Testing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -101,8 +102,10 @@ public class HostedServiceSynchronizerIntegrationTest
 
     private IHostedServiceSynchronizer CreateSynchronizer(params Type[] hostedServiceTypes)
     {
+        var configuration = Test.GetIntegrationConfig();
         var services = new ServiceCollection()
-            .AddIntegrationLogging(Test.GetIntegrationConfig());
+            .AddSingleton<IConfiguration>(configuration)
+            .AddIntegrationLogging(configuration);
         var serviceProvider = services.BuildTestServiceProvider<HostedServiceSynchronizerIntegrationTest>(
             builderConfig: b => b.ConfigureBuilder = cb => cb.AddTypes(hostedServiceTypes));
         return serviceProvider.GetRequiredService<IHostedServiceSynchronizer>();
