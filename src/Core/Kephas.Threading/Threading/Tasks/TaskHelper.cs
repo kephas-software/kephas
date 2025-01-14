@@ -567,7 +567,7 @@ public static class TaskHelper
         timeout ??= DefaultTimeout;
         var timeoutOccurred = false;
         var waitInterval = waitMilliseconds ?? DefaultWaitMilliseconds;
-        var stopwatch = new Stopwatch();
+        var stopwatch = Stopwatch.StartNew();
 
         AggregateException? taskException = null;
         try
