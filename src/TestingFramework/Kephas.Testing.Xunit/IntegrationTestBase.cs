@@ -48,8 +48,9 @@ public abstract class IntegrationTestBase<TTestClass> : IAsyncLifetime
         };
 
         Services
+            .AddSingleton<IConfiguration>(Configuration)
             .AddApplicationServices(Configuration, new AppRuntime(appRuntimeSettings))
-            .AddIntegrationLogging(Configuration)
+            .AddIntegrationLogging(Configuration, LogBuilder)
             .AddSingleton(Configuration);
     }
 
