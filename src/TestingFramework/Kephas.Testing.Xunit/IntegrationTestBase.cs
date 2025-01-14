@@ -5,6 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Text;
 using Kephas.Extensions;
 using Kephas.Runtime;
 using Kephas.Runtime.Configuration;
@@ -33,8 +34,10 @@ public abstract class IntegrationTestBase<TTestClass> : IAsyncLifetime
     /// </summary>
     /// <param name="assemblyNamePattern">The assembly name pattern.</param>
     /// <param name="configuration">The configuration instance. If not provided, the default integration configuration will be used.</param>
-    protected IntegrationTestBase(string assemblyNamePattern, IConfiguration? configuration = null)
+    /// <param name="logBuilder">Optional. The log builder used to verify the log output.</param>
+    protected IntegrationTestBase(string assemblyNamePattern, IConfiguration? configuration = null, StringBuilder? logBuilder = null)
     {
+        LogBuilder = logBuilder ?? new StringBuilder();
         Configuration = configuration ?? Test.GetIntegrationConfig();
 
         var appRuntimeSettings = new AppRuntimeSettings
@@ -72,6 +75,11 @@ public abstract class IntegrationTestBase<TTestClass> : IAsyncLifetime
             configuration)
     {
     }
+
+    /// <summary>
+    /// Gets the log builder.
+    /// </summary>
+    protected StringBuilder LogBuilder { get; }
 
     /// <summary>
     /// Gets the configuration.

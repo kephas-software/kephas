@@ -14,6 +14,7 @@ using Kephas.DependencyInjection.Builder.Configuration;
 using Kephas.Extensions;
 using Kephas.Extensions.Hosting;
 using Kephas.Extensions.Logging;
+using Kephas.Extensions.Serilog;
 using Kephas.Runtime;
 using Kephas.Runtime.Configuration;
 using Kephas.Testing.Logging;
@@ -21,8 +22,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using Serilog;
-using Serilog.Exceptions;
+using Serilog.Events;
+using ILogger = Serilog.ILogger;
 
 namespace Kephas.Testing;
 
@@ -31,9 +32,6 @@ namespace Kephas.Testing;
 /// </summary>
 public static class Test
 {
-    private static readonly int DefaultMaxDestructuringDepth = 5;
-    private static readonly int DefaultMaxCollectionCount = 10;
-    
     /// <summary>
     /// Gets the test <see cref="ILogger{T}"/>.
     /// </summary>
@@ -260,31 +258,29 @@ public static class Test
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="configuration">The configuration.</param>
+    /// <param name="outputBuilder">The log output builder.</param>
     /// <returns>The provided service collection.</returns>
-    public static IServiceCollection AddIntegrationLogging(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddIntegrationLogging(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        StringBuilder? outputBuilder = null)
     {
         _ = services ?? throw new ArgumentNullException(nameof(services));
         _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
         
         LoggingHelper.SetAppRuntime(services.GetAppRuntime(defaultIfNotFound: true));
 
-        services
-            .AddLogging(builder =>
+        outputBuilder ??= new StringBuilder();
+        services.AddLogging();
+        services.AddSerilogLogging(options =>
+        {
+            options.Configuration = configuration;
+            options.SelfLog = message => outputBuilder.AppendLine(message);
+            options.PostConfigure = (_, loggerConfiguration) =>
             {
-                var loggerConfiguration = new LoggerConfiguration()
-                    .Destructure.ToMaximumDepth(DefaultMaxDestructuringDepth)
-                    .Destructure.ToMaximumCollectionCount(DefaultMaxCollectionCount)
-                    .ReadFrom.Configuration(configuration)
-                    .Enrich.FromLogContext()
-                    .Enrich.WithThreadId()
-                    .Enrich.WithProcessId()
-                    .Enrich.WithMachineName()
-                    .Enrich.WithExceptionDetails();
-
-                global::Serilog.Debugging.SelfLog.Enable(TextWriter.Synchronized(Console.Error));
-
-                builder.AddSerilog(loggerConfiguration.CreateLogger());
-            });
+                loggerConfiguration.WriteTo.Logger(new TestSerilogLogger(outputBuilder));
+            };
+        });
 
         return services;
     }
@@ -402,5 +398,16 @@ public static class Test
             ? AppRuntimeSettings.TestsIncludedAppAssemblyNamePattern
             : AppRuntimeSettings.DefaultAppAssemblyNamePattern;
         appRuntimeConfig?.Invoke(settings);
+    }
+
+    private class TestSerilogLogger(StringBuilder sb) : ILogger
+    {
+        public void Write(LogEvent logEvent)
+        {
+            logEvent.Properties.TryGetValue("ExceptionDetail", out var exceptionDetail);
+            sb.AppendLine($"{logEvent.Level} {logEvent.MessageTemplate} {string.Join(",", logEvent.Properties.Select(p => p.Key))}");
+            using var writer = new StringWriter(sb);
+            exceptionDetail?.Render(writer);
+        }
     }
 }
