@@ -18,6 +18,9 @@ namespace Kephas.Extensions.Logging;
 /// <param name="configuration">The configuration.</param>
 public class SerilogLevelSwitch(IConfiguration configuration) : ISerilogLevelSwitch
 {
+    private const string SerilogMinimumLevelSection = "Serilog:MinimumLevel";
+    private const string SerilogMinimumLevelDefaultSection = "Serilog:MinimumLevel:Default";
+
     /// <summary>
     /// Gets the switch for the logging level.
     /// </summary>
@@ -55,7 +58,11 @@ public class SerilogLevelSwitch(IConfiguration configuration) : ISerilogLevelSwi
         ToLogLevel(GetDefaultSerilogLevel(configuration));
 
     private static LogEventLevel GetDefaultSerilogLevel(IConfiguration configuration)
-        => configuration.GetSection("Serilog:MinimumLevel").Get<LogEventLevel>();
+    {
+        var logLevelString = configuration[SerilogMinimumLevelDefaultSection]
+                             ?? configuration[SerilogMinimumLevelSection];
+        return string.IsNullOrEmpty(logLevelString) ? default : Enum.Parse<LogEventLevel>(logLevelString);
+    }
 
     private static LogLevel ToLogLevel(LogEventLevel logEventLevel) =>
         logEventLevel switch

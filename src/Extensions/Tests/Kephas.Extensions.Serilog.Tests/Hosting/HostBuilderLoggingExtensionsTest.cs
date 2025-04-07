@@ -21,8 +21,17 @@ namespace Kephas.Extensions.Tests.Hosting;
 
 public class HostBuilderLoggingExtensionsTest
 {
-    [Fact]
-    public void UseLogging_no_further_configuration()
+    private const string SerilogMinimumLevel = "Serilog:MinimumLevel";
+    private const string SerilogMinimumLevelDefault = "Serilog:MinimumLevel:Default";
+    private const string LogLevelInformation = "Information";
+    private const string LogLevelDebug = "Debug";
+    
+    [Theory]
+    [InlineData(SerilogMinimumLevel, LogLevelInformation)]
+    [InlineData(SerilogMinimumLevelDefault, LogLevelInformation)]
+    [InlineData(SerilogMinimumLevel, LogLevelDebug)]
+    [InlineData(SerilogMinimumLevelDefault, LogLevelDebug)]
+    public void UseLogging_no_further_configuration(string minLevelKey, string minLevelValue)
     {
         // Arrange
         var services = new ServiceCollection();
@@ -34,12 +43,19 @@ public class HostBuilderLoggingExtensionsTest
         // Assert
         services.Should().Contain(d => d.ImplementationType == typeof(SerilogLevelSwitch) && d.Lifetime == ServiceLifetime.Singleton);
 
-        var sp = BuildServiceProvider(services);
-        sp.GetService<ILogger<string>>();
+        var sp = BuildServiceProvider(services, minLevelKey, minLevelValue);
+        var logger = sp.GetRequiredService<ILogger<string>>();
+        var minLevel = Enum.Parse<LogLevel>(minLevelValue);
+        logger.IsEnabled(minLevel).Should().BeTrue();
+        logger.IsEnabled(minLevel - 1).Should().BeFalse();
     }
     
-    [Fact]
-    public void UseLogging_additional_configuration()
+    [Theory]
+    [InlineData(SerilogMinimumLevel, LogLevelInformation)]
+    [InlineData(SerilogMinimumLevelDefault, LogLevelInformation)]
+    [InlineData(SerilogMinimumLevel, LogLevelDebug)]
+    [InlineData(SerilogMinimumLevelDefault, LogLevelDebug)]
+    public void UseLogging_additional_configuration(string minLevelKey, string minLevelValue)
     {
         // Arrange
         var services = new ServiceCollection();
@@ -52,7 +68,7 @@ public class HostBuilderLoggingExtensionsTest
         // Assert
         services.Should().Contain(d => d.ImplementationType == typeof(SerilogLevelSwitch) && d.Lifetime == ServiceLifetime.Singleton);
 
-        var sp = BuildServiceProvider(services);
+        var sp = BuildServiceProvider(services, minLevelKey, minLevelValue);
         sp.GetService<ILogger<string>>();
         called.Should().BeTrue();
     }
@@ -60,13 +76,17 @@ public class HostBuilderLoggingExtensionsTest
     /// <summary>
     /// <see cref="HostBuilderLoggingExtensions.UseLogging{TBuilder}(TBuilder)"/>  is being checked.
     /// </summary>
-    [Fact]
-    public void UseLogging_when_custom_exception_contains_circular_reference_then_custom_properties_are_not_logged()
+    [Theory]
+    [InlineData(SerilogMinimumLevel, LogLevelInformation)]
+    [InlineData(SerilogMinimumLevelDefault, LogLevelInformation)]
+    [InlineData(SerilogMinimumLevel, LogLevelDebug)]
+    [InlineData(SerilogMinimumLevelDefault, LogLevelDebug)]
+    public void UseLogging_when_custom_exception_contains_circular_reference_then_custom_properties_are_not_logged(string minLevelKey, string minLevelValue)
     {
         // Arrange
         var outputBuilder = new StringBuilder();
         var services = UseLogging_SetupServicesForSerilog(outputBuilder);
-        var sp = BuildServiceProvider(services);
+        var sp = BuildServiceProvider(services, minLevelKey, minLevelValue);
         var logger = sp.GetRequiredService<ILogger<string>>();
 
         // Act
@@ -75,20 +95,24 @@ public class HostBuilderLoggingExtensionsTest
         // Assert
         var output = outputBuilder.ToString(); 
         output.Should().StartWith("Error test SourceContext,ThreadId,ProcessId,MachineName,ExceptionDetail");
-        output.Should().EndWith("[(\"Type\": \"Kephas.Extensions.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestCircularReferenceException\"), (\"HResult\": -2146233088), (\"Message\": \"Exception of type 'Kephas.Extensions.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestCircularReferenceException' was thrown.\"), (\"Source\": null)]");
+        output.Should().EndWith("[(\"Type\": \"Hays.Infrastructure.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestCircularReferenceException\"), (\"HResult\": -2146233088), (\"Message\": \"Exception of type 'Hays.Infrastructure.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestCircularReferenceException' was thrown.\"), (\"Source\": null)]");
     }
     
     
     /// <summary>
     /// <see cref="HostBuilderLoggingExtensions.UseLogging{TBuilder}(TBuilder)"/>  is being checked.
     /// </summary>
-    [Fact]
-    public void UseLogging_when_custom_exception_contains_indirect_circular_reference_then_custom_properties_are_not_logged()
+    [Theory]
+    [InlineData(SerilogMinimumLevel, LogLevelInformation)]
+    [InlineData(SerilogMinimumLevelDefault, LogLevelInformation)]
+    [InlineData(SerilogMinimumLevel, LogLevelDebug)]
+    [InlineData(SerilogMinimumLevelDefault, LogLevelDebug)]
+    public void UseLogging_when_custom_exception_contains_indirect_circular_reference_then_custom_properties_are_not_logged(string minLevelKey, string minLevelValue)
     {
         // Arrange
         var outputBuilder = new StringBuilder();
         var services = UseLogging_SetupServicesForSerilog(outputBuilder);
-        var sp = BuildServiceProvider(services);
+        var sp = BuildServiceProvider(services, minLevelKey, minLevelValue);
         var logger = sp.GetRequiredService<ILogger<string>>();
 
         // Act
@@ -97,19 +121,23 @@ public class HostBuilderLoggingExtensionsTest
         // Assert
         var output = outputBuilder.ToString(); 
         output.Should().StartWith("Error test SourceContext,ThreadId,ProcessId,MachineName,ExceptionDetail");
-        output.Should().EndWith("[(\"Type\": \"Kephas.Extensions.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestIndirectCircularReferenceException\"), (\"HResult\": -2146233088), (\"Message\": \"Exception of type 'Kephas.Extensions.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestIndirectCircularReferenceException' was thrown.\"), (\"Source\": null)]");
+        output.Should().EndWith("[(\"Type\": \"Hays.Infrastructure.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestIndirectCircularReferenceException\"), (\"HResult\": -2146233088), (\"Message\": \"Exception of type 'Hays.Infrastructure.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestIndirectCircularReferenceException' was thrown.\"), (\"Source\": null)]");
     }
 
     /// <summary>
     /// <see cref="HostBuilderLoggingExtensions.UseLogging{TBuilder}(TBuilder)"/>  is being checked.
     /// </summary>
-    [Fact]
-    public void UseLogging_when_standard_exception_then_default_destructurer_is_used()
+    [Theory]
+    [InlineData(SerilogMinimumLevel, LogLevelInformation)]
+    [InlineData(SerilogMinimumLevelDefault, LogLevelInformation)]
+    [InlineData(SerilogMinimumLevel, LogLevelDebug)]
+    [InlineData(SerilogMinimumLevelDefault, LogLevelDebug)]
+    public void UseLogging_when_standard_exception_then_default_destructurer_is_used(string minLevelKey, string minLevelValue)
     {
         // Arrange
         var outputBuilder = new StringBuilder();
         var services = UseLogging_SetupServicesForSerilog(outputBuilder);
-        var sp = BuildServiceProvider(services);
+        var sp = BuildServiceProvider(services, minLevelKey, minLevelValue);
         var logger = sp.GetRequiredService<ILogger<string>>();
 
         // Act
@@ -138,19 +166,33 @@ public class HostBuilderLoggingExtensionsTest
         return services;
     }
 
+#if NET6_0
+    private static IHostBuilder GetHostBuilder(ServiceCollection services)
+    {
+        var hostBuilder = Substitute.For<IHostBuilder>();
+        hostBuilder.ConfigureServices(Arg.Any<Action<HostBuilderContext, IServiceCollection>>())
+            .Returns(ci =>
+            {
+                ci.Arg<Action<HostBuilderContext, IServiceCollection>>()(null!, services);
+                return hostBuilder;
+            });
+        return hostBuilder;
+    }
+#else
     private static IHostApplicationBuilder GetHostBuilder(IServiceCollection services)
     {
         var hostBuilder = Substitute.For<IHostApplicationBuilder>();
         hostBuilder.Services.Returns(services);
         return hostBuilder;
     }
+#endif
 
-    private static IServiceProvider BuildServiceProvider(IServiceCollection services)
+    private static IServiceProvider BuildServiceProvider(IServiceCollection services, string minLevelKey, string minLevelValue)
     {
         var cb = new ConfigurationBuilder();
         cb.AddInMemoryCollection(new Dictionary<string, string?>
         {
-            { "Serilog:MinimumLevel", "Information" }
+            { minLevelKey, minLevelValue }
         });
 
         services.AddSingleton<IConfiguration>(cb.Build());
