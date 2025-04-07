@@ -27,11 +27,7 @@ public static class WebHostBuilderLoggingExtensions
     public static TBuilder UseWebLogging<TBuilder>(
         this TBuilder builder)
         where TBuilder :
-#if NET6_0
-        IHostBuilder =>
-#else
         IHostApplicationBuilder =>
-#endif
             UseWebLogging<TBuilder>(builder, _ => { });
 
     /// <summary>
@@ -45,27 +41,14 @@ public static class WebHostBuilderLoggingExtensions
         this TBuilder builder,
         Action<SerilogOptions> configureOptions)
         where TBuilder :
-#if NET6_0
-        IHostBuilder
-#else
         IHostApplicationBuilder
-#endif
     {
         configureOptions = configureOptions ?? throw new ArgumentNullException(nameof(configureOptions));
         builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
-#if NET6_0
-        builder.ConfigureServices((_, services) =>
-        {
-            services
-                .AddTransient<HttpRequestEnricher>()
-                .AddTransient<CorrelationIdEnricher>();
-        });
-#else
         builder.Services
             .AddTransient<HttpRequestEnricher>()
             .AddTransient<CorrelationIdEnricher>();
-#endif
         
         builder.UseLogging(options =>
         {

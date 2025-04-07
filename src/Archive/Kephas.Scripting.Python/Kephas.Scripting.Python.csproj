@@ -57,13 +57,13 @@
     </PropertyGroup>
 
 	<ItemGroup>
-        <PackageReference Include="IronPython" Version="3.4.0-alpha1" />
-        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+        <PackageReference Include="IronPython" />
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.CodeDom" Version="6.0.0" />
+        <PackageReference Include="System.CodeDom" />
     </ItemGroup>
 
     <ItemGroup>

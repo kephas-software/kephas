@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Lock.cs" company="Kephas Software SRL">
+// <copyright file="AsyncLock.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 /// <summary>
 /// Class used for execution synchronization in asynchronous calls.
 /// </summary>
-public sealed class Lock : IDisposable
+public sealed class AsyncLock : IDisposable
 {
     private readonly SemaphoreSlim semaphore = new(1, 1);
 

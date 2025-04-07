@@ -9,6 +9,12 @@ using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
+#if NET8_0
+using AssemblyReferences = Basic.Reference.Assemblies.Net80.References;
+#elif NET9_0
+using AssemblyReferences = Basic.Reference.Assemblies.Net90.References;
+#endif
+
 namespace Kephas.Testing.Analyzers;
 
 /// <summary>
@@ -49,7 +55,7 @@ public abstract class SourceGeneratorTestBase<TSourceGenerator>
 
     private static IEnumerable<MetadataReference> GetReferences(IEnumerable<Assembly>? references)
     {
-        var baseReferences = Basic.Reference.Assemblies.Net80.References.All;
+        var baseReferences = AssemblyReferences.All;
         return references is null
             ? baseReferences
             : baseReferences.Union(references.Select(a => AssemblyMetadata.CreateFromFile(a.Location).GetReference()));

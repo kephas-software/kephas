@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net6.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -54,18 +54,18 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+        <PackageReference Include="Microsoft.SourceLink.GitHub">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Serilog" Version="4.1.0"/>
-        <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0"/>
-        <PackageReference Include="Serilog.Enrichers.Process" Version="3.0.0"/>
-        <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1"/>
-        <PackageReference Include="Serilog.Exceptions" Version="8.4.0"/>
-        <PackageReference Include="Serilog.Expressions" Version="5.0.0"/>
-        <PackageReference Include="Serilog.Sinks.File" Version="6.0.0"/>
-        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
+        <PackageReference Include="Serilog"/>
+        <PackageReference Include="Serilog.Enrichers.Thread"/>
+        <PackageReference Include="Serilog.Enrichers.Process"/>
+        <PackageReference Include="Serilog.Enrichers.Environment"/>
+        <PackageReference Include="Serilog.Exceptions"/>
+        <PackageReference Include="Serilog.Expressions"/>
+        <PackageReference Include="Serilog.Sinks.File"/>
+        <PackageReference Include="Serilog.Sinks.Console"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -75,21 +75,10 @@
         <ProjectReference Include="..\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj"/>
     </ItemGroup>
 
-    <Choose>
-        <When Condition="'$(TargetFramework)'=='net6.0'">
-            <ItemGroup>
-                <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0"/>
-                <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1"/>
-                <PackageReference Include="Serilog.Settings.Configuration" Version="3.4.0"/>
-            </ItemGroup>
-        </When>
-        <Otherwise>
-            <ItemGroup>
-                <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0"/>
-                <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0"/>
-                <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.4"/>
-            </ItemGroup>
-        </Otherwise>
-    </Choose>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Configuration"/>
+        <PackageReference Include="Serilog.Extensions.Hosting"/>
+        <PackageReference Include="Serilog.Settings.Configuration"/>
+    </ItemGroup>
 
 </Project>

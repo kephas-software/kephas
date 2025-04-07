@@ -26,11 +26,7 @@ public static class HostBuilderLoggingExtensions
     /// <returns>The provided host builder.</returns>
     public static TBuilder UseLogging<TBuilder>(this TBuilder builder)
         where TBuilder : 
-#if NET6_0
-        IHostBuilder =>
-#else
         IHostApplicationBuilder =>
-#endif
         UseLogging<TBuilder>(builder, _ => { });
 
     /// <summary>
@@ -44,27 +40,6 @@ public static class HostBuilderLoggingExtensions
         this TBuilder builder,
         Action<SerilogOptions> configureOptions)
         where TBuilder :
-#if NET6_0
-        IHostBuilder
-    {
-        builder = builder ?? throw new ArgumentNullException(nameof(builder));
-        configureOptions = configureOptions ?? throw new ArgumentNullException(nameof(configureOptions));
-
-        builder.ConfigureHostConfiguration(configBuilder => configBuilder.AddSerilogLogging());
-
-        builder.ConfigureServices((_, services) =>
-        {
-            services.AddSingleton<ILogLevelSwitch, SerilogLevelSwitch>();
-        });
-
-        builder.UseSerilog((_, serviceProvider, loggerConfiguration) =>
-        {
-            loggerConfiguration.ConfigureSerilog(serviceProvider, configureOptions);
-        });
-
-        return builder;
-    }
-#else
             IHostApplicationBuilder
     {
         builder = builder ?? throw new ArgumentNullException(nameof(builder));
@@ -75,5 +50,4 @@ public static class HostBuilderLoggingExtensions
 
         return builder;
     }
-#endif
 }

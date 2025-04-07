@@ -47,21 +47,10 @@ public static class SerilogExtensions
 
         services
             .AddSingleton<ILogLevelSwitch, SerilogLevelSwitch>()
-#if NET6_0
-            .AddLogging(builder =>
-            {
-                var serviceProvider = builder.Services.BuildServiceProvider();
-                var loggerConfiguration = new LoggerConfiguration();
-                loggerConfiguration.ConfigureSerilog(serviceProvider, configureOptions);
-
-                builder.AddSerilog(loggerConfiguration.CreateLogger());
-            });
-#else
             .AddSerilog((serviceProvider, loggerConfiguration) =>
             {
                 loggerConfiguration.ConfigureSerilog(serviceProvider, configureOptions);
             });
-#endif
         
         return services;
     }

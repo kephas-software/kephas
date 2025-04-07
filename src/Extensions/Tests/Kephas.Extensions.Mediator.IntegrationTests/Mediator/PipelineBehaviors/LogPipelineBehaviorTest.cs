@@ -25,7 +25,7 @@ public class LogPipelineBehaviorTest
         var request = Substitute.For<IRequest<string>>();
         var response = "response";
 
-        var result = await behavior.Handle(request, () => Task.FromResult(response), CancellationToken.None);
+        var result = await behavior.Handle(request, _ => Task.FromResult(response), CancellationToken.None);
 
         result.Should().Be(response);
         logger.ToString().Should().ContainAll(
@@ -41,7 +41,7 @@ public class LogPipelineBehaviorTest
         var request = Substitute.For<IRequest<string>>();
         var response = "response";
 
-        var result = await behavior.Handle(request, () => Task.FromResult(response), CancellationToken.None);
+        var result = await behavior.Handle(request, _ => Task.FromResult(response), CancellationToken.None);
 
         result.Should().Be(response);
         logger.ToString().Should().Be(
@@ -58,7 +58,7 @@ public class LogPipelineBehaviorTest
         var request = Substitute.For<IRequest<string>>();
         var exception = new Exception("Test exception");
 
-        Func<Task> act = async () => await behavior.Handle(request, () => Task.FromException<string>(exception), CancellationToken.None);
+        Func<Task> act = async () => await behavior.Handle(request, _ => Task.FromException<string>(exception), CancellationToken.None);
 
         await act.Should().ThrowAsync<Exception>().WithMessage("Test exception");
         logger.ToString().Should().ContainAll(

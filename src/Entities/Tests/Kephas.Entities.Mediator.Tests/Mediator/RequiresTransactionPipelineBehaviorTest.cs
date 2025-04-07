@@ -21,7 +21,7 @@ public class RequiresTransactionPipelineBehaviorTest
         // Arrange
         var repository = Substitute.For<IWriteRepository>();
         var request = new TestRequest();
-        RequestHandlerDelegate<TestResponse> next = () => Task.FromResult(new TestResponse());
+        RequestHandlerDelegate<TestResponse> next = _ => Task.FromResult(new TestResponse());
         var behavior = new RequiresTransactionPipelineBehavior<TestRequest, TestResponse>(repository);
 
         // Act
@@ -39,7 +39,7 @@ public class RequiresTransactionPipelineBehaviorTest
         // Arrange
         var repository = Substitute.For<IWriteRepository>();
         var request = new TestRequestWithNewTransaction();
-        RequestHandlerDelegate<TestResponse> next = () => Task.FromResult(new TestResponse());
+        RequestHandlerDelegate<TestResponse> next = _ => Task.FromResult(new TestResponse());
         var behavior = new RequiresTransactionPipelineBehavior<TestRequestWithNewTransaction, TestResponse>(repository);
 
         // Act
@@ -57,7 +57,7 @@ public class RequiresTransactionPipelineBehaviorTest
         // Arrange
         var repository = Substitute.For<IWriteRepository>();
         var request = new TestRequestWithExistingTransaction();
-        RequestHandlerDelegate<TestResponse> next = () => Task.FromResult(new TestResponse());
+        RequestHandlerDelegate<TestResponse> next = _ => Task.FromResult(new TestResponse());
         var behavior = new RequiresTransactionPipelineBehavior<TestRequestWithExistingTransaction, TestResponse>(repository);
 
         // Act

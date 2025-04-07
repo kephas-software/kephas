@@ -53,10 +53,6 @@ void ConfigureMiddleware(WebApplication app)
     app.UseExceptionHandler();
 
     app.UseOpenApiDocumentation();
-#if NET8_0_OR_GREATER
-#else
-    app.UseApiVersioning();
-#endif
 
     app.UseHttpsRedirection();
 

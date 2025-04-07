@@ -138,26 +138,12 @@ public class HostBuilderLoggingExtensionsTest
         return services;
     }
 
-#if NET6_0
-    private static IHostBuilder GetHostBuilder(ServiceCollection services)
-    {
-        var hostBuilder = Substitute.For<IHostBuilder>();
-        hostBuilder.ConfigureServices(Arg.Any<Action<HostBuilderContext, IServiceCollection>>())
-            .Returns(ci =>
-            {
-                ci.Arg<Action<HostBuilderContext, IServiceCollection>>()(null!, services);
-                return hostBuilder;
-            });
-        return hostBuilder;
-    }
-#else
     private static IHostApplicationBuilder GetHostBuilder(IServiceCollection services)
     {
         var hostBuilder = Substitute.For<IHostApplicationBuilder>();
         hostBuilder.Services.Returns(services);
         return hostBuilder;
     }
-#endif
 
     private static IServiceProvider BuildServiceProvider(IServiceCollection services)
     {

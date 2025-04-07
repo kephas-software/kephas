@@ -5,10 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if NET8_0_OR_GREATER
 using Asp.Versioning;
-#endif
-
 using System.Net;
 using Kephas.Web.Controllers;
 using Kephas.Web.Endpoints.Admin.Messages;

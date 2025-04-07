@@ -170,6 +170,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.Validatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.Validation.Tests", "Extensions\Tests\Kephas.Extensions.Validation.Tests\Kephas.Extensions.Validation.Tests.csproj", "{206A6CF6-2793-42B3-894E-879030571AB2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{559B9707-4455-4E71-ACBD-DC60D80744E8}"
+	ProjectSection(SolutionItems) = preProject
+		..\.travis.yml = ..\.travis.yml
+		..\azure-pipelines.yml = ..\azure-pipelines.yml
+		..\build-docs.ps1 = ..\build-docs.ps1
+		..\CHANGELOG.md = ..\CHANGELOG.md
+		..\CODE_OF_CONDUCT.md = ..\CODE_OF_CONDUCT.md
+		..\Directory.Packages.props = ..\Directory.Packages.props
+		..\LICENSE = ..\LICENSE
+		..\nuget.config = ..\nuget.config
+		..\README.md = ..\README.md
+		..\Vagrantfile = ..\Vagrantfile
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
