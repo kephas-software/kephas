@@ -3,6 +3,7 @@ using Kephas.Runtime;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Serilog.Core;
 using Serilog.Exceptions;
 using Serilog.Exceptions.Core;
 using Serilog.Exceptions.Destructurers;
@@ -108,6 +109,7 @@ public static class SerilogExtensions
         loggerConfiguration
             .Destructure.ToMaximumDepth(options.MaxDestructuringDepth)
             .Destructure.ToMaximumCollectionCount(options.MaxCollectionCount)
+            .Destructure.With(GetDestructuringPolicies(serviceProvider))
             .ReadFrom.Configuration(configuration)
             .Enrich.FromLogContext()
             .Enrich.WithThreadId()
@@ -123,6 +125,11 @@ public static class SerilogExtensions
         options.PostConfigure?.Invoke(serviceProvider, loggerConfiguration);
 
         return loggerConfiguration;
+    }
+
+    private static IDestructuringPolicy[] GetDestructuringPolicies(IServiceProvider serviceProvider)
+    {
+        return serviceProvider.GetServices<IDestructuringPolicy>().ToArray();
     }
 
     private static LoggerConfiguration UseConfiguredLoggingLevelSwitch(this LoggerConfiguration loggerConfiguration, SerilogOptions options)

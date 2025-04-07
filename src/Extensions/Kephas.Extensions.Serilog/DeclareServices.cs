@@ -6,6 +6,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.DependencyInjection;
+using Serilog.Core;
 using Serilog.Exceptions.Destructurers;
 
 [assembly: DeclareTransientServiceFamily(typeof(IExceptionDestructurer))]
+[assembly: DeclareTransientServiceFamily(typeof(IDestructuringPolicy))]
