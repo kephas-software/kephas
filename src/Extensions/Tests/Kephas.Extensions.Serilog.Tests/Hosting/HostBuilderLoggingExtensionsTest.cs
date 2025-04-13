@@ -95,7 +95,7 @@ public class HostBuilderLoggingExtensionsTest
         // Assert
         var output = outputBuilder.ToString(); 
         output.Should().StartWith("Error test SourceContext,ThreadId,ProcessId,MachineName,ExceptionDetail");
-        output.Should().EndWith("[(\"Type\": \"Hays.Infrastructure.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestCircularReferenceException\"), (\"HResult\": -2146233088), (\"Message\": \"Exception of type 'Hays.Infrastructure.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestCircularReferenceException' was thrown.\"), (\"Source\": null)]");
+        output.Should().EndWith("[(\"Type\": \"Kephas.Extensions.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestCircularReferenceException\"), (\"HResult\": -2146233088), (\"Message\": \"Exception of type 'Kephas.Extensions.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestCircularReferenceException' was thrown.\"), (\"Source\": null)]");
     }
     
     
@@ -121,7 +121,7 @@ public class HostBuilderLoggingExtensionsTest
         // Assert
         var output = outputBuilder.ToString(); 
         output.Should().StartWith("Error test SourceContext,ThreadId,ProcessId,MachineName,ExceptionDetail");
-        output.Should().EndWith("[(\"Type\": \"Hays.Infrastructure.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestIndirectCircularReferenceException\"), (\"HResult\": -2146233088), (\"Message\": \"Exception of type 'Hays.Infrastructure.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestIndirectCircularReferenceException' was thrown.\"), (\"Source\": null)]");
+        output.Should().EndWith("[(\"Type\": \"Kephas.Extensions.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestIndirectCircularReferenceException\"), (\"HResult\": -2146233088), (\"Message\": \"Exception of type 'Kephas.Extensions.Tests.Hosting.HostBuilderLoggingExtensionsTest+TestIndirectCircularReferenceException' was thrown.\"), (\"Source\": null)]");
     }
 
     /// <summary>

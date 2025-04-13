@@ -6,8 +6,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Security.Claims;
-using Kephas.Context;
 using Kephas.Diagnostics;
+using Kephas.Threading;
 using Kephas.Web.Logging;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
@@ -24,7 +24,7 @@ public class CorrelationIdEnricherTest
     {
         //Arrange
 
-        var mockContextAccessor = Substitute.For<IContextAccessor>();
+        var mockContextAccessor = Substitute.For<IAsyncLocalContext>();
         var correlationId = new CorrelationId();
         mockContextAccessor.GetOrAddValue(Arg.Any<Func<CorrelationId>>()).Returns(correlationId);
 

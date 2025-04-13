@@ -158,9 +158,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Entities.Sqlite", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Entities.Sqlite.Tests", "Entities\Tests\Kephas.Entities.Sqlite.Tests\Kephas.Entities.Sqlite.Tests.csproj", "{E6B946BC-B20A-4522-ACF7-0C0CD87A03FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Context", "Core\Kephas.Context\Kephas.Context.csproj", "{CA006B08-B151-46FD-B883-0C8BDD6234F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Threading.Context", "Core\Kephas.Threading.Context\Kephas.Threading.Context.csproj", "{CA006B08-B151-46FD-B883-0C8BDD6234F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Context.Tests", "Core\Tests\Kephas.Context.Tests\Kephas.Context.Tests.csproj", "{672EC105-F866-43D7-9793-A53985EAE998}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Threading.Context.Tests", "Core\Tests\Kephas.Threading.Context.Tests\Kephas.Threading.Context.Tests.csproj", "{672EC105-F866-43D7-9793-A53985EAE998}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Entities.Mediator", "Entities\Kephas.Entities.Mediator\Kephas.Entities.Mediator.csproj", "{F5B05B26-9B24-4E89-9027-7FF9CCC15266}"
 EndProject

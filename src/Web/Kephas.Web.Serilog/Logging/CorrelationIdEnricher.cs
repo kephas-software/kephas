@@ -1,4 +1,4 @@
-using Kephas.Context;
+using Kephas.Threading;
 using Serilog.Core;
 using Serilog.Events;
 
@@ -8,7 +8,7 @@ namespace Kephas.Web.Logging;
 /// Correlation ID enricher for Serilog.
 /// </summary>
 /// <seealso cref="ILogEventEnricher" />
-public class CorrelationIdEnricher(IContextAccessor contextAccessor) : ILogEventEnricher
+public class CorrelationIdEnricher(IAsyncLocalContext asyncLocalContext) : ILogEventEnricher
 {
     /// <summary>
     /// Enrich the log event.
@@ -17,6 +17,6 @@ public class CorrelationIdEnricher(IContextAccessor contextAccessor) : ILogEvent
     /// <param name="propertyFactory">Factory for creating new properties to add to the event.</param>
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
     {
-        logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("CorrelationId", contextAccessor.GetCorrelationId().ToString(), false));
+        logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("CorrelationId", asyncLocalContext.GetCorrelationId().ToString(), false));
     }
 }
