@@ -13,11 +13,16 @@ namespace Kephas.Entities.Tests.PipelineBehaviors;
 
 public class AuthorizationPipelineBehavior<TRequest, TResponse>(IAsyncLocalContext asyncLocalContext)
     : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : notnull
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         var user = asyncLocalContext.GetValue<UserInfo>();
-        
-        throw new NotImplementedException();
+        if (user is null)
+        {
+            throw new UnauthorizedAccessException();
+        }
+
+        return await next(cancellationToken);
     }
 }
