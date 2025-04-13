@@ -6,9 +6,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using FluentAssertions;
-using Kephas.Context;
 using Kephas.Entities.Tests.Models;
 using Kephas.Entities.Tests.Security;
+using Kephas.Threading;
 using Kephas.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -154,7 +154,7 @@ public class SqliteWriteRepositoryTest() : SqliteIntegrationTestBase<SqliteWrite
 
     private void EnsureAuthenticated()
     {
-        var contextAccessor = DefaultScope.ServiceProvider.GetRequiredService<IContextAccessor>();
+        var contextAccessor = DefaultScope.ServiceProvider.GetRequiredService<IAsyncLocalContext>();
         contextAccessor.GetOrAddValue(() => new UserInfo());
     }
 }

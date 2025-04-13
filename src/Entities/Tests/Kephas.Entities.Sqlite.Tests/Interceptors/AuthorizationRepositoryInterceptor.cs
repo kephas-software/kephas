@@ -5,13 +5,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Context;
 using Kephas.Entities.Interceptors;
 using Kephas.Entities.Tests.Security;
+using Kephas.Threading;
 
 namespace Kephas.Entities.Tests.Interceptors;
 
-public class AuthorizationRepositoryInterceptor(IContextAccessor contextAccessor)
+public class AuthorizationRepositoryInterceptor(IAsyncLocalContext asyncLocalContext)
     : ISaveChangesRepositoryInterceptor
 {
     public Task<int> HandleAsync(IWriteRepository repository, IEntityContext entityContext, Func<Task<int>> next,
@@ -19,7 +19,7 @@ public class AuthorizationRepositoryInterceptor(IContextAccessor contextAccessor
     {
         // check whether the user is authorized to perform the operation
         // for test purposes check only whether the user is authenticated 
-        var user = contextAccessor.TryGetValue<UserInfo>();
+        var user = asyncLocalContext.TryGetValue<UserInfo>();
         if (user is null)
         {
             throw new UnauthorizedAccessException();

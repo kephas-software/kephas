@@ -5,19 +5,24 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Context;
 using Kephas.Entities.Tests.Security;
+using Kephas.Threading;
 using MediatR;
 
 namespace Kephas.Entities.Tests.PipelineBehaviors;
 
-public class AuthorizationPipelineBehavior<TRequest, TResponse>(IContextAccessor contextAccessor)
+public class AuthorizationPipelineBehavior<TRequest, TResponse>(IAsyncLocalContext asyncLocalContext)
     : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : notnull
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var user = contextAccessor.GetValue<UserInfo>();
-        
-        throw new NotImplementedException();
+        var user = asyncLocalContext.GetValue<UserInfo>();
+        if (user is null)
+        {
+            throw new UnauthorizedAccessException();
+        }
+
+        return await next(cancellationToken);
     }
 }

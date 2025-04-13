@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ContextAccessorTest.cs" company="Kephas Software SRL">
+// <copyright file="AsyncLocalContextTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,18 +7,18 @@
 
 using System.Text;
 using FluentAssertions;
-using Kephas.Context;
+using Kephas.Threading;
 using Xunit;
 
-namespace Kephas.Tests.Context;
+namespace Kephas.Tests.Threading;
 
-public class ContextAccessorTest
+public class AsyncLocalContextTest
 {
     [Fact]
     public async Task GetValue_ShouldReturnCorrectValue_WhenValueIsSet()
     {
         // Arrange
-        var contextAccessor = new ContextAccessor();
+        var contextAccessor = new AsyncLocalContext();
         var contextWriter = contextAccessor.GetWriter();
         var expectedValue1 = "testValue1";
         var expectedValue2 = "testValue2";
@@ -61,7 +61,7 @@ public class ContextAccessorTest
     public void GetValue_ShouldThrowException_WhenValueIsNotSet()
     {
         // Arrange
-        var contextAccessor = new ContextAccessor();
+        var contextAccessor = new AsyncLocalContext();
 
         // Act
         Action act = () => contextAccessor.GetValue<string>();
@@ -75,7 +75,7 @@ public class ContextAccessorTest
     public void TryGetValue_ShouldReturnNull_WhenValueIsNotSet()
     {
         // Arrange
-        var contextAccessor = new ContextAccessor();
+        var contextAccessor = new AsyncLocalContext();
 
         // Act
         var actualValue = contextAccessor.TryGetValue<string>();
@@ -88,7 +88,7 @@ public class ContextAccessorTest
     public async Task RemoveValue_ShouldRemoveValueCorrectly()
     {
         // Arrange
-        var contextAccessor = new ContextAccessor();
+        var contextAccessor = new AsyncLocalContext();
         var contextWriter = contextAccessor.GetWriter();
         var expectedValue1 = "testValue1";
         var expectedValue2 = "testValue2";
@@ -133,7 +133,7 @@ public class ContextAccessorTest
     public async Task GetContext_ShouldGetValueAndRestoreCorrectly()
     {
         // Arrange
-        var contextAccessor = new ContextAccessor();
+        var contextAccessor = new AsyncLocalContext();
         var contextWriter = contextAccessor.GetWriter();
         var expectedValue1 = "testValue1";
         var expectedValue2 = new StringBuilder("testValue2");

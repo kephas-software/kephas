@@ -6,7 +6,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Security.Claims;
-using Kephas.Context;
 using Kephas.Diagnostics;
 using Kephas.Web.Logging;
 using Microsoft.AspNetCore.Http;

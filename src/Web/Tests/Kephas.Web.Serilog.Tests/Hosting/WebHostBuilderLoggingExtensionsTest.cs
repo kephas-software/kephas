@@ -6,8 +6,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using FluentAssertions;
-using Kephas.Context;
 using Kephas.Extensions.Logging;
+using Kephas.Threading;
 using Kephas.Web.Hosting;
 using Kephas.Web.Logging;
 using Microsoft.AspNetCore.Http;
@@ -84,7 +84,7 @@ public class WebHostBuilderLoggingExtensionsTest
             { "Serilog:MinimumLevel", "Information" }
         });
 
-        services.AddSingleton(Substitute.For<IContextAccessor>());
+        services.AddSingleton(Substitute.For<IAsyncLocalContext>());
         services.AddSingleton(Substitute.For<IHttpContextAccessor>());
         services.AddSingleton<IConfiguration>(cb.Build());
         services.AddLogging();
