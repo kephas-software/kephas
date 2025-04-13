@@ -1,8 +1,3 @@
-# .NET Desktop
-# Build and run tests for .NET Desktop or Windows classic desktop solutions.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
-
 trigger:
   branches:
     include:
@@ -24,68 +19,67 @@ jobs:
   - job: SetVariables
     displayName: 'Set package.version and package.prerelease variables'
     steps:
-    - script: |
-        echo ##vso[task.setvariable variable=package.version]$(Build.SourceBranchName)
-        if [ "$(Build.SourceBranch)" == prerelease/* ];  then
-          echo ##vso[task.setvariable variable=package.prerelease]-pre-$(Build.BuildId)
-        else
-          echo ##vso[task.setvariable variable=package.prerelease]
-        fi
+      - script: |
+          echo ##vso[task.setvariable variable=package.version]$(Build.SourceBranchName)
+          if [ "$(Build.SourceBranch)" == prerelease/* ]; then
+            echo ##vso[task.setvariable variable=package.prerelease]-pre-$(Build.BuildId)
+          else
+            echo ##vso[task.setvariable variable=package.prerelease]
+          fi
 
   - job: Build
     dependsOn: SetVariables
     displayName: 'Build and Package'
     steps:
-    - script: |
-        echo "Building project with version $(package.version)$(package.prerelease)"
-    - task: NuGetToolInstaller@1
-      inputs:
-        versionSpec: '>=4.3.0'
-        checkLatest: true
-    - task: DotNetCoreInstaller@0
-      inputs:
-        packageType: 'sdk'
-        version: '9.0.102'
+      - script: |
+          echo "Building project with version $(package.version)$(package.prerelease)"
+      - task: NuGetToolInstaller@1
+        inputs:
+          checkLatest: true
+      - task: DotNetCoreInstaller@0
+        inputs:
+          packageType: 'sdk'
+          version: '9.0.102'
 
-    - script: dotnet restore $(solution)
-    - task: NuGetCommand@2
-      inputs:
-        restoreSolution: '$(solution)'
+      - script: dotnet restore $(solution)
+      - task: NuGetCommand@2
+        inputs:
+          restoreSolution: '$(solution)'
 
-    - task: VSBuild@1
-      inputs:
-        solution: '$(solution)'
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
-        msbuildArchitecture: 'x64'
-        msbuildArgs: '/p:Version=$(package.version)$(package.prerelease) /p:AssemblyVersion=$(package.version).0 /p:FileVersion=$(package.version)$(package.prerelease).$(build.number)'
+      - task: VSBuild@1
+        inputs:
+          solution: '$(solution)'
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
+          msbuildArchitecture: 'x64'
+          msbuildArgs: '/p:Version=$(package.version)$(package.prerelease) /p:AssemblyVersion=$(package.version).0 /p:FileVersion=$(package.version)$(package.prerelease).$(Build.BuildId)'
 
-    - task: VSTest@2
-      inputs:
-        testRunTitle: '.NET 8.0'
-        testSelector: 'testAssemblies'
-        testAssemblyVer2: |
-          **\net8.0*\*Tests.dll
-          !**\*InteractiveTests.dll
-          !**\*TestAdapter.dll
-          !**\obj\**
-        searchFolder: '$(System.DefaultWorkingDirectory)'
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
-        runInParallel: true
-        codeCoverageEnabled: true
+      - task: VSTest@2
+        inputs:
+          testRunTitle: '.NET 8.0'
+          testSelector: 'testAssemblies'
+          testAssemblyVer2: |
+            **\net8.0*\*Tests.dll
+            !**\*InteractiveTests.dll
+            !**\*TestAdapter.dll
+            !**\obj\**
+          searchFolder: '$(System.DefaultWorkingDirectory)'
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
+          runInParallel: true
+          codeCoverageEnabled: true
 
-    - task: VSTest@2
-      inputs:
-        testRunTitle: '.NET 9.0'
-        testSelector: 'testAssemblies'
-        testAssemblyVer2: |
-          **\net9.0*\*Tests.dll
-          !**\*InteractiveTests.dll
-          !**\*TestAdapter.dll
-          !**\obj\**
-        searchFolder: '$(System.DefaultWorkingDirectory)'
-        platform: '$(buildPlatform)'
-        configuration: '$(buildConfiguration)'
-        runInParallel: true
-        codeCoverageEnabled: true
+      - task: VSTest@2
+        inputs:
+          testRunTitle: '.NET 9.0'
+          testSelector: 'testAssemblies'
+          testAssemblyVer2: |
+            **\net9.0*\*Tests.dll
+            !**\*InteractiveTests.dll
+            !**\*TestAdapter.dll
+            !**\obj\**
+          searchFolder: '$(System.DefaultWorkingDirectory)'
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
+          runInParallel: true
+          codeCoverageEnabled: true
