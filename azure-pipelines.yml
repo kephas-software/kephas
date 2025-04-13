@@ -4,7 +4,11 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
 trigger:
-- master
+  branches:
+    include:
+      - 'prerelease/*'
+      - 'release/*'
+  batch: true
 
 pool:
   vmImage: 'windows-latest'
@@ -13,57 +17,75 @@ variables:
   solution: 'src/Kephas.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  package.version: '12.0.0'
+  package.version: ''
+  package.prerelease: ''
 
-steps:
-- task: NuGetToolInstaller@0
-  inputs:
-    versionSpec: '>=4.3.0'
-    checkLatest: true
-- task: DotNetCoreInstaller@0
-  inputs:
-    packageType: 'sdk'
-    version: '9.0.102'
+jobs:
+  - job: SetVariables
+    displayName: 'Set package.version and package.prerelease variables'
+    steps:
+    - script: |
+        echo ##vso[task.setvariable variable=package.version]$(Build.SourceBranchName)
+        if [ "$(Build.SourceBranch)" == prerelease/* ];  then
+          echo ##vso[task.setvariable variable=package.prerelease]-pre-$(Build.BuildId)
+        else
+          echo ##vso[task.setvariable variable=package.prerelease]
+        fi
 
-- script: dotnet restore $(solution)
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+  - job: Build
+    dependsOn: SetVariables
+    displayName: 'Build and Package'
+    steps:
+    - script: |
+        echo "Building project with version $(package.version)$(package.prerelease)"
+    - task: NuGetToolInstaller@1
+      inputs:
+        versionSpec: '>=4.3.0'
+        checkLatest: true
+    - task: DotNetCoreInstaller@0
+      inputs:
+        packageType: 'sdk'
+        version: '9.0.102'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-    msbuildArchitecture: 'x64'
-    msbuildArgs: '/p:Version=$(package.version) /p:AssemblyVersion=$(package.version).0 /p:FileVersion=$(package.version).$(build.number)'
+    - script: dotnet restore $(solution)
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: '$(solution)'
 
-- task: VSTest@2
-  inputs:
-    testRunTitle: '.NET 8.0'
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\net8.0*\*Tests.dll
-      !**\*InteractiveTests.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-    runInParallel: true
-    codeCoverageEnabled: true
+    - task: VSBuild@1
+      inputs:
+        solution: '$(solution)'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+        msbuildArchitecture: 'x64'
+        msbuildArgs: '/p:Version=$(package.version)$(package.prerelease) /p:AssemblyVersion=$(package.version).0 /p:FileVersion=$(package.version)$(package.prerelease).$(build.number)'
 
-- task: VSTest@2
-  inputs:
-    testRunTitle: '.NET 9.0'
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\net9.0*\*Tests.dll
-      !**\*InteractiveTests.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-    runInParallel: true
-    codeCoverageEnabled: true
+    - task: VSTest@2
+      inputs:
+        testRunTitle: '.NET 8.0'
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: |
+          **\net8.0*\*Tests.dll
+          !**\*InteractiveTests.dll
+          !**\*TestAdapter.dll
+          !**\obj\**
+        searchFolder: '$(System.DefaultWorkingDirectory)'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+        runInParallel: true
+        codeCoverageEnabled: true
+
+    - task: VSTest@2
+      inputs:
+        testRunTitle: '.NET 9.0'
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: |
+          **\net9.0*\*Tests.dll
+          !**\*InteractiveTests.dll
+          !**\*TestAdapter.dll
+          !**\obj\**
+        searchFolder: '$(System.DefaultWorkingDirectory)'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+        runInParallel: true
+        codeCoverageEnabled: true
