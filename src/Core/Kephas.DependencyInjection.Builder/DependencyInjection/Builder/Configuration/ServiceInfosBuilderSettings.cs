@@ -16,11 +16,7 @@ namespace Kephas.DependencyInjection.Builder.Configuration;
 public record ServiceInfosBuilderSettings
 {
     /// <summary>Function to retrieve application assemblies.</summary>
-#if NET8_0_OR_GREATER
     public required Func<IEnumerable<Assembly>> GetAppAssemblies { get; set; }
-#else
-    public Func<IEnumerable<Assembly>> GetAppAssemblies { get; set; } = null!;
-#endif
 
     /// <summary>Indicates whether the internal implementations should be considered or not.</summary>
     public bool IncludeInternal { get; set; } = true;

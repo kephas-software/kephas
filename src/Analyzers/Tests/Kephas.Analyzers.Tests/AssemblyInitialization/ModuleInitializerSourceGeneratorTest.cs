@@ -43,10 +43,44 @@ public class ModuleInitializerSourceGeneratorTest : SourceGeneratorTestBase<Modu
             {
                 source.HintName.Should().Be("ModuleInitializer.g.cs");
                 var stringSource = source.SourceText.ToString();
-                stringSource.Should().Contain("[ModuleInitializer]");
-                stringSource.Should().Contain("ModuleInitializer_ModuleInitializerSourceGeneratorTest");
-                stringSource.Should().Contain("initializer = (IAssemblyInitializer)new MyAssemblyInitializer();");
-                stringSource.Should().Contain("initializer.InitializeAssembly();");
+                stringSource.Should().Contain("""
+                        #nullable enable
+                        
+                        using System;
+                        using System.Collections.Generic;
+                        using System.Diagnostics.CodeAnalysis;
+                        using System.Reflection;
+                        using System.Runtime.CompilerServices;
+                        
+                        using Kephas.Runtime;
+                        
+                        namespace ModuleInitializerSourceGeneratorTest.AssemblyInitialization.Generated
+                        {
+                            internal static class ModuleInitializer_ModuleInitializerSourceGeneratorTest
+                            {
+                                [ModuleInitializer]
+                                internal static void InitializeModule()
+                                {
+                                    IAssemblyInitializer initializer;
+                                    initializer = (IAssemblyInitializer)new MyAssemblyInitializer();
+                                    initializer.InitializeAssembly();
+                                    var thisAssembly = typeof(ModuleInitializer_ModuleInitializerSourceGeneratorTest).Assembly;
+                                    foreach (var assemblyInitializer in thisAssembly.GetCustomAttributes<Attribute>().OfType<IAssemblyInitializer>())
+                                    {
+                                        try 
+                                        {
+                                            assemblyInitializer.InitializeAssembly();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            // write exception somewhere...
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        """);
             });
     }
 }

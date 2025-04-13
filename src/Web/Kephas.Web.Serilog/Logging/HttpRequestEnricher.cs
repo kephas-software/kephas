@@ -15,7 +15,8 @@ namespace Kephas.Web.Logging;
 /// Custom Http enricher for Serilog.
 /// </summary>
 /// <seealso cref="ILogEventEnricher" />
-public class HttpRequestEnricher(IHttpContextAccessor httpContextAccessor) : ILogEventEnricher
+public class HttpRequestEnricher(
+    IHttpContextAccessor httpContextAccessor) : ILogEventEnricher
 {
     /// <summary>
     /// Enrich the log event.
@@ -24,14 +25,17 @@ public class HttpRequestEnricher(IHttpContextAccessor httpContextAccessor) : ILo
     /// <param name="propertyFactory">Factory for creating new properties to add to the event.</param>
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
     {
-        var context = httpContextAccessor.HttpContext;
-        if (context == null || logEvent == null || propertyFactory == null)
+        if (logEvent is null || propertyFactory is null)
         {
             return;
         }
 
-        logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("Uri", context.Request.Path.ToString(), true));
-        logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("UserName", context.User?.Claims?.FirstOrDefault(x => x.Type == "username")?.Value, true));
-        logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("ClientIP", context.Connection?.RemoteIpAddress?.ToString(), true));
+        var httpContext = httpContextAccessor.HttpContext;
+        if (httpContext is not null)
+        {
+            logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("Uri", httpContext.Request.Path.ToString(), false));
+            logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("UserName", httpContext.User?.Claims?.FirstOrDefault(x => x.Type == "username")?.Value, false));
+            logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("ClientIP", httpContext.Connection?.RemoteIpAddress?.ToString(), false));
+        }
     }
 }

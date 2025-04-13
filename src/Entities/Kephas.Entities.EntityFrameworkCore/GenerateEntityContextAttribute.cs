@@ -19,8 +19,8 @@ public sealed class GenerateEntityContextAttribute : Attribute
     /// <summary>
     /// Initializes a new instance of the <see cref="GenerateEntityContextAttribute"/> class.
     /// </summary>
-    /// <param name="name">The data context name.</param>
-    /// <param name="entityTypes">The entity types served by this data context.</param>
+    /// <param name="name">The entity context name.</param>
+    /// <param name="entityTypes">The entity types served by this entity context.</param>
     public GenerateEntityContextAttribute(string name, params Type[] entityTypes)
     {
         Name = name;
@@ -30,9 +30,9 @@ public sealed class GenerateEntityContextAttribute : Attribute
     /// <summary>
     /// Initializes a new instance of the <see cref="GenerateEntityContextAttribute"/> class.
     /// </summary>
-    /// <param name="name">The data context name.</param>
-    /// <param name="priority">The data context priority used by the dependency injection.</param>
-    /// <param name="entityTypes">The entity types served by this data context.</param>
+    /// <param name="name">The entity context name.</param>
+    /// <param name="priority">The entity context priority used by the dependency injection.</param>
+    /// <param name="entityTypes">The entity types served by this entity context.</param>
     public GenerateEntityContextAttribute(string name, Priority priority, params Type[] entityTypes)
     {
         Name = name;
@@ -41,12 +41,45 @@ public sealed class GenerateEntityContextAttribute : Attribute
     }
 
     /// <summary>
-    /// Gets the data context name.
+    /// Initializes a new instance of the <see cref="GenerateEntityContextAttribute"/> class.
+    /// </summary>
+    /// <param name="name">The entity context name.</param>
+    /// <param name="connectionName">The connection name.</param>
+    /// <param name="entityTypes">The entity types served by this entity context.</param>
+    public GenerateEntityContextAttribute(string name, string connectionName, params Type[] entityTypes)
+    {
+        Name = name;
+        ConnectionName = connectionName;
+        EntityTypes = entityTypes;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GenerateEntityContextAttribute"/> class.
+    /// </summary>
+    /// <param name="name">The entity context name.</param>
+    /// <param name="connectionName">The connection name.</param>
+    /// <param name="priority">The entity context priority used by the dependency injection.</param>
+    /// <param name="entityTypes">The entity types served by this entity context.</param>
+    public GenerateEntityContextAttribute(string name, string connectionName, Priority priority, params Type[] entityTypes)
+    {
+        Name = name;
+        ConnectionName = connectionName;
+        Priority = priority;
+        EntityTypes = entityTypes;
+    }
+
+    /// <summary>
+    /// Gets the entity context name.
     /// </summary>
     public string Name { get; }
 
     /// <summary>
-    /// Gets the data context priority used by the dependency injection.
+    /// Gets the name of the connection used by the entity context.
+    /// </summary>
+    public string? ConnectionName { get; }
+
+    /// <summary>
+    /// Gets the entity context priority used by the dependency injection.
     /// </summary>
     public Priority Priority { get; } = Priority.Normal;
 

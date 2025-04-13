@@ -216,23 +216,4 @@ public class JsonServiceTest : IntegrationTestBase<JsonServiceTest>
 
         Assert.Equal(json, newJson);
     }
-    
-    [Fact(Skip = "Named tuples do not work with System.Text.Json")]
-    public void Deserialize_Serialize_named_tuples()
-    {
-        var elements = new List<(Guid id, int status, string? message)>
-        {
-            (Guid.Parse("533213ce-7a7b-445d-a466-572ceea2490a"), 200, "OK"),
-            (Guid.Parse("27091f5f-e3d0-473c-b17f-f22fee68013a"), 403, "Not Authorized"),
-        };
-
-        var json = jsonService.Serialize(elements);
-        Assert.Equal($"[{{\"item1\":\"533213ce-7a7b-445d-a466-572ceea2490a\",\"item2\":200,\"item3\":\"OK\"}},{{\"item1\":\"27091f5f-e3d0-473c-b17f-f22fee68013a\",\"item2\":403,\"item3\":\"Not Authorized\"}}]", json);
-
-        var newElements = jsonService.Deserialize<IEnumerable<(Guid id, int status, string? message)>>(json);
-        Assert.Collection(
-            newElements,
-            e => Assert.Equal((Guid.Parse("533213ce-7a7b-445d-a466-572ceea2490a"), 200, "OK"), e),
-            e => Assert.Equal((Guid.Parse("27091f5f-e3d0-473c-b17f-f22fee68013a"), 403, "Not Authorized"), e));
-    }
 }

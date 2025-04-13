@@ -78,8 +78,8 @@ public class EnumerableServiceExtensionsTest
     {
         var services = Array.Empty<Lazy<string, string>>().ToLazyEnumerable();
             
-        Assert.Throws<InvalidOperationException>(() => services.GetRequiredService(m => m.StartsWith("x")));
-        Assert.Throws<InvalidOperationException>(() => services.GetRequiredService(m => m.StartsWith("x")));
+        Assert.Throws<ServiceResolutionException>(() => services.GetRequiredService(m => m.StartsWith("x")));
+        Assert.Throws<ServiceResolutionException>(() => services.GetRequiredService(m => m.StartsWith("x")));
     }
 
     [Theory]
@@ -169,8 +169,8 @@ public class EnumerableServiceExtensionsTest
     {
         var services = Array.Empty<IFactory<string, string>>().ToFactoryEnumerable();
             
-        Assert.Throws<InvalidOperationException>(() => services.GetRequiredService(m => m.StartsWith("x")));
-        Assert.Throws<InvalidOperationException>(() => services.GetRequiredService(m => m.StartsWith("x")));
+        Assert.Throws<ServiceResolutionException>(() => services.GetRequiredService(m => m.StartsWith("x")));
+        Assert.Throws<ServiceResolutionException>(() => services.GetRequiredService(m => m.StartsWith("x")));
     }
 
     [Theory]

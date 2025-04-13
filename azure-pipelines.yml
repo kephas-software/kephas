@@ -23,7 +23,7 @@ steps:
 - task: DotNetCoreInstaller@0
   inputs:
     packageType: 'sdk'
-    version: '6.0.400'
+    version: '9.0.102'
 
 - script: dotnet restore $(solution)
 - task: NuGetCommand@2
@@ -40,10 +40,10 @@ steps:
 
 - task: VSTest@2
   inputs:
-    testRunTitle: '.NET 6.0'
+    testRunTitle: '.NET 8.0'
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\net6.0*\*Tests.dll
+      **\net8.0*\*Tests.dll
       !**\*InteractiveTests.dll
       !**\*TestAdapter.dll
       !**\obj\**
@@ -55,10 +55,10 @@ steps:
 
 - task: VSTest@2
   inputs:
-    testRunTitle: '.NET Core 3.1'
+    testRunTitle: '.NET 9.0'
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\netcoreapp*\*Tests.dll
+      **\net9.0*\*Tests.dll
       !**\*InteractiveTests.dll
       !**\*TestAdapter.dll
       !**\obj\**

@@ -7,21 +7,19 @@
 
 using System.Linq.Expressions;
 using Kephas.Collections;
-using Kephas.DependencyInjection;
 using Kephas.Entities.StoredProcedures;
 
 namespace Kephas.Entities;
 
 /// <summary>
-/// Base contract for repositories used in reading data.
+/// Base interface for repositories used in reading entities.
 /// </summary>
-[ScopedService]
 public interface IReadRepository
 {
     /// <summary>
     /// Gets the <see cref="IEntityContext"/> used by this repository to access data.
     /// </summary>
-    /// <param name="entityType">The entity type for which the data context is required.</param>
+    /// <param name="entityType">The entity type for which the entity context is required.</param>
     protected internal IEntityContext GetEntityContext(Type entityType);
 
     /// <summary>
@@ -50,7 +48,7 @@ public interface IReadRepository
     /// <typeparam name="T">The entity type.</typeparam>
     /// <returns>The entity or, in case it is not found, an exception occurs.</returns>
     T GetById<T>(object id)
-        where T : IIdentifiable =>
+        where T : class, IIdentifiable =>
         TryGetById<T>(id) ?? throw new EntityNotFoundException(typeof(T), id);
 
     /// <summary>
@@ -60,7 +58,7 @@ public interface IReadRepository
     /// <typeparam name="T">The entity type.</typeparam>
     /// <returns>The entity or, in case it is not found, <c>null</c>.</returns>
     T? TryGetById<T>(object id)
-        where T : IIdentifiable;
+        where T : class, IIdentifiable;
 
     /// <summary>
     /// Tries to get the entity with the provided ID asynchronously.
@@ -70,7 +68,7 @@ public interface IReadRepository
     /// <typeparam name="T">The entity type.</typeparam>
     /// <returns>A task yielding the entity or, in case it is not found, an exception.</returns>
     Task<T?> TryGetByIdAsync<T>(object id, CancellationToken cancellationToken = default)
-        where T : IIdentifiable;
+        where T : class, IIdentifiable;
 
     /// <summary>
     /// Gets the entity with the provided ID asynchronously.
@@ -80,7 +78,7 @@ public interface IReadRepository
     /// <typeparam name="T">The entity type.</typeparam>
     /// <returns>A task yielding the entity or, in case it is not found, an exception.</returns>
     async Task<T> GetByIdAsync<T>(object id, CancellationToken cancellationToken = default)
-        where T : IIdentifiable =>
+        where T : class, IIdentifiable =>
         await TryGetByIdAsync<T>(id, cancellationToken)
         ?? throw new EntityNotFoundException(typeof(T), id);
 

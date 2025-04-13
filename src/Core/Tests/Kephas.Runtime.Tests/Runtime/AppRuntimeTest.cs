@@ -21,16 +21,9 @@ public class AppRuntimeTest
         {
             "FluentAssertions",
             "Kephas.Runtime",
-            "xunit.core",
-            "xunit.abstractions",
-            "xunit.assert",
             "Castle.Core",
             "Newtonsoft.Json",
             "NSubstitute",
-            "xunit.execution.dotnet",
-            "xunit.runner.reporters.netcoreapp10",
-            "xunit.runner.utility.netcoreapp10",
-            "xunit.runner.visualstudio.testadapter"
         };
         var appRuntime = new AppRuntime(new AppRuntimeSettings {EntryAssembly = GetType().Assembly});
         var appAssemblies = appRuntime.GetAppAssemblies(); 

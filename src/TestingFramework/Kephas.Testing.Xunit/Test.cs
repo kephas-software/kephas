@@ -7,15 +7,14 @@
 
 using System.Globalization;
 using System.Reflection;
-using System.Runtime.Loader;
 using System.Text;
-using System.Text.RegularExpressions;
 using Kephas.DependencyInjection;
 using Kephas.DependencyInjection.Builder;
 using Kephas.DependencyInjection.Builder.Configuration;
 using Kephas.Extensions;
 using Kephas.Extensions.Hosting;
 using Kephas.Extensions.Logging;
+using Kephas.Extensions.Serilog;
 using Kephas.Runtime;
 using Kephas.Runtime.Configuration;
 using Kephas.Testing.Logging;
@@ -23,8 +22,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using Serilog;
-using Serilog.Exceptions;
+using Serilog.Events;
+using ILogger = Serilog.ILogger;
 
 namespace Kephas.Testing;
 
@@ -33,9 +32,6 @@ namespace Kephas.Testing;
 /// </summary>
 public static class Test
 {
-    private static readonly int DefaultMaxDestructuringDepth = 5;
-    private static readonly int DefaultMaxCollectionCount = 10;
-    
     /// <summary>
     /// Gets the test <see cref="ILogger{T}"/>.
     /// </summary>
@@ -176,6 +172,19 @@ public static class Test
             services
                 .Select(s => new Lazy<T, TMetadata>(() => s, ServiceHelper.GetServiceMetadata<TMetadata>(null, typeof(T)))));
 
+
+    /// <summary>
+    /// Gets the test lazy enumerator.
+    /// </summary>
+    /// <param name="services">The services</param>
+    /// <typeparam name="T">The service type.</typeparam>
+    /// <typeparam name="TMetadata">The metadata type.</typeparam>
+    /// <returns>The test <see cref="ILazyEnumerable{T,TMetadata}"/>.</returns>
+    public static ILazyEnumerable<T, TMetadata> GetTestLazyEnumerable<T, TMetadata>(IEnumerable<(T service, TMetadata metadata)> services) =>
+        new LazyEnumerable<T, TMetadata>(
+            services
+                .Select(s => new Lazy<T, TMetadata>(() => s.service, s.metadata)));
+
     /// <summary>
     /// Gets the test factory enumerator.
     /// </summary>
@@ -188,6 +197,19 @@ public static class Test
         new FactoryEnumerable<T, TMetadata>(
             services
                 .Select(s => new Factory<T, TMetadata>(() => s, ServiceHelper.GetServiceMetadata<TMetadata>(null, typeof(T)))));
+
+    /// <summary>
+    /// Gets the test factory enumerator.
+    /// </summary>
+    /// <param name="services">The services</param>
+    /// <typeparam name="T">The service type.</typeparam>
+    /// <typeparam name="TMetadata">The metadata type.</typeparam>
+    /// <returns>The test <see cref="IFactoryEnumerable{T,TMetadata}"/>.</returns>
+    public static IFactoryEnumerable<T, TMetadata> GetTestFactoryEnumerable<T, TMetadata>(IEnumerable<(T service, TMetadata metadata)> services)
+        where T : notnull =>
+        new FactoryEnumerable<T, TMetadata>(
+            services
+                .Select(s => new Factory<T, TMetadata>(() => s.service, s.metadata)));
 
     /// <summary>
     /// Gets a test <see cref="IAppRuntime"/> service.
@@ -236,31 +258,29 @@ public static class Test
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="configuration">The configuration.</param>
+    /// <param name="outputBuilder">The log output builder.</param>
     /// <returns>The provided service collection.</returns>
-    public static IServiceCollection AddIntegrationLogging(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddIntegrationLogging(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        StringBuilder? outputBuilder = null)
     {
         _ = services ?? throw new ArgumentNullException(nameof(services));
         _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
         
         LoggingHelper.SetAppRuntime(services.GetAppRuntime(defaultIfNotFound: true));
 
-        services
-            .AddLogging(builder =>
+        outputBuilder ??= new StringBuilder();
+        services.AddLogging();
+        services.AddSerilogLogging(options =>
+        {
+            options.Configuration = configuration;
+            options.SelfLog = message => outputBuilder.AppendLine(message);
+            options.PostConfigure = (_, loggerConfiguration) =>
             {
-                var loggerConfiguration = new LoggerConfiguration()
-                    .Destructure.ToMaximumDepth(DefaultMaxDestructuringDepth)
-                    .Destructure.ToMaximumCollectionCount(DefaultMaxCollectionCount)
-                    .ReadFrom.Configuration(configuration)
-                    .Enrich.FromLogContext()
-                    .Enrich.WithThreadId()
-                    .Enrich.WithProcessId()
-                    .Enrich.WithMachineName()
-                    .Enrich.WithExceptionDetails();
-
-                global::Serilog.Debugging.SelfLog.Enable(TextWriter.Synchronized(Console.Error));
-
-                builder.AddSerilog(loggerConfiguration.CreateLogger());
-            });
+                loggerConfiguration.WriteTo.Logger(new TestSerilogLogger(outputBuilder));
+            };
+        });
 
         return services;
     }
@@ -269,8 +289,9 @@ public static class Test
     /// Gets the configuration based on the provided <paramref name="settingsFile"/> and its 'Development' flavor.
     /// </summary>
     /// <param name="settingsFile">The settings file. If not provided, 'appsettings.json' is considered.</param>
+    /// <param name="initialData">The configuration values.</param>
     /// <returns>The configuration.</returns>
-    public static IConfigurationRoot GetIntegrationConfig(string? settingsFile = null)
+    public static IConfigurationRoot GetIntegrationConfig(string? settingsFile = null, IDictionary<string, string?>? initialData = null)
     {
         settingsFile ??= "appsettings.json";
         var devSettingsFile = $"{settingsFile[0..^4]}Development.json"; 
@@ -282,6 +303,11 @@ public static class Test
         {
             { "Serilog:Using:0", typeof(HostBuilderLoggingExtensions).Assembly.GetName()!.Name }
         });
+
+        if (initialData is not null)
+        {
+            configurationBuilder.AddInMemoryCollection(initialData);
+        }
 
         return configurationBuilder.Build();
     }
@@ -372,5 +398,16 @@ public static class Test
             ? AppRuntimeSettings.TestsIncludedAppAssemblyNamePattern
             : AppRuntimeSettings.DefaultAppAssemblyNamePattern;
         appRuntimeConfig?.Invoke(settings);
+    }
+
+    private class TestSerilogLogger(StringBuilder sb) : ILogger
+    {
+        public void Write(LogEvent logEvent)
+        {
+            logEvent.Properties.TryGetValue("ExceptionDetail", out var exceptionDetail);
+            sb.AppendLine($"{logEvent.Level} {logEvent.MessageTemplate} {string.Join(",", logEvent.Properties.Select(p => p.Key))}");
+            using var writer = new StringWriter(sb);
+            exceptionDetail?.Render(writer);
+        }
     }
 }

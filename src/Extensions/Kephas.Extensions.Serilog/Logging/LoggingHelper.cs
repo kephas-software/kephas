@@ -30,6 +30,7 @@ public static class LoggingHelper
     /// </remarks>
     /// <param name="message">The message to be logged.</param>
     /// <param name="appRuntime">Optional. The application runtime used to get application level information.</param>
+    /// <param name="localNow">The local date and time. If not provided, <see cref="DateTime.Now"/> is considered.</param>
     public static void WriteFallbackLogError(string message, IAppRuntime? appRuntime = null, DateTime? localNow = null)
     {
         try

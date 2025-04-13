@@ -6,9 +6,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Analyzers.Entities.TestAssembly;
+using Kephas.DependencyInjection.Metadata;
 using Kephas.Entities;
 
 [assembly: GenerateEntityContext("Test", typeof(Person), typeof(Country))]
+
+[assembly: GenerateEntityContext("TestWithConnection", "MyConnection", typeof(Country))]
 
 namespace Kephas.Analyzers.Entities.TestAssembly;
 

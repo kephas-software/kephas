@@ -28,15 +28,21 @@ public record EntityContextMetadata : ServiceMetadata
 
         EntityContextType = (Type?)TryGetValue(metadata, nameof(EntityContextType));
         EntityTypes = (IEnumerable<Type>?)TryGetValue(metadata, nameof(EntityTypes));
+        ConnectionName = (string?)TryGetValue(metadata, nameof(ConnectionName));
     }
 
     /// <summary>
-    /// Gets or sets the type of the entity context.
+    /// Gets the type of the entity context.
     /// </summary>
     public Type? EntityContextType { get; set; }
 
     /// <summary>
-    /// Gets or sets the entity types served by the data context.
+    /// Gets the entity types served by the entity context.
     /// </summary>
     public IEnumerable<Type>? EntityTypes { get; set; }
+    
+    /// <summary>
+    /// Gets the connection name used by this entity context.
+    /// </summary>
+    public string? ConnectionName { get; }
 }

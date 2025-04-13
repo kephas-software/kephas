@@ -6,6 +6,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Security.Claims;
+using Kephas.Context;
+using Kephas.Diagnostics;
 using Kephas.Web.Logging;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
@@ -19,7 +21,7 @@ public class HttpRequestEnricherTest
 {
     [Theory]
     [InlineData("/c", 180, "test")]
-    public void Enrich(string path, int address, string userName)
+    public void Enrich_when_called_then_sets_http_context_information(string path, int address, string userName)
     {
         //Arrange
         var mockIHttpContextAccessor = Substitute.For<IHttpContextAccessor>();
@@ -27,6 +29,7 @@ public class HttpRequestEnricherTest
         var mockHttpRequest = Substitute.For<HttpRequest>();
         var mockConnectionInfo = Substitute.For<ConnectionInfo>();
         var mockClaimsPrincipal = Substitute.For<ClaimsPrincipal>();
+
         var enricher = new HttpRequestEnricher(mockIHttpContextAccessor);
         var mockILogEventPropertyFactory = Substitute.For<ILogEventPropertyFactory>();
 
@@ -49,24 +52,24 @@ public class HttpRequestEnricherTest
                      
 
         var scalarStringA = new LogEventProperty("a", new ScalarValue("a"));
-        mockILogEventPropertyFactory.CreateProperty("Uri", mockHttpRequest.Path.ToString(), true).Returns(scalarStringA);
+        mockILogEventPropertyFactory.CreateProperty("Uri", mockHttpRequest.Path.ToString(), false).Returns(scalarStringA);
         var mockClaim = mockClaimsPrincipal.Claims?.FirstOrDefault(x => x.Type == "username")?.Value;
-        mockILogEventPropertyFactory.CreateProperty("UserName", mockClaim,true).Returns(scalarStringA);
+        mockILogEventPropertyFactory.CreateProperty("UserName", mockClaim,false).Returns(scalarStringA);
         var clientIP = mockConnectionInfo.RemoteIpAddress?.ToString();
-        mockILogEventPropertyFactory.CreateProperty("ClientIP", clientIP, true).Returns(scalarStringA);
+        mockILogEventPropertyFactory.CreateProperty("ClientIP", clientIP, false).Returns(scalarStringA);
 
         var mockLogEventPropertyValue = Substitute.For<LogEventPropertyValue>();
-        var logEventPropertys = new List<LogEventProperty> { new("Test", mockLogEventPropertyValue) };
-        var messageTemplate = new MessageTemplate(new List<global::Serilog.Parsing.MessageTemplateToken>());
+        var logEventProperties = new List<LogEventProperty> { new("Test", mockLogEventPropertyValue) };
+        var messageTemplate = new MessageTemplate(new List<Serilog.Parsing.MessageTemplateToken>());
 
-        var logEvent = new LogEvent(DateTimeOffset.Now, logEventLevel, exception, messageTemplate, logEventPropertys);
+        var logEvent = new LogEvent(DateTimeOffset.Now, logEventLevel, exception, messageTemplate, logEventProperties);
 
         //Act
         enricher.Enrich(logEvent, mockILogEventPropertyFactory);
 
         //Assert
-        mockILogEventPropertyFactory.Received(1).CreateProperty("Uri", path, true);
-        mockILogEventPropertyFactory.Received(1).CreateProperty("UserName", userName, true);
-        mockILogEventPropertyFactory.Received(1).CreateProperty("ClientIP", $"{address}.0.0.0", true);
+        mockILogEventPropertyFactory.Received(1).CreateProperty("Uri", path, false);
+        mockILogEventPropertyFactory.Received(1).CreateProperty("UserName", userName, false);
+        mockILogEventPropertyFactory.Received(1).CreateProperty("ClientIP", $"{address}.0.0.0", false);
     }
 }

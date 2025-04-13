@@ -171,7 +171,7 @@ public class LazyEnumerableTest
                     new ServiceMetadata(priority: Priority.High)),
             });
 
-        Assert.Throws<InvalidOperationException>(() => lazyEnumerable.GetRequiredService(m => m.Priority == Priority.Normal));
+        Assert.Throws<ServiceResolutionException>(() => lazyEnumerable.GetRequiredService(m => m.Priority == Priority.Normal));
     }
 
     [Fact]

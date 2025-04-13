@@ -16,18 +16,16 @@ namespace Kephas.Entities;
 /// SQL string for query.
 /// </summary>
 /// <typeparam name="T">The entity type.</typeparam>
-/// <typeparam name="TArgs">The arguments type.</typeparam>
-public class QuerySqlString<T, TArgs> : FormattableString
-    where TArgs : notnull
+public class QuerySqlString<T> : FormattableString
 {
     private readonly IList<KeyValuePair<string, object?>> args;
     private string? format;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="QuerySqlString{T,TArgs}"/> class.
+    /// Initializes a new instance of the <see cref="QuerySqlString{T}"/> class.
     /// </summary>
     /// <param name="args">The arguments.</param>
-    public QuerySqlString(TArgs args)
+    public QuerySqlString(ISpArgs args)
     {
         this.args = args.GetType()
             .GetPublicInstanceProperties()

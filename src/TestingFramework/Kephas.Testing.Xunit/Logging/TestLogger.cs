@@ -80,9 +80,7 @@ public class TestLogger<T> : ILogger<T>
     /// <typeparam name="TState">The type of the state to begin scope for.</typeparam>
     /// <returns>An <see cref="T:System.IDisposable" /> that ends the logical operation scope on dispose.</returns>
     public IDisposable BeginScope<TState>(TState state)
-#if NET7_0_OR_GREATER
         where TState : notnull
-#endif
     {
         return new Scope();
     }

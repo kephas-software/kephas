@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.ExceptionHandling;
+using Kephas.Test.Endpoints.Diagnostics.Messages;
 using Kephas.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +15,9 @@ namespace Kephas.Test.Endpoints.Diagnostics.Controllers;
 public class ThrowExceptionController : ApiControllerBase
 {
     [HttpGet]
-    public Task<IActionResult> UnhandledException()
+    public async Task<IActionResult> UnhandledException()
     {
-        throw new AppException("Bad logic.");
+        await Mediator.Send(new ThrowExceptionRequest());
+        return Ok();
     }
 }

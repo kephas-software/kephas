@@ -567,15 +567,11 @@ public static class ServiceCollectionExtensions
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
         metadataType ??= typeof(ServiceMetadata);
 
-#if NET6_0
-        throw new NotSupportedException($"Registrations for {serviceType} with service factories are not supported for singleton services in .NET 6.0. Please upgrade to .NET 8.0 or later.");
-#else
         var key = Guid.NewGuid();
         return services
             .AddKeyedSingleton(serviceType, key, (sp, _) => serviceFactory(sp))
             .AddSingleton(serviceType, sp => sp.GetRequiredKeyedService(serviceType, key))
             .AddServiceFactories(serviceType, sp => sp.GetRequiredKeyedService(serviceType, key), metadataType, metadata);
-#endif
     }
 
     /// <summary>
@@ -598,15 +594,11 @@ public static class ServiceCollectionExtensions
         services = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-#if NET6_0
-        throw new NotSupportedException($"Registrations for {typeof(TService)} with service factories are not supported for singleton services in .NET 6.0. Please upgrade to .NET 8.0 or later.");
-#else
         var key = Guid.NewGuid();
         return services
             .AddKeyedSingleton<TService>(key, (sp, _) => serviceFactory(sp))
             .AddSingleton<TService>(sp => sp.GetRequiredKeyedService<TService>(key))
             .AddServiceFactories(typeof(TService), sp => sp.GetRequiredKeyedService<TService>(key), typeof(TMetadata), metadata);
-#endif
     }
 
     /// <summary>
@@ -629,15 +621,11 @@ public static class ServiceCollectionExtensions
         services = services ?? throw new ArgumentNullException(nameof(services));
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
-#if NET6_0
-        throw new NotSupportedException($"Registrations for {typeof(TService)} with service factories are not supported for scoped services in .NET 6.0. Please upgrade to .NET 8.0 or later.");
-#else
         var key = Guid.NewGuid();
         return services
             .AddKeyedScoped<TService>(key, (sp, _) => serviceFactory(sp))
             .AddScoped<TService>(sp => sp.GetRequiredKeyedService<TService>(key))
             .AddServiceFactories(typeof(TService), sp => sp.GetRequiredKeyedService<TService>(key), typeof(TMetadata), metadata);
-#endif
     }
 
     /// <summary>
@@ -712,15 +700,11 @@ public static class ServiceCollectionExtensions
         serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
         metadataType ??= typeof(ServiceMetadata);
 
-#if NET6_0
-        throw new NotSupportedException($"Registrations for {serviceType} with service factories are not supported for scoped services in .NET 6.0. Please upgrade to .NET 8.0 or later.");
-#else
         var key = Guid.NewGuid();
         return services
             .AddKeyedScoped(serviceType, key, (sp, _) => serviceFactory(sp))
             .AddScoped(serviceType, sp => sp.GetRequiredKeyedService(serviceType, key))
             .AddServiceFactories(serviceType, sp => sp.GetRequiredKeyedService(serviceType, key), metadataType, metadata);
-#endif
     }
 
     /// <summary>

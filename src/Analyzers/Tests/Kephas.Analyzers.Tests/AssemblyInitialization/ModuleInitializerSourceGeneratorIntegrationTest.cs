@@ -7,6 +7,7 @@
 
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using FluentAssertions;
 using Kephas.Analyzers.TestAssembly;
 using Xunit;
 
@@ -21,12 +22,13 @@ public class ModuleInitializerSourceGeneratorIntegrationTest
 
         var moduleInitializerType = testAssembly.GetTypes()
             .SingleOrDefault(t => t.Name == "ModuleInitializer_Kephas_Analyzers_TestAssembly");
-        Assert.NotNull(moduleInitializerType);
-        Assert.Equal("Kephas.AssemblyInitialization.Generated", moduleInitializerType!.Namespace);
+        moduleInitializerType.Should().NotBeNull();
+        moduleInitializerType!.Namespace.Should().Be("Kephas.Analyzers.TestAssembly.AssemblyInitialization.Generated");
 
-        var initializeMethod = moduleInitializerType.GetMethod("InitializeModule", BindingFlags.NonPublic | BindingFlags.Static);
-        Assert.NotNull(initializeMethod);
-        Assert.True(initializeMethod!.IsStatic);
-        Assert.NotNull(initializeMethod!.GetCustomAttribute<ModuleInitializerAttribute>());
+        var initializeMethod = moduleInitializerType
+            .GetMethod("InitializeModule", BindingFlags.NonPublic | BindingFlags.Static);
+        initializeMethod.Should().NotBeNull();
+        initializeMethod!.IsStatic.Should().BeTrue();
+        initializeMethod.GetCustomAttribute<ModuleInitializerAttribute>().Should().NotBeNull();
     }
 }

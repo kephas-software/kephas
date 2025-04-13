@@ -545,7 +545,7 @@ public static class TaskHelper
         }
 
         using var cts = new CancellationTokenSource();
-        using var registration = cancellationToken.Register(() => cts.Cancel());
+        await using var registration = cancellationToken.Register(() => cts.Cancel());
         var delayTask = timeout == null ? Task.Delay(-1, cts.Token) : Task.Delay(timeout.Value, cts.Token);
         var completedTask = await Task.WhenAny(task, delayTask);
         if (completedTask == task)
@@ -567,15 +567,15 @@ public static class TaskHelper
         timeout ??= DefaultTimeout;
         var timeoutOccurred = false;
         var waitInterval = waitMilliseconds ?? DefaultWaitMilliseconds;
-        var startTime = DateTime.Now;
+        var stopwatch = Stopwatch.StartNew();
 
         AggregateException? taskException = null;
         try
         {
-            while (!task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
+            while (task is { IsCompleted: false, IsCanceled: false, IsFaulted: false })
             {
                 task.Wait(waitInterval);
-                var elapsed = DateTime.Now - startTime;
+                var elapsed = stopwatch.Elapsed;
                 if (elapsed > timeout)
                 {
                     if (throwOnTimeout)
@@ -593,6 +593,13 @@ public static class TaskHelper
             taskException = ex;
         }
 
+        ThrowIfTaskFailed(task, taskException);
+
+        return !timeoutOccurred;
+    }
+
+    private static void ThrowIfTaskFailed(Task task, AggregateException? taskException)
+    {
         if (taskException == null && task.IsFaulted)
         {
             taskException = task.Exception;
@@ -612,7 +619,5 @@ public static class TaskHelper
         {
             throw new TaskCanceledException(task);
         }
-
-        return !timeoutOccurred;
     }
 }

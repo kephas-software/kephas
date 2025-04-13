@@ -5,11 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if NET8_0_OR_GREATER
 using Asp.Versioning;
-#else
-using Microsoft.AspNetCore.Mvc.Versioning;
-#endif
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,16 +27,6 @@ public static class ApiVersioningServiceCollectionExtensions
     public static IServiceCollection ConfigureApiVersioning(this IServiceCollection services)
     {
         // Configure API version.
-#if NET8_0_OR_GREATER
-#else
-        services.AddVersionedApiExplorer(
-            options =>
-            {
-                options.GroupNameFormat = "VVV";
-                options.SubstituteApiVersionInUrl = true;
-            });
-#endif
-
         services
             .AddApiVersioning(
                 options =>
@@ -51,16 +37,12 @@ public static class ApiVersioningServiceCollectionExtensions
                     options.DefaultApiVersion = new ApiVersion(1, 0);
                     options.ReportApiVersions = true;
                 })
-#if NET8_0_OR_GREATER
             .AddApiExplorer(
                 options =>
                 {
                     options.GroupNameFormat = "VVV";
                     options.SubstituteApiVersionInUrl = true;
-                })
-#else
-#endif
-            ;
+                });
 
         return services;
     }

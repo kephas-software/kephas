@@ -95,11 +95,7 @@ public class HostedServiceSynchronizer(
         var dependencyMap = typeRequireMap
             .GroupBy(kv => kv.Key)
             .Select(g => KeyValuePair.Create(g.Key, new HashSet<Type>(g.SelectMany(kv => kv.Value))))
-#if NET6_0
-            .ToDictionary(kv => kv.Key, kv => kv.Value);
-#else
             .ToDictionary();
-#endif
 
         ValidateSatifiedRequires(typeRequireMap);
         return ValidateDependencyMap(dependencyMap);
@@ -123,11 +119,7 @@ public class HostedServiceSynchronizer(
             .SelectMany(kv => kv.Value.Select(t => KeyValuePair.Create(t, kv.Key)))
             .GroupBy(kv => kv.Key)
             .Select(g => KeyValuePair.Create(g.Key, new HashSet<Type>(g.Select(kv => kv.Value))))
-#if NET6_0
-            .ToDictionary(kv => kv.Key, kv => kv.Value);
-#else
             .ToDictionary();
-#endif
 
     private async Task Next(
         ConcurrentDictionary<Type, int> completed,

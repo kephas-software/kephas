@@ -20,16 +20,16 @@ namespace Kephas.Entities;
 public abstract class EntityContextBase<TDbContext> : DbContext, IEntityContext<TDbContext>
     where TDbContext : DbContext, IEntityContext
 {
-    private readonly IEntityContextBuilder builder;
+    private readonly IDbContextBuilder builder;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EntityContextBase{TDbContext}"/> class.
     /// </summary>
     /// <param name="options">The context options.</param>
-    /// <param name="builder">The data context builder.</param>
+    /// <param name="builder">The entity context builder.</param>
     protected EntityContextBase(
         DbContextOptions<TDbContext> options,
-        IEntityContextBuilder builder)
+        IDbContextBuilder builder)
         : base(options)
     {
         this.builder = builder ?? throw new ArgumentNullException(nameof(builder));

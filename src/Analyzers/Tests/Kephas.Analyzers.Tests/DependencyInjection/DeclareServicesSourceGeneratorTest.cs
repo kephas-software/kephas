@@ -7,6 +7,7 @@
 
 using FluentAssertions;
 using Kephas.Analyzers.DependencyInjection;
+using Kephas.DependencyInjection;
 using Kephas.Testing.Analyzers;
 using Xunit;
 
@@ -65,9 +66,9 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.ServiceProviders;
                     
-                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    [assembly: DeclareServices<DeclareServicesSourceGeneratorTest.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
                     
-                    namespace Kephas.DependencyInjection.ServiceProviders.Generated
+                    namespace DeclareServicesSourceGeneratorTest.ServiceProviders.Generated
                     {
                        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
                        internal partial class DeclareServices_DeclareServicesSourceGeneratorTest: IServiceInfoProvider
@@ -135,9 +136,9 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.ServiceProviders;
                     
-                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    [assembly: DeclareServices<DeclareServicesSourceGeneratorTest.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
                     
-                    namespace Kephas.DependencyInjection.ServiceProviders.Generated
+                    namespace DeclareServicesSourceGeneratorTest.ServiceProviders.Generated
                     {
                        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
                        internal partial class DeclareServices_DeclareServicesSourceGeneratorTest: IServiceInfoProvider
@@ -200,9 +201,9 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.ServiceProviders;
                     
-                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    [assembly: DeclareServices<DeclareServicesSourceGeneratorTest.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
                     
-                    namespace Kephas.DependencyInjection.ServiceProviders.Generated
+                    namespace DeclareServicesSourceGeneratorTest.ServiceProviders.Generated
                     {
                        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
                        internal partial class DeclareServices_DeclareServicesSourceGeneratorTest: IServiceInfoProvider
@@ -263,9 +264,9 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                     using Kephas.DependencyInjection;
                     using Kephas.DependencyInjection.ServiceProviders;
                     
-                    [assembly: DeclareServices<Kephas.DependencyInjection.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    [assembly: DeclareServices<DeclareServicesSourceGeneratorTest.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
                     
-                    namespace Kephas.DependencyInjection.ServiceProviders.Generated
+                    namespace DeclareServicesSourceGeneratorTest.ServiceProviders.Generated
                     {
                        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
                        internal partial class DeclareServices_DeclareServicesSourceGeneratorTest: IServiceInfoProvider
@@ -279,6 +280,75 @@ public class DeclareServicesSourceGeneratorTest : SourceGeneratorTestBase<Declar
                            {
                                 yield return new ServiceImplementationDeclaration(typeof(OpenGeneric<>), typeof(Kephas.Sample.IOpenGeneric<>));
                                 yield return new ServiceImplementationDeclaration(typeof(OverrideOpenGeneric<>), typeof(Kephas.Sample.IOpenGeneric<>));
+                           }
+                       }
+                    }
+                    
+                    """);
+            });
+    }
+
+    [Fact]
+    public void Generate_DeclareServices_OverrideBaseImplementation()
+    {
+        var sourceCode =
+            """
+            using System;
+            using Kephas.DependencyInjection;
+            
+            namespace Kephas.Sample;
+            
+            [Priority(Priority.BelowNormal)]
+            [OverrideBaseImplementation]
+            public class FactoryServiceEnumerable<TService, TMetadata> : FactoryEnumerable<TService, TMetadata>
+                where TService : class
+            {
+                /// <summary>
+                /// Initializes a new instance of the <see cref="FactoryServiceEnumerable{TService}"/> class.
+                /// </summary>
+                public FactoryServiceEnumerable(IEnumerable<IFactory<TService, TMetadata>>? serviceFactories = null)
+                    : base(serviceFactories)
+                {
+                }
+            }
+            """;
+
+        var result = GetRunResult(sourceCode, [typeof(IFactoryEnumerable<,>).Assembly]);
+
+        // Assert the driver use the cached result from AssemblyName and Syntax
+        Assert.Collection(
+            result.GeneratedSources,
+            source =>
+            {
+                source.HintName.Should().Be("DeclaredServices.g.cs");
+                var stringSource = source.SourceText.ToString();
+                stringSource.Should().Contain(
+                    """
+                    #nullable enable
+                    
+                    using System;
+                    using System.Collections.Generic;
+                    using System.Diagnostics.CodeAnalysis;
+                    using System.Reflection;
+                    
+                    using Kephas.DependencyInjection;
+                    using Kephas.DependencyInjection.ServiceProviders;
+                    
+                    [assembly: DeclareServices<DeclareServicesSourceGeneratorTest.ServiceProviders.Generated.DeclareServices_DeclareServicesSourceGeneratorTest>()]
+                    
+                    namespace DeclareServicesSourceGeneratorTest.ServiceProviders.Generated
+                    {
+                       [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+                       internal partial class DeclareServices_DeclareServicesSourceGeneratorTest: IServiceInfoProvider
+                       {
+                           IEnumerable<ServiceDeclaration>? IServiceInfoProvider.GetServiceDeclarations()
+                           {
+                                yield break;
+                           }
+                    
+                           IEnumerable<ServiceImplementationDeclaration> IServiceInfoProvider.GetImplementationDeclarations(IEnumerable<Type> eligibleImplementationTypes)
+                           {
+                                yield return new ServiceImplementationDeclaration(typeof(FactoryServiceEnumerable<,>), typeof(Kephas.DependencyInjection.IFactoryEnumerable<, >));
                            }
                        }
                     }

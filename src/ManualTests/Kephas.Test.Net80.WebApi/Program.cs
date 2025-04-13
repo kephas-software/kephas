@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseWebLogging();
+builder.UseWebLogging();
 
 builder.WebHost
     .UseContentRoot(Directory.GetCurrentDirectory())
@@ -53,10 +53,6 @@ void ConfigureMiddleware(WebApplication app)
     app.UseExceptionHandler();
 
     app.UseOpenApiDocumentation();
-#if NET8_0_OR_GREATER
-#else
-    app.UseApiVersioning();
-#endif
 
     app.UseHttpsRedirection();
 

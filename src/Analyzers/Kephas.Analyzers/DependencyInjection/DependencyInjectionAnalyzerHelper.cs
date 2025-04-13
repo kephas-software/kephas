@@ -63,11 +63,11 @@ internal static class DependencyInjectionAnalyzerHelper
             return null;
         }
 
-        var baseInterfaceAppServiceContract = classSymbol.AllInterfaces
+        var baseInterfaceServiceType = classSymbol.AllInterfaces
             .FirstOrDefault(IsServiceDeclarationType);
-        if (baseInterfaceAppServiceContract is not null)
+        if (baseInterfaceServiceType is not null)
         {
-            return GetOriginalServiceDeclarationType(baseInterfaceAppServiceContract);
+            return GetOriginalServiceDeclarationType(baseInterfaceServiceType);
         }
 
         var baseType = classSymbol.BaseType;
@@ -76,6 +76,13 @@ internal static class DependencyInjectionAnalyzerHelper
             if (IsServiceDeclarationType(baseType))
             {
                 return GetOriginalServiceDeclarationType(baseType);
+            }
+
+            baseInterfaceServiceType = baseType.AllInterfaces
+                .FirstOrDefault(IsServiceDeclarationType);
+            if (baseInterfaceServiceType is not null)
+            {
+                return GetOriginalServiceDeclarationType(baseInterfaceServiceType);
             }
 
             baseType = baseType.BaseType;

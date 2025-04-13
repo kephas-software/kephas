@@ -22,7 +22,7 @@ public record ConnectionSettings
     /// <summary>
     /// Gets or sets the provider type.
     /// </summary>
-    public string? Provider { get; set; }
+    public string? ProviderName { get; set; }
 
     /// <summary>
     /// Gets or sets the connection string.

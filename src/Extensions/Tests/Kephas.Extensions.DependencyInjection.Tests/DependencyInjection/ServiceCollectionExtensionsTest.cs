@@ -466,18 +466,6 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
         factoryNonDeclaredServiceWithMetadata.GetService().Should().NotBeSameAs(nonDeclaredService);
     }
 
-#if NET6_0
-    [Fact]
-    public void AddSingletonWithMetadata_non_declared_factory()
-    {
-        var registration = () => new ServiceCollection()
-            .AddInitialServices(Test.GetTestAppRuntime([]))
-            .AddSingletonWithMetadata<NonDeclaredService, NonDeclaredMetadata>(
-                s => new NonDeclaredService(),
-                new Dictionary<string, object?> { { "Name", "Hello" } });
-        registration.Should().Throw<NotSupportedException>();
-    }
-#else
     [Fact]
     public void AddSingletonWithMetadata_non_declared_factory()
     {
@@ -521,20 +509,7 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
         spNew.GetRequiredService<Lazy<NonDeclaredService>>().Value.Should().BeSameAs(nonDeclaredService);
         spNew.GetRequiredService<IFactory<NonDeclaredService>>().GetService().Should().BeSameAs(nonDeclaredService);
     }
-#endif
 
-#if NET6_0
-    [Fact]
-    public void AddScopedWithMetadata_non_declared_factory()
-    {
-        var registration = () => new ServiceCollection()
-            .AddInitialServices(Test.GetTestAppRuntime([]))
-            .AddScopedWithMetadata<NonDeclaredService, NonDeclaredMetadata>(
-                s => new NonDeclaredService(),
-                new Dictionary<string, object?> { { "Name", "Hello" } });
-        registration.Should().Throw<NotSupportedException>();
-    }
-#else
     [Fact]
     public void AddScopedWithMetadata_non_declared_factory()
     {
@@ -581,7 +556,6 @@ public class ServiceCollectionExtensionsTest : TestDependencyInjectionBase
         spNew.GetRequiredService<Lazy<NonDeclaredService>>().Value.Should().NotBeSameAs(nonDeclaredService);
         spNew.GetRequiredService<IFactory<NonDeclaredService>>().GetService().Should().NotBeSameAs(nonDeclaredService);
     }
-#endif
 
     [Fact]
     public void AddTransientWithMetadata_non_declared_factory()
