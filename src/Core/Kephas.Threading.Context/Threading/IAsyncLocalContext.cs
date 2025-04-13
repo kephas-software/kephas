@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IContextAccessor.cs" company="Kephas Software SRL">
+// <copyright file="IAsyncLocalContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,13 +7,13 @@
 
 using Kephas.DependencyInjection;
 
-namespace Kephas.Context;
+namespace Kephas.Threading;
 
 /// <summary>
-/// Service for getting contextual values.
+/// Service for getting ambient data that is local to a given asynchronous control flow, such as an asynchronous method.
 /// </summary>
 [SingletonService]
-public interface IContextAccessor
+public interface IAsyncLocalContext
 {
     /// <summary>
     /// Gets the value with the provided type. If a value with the provided type was not registered, an exception is thrown.
@@ -47,5 +47,5 @@ public interface IContextAccessor
     /// Gets the context writer for setting values in the context. 
     /// </summary>
     /// <returns>The context writer.</returns>
-    IContextWriter GetWriter();
+    IAsyncLocalContextWriter GetWriter();
 }

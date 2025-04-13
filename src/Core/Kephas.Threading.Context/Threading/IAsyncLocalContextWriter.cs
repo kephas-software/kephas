@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IContextWriter.cs" company="Kephas Software SRL">
+// <copyright file="IAsyncLocalContextWriter.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,12 +7,12 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace Kephas.Context;
+namespace Kephas.Threading;
 
 /// <summary>
 /// Service for writing contextual values.
 /// </summary>
-public interface IContextWriter
+public interface IAsyncLocalContextWriter
 {
     /// <summary>
     /// Sets the value of the provided type.
@@ -20,7 +20,7 @@ public interface IContextWriter
     /// <param name="value">The value to be set.</param>
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <returns>This writer.</returns>
-    IContextWriter SetValue<T>([DisallowNull] T value) where T : notnull;
+    IAsyncLocalContextWriter SetValue<T>([DisallowNull] T value) where T : notnull;
 
     /// <summary>
     /// Removes the value of the provided type.
@@ -33,5 +33,5 @@ public interface IContextWriter
     /// Restores the context from the provided values.
     /// </summary>
     /// <returns>This writer.</returns>
-    IContextWriter RestoreContext(IEnumerable<KeyValuePair<Type, object>> context);
+    IAsyncLocalContextWriter RestoreContext(IEnumerable<KeyValuePair<Type, object>> context);
 }

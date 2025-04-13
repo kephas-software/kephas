@@ -1,19 +1,18 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ContextAccessor.cs" company="Kephas Software SRL">
+// <copyright file="AsyncLocalContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Diagnostics.CodeAnalysis;
-using Kephas.Threading;
 
-namespace Kephas.Context;
+namespace Kephas.Threading;
 
 /// <summary>
-/// The default implementation of the <see cref="IContextAccessor"/>.
+/// The default implementation of the <see cref="IAsyncLocalContext"/>.
 /// </summary>
-public class ContextAccessor : AsyncLocalAccessorBase<Dictionary<Type, object>>, IContextAccessor, IContextWriter
+public class AsyncLocalContext : AsyncLocalAccessorBase<Dictionary<Type, object>>, IAsyncLocalContext, IAsyncLocalContextWriter
 {
     private readonly object syncLock = new ();
 
@@ -71,7 +70,7 @@ public class ContextAccessor : AsyncLocalAccessorBase<Dictionary<Type, object>>,
     /// Gets the context writer for setting values in the context. 
     /// </summary>
     /// <returns>The context writer.</returns>
-    public IContextWriter GetWriter() => this;
+    public IAsyncLocalContextWriter GetWriter() => this;
 
     /// <summary>
     /// Sets the value of the provided type.
@@ -79,7 +78,7 @@ public class ContextAccessor : AsyncLocalAccessorBase<Dictionary<Type, object>>,
     /// <param name="value">The value to be set.</param>
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <returns>This writer.</returns>
-    IContextWriter IContextWriter.SetValue<T>([DisallowNull] T value)
+    IAsyncLocalContextWriter IAsyncLocalContextWriter.SetValue<T>([DisallowNull] T value)
     {
         ArgumentNullException.ThrowIfNull(value);
         GetData()[typeof(T)] = value;
@@ -91,14 +90,14 @@ public class ContextAccessor : AsyncLocalAccessorBase<Dictionary<Type, object>>,
     /// </summary>
     /// <typeparam name="T">The type of the value to be removed.</typeparam>
     /// <returns><c>true</c> is a value was set, otherwise <c>false</c>.</returns>
-    bool IContextWriter.RemoveValue<T>() =>
+    bool IAsyncLocalContextWriter.RemoveValue<T>() =>
         GetData().Remove(typeof(T));
 
     /// <summary>
     /// Restores the context from the provided values.
     /// </summary>
     /// <returns>This writer.</returns>
-    IContextWriter IContextWriter.RestoreContext(IEnumerable<KeyValuePair<Type, object>> context)
+    IAsyncLocalContextWriter IAsyncLocalContextWriter.RestoreContext(IEnumerable<KeyValuePair<Type, object>> context)
     {
         if (context is null)
         {

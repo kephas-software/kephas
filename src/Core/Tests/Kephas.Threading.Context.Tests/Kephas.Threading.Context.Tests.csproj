@@ -24,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Kephas.Context\Kephas.Context.csproj" />
+        <ProjectReference Include="..\..\Kephas.Threading.Context\Kephas.Threading.Context.csproj" />
     </ItemGroup>
 
 </Project>
